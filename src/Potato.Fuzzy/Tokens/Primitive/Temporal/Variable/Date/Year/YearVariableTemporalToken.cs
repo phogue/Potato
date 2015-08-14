@@ -23,9 +23,9 @@ using Potato.Fuzzy.Utils;
 namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Date.Year {
 
     public class YearVariableTemporalToken : DateVariableTemporalPrimitiveToken {
-        public static Phrase ReduceNumberYears(IFuzzyState state, Dictionary<String, Token> parameters) {
-            FloatNumericPrimitiveToken number = (FloatNumericPrimitiveToken) parameters["number"];
-            YearsUnitTemporalPrimitiveToken years = (YearsUnitTemporalPrimitiveToken) parameters["years"];
+        public static Phrase ReduceNumberYears(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var number = (FloatNumericPrimitiveToken) parameters["number"];
+            var years = (YearsUnitTemporalPrimitiveToken) parameters["years"];
 
             return new Phrase() {
                 new YearVariableTemporalToken() {
@@ -33,15 +33,15 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Date.Year {
                         Rule = TimeType.Relative, //Rule = TimeType.Definitive,
                         Year = (int) number.ToFloat().ConvertTo(typeof (int))
                     },
-                    Text = String.Format("{0} {1}", number.Text, years.Text),
+                    Text = string.Format("{0} {1}", number.Text, years.Text),
                     Similarity = (years.Similarity + number.Similarity) / 2.0F
                 }
             };
         }
 
-        public static Phrase ReduceArticleYears(IFuzzyState state, Dictionary<String, Token> parameters) {
-            IndefiniteArticlesSyntaxToken article = (IndefiniteArticlesSyntaxToken) parameters["article"];
-            YearsUnitTemporalPrimitiveToken years = (YearsUnitTemporalPrimitiveToken) parameters["years"];
+        public static Phrase ReduceArticleYears(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var article = (IndefiniteArticlesSyntaxToken) parameters["article"];
+            var years = (YearsUnitTemporalPrimitiveToken) parameters["years"];
 
             return new Phrase() {
                 new YearVariableTemporalToken() {
@@ -49,7 +49,7 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Date.Year {
                         Rule = TimeType.Relative,
                         Year = 1
                     },
-                    Text = String.Format("{0} {1}", article.Text, years.Text),
+                    Text = string.Format("{0} {1}", article.Text, years.Text),
                     Similarity = (years.Similarity + article.Similarity) / 2.0F
                 }
             };

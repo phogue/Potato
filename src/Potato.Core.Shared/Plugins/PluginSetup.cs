@@ -21,8 +21,8 @@ namespace Potato.Core.Shared.Plugins {
     /// </summary>
     [Serializable]
     public class PluginSetup : IPluginSetup {
-        public String ConnectionGuid { get; set; }
-        public String ConfigDirectoryPath { get; set; }
-        public String LogDirectoryPath { get; set; }
+        public string ConnectionGuid { get; set; }
+        public string ConfigDirectoryPath { get; set; }
+        public string LogDirectoryPath { get; set; }
     }
 }

@@ -29,11 +29,11 @@ namespace Potato.Core.Packages {
         public IList<IPackage> Source { get; set; }
 
         public void Build() {
-            foreach (var orphanedPackage in this.Source) {
-                PackageWrapperModel packageWrapper = this.Cache.FirstOrDefault(pack => pack.Id == orphanedPackage.Id);
+            foreach (var orphanedPackage in Source) {
+                var packageWrapper = Cache.FirstOrDefault(pack => pack.Id == orphanedPackage.Id);
 
                 if (packageWrapper == null) {
-                    this.Cache.Add(new PackageWrapperModel() {
+                    Cache.Add(new PackageWrapperModel() {
                         State = PackageState.Installed,
                         Installed = PackageFactory.CreatePackageModelFromNugetPackage(orphanedPackage)
                     });

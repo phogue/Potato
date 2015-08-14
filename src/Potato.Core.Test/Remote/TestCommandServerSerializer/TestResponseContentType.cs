@@ -50,7 +50,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerSerializer {
                     ContentType = null
                 },
                 Request = new HttpCommandRequest() {
-                    Tags = new Dictionary<String, String>() {
+                    Tags = new Dictionary<string, string>() {
                         { HttpRequestHeader.ContentType.ToString(), Mime.ApplicationJson }
                     }
                 }
@@ -67,7 +67,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerSerializer {
             var contentType = CommandServerSerializer.ResponseContentType(new Command() {
                 Result = null,
                 Request = new HttpCommandRequest() {
-                    Tags = new Dictionary<String, String>() {
+                    Tags = new Dictionary<string, string>() {
                         { HttpRequestHeader.ContentType.ToString(), Mime.ApplicationJson }
                     }
                 }
@@ -84,7 +84,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerSerializer {
             var contentType = CommandServerSerializer.ResponseContentType(new Command() {
                 Result = null,
                 Request = new HttpCommandRequest() {
-                    Tags = new Dictionary<String, String>() {
+                    Tags = new Dictionary<string, string>() {
 
                     }
                 }

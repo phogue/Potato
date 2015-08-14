@@ -117,7 +117,7 @@ namespace Potato.Core.Shared.Test.ExecutableCommands {
                 TestNumber = 33
             };
 
-            ICommandResult result = tester.Tunnel(new Command() {
+            var result = tester.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesGet
             });

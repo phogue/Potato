@@ -34,9 +34,9 @@ namespace Potato.Core.Test.TestPotato {
         /// </summary>
         [Test]
         public void TestResultInsufficientPermissions() {
-            PotatoController instance = new PotatoController();
+            var instance = new PotatoController();
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoServiceMergePackage("localhost", "id").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = instance.Tunnel(CommandBuilder.PotatoServiceMergePackage("localhost", "id").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -51,9 +51,9 @@ namespace Potato.Core.Test.TestPotato {
         /// </summary>
         [Test]
         public void TestResultInvalidParameterUri() {
-            PotatoController instance = new PotatoController();
+            var instance = new PotatoController();
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoServiceMergePackage("", "id").SetOrigin(CommandOrigin.Local));
+            var result = instance.Tunnel(CommandBuilder.PotatoServiceMergePackage("", "id").SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.InvalidParameter, result.CommandResultType);
@@ -66,9 +66,9 @@ namespace Potato.Core.Test.TestPotato {
         /// </summary>
         [Test]
         public void TestResultInvalidParameterPackageId() {
-            PotatoController instance = new PotatoController();
+            var instance = new PotatoController();
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoServiceMergePackage("localhost", "").SetOrigin(CommandOrigin.Local));
+            var result = instance.Tunnel(CommandBuilder.PotatoServiceMergePackage("localhost", "").SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.InvalidParameter, result.CommandResultType);
@@ -81,9 +81,9 @@ namespace Potato.Core.Test.TestPotato {
         /// </summary>
         [Test]
         public void TestResultSuccess() {
-            PotatoController instance = new PotatoController();
+            var instance = new PotatoController();
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoServiceMergePackage("localhost", "id").SetOrigin(CommandOrigin.Local));
+            var result = instance.Tunnel(CommandBuilder.PotatoServiceMergePackage("localhost", "id").SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
@@ -96,7 +96,7 @@ namespace Potato.Core.Test.TestPotato {
         /// </summary>
         [Test]
         public void TestMessageLogged() {
-            PotatoController instance = new PotatoController();
+            var instance = new PotatoController();
 
             instance.Tunnel(CommandBuilder.PotatoServiceMergePackage("localhost", "id").SetOrigin(CommandOrigin.Local));
 
@@ -113,8 +113,8 @@ namespace Potato.Core.Test.TestPotato {
         /// </summary>
         [Test]
         public void TestEventLogged() {
-            EventsController events = new EventsController();
-            PotatoController instance = new PotatoController {
+            var events = new EventsController();
+            var instance = new PotatoController {
                 Shared = {
                     Events = events
                 }

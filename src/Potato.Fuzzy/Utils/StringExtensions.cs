@@ -22,10 +22,10 @@ using System.Globalization;
 namespace Potato.Fuzzy.Utils {
     public static class StringExtensions {
         public static string RemoveDiacritics(this string s) {
-            string normalized = s.Normalize(NormalizationForm.FormD);
-            StringBuilder stringBuilder = new StringBuilder();
+            var normalized = s.Normalize(NormalizationForm.FormD);
+            var stringBuilder = new StringBuilder();
 
-            foreach (char c in normalized.Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)) {
+            foreach (var c in normalized.Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)) {
                 stringBuilder.Append(c);
             }
 
@@ -47,23 +47,23 @@ namespace Potato.Fuzzy.Utils {
         }
 
         public static float Sift3Distance(this string s1, string s2, int maxOffset) {
-            if (String.IsNullOrEmpty(s1)) {
-                return String.IsNullOrEmpty(s2) ? 0 : s2.Length;
+            if (string.IsNullOrEmpty(s1)) {
+                return string.IsNullOrEmpty(s2) ? 0 : s2.Length;
             }
-            if (String.IsNullOrEmpty(s2)) {
+            if (string.IsNullOrEmpty(s2)) {
                 return s1.Length;
             }
-            int c = 0;
-            int offset1 = 0;
-            int offset2 = 0;
-            int lcs = 0;
+            var c = 0;
+            var offset1 = 0;
+            var offset2 = 0;
+            var lcs = 0;
             while ((c + offset1 < s1.Length) && (c + offset2 < s2.Length)) {
                 if (s1[c + offset1] == s2[c + offset2])
                     lcs++;
                 else {
                     offset1 = 0;
                     offset2 = 0;
-                    for (int i = 0; i < maxOffset; i++) {
+                    for (var i = 0; i < maxOffset; i++) {
                         if ((c + i < s1.Length) && (s1[c + i] == s2[c])) {
                             offset1 = i;
                             break;
@@ -88,8 +88,8 @@ namespace Potato.Fuzzy.Utils {
         /// </summary>
         /// <returns>Levenshtein edit distance</returns>
         public static int Levenshtein(this string s, string t) {
-            int n = s.Length; // length of s
-            int m = t.Length; // length of t
+            var n = s.Length; // length of s
+            var m = t.Length; // length of t
             int cost; // cost
 
             // Step 1
@@ -99,34 +99,34 @@ namespace Potato.Fuzzy.Utils {
                 return n;
 
             // Create the two vectors
-            int[] v0 = new int[n + 1];
-            int[] v1 = new int[n + 1];
+            var v0 = new int[n + 1];
+            var v1 = new int[n + 1];
             int[] vTmp;
 
 
             // Step 2
             // Initialize the first vector
-            for (int i = 1; i <= n; i++)
+            for (var i = 1; i <= n; i++)
                 v0[i] = i;
 
 
             // Step 3
             // Fore each column
-            for (int j = 1; j <= m; j++) {
+            for (var j = 1; j <= m; j++) {
                 // Set the 0'th element to the column number
                 v1[0] = j;
 
                 // Step 4
                 // Fore each row
-                for (int i = 1; i <= n; i++) {
+                for (var i = 1; i <= n; i++) {
                     // Step 5
                     cost = (s[i - 1] == t[j - 1]) ? 0 : 1;
 
                     // Step 6
                     // Find minimum
-                    int m_min = v0[i] + 1;
-                    int b = v1[i - 1] + 1;
-                    int c = v0[i - 1] + cost;
+                    var m_min = v0[i] + 1;
+                    var b = v1[i - 1] + 1;
+                    var c = v0[i - 1] + cost;
 
                     if (b < m_min)
                         m_min = b;
@@ -148,14 +148,14 @@ namespace Potato.Fuzzy.Utils {
 
         // Mostly an english hack - will enhance
         public static int DePluralStringSimularity(this string s, string t) {
-            if (StringExtensions.HaltStringSimularity(s, t) == true) {
+            if (HaltStringSimularity(s, t) == true) {
                 return 0;
             }
 
             int returnRatio = s.StringSimularitySubsetBonusRatio(t);
 
             if (t.Length > 0 && t[t.Length - 1] == 's') {
-                string newT = t.Remove(t.Length - 1);
+                var newT = t.Remove(t.Length - 1);
 
                 if (newT.Length > 0 && newT[newT.Length - 1] == '\'') {
                     newT = newT.Remove(newT.Length - 1);
@@ -172,7 +172,7 @@ namespace Potato.Fuzzy.Utils {
         }
 
         public static int StringSimularityRatio(this string s, string t) {
-            if (StringExtensions.HaltStringSimularity(s, t) == true) {
+            if (HaltStringSimularity(s, t) == true) {
                 return 0;
             }
 
@@ -182,7 +182,7 @@ namespace Potato.Fuzzy.Utils {
         }
 
         public static int StringSimularitySubsetBonusRatio(this string s, string t) {
-            if (StringExtensions.HaltStringSimularity(s, t) == true) {
+            if (HaltStringSimularity(s, t) == true) {
                 return 0;
             }
 
@@ -197,18 +197,18 @@ namespace Potato.Fuzzy.Utils {
         }
 
         public static int GetClosestMatch(this string input, List<string> dictionary, out string matchedDictionaryKey) {
-            int similarity = int.MaxValue;
+            var similarity = int.MaxValue;
 
-            matchedDictionaryKey = String.Empty;
+            matchedDictionaryKey = string.Empty;
 
             if (dictionary.Count >= 1) {
-                int iLargestDictionaryKey = 0;
+                var iLargestDictionaryKey = 0;
 
                 // Build array of default matches from the dictionary to store a rank for each match.
                 // (it's designed to work on smaller dictionaries with say.. 32 player names in it =)
-                List<MatchDictionaryKey> matches = new List<MatchDictionaryKey>();
+                var matches = new List<MatchDictionaryKey>();
 
-                foreach (string strDictionaryKey in dictionary) {
+                foreach (var strDictionaryKey in dictionary) {
                     matches.Add(new MatchDictionaryKey(strDictionaryKey));
 
                     if (strDictionaryKey.Length > iLargestDictionaryKey) {
@@ -217,15 +217,15 @@ namespace Potato.Fuzzy.Utils {
                 }
 
                 // Rank each match, find the remaining characters for a match (arguements)
-                for (int x = 1; x <= Math.Min(input.Length, iLargestDictionaryKey); x++) {
+                for (var x = 1; x <= Math.Min(input.Length, iLargestDictionaryKey); x++) {
                     // Skip it if it's a space (a space breaks a name and moves onto arguement.
                     // but the space could also be included in the dictionarykey, which will be checked
                     // on the next loop.
                     if (x + 1 < input.Length && input[x] != ' ')
                         continue;
 
-                    foreach (MatchDictionaryKey match in matches) {
-                        int score = (int) input.Substring(0, x).ToLower().Sift3Distance(match.LowerCaseMatchedText, match.LowerCaseMatchedText.Length);
+                    foreach (var match in matches) {
+                        var score = (int) input.Substring(0, x).ToLower().Sift3Distance(match.LowerCaseMatchedText, match.LowerCaseMatchedText.Length);
 
                         if (score < match.MatchedScore || (score == match.MatchedScore && x > match.MatchedScoreCharacters)) {
                             match.MatchedScore = score;
@@ -237,15 +237,15 @@ namespace Potato.Fuzzy.Utils {
                 // Sort the matches
                 matches.Sort();
 
-                int bestCharactersMatched = matches[0].MatchedScoreCharacters;
+                var bestCharactersMatched = matches[0].MatchedScoreCharacters;
                 similarity = matches[0].MatchedScore;
                 matchedDictionaryKey = matches[0].MatchedText;
 
                 // Now though we want to loop through from start to end and see if a subset of what we entered is found.
                 // if so then this will find the highest ranked item with a subset of what was entered and favour that instead.
-                string bestCharsSubstringLower = input.Substring(0, bestCharactersMatched).ToLower();
+                var bestCharsSubstringLower = input.Substring(0, bestCharactersMatched).ToLower();
 
-                foreach (MatchDictionaryKey match in matches) {
+                foreach (var match in matches) {
                     if (match.LowerCaseMatchedText.Contains(bestCharsSubstringLower) == true) {
                         similarity = match.MatchedScore;
                         matchedDictionaryKey = match.MatchedText;
@@ -264,20 +264,20 @@ namespace Potato.Fuzzy.Utils {
         }
 
         public static List<string> Wordify(this string input) {
-            List<string> returnList = new List<string>();
+            var returnList = new List<string>();
 
-            string fullWord = String.Empty;
-            int quoteStack = 0;
-            bool isEscaped = false;
+            var fullWord = string.Empty;
+            var quoteStack = 0;
+            var isEscaped = false;
 
-            char[] punctuation = new[] {'(', ')', ',', '.', '?', '!', '/', '*', '-', '+', ':'};
+            var punctuation = new[] {'(', ')', ',', '.', '?', '!', '/', '*', '-', '+', ':'};
 
-            foreach (char c in input) {
+            foreach (var c in input) {
                 if (c == ' ') {
                     if (quoteStack == 0) {
                         if (fullWord.Length > 0) {
                             returnList.Add(fullWord);
-                            fullWord = String.Empty;
+                            fullWord = string.Empty;
                         }
                     }
                     else {
@@ -288,7 +288,7 @@ namespace Potato.Fuzzy.Utils {
                     if (quoteStack == 0) {
                         if (fullWord.Length > 0) {
                             returnList.Add(fullWord);
-                            fullWord = String.Empty;
+                            fullWord = string.Empty;
                         }
 
                         returnList.Add("" + c);
@@ -339,7 +339,7 @@ namespace Potato.Fuzzy.Utils {
 
             returnList.Add(fullWord);
 
-            return returnList.Where(x => String.IsNullOrEmpty(x) == false).ToList();
+            return returnList.Where(x => string.IsNullOrEmpty(x) == false).ToList();
         }
     }
 }

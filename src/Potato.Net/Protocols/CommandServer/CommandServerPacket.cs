@@ -38,7 +38,7 @@ namespace Potato.Net.Protocols.CommandServer {
         /// <summary>
         /// The method used during the request/response
         /// </summary>
-        public String Method { get; set; }
+        public string Method { get; set; }
 
         /// <summary>
         /// The protocol version being used (1.0.0.0 or 1.1.0.0)
@@ -58,17 +58,17 @@ namespace Potato.Net.Protocols.CommandServer {
         /// <summary>
         /// The raw header data recieved or to be sent.
         /// </summary>
-        public String Header { get; set; }
+        public string Header { get; set; }
 
         /// <summary>
         /// The raw data from a POST request or the data to be output as a response.
         /// </summary>
-        public String Content { get; set; }
+        public string Content { get; set; }
 
         /// <summary>
         /// Basic strings supplied for http authorization
         /// </summary>
-        public String[] Authorization { get; set; }
+        public string[] Authorization { get; set; }
 
         /// <summary>
         /// The base packet in this request
@@ -79,12 +79,12 @@ namespace Potato.Net.Protocols.CommandServer {
         /// Initializes default values.
         /// </summary>
         public CommandServerPacket() {
-            this.Headers = new WebHeaderCollection();
-            this.Query = new NameValueCollection();
-            this.Content = String.Empty;
-            this.Authorization = new string[0];
+            Headers = new WebHeaderCollection();
+            Query = new NameValueCollection();
+            Content = string.Empty;
+            Authorization = new string[0];
 
-            this.Packet = new Packet();
+            Packet = new Packet();
         }
     }
 }

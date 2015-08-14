@@ -31,7 +31,7 @@ namespace Potato.Net.Shared.Test.Actions.Deferred {
                 ActionType = NetworkActionType.NetworkTextSay
             };
 
-            DeferredAction<INetworkAction> deferredAction = new DeferredAction<INetworkAction>() {
+            var deferredAction = new DeferredAction<INetworkAction>() {
                 Action = chat
             };
             
@@ -43,10 +43,10 @@ namespace Potato.Net.Shared.Test.Actions.Deferred {
         /// </summary>
         [Test]
         public void TestDeferredActionEach() {
-            bool eachFlag = false;
+            var eachFlag = false;
             INetworkAction chat = new NetworkAction();
 
-            DeferredAction<INetworkAction> deferredAction = new DeferredAction<INetworkAction>() {
+            var deferredAction = new DeferredAction<INetworkAction>() {
                 Action = chat,
                 Each = (action, request, response) => {
                     eachFlag = true;
@@ -75,10 +75,10 @@ namespace Potato.Net.Shared.Test.Actions.Deferred {
         /// </summary>
         [Test]
         public void TestDeferredActionDone() {
-            bool doneFlag = false;
+            var doneFlag = false;
             INetworkAction chat = new NetworkAction();
 
-            DeferredAction<INetworkAction> deferredAction = new DeferredAction<INetworkAction>() {
+            var deferredAction = new DeferredAction<INetworkAction>() {
                 Action = chat,
                 Done = (action, requests, responses) => {
                     doneFlag = true;
@@ -106,10 +106,10 @@ namespace Potato.Net.Shared.Test.Actions.Deferred {
         /// </summary>
         [Test]
         public void TestDeferredActionSent() {
-            bool sentFlag = false;
+            var sentFlag = false;
             INetworkAction chat = new NetworkAction();
 
-            DeferredAction<INetworkAction> deferredAction = new DeferredAction<INetworkAction>() {
+            var deferredAction = new DeferredAction<INetworkAction>() {
                 Action = chat,
                 Sent = (action, requests) => {
                     sentFlag = true;
@@ -131,10 +131,10 @@ namespace Potato.Net.Shared.Test.Actions.Deferred {
         /// </summary>
         [Test]
         public void TestDeferredActionExpired() {
-            bool expiredFlag = false;
+            var expiredFlag = false;
             INetworkAction chat = new NetworkAction();
 
-            DeferredAction<INetworkAction> deferredAction = new DeferredAction<INetworkAction>() {
+            var deferredAction = new DeferredAction<INetworkAction>() {
                 Action = chat,
                 Expired = (action, requests, responses) => {
                     expiredFlag = true;
@@ -163,10 +163,10 @@ namespace Potato.Net.Shared.Test.Actions.Deferred {
         /// </summary>
         [Test]
         public void TestDeferredActionAlways() {
-            bool alwaysFlag = false;
+            var alwaysFlag = false;
             INetworkAction chat = new NetworkAction();
 
-            DeferredAction<INetworkAction> deferredAction = new DeferredAction<INetworkAction>() {
+            var deferredAction = new DeferredAction<INetworkAction>() {
                 Action = chat,
                 Always = action => {
                     alwaysFlag = true;
@@ -185,7 +185,7 @@ namespace Potato.Net.Shared.Test.Actions.Deferred {
         public void TestDeferredActionRelease() {
             INetworkAction chat = new NetworkAction();
 
-            DeferredAction<INetworkAction> deferredAction = new DeferredAction<INetworkAction>() {
+            var deferredAction = new DeferredAction<INetworkAction>() {
                 Action = chat,
                 Sent = (action, requests) => {
 

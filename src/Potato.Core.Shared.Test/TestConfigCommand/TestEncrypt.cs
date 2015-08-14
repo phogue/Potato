@@ -5,7 +5,7 @@ namespace Potato.Core.Shared.Test.TestConfigCommand {
     [TestFixture]
     public class TestEncrypt {
 
-        protected const String Password = "password";
+        protected const string Password = "password";
 
         /// <summary>
         /// Tests that after encrypting the data the command will be nulled out.
@@ -18,7 +18,7 @@ namespace Potato.Core.Shared.Test.TestConfigCommand {
                 }
             };
 
-            command.Encrypt(TestEncrypt.Password);
+            command.Encrypt(Password);
 
             Assert.IsNull(command.Command);
         }
@@ -64,11 +64,11 @@ namespace Potato.Core.Shared.Test.TestConfigCommand {
                 }
             };
 
-            command.Encrypt(TestEncrypt.Password);
+            command.Encrypt(Password);
 
             Assert.IsNull(command.Command);
 
-            command.Decrypt(TestEncrypt.Password);
+            command.Decrypt(Password);
 
             Assert.IsNotNull(command.Command);
         }
@@ -84,11 +84,11 @@ namespace Potato.Core.Shared.Test.TestConfigCommand {
                 }
             };
 
-            command.Encrypt(TestEncrypt.Password);
+            command.Encrypt(Password);
 
             Assert.IsNull(command.Command);
 
-            command.Decrypt(TestEncrypt.Password);
+            command.Decrypt(Password);
 
             Assert.AreEqual(CommandType.ConnectionQuery.ToString(), command.Command.Name);
         }

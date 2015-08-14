@@ -22,12 +22,12 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Days {
         }
 
         public FridayDaysVariableTemporalPrimitiveToken() {
-            DateTime dt = DateTime.Now;
+            var dt = DateTime.Now;
             while (dt.DayOfWeek != DayOfWeek.Friday) {
                 dt = dt.AddDays(1);
             }
 
-            this.Pattern = new FuzzyDateTimePattern() {
+            Pattern = new FuzzyDateTimePattern() {
                 Rule = TimeType.Definitive,
                 Year = dt.Year,
                 Month = dt.Month,

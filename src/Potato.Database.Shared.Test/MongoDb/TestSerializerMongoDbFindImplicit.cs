@@ -25,7 +25,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestSelectAllFromPlayer() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestSelectAllFromPlayerImplicit).Compile();
+            var serialized = serializer.Parse(TestSelectAllFromPlayerImplicit).Compile();
 
             Assert.AreEqual(@"find", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -34,7 +34,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestSelectDistinctAllFromPlayer() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestSelectDistinctAllFromPlayerImplicit).Compile();
+            var serialized = serializer.Parse(TestSelectDistinctAllFromPlayerImplicit).Compile();
 
             Assert.AreEqual(@"distinct", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -43,7 +43,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestSelectAllFromPlayerWhereNameEqualsPhogue() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestSelectAllFromPlayerWhereNameEqualsPhogueImplicit).Compile();
+            var serialized = serializer.Parse(TestSelectAllFromPlayerWhereNameEqualsPhogueImplicit).Compile();
 
             Assert.AreEqual(@"find", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -53,7 +53,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31D() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31DImplicit).Compile();
+            var serialized = serializer.Parse(TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31DImplicit).Compile();
 
             Assert.AreEqual(@"find", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -63,7 +63,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestSelectAllFromPlayerWhereKdrLessThanEqualTo31D() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestSelectAllFromPlayerWhereKdrLessThanEqualTo31DImplicit).Compile();
+            var serialized = serializer.Parse(TestSelectAllFromPlayerWhereKdrLessThanEqualTo31DImplicit).Compile();
 
             Assert.AreEqual(@"find", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -73,7 +73,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestSelectAllFromPlayerWherePlayerNameEqualsPhogue() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestSelectAllFromPlayerWherePlayerNameEqualsPhogueImplicit).Compile();
+            var serialized = serializer.Parse(TestSelectAllFromPlayerWherePlayerNameEqualsPhogueImplicit).Compile();
 
             Assert.AreEqual(@"find", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -83,7 +83,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestSelectScoreFromPlayerWhereNameEqualsPhogue() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestSelectScoreFromPlayerWhereNameEqualsPhogueImplicit).Compile();
+            var serialized = serializer.Parse(TestSelectScoreFromPlayerWhereNameEqualsPhogueImplicit).Compile();
 
             Assert.AreEqual(@"find", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -94,7 +94,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestSelectScoreRankFromPlayerWhereNameEqualsPhogue() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestSelectScoreRankFromPlayerWhereNameEqualsPhogueImplicit).Compile();
+            var serialized = serializer.Parse(TestSelectScoreRankFromPlayerWhereNameEqualsPhogueImplicit).Compile();
 
             Assert.AreEqual(@"find", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -106,7 +106,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTen() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTenImplicit).Compile();
+            var serialized = serializer.Parse(TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTenImplicit).Compile();
 
             Assert.AreEqual(@"find", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -116,7 +116,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeed() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedImplicit).Compile();
+            var serialized = serializer.Parse(TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedImplicit).Compile();
 
             Assert.AreEqual(@"find", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -126,7 +126,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20Implicit).Compile();
+            var serialized = serializer.Parse(TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20Implicit).Compile();
 
             Assert.AreEqual(@"find", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -136,7 +136,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50Implicit).Compile();
+            var serialized = serializer.Parse(TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50Implicit).Compile();
 
             Assert.AreEqual(@"find", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -146,7 +146,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestSelectAllFromPlayerSortByScore() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestSelectAllFromPlayerSortByScoreImplicit).Compile();
+            var serialized = serializer.Parse(TestSelectAllFromPlayerSortByScoreImplicit).Compile();
 
             Assert.AreEqual(@"find", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -156,7 +156,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestSelectAllFromPlayerSortByNameThenScoreDescending() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestSelectAllFromPlayerSortByNameThenScoreDescendingImplicit).Compile();
+            var serialized = serializer.Parse(TestSelectAllFromPlayerSortByNameThenScoreDescendingImplicit).Compile();
 
             Assert.AreEqual(@"find", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -166,7 +166,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestSelectAllFromPlayerLimit1() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestSelectAllFromPlayerLimit1Implicit).Compile();
+            var serialized = serializer.Parse(TestSelectAllFromPlayerLimit1Implicit).Compile();
 
             Assert.AreEqual(@"find", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -176,7 +176,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestSelectAllFromPlayerLimit1Skip2() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestSelectAllFromPlayerLimit1Skip2Implicit).Compile();
+            var serialized = serializer.Parse(TestSelectAllFromPlayerLimit1Skip2Implicit).Compile();
 
             Assert.AreEqual(@"find", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());

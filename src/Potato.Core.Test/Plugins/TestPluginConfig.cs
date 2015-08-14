@@ -36,14 +36,14 @@ namespace Potato.Core.Test.Plugins {
 
         [SetUp]
         public void ClearConfigDirectory() {
-            this.ConfigFile.Refresh();
+            ConfigFile.Refresh();
 
-            if (this.ConfigFile.Directory != null) {
-                if (this.ConfigFile.Directory.Exists == true) {
-                    this.ConfigFile.Directory.Delete(true);
+            if (ConfigFile.Directory != null) {
+                if (ConfigFile.Directory.Exists == true) {
+                    ConfigFile.Directory.Delete(true);
                 }
 
-                this.ConfigFile.Directory.Create();
+                ConfigFile.Directory.Create();
             }
         }
 
@@ -52,9 +52,9 @@ namespace Potato.Core.Test.Plugins {
         /// </summary>
         [Test]
         public void TestEnabledPluginSavedToConfig() {
-            Guid connectionGuid = Guid.NewGuid();
-            Guid onePluginGuid = Guid.NewGuid();
-            Guid twoPluginGuid = Guid.NewGuid();
+            var connectionGuid = Guid.NewGuid();
+            var onePluginGuid = Guid.NewGuid();
+            var twoPluginGuid = Guid.NewGuid();
 
             ICorePluginController plugins = new CorePluginController() {
                 Connection = new ConnectionController() {
@@ -76,16 +76,16 @@ namespace Potato.Core.Test.Plugins {
                 }
             };
 
-            IConfig config = new Config().Create<CorePluginController>();
+            var config = new Config().Create<CorePluginController>();
 
             plugins.WriteConfig(config);
 
-            config.Save(this.ConfigFile);
+            config.Save(ConfigFile);
 
             // Now load up the config and ensure it saved what we wanted it too.
 
             var loadConfig = new Config();
-            loadConfig.Load(this.ConfigFile);
+            loadConfig.Load(ConfigFile);
 
             var commands = loadConfig.RootOf<CorePluginController>().Children<JObject>().Select(item => item.ToObject<IConfigCommand>(JsonSerialization.Minimal)).ToList();
 

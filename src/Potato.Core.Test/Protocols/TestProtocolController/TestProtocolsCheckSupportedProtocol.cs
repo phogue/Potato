@@ -32,7 +32,7 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
         public void TestInsufficientPermissions() {
             var protocols = new ProtocolController();
 
-            ICommandResult result = protocols.Tunnel(CommandBuilder.ProtocolsCheckSupportedProtocol("Myrcon", CommonProtocolType.DiceBattlefield4).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = protocols.Tunnel(CommandBuilder.ProtocolsCheckSupportedProtocol("Myrcon", CommonProtocolType.DiceBattlefield4).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -61,7 +61,7 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
                 }
             };
 
-            ICommandResult result = protocols.Tunnel(CommandBuilder.ProtocolsCheckSupportedProtocol("Myrcon", CommonProtocolType.DiceBattlefield4).SetOrigin(CommandOrigin.Local));
+            var result = protocols.Tunnel(CommandBuilder.ProtocolsCheckSupportedProtocol("Myrcon", CommonProtocolType.DiceBattlefield4).SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
@@ -88,7 +88,7 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
                 }
             };
 
-            ICommandResult result = protocols.Tunnel(CommandBuilder.ProtocolsCheckSupportedProtocol("Myrcon", CommonProtocolType.DiceBattlefield4).SetOrigin(CommandOrigin.Local));
+            var result = protocols.Tunnel(CommandBuilder.ProtocolsCheckSupportedProtocol("Myrcon", CommonProtocolType.DiceBattlefield4).SetOrigin(CommandOrigin.Local));
 
             Assert.AreEqual(item, result.Now.ProtocolTypes.First());
         }
@@ -100,7 +100,7 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
         public void TestFailureDoesNotExist() {
             var protocols = new ProtocolController();
 
-            ICommandResult result = protocols.Tunnel(CommandBuilder.ProtocolsCheckSupportedProtocol("Myrcon", CommonProtocolType.DiceBattlefield4).SetOrigin(CommandOrigin.Local));
+            var result = protocols.Tunnel(CommandBuilder.ProtocolsCheckSupportedProtocol("Myrcon", CommonProtocolType.DiceBattlefield4).SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.DoesNotExists, result.CommandResultType);

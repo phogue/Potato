@@ -48,12 +48,12 @@ namespace Potato.Core.Test.Plugins {
                 }
             });
 
-            ICommandResult result = plugins.Tunnel(new Command() {
+            var result = plugins.Tunnel(new Command() {
                 Name = "TestPluginsSerializationCommandResult",
                 Authentication = {
                     Username = "Phogue"
                 },
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Return Message"
                 })
             });

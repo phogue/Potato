@@ -32,7 +32,7 @@ namespace Potato.Core.Shared.Test.Database.Mocks {
 
         public double DoubleValue { get; set; }
 
-        public String StringValue { get; set; }
+        public string StringValue { get; set; }
 
         public DateTime DateTimeValue { get; set; }
 

@@ -28,15 +28,15 @@ namespace Potato.Service.Shared {
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static IDictionary<String, String> ToArguments(IList<String> input) {
-            IDictionary<String, String> arguments = new SortedDictionary<String, String>();
+        public static IDictionary<string, string> ToArguments(IList<string> input) {
+            IDictionary<string, string> arguments = new SortedDictionary<string, string>();
 
-            for (int offset = 0; offset < input.Count; offset++) {
+            for (var offset = 0; offset < input.Count; offset++) {
                 // Ignore any keys or arguments that are empty.
                 if (input[offset].Length > 0) {
                     // if the argument is a switch.
                     if (input[offset][0] == '-') {
-                        String key = input[offset];
+                        var key = input[offset];
 
                         // Trims any hyphens from the start of the argument. Allows for "-argument" and "--argument"
                         key = key.TrimStart('-').ToLower();
@@ -88,7 +88,7 @@ namespace Potato.Service.Shared {
         /// Checks if the value of a string equates to a truthy expression: e.g False, false or "0"
         /// </summary>
         /// <returns>True if the string is truthy, false otherwise</returns>
-        public static bool IsFalsey(String input) {
+        public static bool IsFalsey(string input) {
             return input.Equals(bool.FalseString) || input.Equals(bool.FalseString.ToLower()) || input.Equals("0");
         }
 
@@ -98,8 +98,8 @@ namespace Potato.Service.Shared {
         /// <param name="input">The text representation of hte number.</param>
         /// <param name="default">The default value to use if parsing should fail</param>
         /// <returns>The converted value as an integer</returns>
-        public static float ParseNumeric(String input, float @default = default(int)) {
-            float value = @default;
+        public static float ParseNumeric(string input, float @default = default(int)) {
+            var value = @default;
 
             if (float.TryParse(input, out value) == false) {
                 value = @default;
@@ -112,10 +112,10 @@ namespace Potato.Service.Shared {
         /// Scrubs all non-generated keys from the dictionary, leaving only numeric indexes
         /// </summary>
         /// <returns></returns>
-        public static IDictionary<String, String> ScrubAlphaNumericKeys(IDictionary<String, String> arguments) {
+        public static IDictionary<string, string> ScrubAlphaNumericKeys(IDictionary<string, string> arguments) {
             // Remove all non-numeric keys for a single command to be passed through to Procon
             var alphaNumericKeys = arguments.Keys.Where(key => {
-                int n = 0;
+                var n = 0;
 
                 return int.TryParse(key, out n) == false;
             }).ToList();

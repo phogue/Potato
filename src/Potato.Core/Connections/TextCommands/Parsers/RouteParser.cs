@@ -37,14 +37,14 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
         /// Initializes route parser with default values.
         /// </summary>
         public RouteParser() {
-            this.CompiledTextCommands = new List<CompiledTextCommand>();
+            CompiledTextCommands = new List<CompiledTextCommand>();
         }
 
         /// <summary>
         /// Builds a list of compiled text commands
         /// </summary>
         protected IEnumerable<CompiledTextCommand> CompileTextCommands() {
-            return this.TextCommands.SelectMany(textCommand => textCommand.Commands.Select(text => new CompiledTextCommand() {
+            return TextCommands.SelectMany(textCommand => textCommand.Commands.Select(text => new CompiledTextCommand() {
                 Text = text,
                 TextCommand = textCommand
             }));
@@ -61,15 +61,15 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
         /// <param name="result">THe result to append matched data against</param>
         /// <returns>True if matching was successful, false if no data was found.</returns>
         protected bool TryMatchPlayers(Match match, TextCommandMatchModel result) {
-            bool matching = true;
-            int maximumNameLength = this.Connection.ProtocolState.Players.Count > 0 ? this.Connection.ProtocolState.Players.Values.Max(player => player.Name.Length) : 0;
+            var matching = true;
+            var maximumNameLength = Connection.ProtocolState.Players.Count > 0 ? Connection.ProtocolState.Players.Values.Max(player => player.Name.Length) : 0;
 
             result.Players = new List<PlayerModel>();
 
             for (var offset = 0; match.Groups["player" + offset].Success == true && matching == true; offset++) {
                 var text = match.Groups["player" + offset].Value;
 
-                PlayerModel player = this.Connection.ProtocolState.Players.Values.FirstOrDefault(p => Math.Max(p.NameStripped.DePluralStringSimularity(text), p.Name.DePluralStringSimularity(text)) >= this.MinimumSimilarity(55, 70, maximumNameLength, p.Name.Length));
+                var player = Connection.ProtocolState.Players.Values.FirstOrDefault(p => Math.Max(p.NameStripped.DePluralStringSimularity(text), p.Name.DePluralStringSimularity(text)) >= MinimumSimilarity(55, 70, maximumNameLength, p.Name.Length));
 
                 if (player != null) {
                     result.Players.Add(player);
@@ -89,14 +89,14 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
         /// <param name="result">THe result to append matched data against</param>
         /// <returns>True if matching was successful, false if no data was found.</returns>
         protected bool TryMatchMaps(Match match, TextCommandMatchModel result) {
-            bool matching = true;
+            var matching = true;
 
             result.Maps = new List<MapModel>();
 
             for (var offset = 0; match.Groups["map" + offset].Success == true && matching == true; offset++) {
                 var text = match.Groups["map" + offset].Value;
 
-                MapModel map = this.Connection.ProtocolState.MapPool.Values.FirstOrDefault(m => Math.Max(m.FriendlyName.DePluralStringSimularity(text), m.Name.DePluralStringSimularity(text)) >= 60);
+                var map = Connection.ProtocolState.MapPool.Values.FirstOrDefault(m => Math.Max(m.FriendlyName.DePluralStringSimularity(text), m.Name.DePluralStringSimularity(text)) >= 60);
 
                 if (map != null) {
                     result.Maps.Add(map);
@@ -116,7 +116,7 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
         /// <param name="result">THe result to append matched data against</param>
         /// <returns>Always true</returns>
         protected bool TryMatchTexts(Match match, TextCommandMatchModel result) {
-            result.Quotes = new List<String>();
+            result.Quotes = new List<string>();
 
             for (var offset = 0; match.Groups["text" + offset].Success == true; offset++) {
                 result.Quotes.Add(match.Groups["text" + offset].Value);
@@ -132,11 +132,11 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
         /// <param name="result">THe result to append matched data against</param>
         /// <returns>True if matching was successful, false if conversion failed.</returns>
         protected bool TryMatchNumbers(Match match, TextCommandMatchModel result) {
-            bool matching = true;
+            var matching = true;
             result.Numeric = new List<float>();
 
             for (var offset = 0; match.Groups["number" + offset].Success == true && matching == true; offset++) {
-                float number = 0.0F;
+                var number = 0.0F;
 
                 if (float.TryParse(match.Groups["number" + offset].Value, out number)) {
                     result.Numeric.Add(number);
@@ -155,12 +155,12 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
         /// <param name="match">The result of a regular expression match against a compiled command</param>
         /// <returns>A built text command match model, or null if some data couldn't be found.</returns>
         protected TextCommandMatchModel BuildTextCommandMatch(Match match) {
-            TextCommandMatchModel textCommandMatchModel = new TextCommandMatchModel();
+            var textCommandMatchModel = new TextCommandMatchModel();
 
-            bool matches = this.TryMatchPlayers(match, textCommandMatchModel)
-                && this.TryMatchMaps(match, textCommandMatchModel)
-                && this.TryMatchTexts(match, textCommandMatchModel)
-                && this.TryMatchNumbers(match, textCommandMatchModel);
+            var matches = TryMatchPlayers(match, textCommandMatchModel)
+                && TryMatchMaps(match, textCommandMatchModel)
+                && TryMatchTexts(match, textCommandMatchModel)
+                && TryMatchNumbers(match, textCommandMatchModel);
 
             return matches == true ? textCommandMatchModel : null;
         }
@@ -175,7 +175,7 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
             ICommandResult result = null;
 
             if (match.Success == true) {
-                TextCommandMatchModel textCommandMatchModel = this.BuildTextCommandMatch(match);
+                var textCommandMatchModel = BuildTextCommandMatch(match);
 
                 if (textCommandMatchModel != null) {
                     result = new CommandResult() {
@@ -183,7 +183,7 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
                         CommandResultType = CommandResultType.Success,
                         Now = new CommandData() {
                             Players = new List<PlayerModel>() {
-                                this.SpeakerPlayer
+                                SpeakerPlayer
                             },
                             TextCommands = new List<TextCommandModel>() {
                                 compiledTextCommand.TextCommand
@@ -199,9 +199,9 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
             return result;
         }
 
-        public override ICommandResult Parse(String prefix, String text) {
-            return this.CompileTextCommands()
-                .Select(compiledTextCommand => this.BuildCommandResult(compiledTextCommand.Match(text), compiledTextCommand))
+        public override ICommandResult Parse(string prefix, string text) {
+            return CompileTextCommands()
+                .Select(compiledTextCommand => BuildCommandResult(compiledTextCommand.Match(text), compiledTextCommand))
                 .FirstOrDefault(result => result != null);
         }
     }

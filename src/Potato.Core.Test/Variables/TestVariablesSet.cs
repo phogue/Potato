@@ -37,11 +37,11 @@ namespace Potato.Core.Test.Variables {
         public void TestValue() {
             var variables = new VariableController();
 
-            ICommandResult result = variables.Tunnel(CommandBuilder.VariablesSet("key", "value").SetOrigin(CommandOrigin.Local));
+            var result = variables.Tunnel(CommandBuilder.VariablesSet("key", "value").SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
-            Assert.AreEqual("value", variables.Get("key", String.Empty));
+            Assert.AreEqual("value", variables.Get("key", string.Empty));
         }
 
         /// <summary>
@@ -51,10 +51,10 @@ namespace Potato.Core.Test.Variables {
         public void TestCaseInsensitive() {
             var variables = new VariableController();
 
-            ICommandResult result = variables.Tunnel(new Command() {
+            var result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "key",
                     "TestVariablesSetValueCaseInsensitive"
                 })
@@ -62,10 +62,10 @@ namespace Potato.Core.Test.Variables {
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
-            Assert.AreEqual("TestVariablesSetValueCaseInsensitive", variables.Get("Key", String.Empty));
-            Assert.AreEqual("TestVariablesSetValueCaseInsensitive", variables.Get("KEY", String.Empty));
-            Assert.AreEqual("TestVariablesSetValueCaseInsensitive", variables.Get("keY", String.Empty));
-            Assert.AreEqual("TestVariablesSetValueCaseInsensitive", variables.Get("Key", String.Empty));
+            Assert.AreEqual("TestVariablesSetValueCaseInsensitive", variables.Get("Key", string.Empty));
+            Assert.AreEqual("TestVariablesSetValueCaseInsensitive", variables.Get("KEY", string.Empty));
+            Assert.AreEqual("TestVariablesSetValueCaseInsensitive", variables.Get("keY", string.Empty));
+            Assert.AreEqual("TestVariablesSetValueCaseInsensitive", variables.Get("Key", string.Empty));
         }
 
         /// <summary>
@@ -76,11 +76,11 @@ namespace Potato.Core.Test.Variables {
             var variables = new VariableController();
 
             // Set the value of a empty key
-            ICommandResult result = variables.Tunnel(new Command() {
+            var result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    String.Empty,
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
+                    string.Empty,
                     "value"
                 })
             });
@@ -102,13 +102,13 @@ namespace Potato.Core.Test.Variables {
                 }
             };
 
-            ICommandResult result = variables.Tunnel(new Command() {
+            var result = variables.Tunnel(new Command() {
                 Authentication = {
                     Username = "Phogue"
                 },
                 Origin = CommandOrigin.Remote,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "key",
                     "value"
                 })
@@ -131,10 +131,10 @@ namespace Potato.Core.Test.Variables {
             });
 
             // Set the value of a empty key
-            ICommandResult result = variables.Tunnel(new Command() {
+            var result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "key",
                     "modified value"
                 })
@@ -143,7 +143,7 @@ namespace Potato.Core.Test.Variables {
             // Validate that the command failed (can't have an empty key)
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
-            Assert.AreEqual("modified value", variables.Get("key", String.Empty));
+            Assert.AreEqual("modified value", variables.Get("key", string.Empty));
         }
 
         /// <summary>
@@ -160,10 +160,10 @@ namespace Potato.Core.Test.Variables {
             });
 
             // Set the value of a empty key
-            ICommandResult result = variables.Tunnel(new Command() {
+            var result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "key",
                     "modified value"
                 })
@@ -172,7 +172,7 @@ namespace Potato.Core.Test.Variables {
             // Validate that the command failed (can't have an empty key)
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.Failed, result.CommandResultType);
-            Assert.AreEqual("value", variables.Get("key", String.Empty));
+            Assert.AreEqual("value", variables.Get("key", string.Empty));
         }
 
         /// <summary>
@@ -183,20 +183,20 @@ namespace Potato.Core.Test.Variables {
             var variables = new VariableController();
 
             // Set the value of a empty key
-            ICommandResult result = variables.Tunnel(new Command() {
+            var result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
-                            Content = new List<String>() {
+                            Content = new List<string>() {
                                 "key"
                             }
                         }
                     },
                     new CommandParameter() {
                         Data = {
-                            Content = new List<String>() {
+                            Content = new List<string>() {
                                 "value1",
                                 "value2"
                             }
@@ -207,9 +207,9 @@ namespace Potato.Core.Test.Variables {
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
-            Assert.IsNotNull(variables.Get<List<String>>("key"));
-            Assert.AreEqual("value1", variables.Get<List<String>>("key").First());
-            Assert.AreEqual("value2", variables.Get<List<String>>("key").Last());
+            Assert.IsNotNull(variables.Get<List<string>>("key"));
+            Assert.AreEqual("value1", variables.Get<List<string>>("key").First());
+            Assert.AreEqual("value2", variables.Get<List<string>>("key").Last());
         }
     }
 }

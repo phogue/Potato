@@ -35,7 +35,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerSerializer {
         public void TestSerializeJson() {
             var packet = CommandServerSerializer.CompleteResponsePacket(Mime.ApplicationJson, new CommandServerPacket(), new CommandResult() {
                 Now = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "A"
                     }
                 }
@@ -43,7 +43,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerSerializer {
 
             var array = (JContainer)JsonConvert.DeserializeObject(packet.Content);
 
-            Assert.AreEqual("A", array["Now"]["Content"].First().Value<String>());
+            Assert.AreEqual("A", array["Now"]["Content"].First().Value<string>());
             Assert.AreEqual(HttpStatusCode.OK, packet.StatusCode);
             Assert.AreEqual(Mime.ApplicationJson, packet.Headers[HttpResponseHeader.ContentType]);
         }
@@ -55,7 +55,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerSerializer {
         public void TestSerializeTextHtml() {
             var packet = CommandServerSerializer.CompleteResponsePacket(Mime.TextHtml, new CommandServerPacket(), new CommandResult() {
                 Now = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "A"
                     }
                 }

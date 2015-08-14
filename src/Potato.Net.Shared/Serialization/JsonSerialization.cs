@@ -40,7 +40,7 @@ namespace Potato.Net.Shared.Serialization {
         public static readonly List<JsonConverter> Converters;
 
         static JsonSerialization() {
-            JsonSerialization.Converters = new List<JsonConverter>() {
+            Converters = new List<JsonConverter>() {
                 new InterfaceJsonConverter<IPacket, Packet>(),
                 new InterfaceJsonConverter<INetworkAction, NetworkAction>(),
                 new InterfaceJsonConverter<IClientEventData, ClientEventData>(),
@@ -53,7 +53,7 @@ namespace Potato.Net.Shared.Serialization {
                 new InterfaceJsonConverter<IProtocolStateData, ProtocolState>()
             };
 
-            JsonSerialization.Minimal = new JsonSerializer() {
+            Minimal = new JsonSerializer() {
                 NullValueHandling = NullValueHandling.Ignore,
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 DefaultValueHandling = DefaultValueHandling.Ignore,
@@ -61,7 +61,7 @@ namespace Potato.Net.Shared.Serialization {
                 DateTimeZoneHandling = DateTimeZoneHandling.Local
             };
 
-            JsonSerialization.Readable = new JsonSerializer() {
+            Readable = new JsonSerializer() {
                 NullValueHandling = NullValueHandling.Ignore,
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 DefaultValueHandling = DefaultValueHandling.Ignore,
@@ -69,9 +69,9 @@ namespace Potato.Net.Shared.Serialization {
                 DateTimeZoneHandling = DateTimeZoneHandling.Local
             };
 
-            JsonSerialization.Converters.ForEach(converter => {
-                JsonSerialization.Minimal.Converters.Add(converter);
-                JsonSerialization.Readable.Converters.Add(converter);
+            Converters.ForEach(converter => {
+                Minimal.Converters.Add(converter);
+                Readable.Converters.Add(converter);
             });
         }
     }

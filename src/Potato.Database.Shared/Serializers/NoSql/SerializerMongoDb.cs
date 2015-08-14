@@ -39,16 +39,16 @@ namespace Potato.Database.Shared.Serializers.NoSql {
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        protected virtual String ParseIndex(Index index) {
-            Primary primary = index.FirstOrDefault(attribute => attribute is Primary) as Primary;
-            Unique unique = index.FirstOrDefault(attribute => attribute is Unique) as Unique;
+        protected virtual string ParseIndex(Index index) {
+            var primary = index.FirstOrDefault(attribute => attribute is Primary) as Primary;
+            var unique = index.FirstOrDefault(attribute => attribute is Unique) as Unique;
 
-            JArray details = new JArray();
+            var details = new JArray();
 
-            JObject sortings = new JObject();
+            var sortings = new JObject();
 
             foreach (Sort sort in index.Where(sort => sort is Sort)) {
-                this.ParseSort(sort, sortings);
+                ParseSort(sort, sortings);
             }
 
             details.Add(sortings);
@@ -69,16 +69,16 @@ namespace Potato.Database.Shared.Serializers.NoSql {
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        protected virtual List<String> ParseIndices(IDatabaseObject query) {
-            return query.Where(statement => statement is Index).Union(new List<IDatabaseObject>() { query }.Where(owner => owner is Index)).Select(index => this.ParseIndex(index as Index)).ToList();
+        protected virtual List<string> ParseIndices(IDatabaseObject query) {
+            return query.Where(statement => statement is Index).Union(new List<IDatabaseObject>() { query }.Where(owner => owner is Index)).Select(index => ParseIndex(index as Index)).ToList();
         }
         
-        protected virtual String ParseField(Field field) {
+        protected virtual string ParseField(Field field) {
             return field.Name;
         }
 
-        protected virtual String ParseEquality(Equality equality) {
-            String parsed = "";
+        protected virtual string ParseEquality(Equality equality) {
+            var parsed = "";
 
             if (equality is Equals) {
                 parsed = null;
@@ -99,13 +99,13 @@ namespace Potato.Database.Shared.Serializers.NoSql {
             return parsed;
         }
 
-        protected virtual Object ParseValue(Value value) {
-            Object parsed = null;
+        protected virtual object ParseValue(Value value) {
+            object parsed = null;
 
-            DateTimeValue dateTime = value as DateTimeValue;
-            NumericValue numeric = value as NumericValue;
-            StringValue @string = value as StringValue;
-            RawValue raw = value as RawValue;
+            var dateTime = value as DateTimeValue;
+            var numeric = value as NumericValue;
+            var @string = value as StringValue;
+            var raw = value as RawValue;
 
             if (dateTime != null) {
                 parsed = dateTime.Data; // String.Format(@"""{0}""", dateTime.Data.ToString("s"));
@@ -134,12 +134,12 @@ namespace Potato.Database.Shared.Serializers.NoSql {
             return outer;
         }
 
-        protected virtual List<String> ParseFields(IDatabaseObject query) {
-            return query.Where(logical => logical is Field).Select(field => this.ParseField(field as Field)).ToList();
+        protected virtual List<string> ParseFields(IDatabaseObject query) {
+            return query.Where(logical => logical is Field).Select(field => ParseField(field as Field)).ToList();
         }
 
-        protected virtual List<String> ParseMethod(IMethod method) {
-            List<String> parsed = new List<string>();
+        protected virtual List<string> ParseMethod(IMethod method) {
+            var parsed = new List<string>();
 
             if (method.Any(item => item is Distinct) == true) {
                 parsed.Add("distinct");
@@ -169,10 +169,10 @@ namespace Potato.Database.Shared.Serializers.NoSql {
             return parsed;
         }
 
-        protected virtual List<String> ParseDatabases(IDatabaseObject query) {
-            List<String> parsed = new List<String>();
+        protected virtual List<string> ParseDatabases(IDatabaseObject query) {
+            var parsed = new List<string>();
 
-            Builders.Database database = query.FirstOrDefault(statement => statement is Builders.Database) as Builders.Database;
+            var database = query.FirstOrDefault(statement => statement is Builders.Database) as Builders.Database;
 
             if (database != null) {
                 parsed.Add(database.Name);
@@ -187,10 +187,10 @@ namespace Potato.Database.Shared.Serializers.NoSql {
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        protected virtual List<String> ParseCollections(IDatabaseObject query) {
-            List<String> parsed = new List<String>();
+        protected virtual List<string> ParseCollections(IDatabaseObject query) {
+            var parsed = new List<string>();
 
-            Collection collection = query.FirstOrDefault(statement => statement is Collection) as Collection;
+            var collection = query.FirstOrDefault(statement => statement is Collection) as Collection;
 
             if (collection != null) {
                 parsed.Add(collection.Name);
@@ -199,8 +199,8 @@ namespace Potato.Database.Shared.Serializers.NoSql {
             return parsed;
         }
 
-        protected virtual String ParseLogical(Logical logical) {
-            String parsed = "";
+        protected virtual string ParseLogical(Logical logical) {
+            var parsed = "";
 
             if (logical is Or) {
                 parsed = "$or";
@@ -220,7 +220,7 @@ namespace Potato.Database.Shared.Serializers.NoSql {
         /// <returns></returns>
         protected virtual JArray ParseEqualities(IDatabaseObject query, JArray outer) {
             foreach (Equality equality in query.Where(statement => statement is Equality)) {
-                outer.Add(this.ParseEquality(equality, new JObject()));
+                outer.Add(ParseEquality(equality, new JObject()));
             }
 
             return outer;
@@ -234,7 +234,7 @@ namespace Potato.Database.Shared.Serializers.NoSql {
         /// <returns></returns>
         protected virtual JObject ParseEqualities(IDatabaseObject query, JObject outer) {
             foreach (Equality equality in query.Where(statement => statement is Equality)) {
-                this.ParseEquality(equality, outer);
+                ParseEquality(equality, outer);
             }
 
             return outer;
@@ -247,15 +247,15 @@ namespace Potato.Database.Shared.Serializers.NoSql {
         /// <param name="outer"></param>
         /// <returns></returns>
         protected virtual JObject ParseEquality(Equality equality, JObject outer) {
-            Field field = equality.FirstOrDefault(statement => statement is Field) as Field;
-            Value value = equality.FirstOrDefault(statement => statement is Value) as Value;
+            var field = equality.FirstOrDefault(statement => statement is Field) as Field;
+            var value = equality.FirstOrDefault(statement => statement is Value) as Value;
 
             if (field != null && value != null) {
-                String parsedField = this.ParseField(field);
-                String parsedEquality = this.ParseEquality(equality);
-                Object parsedValue = this.ParseValue(value);
+                var parsedField = ParseField(field);
+                var parsedEquality = ParseEquality(equality);
+                var parsedValue = ParseValue(value);
 
-                if (String.IsNullOrEmpty(parsedEquality) == true) {
+                if (string.IsNullOrEmpty(parsedEquality) == true) {
                     outer.Add(new JProperty(parsedField, parsedValue));
                 }
                 else {
@@ -278,7 +278,7 @@ namespace Potato.Database.Shared.Serializers.NoSql {
         /// <returns></returns>
         protected virtual JArray ParseLogicals(IDatabaseObject query, JArray outer) {
             foreach (Logical logical in query.Where(logical => logical is Logical)) {
-                outer.Add(this.ParseLogicals(logical, new JObject()));
+                outer.Add(ParseLogicals(logical, new JObject()));
             }
 
             return outer;
@@ -292,13 +292,13 @@ namespace Potato.Database.Shared.Serializers.NoSql {
         /// <returns></returns>
         protected virtual JObject ParseLogicals(IDatabaseObject query, JObject outer) {
             foreach (Logical logical in query.Where(logical => logical is Logical)) {
-                outer[this.ParseLogical(logical)] = new JArray();
+                outer[ParseLogical(logical)] = new JArray();
 
-                this.ParseEqualities(logical, outer[this.ParseLogical(logical)] as JArray);
-                this.ParseLogicals(logical, outer[this.ParseLogical(logical)] as JArray);
+                ParseEqualities(logical, outer[ParseLogical(logical)] as JArray);
+                ParseLogicals(logical, outer[ParseLogical(logical)] as JArray);
             }
 
-            this.ParseEqualities(query, outer);
+            ParseEqualities(query, outer);
 
             return outer;
         }
@@ -308,10 +308,10 @@ namespace Potato.Database.Shared.Serializers.NoSql {
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        protected virtual List<String> ParseConditions(IDatabaseObject query) {
-            JObject conditions = this.ParseLogicals(query, new JObject());
+        protected virtual List<string> ParseConditions(IDatabaseObject query) {
+            var conditions = ParseLogicals(query, new JObject());
 
-            return new List<String>() {
+            return new List<string>() {
                 new JArray() {
                     conditions
                 }.ToString(Formatting.None)
@@ -323,11 +323,11 @@ namespace Potato.Database.Shared.Serializers.NoSql {
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        protected virtual List<String> ParseAssignments(IDatabaseObject query) {
-            DocumentValue document = new DocumentValue();
+        protected virtual List<string> ParseAssignments(IDatabaseObject query) {
+            var document = new DocumentValue();
             document.AddRange(query.Where(statement => statement is Assignment));
             
-            return new List<String>() {
+            return new List<string>() {
                 new JArray() {
                     new JObject() {
                         new JProperty("$set", document.ToJObject())
@@ -336,14 +336,14 @@ namespace Potato.Database.Shared.Serializers.NoSql {
             };
         }
 
-        protected virtual List<String> ParseSortings(IDatabaseObject query) {
-            JObject sortings = new JObject();
+        protected virtual List<string> ParseSortings(IDatabaseObject query) {
+            var sortings = new JObject();
 
             foreach (Sort sort in query.Where(sort => sort is Sort)) {
-                this.ParseSort(sort, sortings);
+                ParseSort(sort, sortings);
             }
 
-            return new List<String>() {
+            return new List<string>() {
                 new JArray() {
                     sortings
                 }.ToString(Formatting.None)
@@ -352,7 +352,7 @@ namespace Potato.Database.Shared.Serializers.NoSql {
 
         public override ICompiledQuery Compile(IParsedQuery parsed) {
             return new CompiledQuery {
-                Children = parsed.Children.Select(this.Compile).ToList(),
+                Children = parsed.Children.Select(Compile).ToList(),
                 Root = parsed.Root,
                 Methods = parsed.Methods,
                 Skip = parsed.Skip,
@@ -370,27 +370,27 @@ namespace Potato.Database.Shared.Serializers.NoSql {
         public override ISerializer Parse(IMethod method, IParsedQuery parsed) {
             parsed.Root = method;
             
-            parsed.Children = this.ParseChildren(method);
+            parsed.Children = ParseChildren(method);
 
-            parsed.Methods = this.ParseMethod(method);
+            parsed.Methods = ParseMethod(method);
 
-            parsed.Skip = this.ParseSkip(method);
+            parsed.Skip = ParseSkip(method);
 
-            parsed.Limit = this.ParseLimit(method);
+            parsed.Limit = ParseLimit(method);
 
-            parsed.Databases = this.ParseDatabases(method);
+            parsed.Databases = ParseDatabases(method);
 
-            parsed.Indices = this.ParseIndices(method);
+            parsed.Indices = ParseIndices(method);
 
-            parsed.Collections = this.ParseCollections(method);
+            parsed.Collections = ParseCollections(method);
 
-            parsed.Conditions = this.ParseConditions(method);
+            parsed.Conditions = ParseConditions(method);
 
-            parsed.Fields = this.ParseFields(method);
+            parsed.Fields = ParseFields(method);
 
-            parsed.Assignments = this.ParseAssignments(method);
+            parsed.Assignments = ParseAssignments(method);
 
-            parsed.Sortings = this.ParseSortings(method);
+            parsed.Sortings = ParseSortings(method);
 
             return this;
         }

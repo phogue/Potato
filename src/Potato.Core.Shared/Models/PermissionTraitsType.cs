@@ -24,6 +24,6 @@ namespace Potato.Core.Shared.Models {
         /// The authority level should be trated as a boolean, authority == (0 || null) = false and
         /// authority > 0 = true.
         /// </summary>
-        public const String Boolean = "Boolean";
+        public const string Boolean = "Boolean";
     }
 }

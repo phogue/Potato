@@ -19,7 +19,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(Guid.NewGuid(), "TokenHash", "id")
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(Guid.NewGuid(), "TokenHash", "id")
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     Username = "Phogue"
@@ -43,7 +43,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now validate that we can authenticate against the newly appended token hash
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(Guid.NewGuid(), "token", identifier).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(Guid.NewGuid(), "token", identifier).SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.Failed, result.CommandResultType);
@@ -56,7 +56,7 @@ namespace Potato.Core.Test.Security.Account {
         public void TestCannotAuthenticateAgainstDifferentTokenId() {
             const string identifier = "192.168.1.1";
 
-            AccessTokenModel accessToken = new AccessTokenModel() {
+            var accessToken = new AccessTokenModel() {
                 Account = new AccountModel() {
                     Username = "Phogue",
                     PasswordHash = "MyPasswordHash"
@@ -74,7 +74,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("Phogue", accessToken.Id, accessToken.TokenHash, accessToken.LastTouched).SetOrigin(CommandOrigin.Local));
 
             // Now validate that we can authenticate against the newly appended token hash
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(Guid.NewGuid(), token, identifier).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(Guid.NewGuid(), token, identifier).SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.Failed, result.CommandResultType);
@@ -87,7 +87,7 @@ namespace Potato.Core.Test.Security.Account {
         public void TestSetSuccessCanAuthenticateAgainst() {
             const string identifier = "192.168.1.1";
 
-            AccessTokenModel accessToken = new AccessTokenModel() {
+            var accessToken = new AccessTokenModel() {
                 Account = new AccountModel() {
                     Username = "Phogue",
                     PasswordHash = "MyPasswordHash"
@@ -105,7 +105,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("Phogue", accessToken.Id, accessToken.TokenHash, accessToken.LastTouched).SetOrigin(CommandOrigin.Local));
 
             // Now validate that we can authenticate against the newly appended token hash
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(accessToken.Id, token, identifier).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(accessToken.Id, token, identifier).SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(result.CommandResultType, CommandResultType.Success);
@@ -118,7 +118,7 @@ namespace Potato.Core.Test.Security.Account {
         public void TestModifiedPasswordHashAfterSettingInvalidatesToken() {
             const string identifier = "192.168.1.1";
 
-            AccessTokenModel accessToken = new AccessTokenModel() {
+            var accessToken = new AccessTokenModel() {
                 Account = new AccountModel() {
                     Username = "Phogue",
                     PasswordHash = "MyPasswordHash"
@@ -138,7 +138,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAccountSetPasswordHash("Phogue", "MyModifiedPasswordHash").SetOrigin(CommandOrigin.Local));
 
             // Now validate that we can authenticate against the newly appended token hash
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(accessToken.Id, token, identifier).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(accessToken.Id, token, identifier).SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.Failed, result.CommandResultType);
@@ -152,7 +152,7 @@ namespace Potato.Core.Test.Security.Account {
         public void TestModifiedIdentiferAfterSettingInvalidatesToken() {
             const string identifier = "192.168.1.1";
 
-            AccessTokenModel accessToken = new AccessTokenModel() {
+            var accessToken = new AccessTokenModel() {
                 Account = new AccountModel() {
                     Username = "Phogue",
                     PasswordHash = "MyPasswordHash"
@@ -170,7 +170,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("Phogue", accessToken.Id, accessToken.TokenHash, accessToken.LastTouched).SetOrigin(CommandOrigin.Local));
 
             // Now validate that we can authenticate against the newly appended token hash
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(accessToken.Id, token, "192.168.1.2").SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(accessToken.Id, token, "192.168.1.2").SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.Failed, result.CommandResultType);

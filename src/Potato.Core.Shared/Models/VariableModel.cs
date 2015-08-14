@@ -29,20 +29,20 @@ namespace Potato.Core.Shared.Models {
         /// <summary>
         /// The unique name of the variable 
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The value of the variable
         /// </summary>
-        public Object Value {
+        public object Value {
             get { return _value; }
             set {
-                if (this._value != value) {
-                    this._value = value;
-                    this.OnPropertyChanged(this, "Value");
+                if (_value != value) {
+                    _value = value;
+                    OnPropertyChanged(this, "Value");
                 }
                 else {
-                    this._value = value;
+                    _value = value;
                 }
             }
         }
@@ -53,9 +53,9 @@ namespace Potato.Core.Shared.Models {
         public bool Readonly {
             get { return _readonly; }
             set {
-                if (this._readonly != value) {
-                    this._readonly = value;
-                    this.OnPropertyChanged(this, "Readonly");
+                if (_readonly != value) {
+                    _readonly = value;
+                    OnPropertyChanged(this, "Readonly");
                 }
             }
         }
@@ -64,7 +64,7 @@ namespace Potato.Core.Shared.Models {
         /// Initializes the variable with default values.
         /// </summary>
         public VariableModel() {
-            this.Name = String.Empty;
+            Name = string.Empty;
         }
 
         /// <summary>
@@ -75,21 +75,21 @@ namespace Potato.Core.Shared.Models {
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public List<T> ToList<T>() {
-            List<T> result = new List<T>();
+            var result = new List<T>();
 
             // If we have a collection stored already..
-            if (this.Value is IEnumerable<T>) {
+            if (Value is IEnumerable<T>) {
                 // Clone the collection so the object isn't modified by reference.
-                result.AddRange(this.Value as IEnumerable<T>);
+                result.AddRange(Value as IEnumerable<T>);
             }
             // If we have a single value and it's of the type we need..
-            else if (this.Value is T) {
-                result.Add((T)this.Value);
+            else if (Value is T) {
+                result.Add((T)Value);
             }
             else {
-                T convertedValue = this.ToType<T>();
+                var convertedValue = ToType<T>();
 
-                if (Object.Equals(convertedValue, default(T)) == false) {
+                if (object.Equals(convertedValue, default(T)) == false) {
                     result.Add(convertedValue);
                 }
             }
@@ -104,14 +104,14 @@ namespace Potato.Core.Shared.Models {
         /// <param name="default">The default value to use if a conversion is not possible</param>
         /// <returns>The converted or default value</returns>
         public T ToType<T>(T @default = default(T)) {
-            T result = @default;
+            var result = @default;
 
-            if (this.Value is T) {
-                result = (T)this.Value;
+            if (Value is T) {
+                result = (T)Value;
             }
             else {
-                TypeConverter converter = TypeDescriptor.GetConverter(typeof(T));
-                String value = this.Value != null ? this.Value.ToString() : String.Empty;
+                var converter = TypeDescriptor.GetConverter(typeof(T));
+                var value = Value != null ? Value.ToString() : string.Empty;
 
                 if (value.Length > 0 && converter.CanConvertFrom(typeof(string)) == true) {
                     try {
@@ -130,12 +130,12 @@ namespace Potato.Core.Shared.Models {
         }
 
         public override string ToString() {
-            return this.ToType<String>();
+            return ToType<string>();
         }
 
         public void Dispose() {
-            this.Name = null;
-            this.Value = null;
+            Name = null;
+            Value = null;
         }
 
         /// <summary>
@@ -144,8 +144,8 @@ namespace Potato.Core.Shared.Models {
         /// <param name="namespace"></param>
         /// <param name="variableName"></param>
         /// <returns></returns>
-        public static String NamespaceVariableName(String @namespace, String variableName) {
-            return String.IsNullOrEmpty(@namespace) == false ? String.Format("{0}.{1}", @namespace, variableName) : variableName;
+        public static string NamespaceVariableName(string @namespace, string variableName) {
+            return string.IsNullOrEmpty(@namespace) == false ? string.Format("{0}.{1}", @namespace, variableName) : variableName;
         }
 
         /// <summary>
@@ -154,8 +154,8 @@ namespace Potato.Core.Shared.Models {
         /// <param name="namespace"></param>
         /// <param name="variableName"></param>
         /// <returns></returns>
-        public static String NamespaceVariableName(String @namespace, CommonVariableNames variableName) {
-            return VariableModel.NamespaceVariableName(@namespace, variableName.ToString());
+        public static string NamespaceVariableName(string @namespace, CommonVariableNames variableName) {
+            return NamespaceVariableName(@namespace, variableName.ToString());
         }
     }
 }

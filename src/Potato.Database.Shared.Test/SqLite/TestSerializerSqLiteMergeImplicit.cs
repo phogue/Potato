@@ -22,12 +22,12 @@ namespace Potato.Database.Shared.Test.SqLite {
     public class TestSerializerSqLiteMergeImplicit : TestSerializerMerge {
         [Test]
         public override void TestMergeCollectionPlayerSaveNameScoreUpdateScore() {
-            Assert.AreEqual(@"REPLACE INTO `Player` SET `Name` = ""Phogue"", `Score` = 50", new SerializerSqLite().Parse(this.TestMergeCollectionPlayerSaveNameScoreUpdateScoreImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"REPLACE INTO `Player` SET `Name` = ""Phogue"", `Score` = 50", new SerializerSqLite().Parse(TestMergeCollectionPlayerSaveNameScoreUpdateScoreImplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestMergeCollectionPlayerSaveNameScoreRankUpdateScoreRankScore() {
-            Assert.AreEqual(@"REPLACE INTO `Player` SET `Name` = ""Phogue"", `Score` = 50, `Rank` = 10", new SerializerSqLite().Parse(this.TestMergeCollectionPlayerSaveNameScoreRankUpdateScoreRankScoreImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"REPLACE INTO `Player` SET `Name` = ""Phogue"", `Score` = 50, `Rank` = 10", new SerializerSqLite().Parse(TestMergeCollectionPlayerSaveNameScoreRankUpdateScoreRankScoreImplicit).Compile().Compiled.First());
         }
     }
 }

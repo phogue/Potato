@@ -25,45 +25,45 @@ namespace Potato.Net.Shared.Utils.HTTP {
         /// <summary>
         /// application/json
         /// </summary>
-        public const String ApplicationJson = "application/json";
+        public const string ApplicationJson = "application/json";
 
         /// <summary>
         /// application/xml
         /// </summary>
-        public const String ApplicationXml = "application/xml";
+        public const string ApplicationXml = "application/xml";
 
         /// <summary>
         /// text/html
         /// </summary>
-        public const String ApplicationJavascript = "application/javascript";
+        public const string ApplicationJavascript = "application/javascript";
 
         /// <summary>
         /// text/html
         /// </summary>
-        public const String TextHtml = "text/html";
+        public const string TextHtml = "text/html";
         
         /// <summary>
         /// text/html
         /// </summary>
-        public const String TextCss = "text/css";
+        public const string TextCss = "text/css";
         
 
         /// <summary>
         /// A list of extensions (unique) with the mime type that relates to that file type.
         /// </summary>
-        public static Dictionary<String, String> Extensions = new Dictionary<String, String>() {
-            { "json", Mime.ApplicationJson },
-            { "xml", Mime.ApplicationXml },
-            { "js", Mime.ApplicationJavascript },
-            { "html", Mime.TextHtml },
-            { "htm", Mime.TextHtml },
-            { "css", Mime.TextCss }
+        public static Dictionary<string, string> Extensions = new Dictionary<string, string>() {
+            { "json", ApplicationJson },
+            { "xml", ApplicationXml },
+            { "js", ApplicationJavascript },
+            { "html", TextHtml },
+            { "htm", TextHtml },
+            { "css", TextCss }
         };
 
         /// <summary>
         /// The inverse of the extensions dictionary, but indexed by the mime type with a list of file extensions associated with it.
         /// </summary>
-        public static Dictionary<String, List<String>> Types = Mime.Extensions.GroupBy(type => type.Value).Select(groupedTypes => new {
+        public static Dictionary<string, List<string>> Types = Extensions.GroupBy(type => type.Value).Select(groupedTypes => new {
             Keys = groupedTypes.Key,
             Values = groupedTypes.Select(innerGrouping => innerGrouping.Key).ToList()
         }).ToDictionary(keySelector => keySelector.Keys, valueSelector => valueSelector.Values);
@@ -74,16 +74,16 @@ namespace Potato.Net.Shared.Utils.HTTP {
         /// <param name="name">The data to lookup a mime type</param>
         /// <param name="default">The default to use if the mime type was not found.</param>
         /// <returns>The mime type if available, null if nothing exists</returns>
-        public static String ToMimeType(String name, String @default = null) {
-            String mimeType = @default;
+        public static string ToMimeType(string name, string @default = null) {
+            var mimeType = @default;
 
             name = name.Trim('.');
 
-            if (Mime.Types.ContainsKey(name.ToLower()) == true) {
+            if (Types.ContainsKey(name.ToLower()) == true) {
                 mimeType = name.ToLower();
             }
-            else if (Mime.Extensions.ContainsKey(name.ToLower()) == true) {
-                mimeType = Mime.Extensions[name.ToLower()].ToLower();
+            else if (Extensions.ContainsKey(name.ToLower()) == true) {
+                mimeType = Extensions[name.ToLower()].ToLower();
             }
 
             return mimeType;
@@ -94,8 +94,8 @@ namespace Potato.Net.Shared.Utils.HTTP {
         /// </summary>
         /// <param name="method">The method of the request (GET, POST, etc)</param>
         /// <returns>The default mime type</returns>
-        public static String DefaultMimeTypeGivenMethod(String method) {
-            return Method.Equals(method, Method.Get) ? Mime.TextHtml : Mime.ApplicationJson;
+        public static string DefaultMimeTypeGivenMethod(string method) {
+            return Method.Equals(method, Method.Get) ? TextHtml : ApplicationJson;
         }
     }
 }

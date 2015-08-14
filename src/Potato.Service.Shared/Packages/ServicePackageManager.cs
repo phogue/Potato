@@ -36,7 +36,7 @@ namespace Potato.Service.Shared.Packages {
         /// <summary>
         /// A dictionary of source repositories from the list of repositories. Used as a cache.
         /// </summary>
-        public ConcurrentDictionary<String, IPackageRepository> SourceRepositories { get; set; }
+        public ConcurrentDictionary<string, IPackageRepository> SourceRepositories { get; set; }
 
         /// <summary>
         /// Called when the repository is initialized
@@ -57,44 +57,44 @@ namespace Potato.Service.Shared.Packages {
         /// Called after packages have been fetched, checks have been completed and the
         /// action (installing/uninstalling) is 
         /// </summary>
-        public Action<String> PackageActionCanceled { get; set; }
+        public Action<string> PackageActionCanceled { get; set; }
 
         /// <summary>
         /// Called after fetching source and local and unable to find a package
         /// </summary>
-        public Action<String> PackageMissing { get; set; }
+        public Action<string> PackageMissing { get; set; }
 
         /// <summary>
         /// Called when an exception occurs during a package operation
         /// </summary>
-        public Action<String, Exception> RepositoryException { get; set; }
+        public Action<string, Exception> RepositoryException { get; set; }
 
         /// <summary>
         /// Called when a package is being installed by a package manager
         /// </summary>
-        public Action<Object, String, String> PackageInstalling { get; set; }
+        public Action<object, string, string> PackageInstalling { get; set; }
 
         /// <summary>
         /// Called when a package has been installed by a package manager
         /// </summary>
-        public Action<Object, String, String> PackageInstalled { get; set; }
+        public Action<object, string, string> PackageInstalled { get; set; }
 
         /// <summary>
         /// Called when a package is being uninstalled by a package manager
         /// </summary>
-        public Action<Object, String, String> PackageUninstalling { get; set; }
+        public Action<object, string, string> PackageUninstalling { get; set; }
 
         /// <summary>
         /// Called when a package has been uninstalled by a package manager
         /// </summary>
-        public Action<Object, String, String> PackageUninstalled { get; set; }
+        public Action<object, string, string> PackageUninstalled { get; set; }
 
         /// <summary>
         /// Initializes the service package manager with the default values.
         /// </summary>
         public ServicePackageManager() {
-            this.SourceRepositories = new ConcurrentDictionary<String, IPackageRepository>();
-            this.PackageManagerDispatch = new PackageManagerDispatch();
+            SourceRepositories = new ConcurrentDictionary<string, IPackageRepository>();
+            PackageManagerDispatch = new PackageManagerDispatch();
         }
 
         /// <summary>
@@ -102,13 +102,13 @@ namespace Potato.Service.Shared.Packages {
         /// </summary>
         /// <param name="uri">The uri to search for a cached package repository</param>
         /// <returns>The cached or newly cached repository</returns>
-        public IPackageRepository GetCachedSourceRepository(String uri) {
+        public IPackageRepository GetCachedSourceRepository(string uri) {
             IPackageRepository repository = null;
 
-            if (this.SourceRepositories.TryGetValue(uri, out repository) == false) {
+            if (SourceRepositories.TryGetValue(uri, out repository) == false) {
                 repository = PackageRepositoryFactory.Default.CreateRepository(uri);
 
-                this.SourceRepositories.TryAdd(uri, repository);
+                SourceRepositories.TryAdd(uri, repository);
             }
 
             return repository;
@@ -118,7 +118,7 @@ namespace Potato.Service.Shared.Packages {
         /// Called when the repository is initialized, just before 
         /// </summary>
         protected void OnBeforeRepositoryInitialize() {
-            var handler = this.BeforeRepositoryInitialize;
+            var handler = BeforeRepositoryInitialize;
             if (handler != null) {
                 handler();
             }
@@ -128,7 +128,7 @@ namespace Potato.Service.Shared.Packages {
         /// Called before the source packages are fetched.
         /// </summary>
         protected void OnBeforeSourcePackageFetch() {
-            var handler = this.BeforeSourcePackageFetch;
+            var handler = BeforeSourcePackageFetch;
             if (handler != null) {
                 handler();
             }
@@ -138,7 +138,7 @@ namespace Potato.Service.Shared.Packages {
         /// Called before the source packages are fetched.
         /// </summary>
         protected void OnBeforeLocalPackageFetch() {
-            var handler = this.BeforeLocalPackageFetch;
+            var handler = BeforeLocalPackageFetch;
             if (handler != null) {
                 handler();
             }
@@ -147,8 +147,8 @@ namespace Potato.Service.Shared.Packages {
         /// <summary>
         /// Called when an exception occurs during a package operation
         /// </summary>
-        protected void OnRepositoryException(String hint, Exception e) {
-            var handler = this.RepositoryException;
+        protected void OnRepositoryException(string hint, Exception e) {
+            var handler = RepositoryException;
             if (handler != null) {
                 handler(hint, e);
             }
@@ -160,7 +160,7 @@ namespace Potato.Service.Shared.Packages {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void OnPackageInstalling(object sender, PackageOperationEventArgs e) {
-            var handler = this.PackageInstalling;
+            var handler = PackageInstalling;
             
             if (handler != null) {
                 handler(this, e.Package.Id, e.Package.Version.ToString());
@@ -173,7 +173,7 @@ namespace Potato.Service.Shared.Packages {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void OnPackageInstalled(object sender, PackageOperationEventArgs e) {
-            var handler = this.PackageInstalled;
+            var handler = PackageInstalled;
             if (handler != null) {
                 handler(this, e.Package.Id, e.Package.Version.ToString());
             }
@@ -185,7 +185,7 @@ namespace Potato.Service.Shared.Packages {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void OnPackageUninstalling(object sender, PackageOperationEventArgs e) {
-            var handler = this.PackageUninstalling;
+            var handler = PackageUninstalling;
             if (handler != null) {
                 handler(this, e.Package.Id, e.Package.Version.ToString());
             }
@@ -197,7 +197,7 @@ namespace Potato.Service.Shared.Packages {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void OnPackageUninstalled(object sender, PackageOperationEventArgs e) {
-            var handler = this.PackageUninstalled;
+            var handler = PackageUninstalled;
             if (handler != null) {
                 handler(this, e.Package.Id, e.Package.Version.ToString());
             }
@@ -207,8 +207,8 @@ namespace Potato.Service.Shared.Packages {
         /// Called when the action is canceled
         /// </summary>
         /// <param name="packageId"></param>
-        protected void OnPackageActionCanceled(String packageId) {
-            var handler = this.PackageActionCanceled;
+        protected void OnPackageActionCanceled(string packageId) {
+            var handler = PackageActionCanceled;
             if (handler != null) {
                 handler(packageId);
             }
@@ -218,8 +218,8 @@ namespace Potato.Service.Shared.Packages {
         /// Called when a packae with an id cannot be found
         /// </summary>
         /// <param name="packageId"></param>
-        protected void OnPackageMissing(String packageId) {
-            var handler = this.PackageMissing;
+        protected void OnPackageMissing(string packageId) {
+            var handler = PackageMissing;
             if (handler != null) {
                 handler(packageId);
             }
@@ -230,10 +230,10 @@ namespace Potato.Service.Shared.Packages {
         /// </summary>
         /// <param name="manager">The manager to attach events to</param>
         protected void AttachManagerEvents(IPackageManager manager) {
-            manager.PackageInstalling += this.OnPackageInstalling;
-            manager.PackageInstalled += this.OnPackageInstalled;
-            manager.PackageUninstalling += this.OnPackageUninstalling;
-            manager.PackageUninstalled += this.OnPackageUninstalled;
+            manager.PackageInstalling += OnPackageInstalling;
+            manager.PackageInstalled += OnPackageInstalled;
+            manager.PackageUninstalling += OnPackageUninstalling;
+            manager.PackageUninstalled += OnPackageUninstalled;
         }
 
         /// <summary>
@@ -241,10 +241,10 @@ namespace Potato.Service.Shared.Packages {
         /// </summary>
         /// <param name="manager">The manager to detach events from</param>
         protected void DetachManagerEvents(IPackageManager manager) {
-            manager.PackageInstalling -= this.OnPackageInstalling;
-            manager.PackageInstalled -= this.OnPackageInstalled;
-            manager.PackageUninstalling -= this.OnPackageUninstalling;
-            manager.PackageUninstalled -= this.OnPackageUninstalled;
+            manager.PackageInstalling -= OnPackageInstalling;
+            manager.PackageInstalled -= OnPackageInstalled;
+            manager.PackageUninstalling -= OnPackageUninstalling;
+            manager.PackageUninstalled -= OnPackageUninstalled;
         }
 
         /// <summary>
@@ -252,19 +252,19 @@ namespace Potato.Service.Shared.Packages {
         /// </summary>
         /// <param name="uri">The source repository of the package</param>
         /// <param name="packageId">The package id to search for and install/update</param>
-        public void MergePackage(String uri, String packageId) {
-            this.OnBeforeRepositoryInitialize(); 
+        public void MergePackage(string uri, string packageId) {
+            OnBeforeRepositoryInitialize(); 
 
             try {
-                var manager = new PackageManager(this.GetCachedSourceRepository(uri), new DefaultPackagePathResolver(this.LocalRepository.Source), new PhysicalFileSystem(this.LocalRepository.Source), this.LocalRepository);
+                var manager = new PackageManager(GetCachedSourceRepository(uri), new DefaultPackagePathResolver(LocalRepository.Source), new PhysicalFileSystem(LocalRepository.Source), LocalRepository);
 
-                this.AttachManagerEvents(manager);
+                AttachManagerEvents(manager);
 
-                this.OnBeforeSourcePackageFetch();
+                OnBeforeSourcePackageFetch();
 
                 var latest = manager.SourceRepository.GetPackages().Where(package => package.Id == packageId && package.IsLatestVersion == true).ToList();
 
-                this.OnBeforeLocalPackageFetch();
+                OnBeforeLocalPackageFetch();
 
                 var installed = manager.LocalRepository.GetPackages().Where(package => package.Id == packageId).ToList();
 
@@ -272,33 +272,33 @@ namespace Potato.Service.Shared.Packages {
                     if (installed.Any() == true) {
                         if (installed.First().Version.CompareTo(latest.First().Version) < 0) {
                             try {
-                                this.PackageManagerDispatch.UpdatePackage(manager, latest.First());
+                                PackageManagerDispatch.UpdatePackage(manager, latest.First());
                             }
                             catch (Exception e) {
-                                this.OnRepositoryException("ServicePackages.MergePackage.UpdatePackage", e);
+                                OnRepositoryException("ServicePackages.MergePackage.UpdatePackage", e);
                             }
                         }
                         else {
-                            this.OnPackageActionCanceled(packageId);
+                            OnPackageActionCanceled(packageId);
                         }
                     }
                     else {
                         try {
-                            this.PackageManagerDispatch.InstallPackage(manager, latest.First());
+                            PackageManagerDispatch.InstallPackage(manager, latest.First());
                         }
                         catch (Exception e) {
-                            this.OnRepositoryException("ServicePackages.MergePackage.InstallPackage", e);
+                            OnRepositoryException("ServicePackages.MergePackage.InstallPackage", e);
                         }
                     }
                 }
                 else {
-                    this.OnPackageMissing(packageId);
+                    OnPackageMissing(packageId);
                 }
 
-                this.DetachManagerEvents(manager);
+                DetachManagerEvents(manager);
             }
             catch (Exception e) {
-                this.OnRepositoryException("ServicePackages.MergePackage.GeneralCatch", e);
+                OnRepositoryException("ServicePackages.MergePackage.GeneralCatch", e);
             }
         }
 
@@ -306,15 +306,15 @@ namespace Potato.Service.Shared.Packages {
         /// Uninstalls a package 
         /// </summary>
         /// <param name="packageId"></param>
-        public void UninstallPackage(String packageId) {
-            this.OnBeforeRepositoryInitialize();
+        public void UninstallPackage(string packageId) {
+            OnBeforeRepositoryInitialize();
 
             try {
-                var manager = new PackageManager(this.LocalRepository, new DefaultPackagePathResolver(this.LocalRepository.Source), new PhysicalFileSystem(this.LocalRepository.Source), this.LocalRepository);
+                var manager = new PackageManager(LocalRepository, new DefaultPackagePathResolver(LocalRepository.Source), new PhysicalFileSystem(LocalRepository.Source), LocalRepository);
 
-                this.AttachManagerEvents(manager);
+                AttachManagerEvents(manager);
 
-                this.OnBeforeLocalPackageFetch();
+                OnBeforeLocalPackageFetch();
 
                 var installed = manager.LocalRepository.GetPackages()
                     .Where(package => package.Id == packageId)
@@ -322,20 +322,20 @@ namespace Potato.Service.Shared.Packages {
 
                 if (installed.Any() == true) {
                     try {
-                        this.PackageManagerDispatch.UninstallPackage(manager, installed.First());
+                        PackageManagerDispatch.UninstallPackage(manager, installed.First());
                     }
                     catch (Exception e) {
-                        this.OnRepositoryException("ServicePackages.UninstallPackage.UninstallPackage", e);
+                        OnRepositoryException("ServicePackages.UninstallPackage.UninstallPackage", e);
                     }
                 }
                 else {
-                    this.OnPackageMissing(packageId);
+                    OnPackageMissing(packageId);
                 }
 
-                this.DetachManagerEvents(manager);
+                DetachManagerEvents(manager);
             }
             catch (Exception e) {
-                this.OnRepositoryException("ServicePackages.UninstallPackage.GeneralCatch", e);
+                OnRepositoryException("ServicePackages.UninstallPackage.GeneralCatch", e);
             }
         }
     }

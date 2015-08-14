@@ -37,14 +37,14 @@ namespace Potato.Net.Shared.Sandbox {
         }
 
         public void FireProtocolEvent(IProtocolEventArgs args) {
-            if (this.ProtocolEvent != null) {
-                this.ProtocolEvent(args);
+            if (ProtocolEvent != null) {
+                ProtocolEvent(args);
             }
         }
 
         public void FireClientEvent(IClientEventArgs args) {
-            if (this.ClientEvent != null) {
-                this.ClientEvent(args);
+            if (ClientEvent != null) {
+                ClientEvent(args);
             }
         }
     }

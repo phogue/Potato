@@ -24,7 +24,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestModifyPlayerSetName() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestModifyPlayerSetNameExplicit).Compile();
+            var serialized = serializer.Parse(TestModifyPlayerSetNameExplicit).Compile();
 
             Assert.AreEqual(@"update", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -34,7 +34,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestModifyPlayerSetNameScore() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestModifyPlayerSetNameScoreExplicit).Compile();
+            var serialized = serializer.Parse(TestModifyPlayerSetNameScoreExplicit).Compile();
 
             Assert.AreEqual(@"update", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -44,7 +44,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestModifyPlayerSetScoreWhereNameEqualsPhogue() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestModifyPlayerSetScoreWhereNameEqualsPhogueExplicit).Compile();
+            var serialized = serializer.Parse(TestModifyPlayerSetScoreWhereNameEqualsPhogueExplicit).Compile();
 
             Assert.AreEqual(@"update", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -55,7 +55,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestModifyPlayerSetScoreWhereNameEqualsPhogueAndRankAbove10() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestModifyPlayerSetScoreWhereNameEqualsPhogueAndRankAbove10Explicit).Compile();
+            var serialized = serializer.Parse(TestModifyPlayerSetScoreWhereNameEqualsPhogueAndRankAbove10Explicit).Compile();
 
             Assert.AreEqual(@"update", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());

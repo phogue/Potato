@@ -26,7 +26,7 @@ namespace Potato.Core.Shared.Test.ExecutableCommands {
     public class TestExecutableProperties {
         [Test]
         public void TestExecutablePropertiesEvent() {
-            String eventPropertyChanged = String.Empty;
+            var eventPropertyChanged = string.Empty;
 
             var tester = new ExecutableBasicTester();
 

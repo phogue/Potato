@@ -10,10 +10,10 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
         public void TestSourceContainsNullNotPassed() {
             var passed = false;
 
-            var existing = new ConcurrentDictionary<String, PlayerModel>();
+            var existing = new ConcurrentDictionary<string, PlayerModel>();
             existing.TryAdd("", null);
 
-            var modified = new ConcurrentDictionary<String, PlayerModel>();
+            var modified = new ConcurrentDictionary<string, PlayerModel>();
             modified.TryAdd("", new PlayerModel() {
                 Name = ""
             });
@@ -27,12 +27,12 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
         public void TestOriginalContainsNull() {
             var passed = false;
 
-            var existing = new ConcurrentDictionary<String, PlayerModel>();
+            var existing = new ConcurrentDictionary<string, PlayerModel>();
             existing.TryAdd("", new PlayerModel() {
                 Name = ""
             });
 
-            var modified = new ConcurrentDictionary<String, PlayerModel>();
+            var modified = new ConcurrentDictionary<string, PlayerModel>();
             modified.TryAdd("", null);
 
             ProtocolState.RemoveDictionary(existing, modified);

@@ -41,7 +41,7 @@ namespace Potato.Core.Test.Security.Account {
             // Test that the group was initially added.
             Assert.AreEqual(security.Groups.Last().Accounts.First().Username, "Phogue");
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityRemoveAccount("Phogue").SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityRemoveAccount("Phogue").SetOrigin(CommandOrigin.Local));
 
             // Make sure it was successful.
             Assert.IsTrue(result.Success);
@@ -57,7 +57,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityRemoveAccount("Phogue").SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityRemoveAccount("Phogue").SetOrigin(CommandOrigin.Local));
 
             // Make sure the command failed. The user cannot remove their own account.
             Assert.IsTrue(result.Success);
@@ -74,7 +74,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityRemoveAccount, 1).SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityRemoveAccount("Phogue").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = security.Tunnel(CommandBuilder.SecurityRemoveAccount("Phogue").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -91,11 +91,11 @@ namespace Potato.Core.Test.Security.Account {
             var security = new SecurityController();
 
             // Add a group with an empty name.
-            ICommandResult result = security.Tunnel(new Command() {
+            var result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityRemoveAccount,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    String.Empty
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
+                    string.Empty
                 })
             });
 
@@ -116,7 +116,7 @@ namespace Potato.Core.Test.Security.Account {
             // Test that the group was initially added.
             Assert.AreEqual(security.Groups.Last().Accounts.First().Username, "Phogue");
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityRemoveAccount("Phogue").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = security.Tunnel(CommandBuilder.SecurityRemoveAccount("Phogue").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -131,10 +131,10 @@ namespace Potato.Core.Test.Security.Account {
         [Test]
         public void TestSecurityRemoveAccountNotExists() {
             var security = new SecurityController();
-            ICommandResult result = security.Tunnel(new Command() {
+            var result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityRemoveAccount,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Phogue"
                 })
             });

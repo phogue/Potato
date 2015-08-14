@@ -72,14 +72,14 @@ namespace Potato.Core {
         /// Initializes the default references from the static controllers.
         /// </summary>
         public SharedReferences() : base() {
-            this.Variables = SharedReferences._masterVariables;
-            this.Languages = SharedReferences._masterLanguages;
-            this.Security = SharedReferences._masterSecurity;
-            this.Events = SharedReferences._masterEvents;
+            Variables = _masterVariables;
+            Languages = _masterLanguages;
+            Security = _masterSecurity;
+            Events = _masterEvents;
         }
 
         static SharedReferences() {
-            SharedReferences.Setup();
+            Setup();
         }
 
         /// <summary>
@@ -92,16 +92,16 @@ namespace Potato.Core {
         /// code does get very messy on some of the controllers that go a few levels deep (Potato.Core.Security or ..Plugins)
         /// </summary>
         public static void Setup() {
-            SharedReferences._masterVariables = new VariableController();
-            SharedReferences._masterLanguages = new LanguageController();
-            SharedReferences._masterSecurity = new SecurityController();
-            SharedReferences._masterEvents = new EventsController();
+            _masterVariables = new VariableController();
+            _masterLanguages = new LanguageController();
+            _masterSecurity = new SecurityController();
+            _masterEvents = new EventsController();
 
-            if (SharedReferences._masterVariables != null && SharedReferences._masterLanguages != null && SharedReferences._masterSecurity != null && SharedReferences._masterEvents != null) {
-                SharedReferences._masterVariables.Shared.Variables = SharedReferences._masterLanguages.Shared.Variables = SharedReferences._masterSecurity.Shared.Variables = SharedReferences._masterEvents.Shared.Variables = SharedReferences._masterVariables;
-                SharedReferences._masterVariables.Shared.Languages = SharedReferences._masterLanguages.Shared.Languages = SharedReferences._masterSecurity.Shared.Languages = SharedReferences._masterEvents.Shared.Languages = SharedReferences._masterLanguages;
-                SharedReferences._masterVariables.Shared.Security = SharedReferences._masterLanguages.Shared.Security = SharedReferences._masterSecurity.Shared.Security = SharedReferences._masterEvents.Shared.Security = SharedReferences._masterSecurity;
-                SharedReferences._masterVariables.Shared.Events = SharedReferences._masterLanguages.Shared.Events = SharedReferences._masterSecurity.Shared.Events = SharedReferences._masterEvents.Shared.Events = SharedReferences._masterEvents;
+            if (_masterVariables != null && _masterLanguages != null && _masterSecurity != null && _masterEvents != null) {
+                _masterVariables.Shared.Variables = _masterLanguages.Shared.Variables = _masterSecurity.Shared.Variables = _masterEvents.Shared.Variables = _masterVariables;
+                _masterVariables.Shared.Languages = _masterLanguages.Shared.Languages = _masterSecurity.Shared.Languages = _masterEvents.Shared.Languages = _masterLanguages;
+                _masterVariables.Shared.Security = _masterLanguages.Shared.Security = _masterSecurity.Shared.Security = _masterEvents.Shared.Security = _masterSecurity;
+                _masterVariables.Shared.Events = _masterLanguages.Shared.Events = _masterSecurity.Shared.Events = _masterEvents.Shared.Events = _masterEvents;
 
                 _masterVariables.Execute();
                 _masterLanguages.Execute();

@@ -39,7 +39,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountSetPasswordHash("Phogue", BCrypt.Net.BCrypt.HashPassword("password", BCrypt.Net.BCrypt.GenerateSalt()))
+            var result = security.Tunnel(CommandBuilder.SecurityAccountSetPasswordHash("Phogue", BCrypt.Net.BCrypt.HashPassword("password", BCrypt.Net.BCrypt.GenerateSalt()))
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     Username = "Phogue"
@@ -55,8 +55,8 @@ namespace Potato.Core.Test.Security.Account {
         /// </summary>
         [Test]
         public void TestSetSuccess() {
-            String generatedPassword = StringExtensions.RandomString(10);
-            String generatedPasswordHash = BCrypt.Net.BCrypt.HashPassword(generatedPassword, BCrypt.Net.BCrypt.GenerateSalt());
+            var generatedPassword = StringExtensions.RandomString(10);
+            var generatedPasswordHash = BCrypt.Net.BCrypt.HashPassword(generatedPassword, BCrypt.Net.BCrypt.GenerateSalt());
 
             var security = new SecurityController();
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
@@ -66,7 +66,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAccountSetPasswordHash("Phogue", generatedPasswordHash).SetOrigin(CommandOrigin.Local));
 
             // Now validate that we can authenticate against the newly set password.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedPassword, String.Empty).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedPassword, string.Empty).SetOrigin(CommandOrigin.Local));
 
             // Validate that we could authenticate with our new password.
             Assert.IsTrue(result.Success);
@@ -84,7 +84,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now change the password of the account.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountSetPasswordHash("DoesNotExist", BCrypt.Net.BCrypt.HashPassword("password", BCrypt.Net.BCrypt.GenerateSalt())).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountSetPasswordHash("DoesNotExist", BCrypt.Net.BCrypt.HashPassword("password", BCrypt.Net.BCrypt.GenerateSalt())).SetOrigin(CommandOrigin.Local));
 
             // Validate that we could not set a password and the result returned false.
             Assert.IsFalse(result.Success);
@@ -101,7 +101,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now change the password of the account.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountSetPasswordHash("Phogue", String.Empty).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountSetPasswordHash("Phogue", string.Empty).SetOrigin(CommandOrigin.Local));
 
             // Validate that we could not set a password and the result returned false.
             Assert.IsFalse(result.Success);

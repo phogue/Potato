@@ -23,12 +23,12 @@ namespace Potato.Net.Shared.Utils.HTTP {
         /// <summary>
         /// GET
         /// </summary>
-        public const String Get = "GET";
+        public const string Get = "GET";
 
         /// <summary>
         /// POST
         /// </summary>
-        public const String Post = "POST";
+        public const string Post = "POST";
 
         /// <summary>
         /// Checks if a method is equal to another method
@@ -36,8 +36,8 @@ namespace Potato.Net.Shared.Utils.HTTP {
         /// <param name="a">Method a to check</param>
         /// <param name="b">Method b to check</param>
         /// <returns>True if the methods match</returns>
-        public static bool Equals(String a, String b) {
-            return String.Equals(a, b, StringComparison.InvariantCultureIgnoreCase);
+        public static bool Equals(string a, string b) {
+            return string.Equals(a, b, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

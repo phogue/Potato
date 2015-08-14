@@ -31,14 +31,14 @@ namespace Potato.Database.Shared {
         /// <summary>
         /// The combined and compield version of the query
         /// </summary>
-        public List<String> Compiled { get; set; }
+        public List<string> Compiled { get; set; }
 
         /// <summary>
         /// Initializes all defaults
         /// </summary>
         public CompiledQuery() : base() {
-            this.Children = new List<ICompiledQuery>();
-            this.Compiled = new List<String>();
+            Children = new List<ICompiledQuery>();
+            Compiled = new List<string>();
         }
     }
 }

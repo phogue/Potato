@@ -12,7 +12,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestAllDateTimeConversionFailure() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "2014-04-14 13:50:59",
                         "2014-04-11 03:23:13",
                         "Invalid"
@@ -20,7 +20,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
                 }
             };
 
-            var items = parameter.All(typeof(DateTime)) as List<Object>;
+            var items = parameter.All(typeof(DateTime)) as List<object>;
 
             Assert.IsNull(items);
         }
@@ -29,7 +29,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestAllDateTimeConversionSuccess() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "2014-04-14 13:50:59",
                         "2014-04-11 03:23:13",
                         "2014-04-10 03:23:13"
@@ -37,7 +37,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
                 }
             };
             
-            var list = (List<Object>)parameter.All(typeof(DateTime));
+            var list = (List<object>)parameter.All(typeof(DateTime));
 
             Assert.AreEqual(DateTime.Parse("2014-04-14 13:50:59"), list[0]);
             Assert.AreEqual(DateTime.Parse("2014-04-11 03:23:13"), list[1]);
@@ -51,7 +51,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestFirstDateTimeConversionFailed() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "Invalid"
                     }
                 }
@@ -68,7 +68,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestFirstDateTimeConversionSuccess() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "2014-04-14 13:50:59"
                     }
                 }
@@ -85,7 +85,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasManyDateTimeConversionFailed() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "2014-04-14 13:50:59",
                         "2014-04-11 03:23:13",
                         "Invalid"
@@ -104,7 +104,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasManyDateTimeConversionSuccess() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "2014-04-14 13:50:59",
                         "2014-04-11 03:23:13"
                     }
@@ -122,7 +122,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasOneIntegerConversionFailure() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "one"
                     }
                 }
@@ -139,7 +139,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasOneDateTimeConversionSuccess() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "2014-04-14 13:50:59"
                     }
                 }
@@ -156,7 +156,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasOneDateTimeConversionSuccessWithMultiple() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "2014-04-14 13:50:59",
                         "2014-04-11 03:23:13"
                     }
@@ -175,7 +175,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasOneDateTimeConversionSuccessWithMultipleAndInvalid() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "2014-04-14 13:50:59",
                         "Invalid"
                     }

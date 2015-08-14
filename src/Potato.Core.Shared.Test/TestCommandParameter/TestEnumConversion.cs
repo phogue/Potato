@@ -29,14 +29,14 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestAllEnumConversionSuccess() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "Six",
                         "Seven"
                     }
                 }
             };
 
-            var items = (List<Object>)parameter.All(typeof (ExecutableEnum));
+            var items = (List<object>)parameter.All(typeof (ExecutableEnum));
 
             Assert.AreEqual(ExecutableEnum.Six, items[0]);
             Assert.AreEqual(ExecutableEnum.Seven, items[1]);
@@ -50,7 +50,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestFirstEnumConversionSuccess() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "Six"
                     }
                 }
@@ -67,7 +67,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasManyEnumConversionFailed() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "Six",
                         "Seven",
                         "Invalid"
@@ -86,7 +86,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasManyEnumConversionSuccess() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "Six",
                         "Seven"
                     }
@@ -104,7 +104,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasManyEnumNoConversionSuccess() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "Six",
                         "Seven"
                     }
@@ -122,7 +122,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasOneEnumConversionSuccess() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "Six"
                     }
                 }
@@ -139,7 +139,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasOneEnumConversionSuccessWithMultiple() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "Six",
                         "Seven"
                     }
@@ -158,7 +158,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasOneEnumConversionSuccessWithMultipleAndInvalid() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "Six",
                         "Invalid"
                     }
@@ -176,7 +176,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasOneEnumNoConversionFailure() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "Six"
                     }
                 }

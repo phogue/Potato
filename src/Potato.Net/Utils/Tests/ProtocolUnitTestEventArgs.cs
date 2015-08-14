@@ -23,7 +23,7 @@ namespace Potato.Net.Utils.Tests {
         /// <summary>
         /// Short messages showing why a test may have failed.
         /// </summary>
-        public String Message { get; set; }
+        public string Message { get; set; }
 
         /// <summary>
         /// When this event occured.
@@ -36,12 +36,12 @@ namespace Potato.Net.Utils.Tests {
         public ProtocolUnitTest Test { get; set; }
 
         public ProtocolUnitTestEventArgs() : base() {
-            this.Stamp = DateTime.Now;
+            Stamp = DateTime.Now;
         }
 
         public void Dispose() {
-            this.Message = null;
-            this.Test = null;
+            Message = null;
+            Test = null;
         }
     }
 }

@@ -43,35 +43,35 @@ namespace Potato.Database.Drivers {
         /// </summary>
         protected MongoDatabase Database { get; set; }
 
-        public override String Name {
+        public override string Name {
             get {
                 return "MongoDB";
             }
         }
 
         public override bool Connect() {
-            bool opened = true;
+            var opened = true;
 
-            if (this.Client == null) {
+            if (Client == null) {
                 try {
-                    MongoClientSettings settings = new MongoClientSettings();
+                    var settings = new MongoClientSettings();
 
-                    if (this.Settings.Hostname != null && this.Settings.Port.HasValue == true) {
-                        settings.Server = new MongoServerAddress(this.Settings.Hostname, (int)this.Settings.Port.Value);
+                    if (Settings.Hostname != null && Settings.Port.HasValue == true) {
+                        settings.Server = new MongoServerAddress(Settings.Hostname, (int)Settings.Port.Value);
                     }
-                    else if (this.Settings.Hostname != null) {
-                        settings.Server = new MongoServerAddress(this.Settings.Hostname);
+                    else if (Settings.Hostname != null) {
+                        settings.Server = new MongoServerAddress(Settings.Hostname);
                     }
 
-                    if (this.Database != null && this.Settings.Username != null && this.Settings.Password != null) {
+                    if (Database != null && Settings.Username != null && Settings.Password != null) {
                         settings.Credentials = new List<MongoCredential>() {
-                        MongoCredential.CreateMongoCRCredential(this.Settings.Database, this.Settings.Username, this.Settings.Password)
+                        MongoCredential.CreateMongoCRCredential(Settings.Database, Settings.Username, Settings.Password)
                     };
                     }
 
-                    this.Client = new MongoClient(settings);
+                    Client = new MongoClient(settings);
 
-                    this.Database = this.Client.GetServer().GetDatabase(this.Settings.Database);
+                    Database = Client.GetServer().GetDatabase(Settings.Database);
                 }
                 catch {
                     opened = false;
@@ -87,9 +87,9 @@ namespace Potato.Database.Drivers {
         /// <param name="document"></param>
         /// <returns></returns>
         protected DocumentValue ToDocument(BsonDocument document) {
-            DocumentValue row = new DocumentValue();
+            var row = new DocumentValue();
 
-            foreach (BsonElement value in document.Elements) {
+            foreach (var value in document.Elements) {
                 var dotNetValue = BsonTypeMapper.MapToDotNetValue(value.Value);
 
                 if (dotNetValue is ObjectId) {
@@ -104,9 +104,9 @@ namespace Potato.Database.Drivers {
 
         protected void QueryCreateIndex(ICompiledQuery query, CollectionValue result) {
             if (query.Collections.Any() == true) {
-                MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections.FirstOrDefault());
+                var collection = Database.GetCollection(query.Collections.FirstOrDefault());
 
-                BsonArray indices = BsonSerializer.Deserialize<BsonArray>(query.Indices.FirstOrDefault());
+                var indices = BsonSerializer.Deserialize<BsonArray>(query.Indices.FirstOrDefault());
 
                 if (indices.Count > 1) {
                     collection.EnsureIndex(new IndexKeysDocument(indices.First().AsBsonDocument), new IndexOptionsDocument(indices.Last().AsBsonDocument));
@@ -123,11 +123,11 @@ namespace Potato.Database.Drivers {
         /// <param name="query"></param>
         /// <param name="result"></param>
         protected void QueryFind(ICompiledQuery query, CollectionValue result) {
-            MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections.FirstOrDefault());
+            var collection = Database.GetCollection(query.Collections.FirstOrDefault());
 
-            BsonArray conditions = BsonSerializer.Deserialize<BsonArray>(query.Conditions.FirstOrDefault());
+            var conditions = BsonSerializer.Deserialize<BsonArray>(query.Conditions.FirstOrDefault());
 
-            MongoCursor<BsonDocument> cursor = collection.Find(new QueryDocument(conditions.First().AsBsonDocument));
+            var cursor = collection.Find(new QueryDocument(conditions.First().AsBsonDocument));
 
             if (query.Limit != null) {
                 cursor.SetLimit((int)query.Limit.Value);
@@ -137,7 +137,7 @@ namespace Potato.Database.Drivers {
                 cursor.SetSkip((int)query.Skip.Value);
             }
 
-            result.AddRange(cursor.Select(this.ToDocument));
+            result.AddRange(cursor.Select(ToDocument));
         }
 
         /// <summary>
@@ -146,15 +146,15 @@ namespace Potato.Database.Drivers {
         /// <param name="query"></param>
         /// <param name="result"></param>
         protected void QueryModify(ICompiledQuery query, CollectionValue result) {
-            MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections.FirstOrDefault());
+            var collection = Database.GetCollection(query.Collections.FirstOrDefault());
 
-            BsonArray conditions = BsonSerializer.Deserialize<BsonArray>(query.Conditions.FirstOrDefault());
-            BsonArray assignments = BsonSerializer.Deserialize<BsonArray>(query.Assignments.FirstOrDefault());
+            var conditions = BsonSerializer.Deserialize<BsonArray>(query.Conditions.FirstOrDefault());
+            var assignments = BsonSerializer.Deserialize<BsonArray>(query.Assignments.FirstOrDefault());
 
-            QueryDocument queryDocument = new QueryDocument(conditions.First().AsBsonDocument);
-            UpdateDocument updateDocument = new UpdateDocument(assignments.First().AsBsonDocument);
+            var queryDocument = new QueryDocument(conditions.First().AsBsonDocument);
+            var updateDocument = new UpdateDocument(assignments.First().AsBsonDocument);
 
-            WriteConcernResult writeConcernResult = collection.Update(queryDocument, updateDocument, UpdateFlags.Multi);
+            var writeConcernResult = collection.Update(queryDocument, updateDocument, UpdateFlags.Multi);
 
             result.Add(
                 new Affected() {
@@ -171,11 +171,11 @@ namespace Potato.Database.Drivers {
         /// <param name="query"></param>
         /// <param name="result"></param>
         protected void QueryRemove(ICompiledQuery query, CollectionValue result) {
-            MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections.FirstOrDefault());
+            var collection = Database.GetCollection(query.Collections.FirstOrDefault());
 
-            BsonArray conditions = BsonSerializer.Deserialize<BsonArray>(query.Conditions.FirstOrDefault());
+            var conditions = BsonSerializer.Deserialize<BsonArray>(query.Conditions.FirstOrDefault());
 
-            WriteConcernResult writeConcernResult = collection.Remove(new QueryDocument(conditions.First().AsBsonDocument));
+            var writeConcernResult = collection.Remove(new QueryDocument(conditions.First().AsBsonDocument));
 
             result.Add(
                 new Affected() {
@@ -192,8 +192,8 @@ namespace Potato.Database.Drivers {
         /// <param name="query"></param>
         /// <param name="result"></param>
         protected void QueryDrop(ICompiledQuery query, CollectionValue result) {
-            if (query.Databases.Any() == true && this.Database.Name == query.Databases.FirstOrDefault()) {
-                this.Database.Drop();
+            if (query.Databases.Any() == true && Database.Name == query.Databases.FirstOrDefault()) {
+                Database.Drop();
 
                 result.Add(
                     new Affected() {
@@ -204,9 +204,9 @@ namespace Potato.Database.Drivers {
                 );
             }
             else {
-                MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections.FirstOrDefault());
+                var collection = Database.GetCollection(query.Collections.FirstOrDefault());
 
-                CommandResult commandResult = collection.Drop();
+                var commandResult = collection.Drop();
 
                 result.Add(
                     new Affected() {
@@ -224,30 +224,30 @@ namespace Potato.Database.Drivers {
         /// <param name="query"></param>
         /// <param name="result"></param>
         protected void QueryMerge(ICompiledQuery query, CollectionValue result) {
-            MongoCollection<BsonDocument> collection = this.Database.GetCollection(query.Collections.FirstOrDefault());
+            var collection = Database.GetCollection(query.Collections.FirstOrDefault());
 
-            ICompiledQuery save = query.Children.FirstOrDefault(child => child.Root is Save);
-            ICompiledQuery modify = query.Children.FirstOrDefault(child => child.Root is Modify);
+            var save = query.Children.FirstOrDefault(child => child.Root is Save);
+            var modify = query.Children.FirstOrDefault(child => child.Root is Modify);
 
             if (save != null && modify != null) {
-                BsonArray conditions = BsonSerializer.Deserialize<BsonArray>(modify.Conditions.FirstOrDefault());
-                BsonArray assignments = BsonSerializer.Deserialize<BsonArray>(save.Assignments.FirstOrDefault());
-                BsonArray sortings = BsonSerializer.Deserialize<BsonArray>(modify.Sortings.FirstOrDefault());
+                var conditions = BsonSerializer.Deserialize<BsonArray>(modify.Conditions.FirstOrDefault());
+                var assignments = BsonSerializer.Deserialize<BsonArray>(save.Assignments.FirstOrDefault());
+                var sortings = BsonSerializer.Deserialize<BsonArray>(modify.Sortings.FirstOrDefault());
 
-                QueryDocument queryDocument = new QueryDocument(conditions.First().AsBsonDocument);
+                var queryDocument = new QueryDocument(conditions.First().AsBsonDocument);
                 IMongoSortBy sortByDocument = new SortByDocument(sortings.First().AsBsonDocument);
-                UpdateDocument updateDocument = new UpdateDocument(assignments.First().AsBsonDocument);
+                var updateDocument = new UpdateDocument(assignments.First().AsBsonDocument);
 
-                FindAndModifyResult findAndModifyResult = collection.FindAndModify(queryDocument, sortByDocument, updateDocument, true, true);
+                var findAndModifyResult = collection.FindAndModify(queryDocument, sortByDocument, updateDocument, true, true);
 
-                result.Add(this.ToDocument(findAndModifyResult.ModifiedDocument));
+                result.Add(ToDocument(findAndModifyResult.ModifiedDocument));
             }
         }
 
         public override List<IDatabaseObject> Query(IDatabaseObject query) {
-            this.Connect();
+            Connect();
 
-            return this.Query(new SerializerMongoDb().Parse(this.EscapeStringValues(query)).Compile());
+            return Query(new SerializerMongoDb().Parse(EscapeStringValues(query)).Compile());
         }
 
         public override IDatabaseObject EscapeStringValues(IDatabaseObject query) {
@@ -256,28 +256,28 @@ namespace Potato.Database.Drivers {
         }
 
         protected override List<IDatabaseObject> Query(ICompiledQuery query) {
-            List<IDatabaseObject> results = new List<IDatabaseObject>();
-            CollectionValue result = new CollectionValue();
+            var results = new List<IDatabaseObject>();
+            var result = new CollectionValue();
 
             try {
                 if (query.Root is Find) {
-                    this.QueryFind(query, result);
+                    QueryFind(query, result);
                 }
                 else if (query.Root is Modify) {
-                    this.QueryModify(query, result);
+                    QueryModify(query, result);
                 }
                 else if (query.Root is Remove) {
-                    this.QueryRemove(query, result);
+                    QueryRemove(query, result);
                 }
                 else if (query.Root is Drop) {
-                    this.QueryDrop(query, result);
+                    QueryDrop(query, result);
                 }
                 // Essentially ignore the create command and process the index children instead.
                 //else if (query.Root is Create) {
                 //    this.QueryCreate(query, results);
                 //}
                 else if (query.Root is Merge) {
-                    this.QueryMerge(query, result);
+                    QueryMerge(query, result);
                 }
 
                 results.Add(result);
@@ -290,17 +290,17 @@ namespace Potato.Database.Drivers {
                 });
             }
 
-            foreach (ICompiledQuery child in query.Children) {
-                results.AddRange(this.Query(child));    
+            foreach (var child in query.Children) {
+                results.AddRange(Query(child));    
             }
 
             return results;
         }
 
         public override void Close() {
-            if (this.Client != null) {
-                this.Client.GetServer().Disconnect();
-                this.Client = null;
+            if (Client != null) {
+                Client.GetServer().Disconnect();
+                Client = null;
             }
         }
     }

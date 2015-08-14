@@ -24,7 +24,7 @@ namespace Potato.Net.Shared.Truths {
     [Serializable]
     public abstract class Truth : List<ITruth>, ITruth {
         public bool BuildAndTest(params ITruth[] branches) {
-            List<ITruth> branch = new List<ITruth>() {
+            var branch = new List<ITruth>() {
                 branches.FirstOrDefault()
             };
 
@@ -32,15 +32,15 @@ namespace Potato.Net.Shared.Truths {
                 branches[offset - 1].Add(branches[offset]);
             }
 
-            return this.Test(branch);
+            return Test(branch);
         }
 
         public bool Test(List<ITruth> branches) {
-            ITruth node = branches.FirstOrDefault();
-            bool truth = false;
+            var node = branches.FirstOrDefault();
+            var truth = false;
             
             if (node != null) {
-                foreach (ITruth t in this.Where(t => t.GetType().IsInstanceOfType(node) == true)) {
+                foreach (var t in this.Where(t => t.GetType().IsInstanceOfType(node) == true)) {
                     truth = t.Test(new List<ITruth>(node));
                 }
             }

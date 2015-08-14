@@ -59,7 +59,7 @@ namespace Potato.Core.Test.TestPotato {
             // Make sure we have at least one connection added.
             Assert.AreEqual(1, instance.Connections.Count);
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoRemoveConnection(instance.Connections.First().ConnectionModel.ConnectionGuid).SetOrigin(CommandOrigin.Local));
+            var result = instance.Tunnel(CommandBuilder.PotatoRemoveConnection(instance.Connections.First().ConnectionModel.ConnectionGuid).SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
@@ -76,7 +76,7 @@ namespace Potato.Core.Test.TestPotato {
         public void TestPotatoRemoveConnectionDoesNotExist() {
             var instance = (PotatoController)new PotatoController().Execute();
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoRemoveConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516).SetOrigin(CommandOrigin.Local));
+            var result = instance.Tunnel(CommandBuilder.PotatoRemoveConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516).SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.DoesNotExists, result.CommandResultType);
@@ -92,7 +92,7 @@ namespace Potato.Core.Test.TestPotato {
         public void TestPotatoRemoveConnectionInsufficientPermissions() {
             var instance = (PotatoController)new PotatoController().Execute();
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoRemoveConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = instance.Tunnel(CommandBuilder.PotatoRemoveConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -125,7 +125,7 @@ namespace Potato.Core.Test.TestPotato {
             // Make sure we have at least one connection added.
             Assert.IsNotEmpty(instance.Connections);
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoRemoveConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516).SetOrigin(CommandOrigin.Local));
+            var result = instance.Tunnel(CommandBuilder.PotatoRemoveConnection("Myrcon", "MockProtocol", "1.1.1.1", 27516).SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);

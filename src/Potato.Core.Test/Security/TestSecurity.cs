@@ -52,14 +52,14 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     CommandType.VariablesSet,
                     77
@@ -72,7 +72,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     "Phogue"
                 })
@@ -80,7 +80,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountSetPassword,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Phogue",
                     "password"
                 })
@@ -88,7 +88,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Phogue",
                     "de-DE"
                 })
@@ -96,17 +96,17 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountAddPlayer,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Phogue",
                     CommonProtocolType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
 
-            GroupModel group = security.Groups.Last();
-            AccountModel account = group.Accounts.First();
-            PermissionModel permission = group.Permissions.First(p => p.Name == CommandType.VariablesSet.ToString());
-            AccountPlayerModel accountPlayer = account.Players.First();
+            var group = security.Groups.Last();
+            var account = group.Accounts.First();
+            var permission = group.Permissions.First(p => p.Name == CommandType.VariablesSet.ToString());
+            var accountPlayer = account.Players.First();
 
             security.Dispose();
 
@@ -143,14 +143,14 @@ namespace Potato.Core.Test.Security {
             saveSecurity.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
             saveSecurity.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     "CustomPermission",
                     22
@@ -159,7 +159,7 @@ namespace Potato.Core.Test.Security {
             saveSecurity.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     CommandType.VariablesSet,
                     77
@@ -168,7 +168,7 @@ namespace Potato.Core.Test.Security {
             saveSecurity.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     CommandType.VariablesSetA,
                     88
@@ -177,7 +177,7 @@ namespace Potato.Core.Test.Security {
             saveSecurity.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     "Phogue"
                 })
@@ -185,7 +185,7 @@ namespace Potato.Core.Test.Security {
             saveSecurity.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountSetPassword,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Phogue",
                     "password"
                 })
@@ -196,7 +196,7 @@ namespace Potato.Core.Test.Security {
             saveSecurity.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Phogue",
                     "de-DE"
                 })
@@ -204,7 +204,7 @@ namespace Potato.Core.Test.Security {
             saveSecurity.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountAddPlayer,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Phogue",
                     CommonProtocolType.DiceBattlefield3,
                     "ABCDEF"
@@ -239,7 +239,7 @@ namespace Potato.Core.Test.Security {
             Assert.AreEqual("ABCDEF", loadSecurity.Groups.SelectMany(group => group.Accounts).SelectMany(account => account.Players).First().Uid);
 
             // Now validate that we can authenticate against the loaded in password
-            ICommandResult result = loadSecurity.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", "password", String.Empty).SetOrigin(CommandOrigin.Local));
+            var result = loadSecurity.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", "password", string.Empty).SetOrigin(CommandOrigin.Local));
 
             // Validate that we could authenticate with our new password.
             Assert.IsTrue(result.Success);
@@ -255,14 +255,14 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     "CustomPermission",
                     22
@@ -271,7 +271,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     CommandType.VariablesSet,
                     77
@@ -280,7 +280,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     CommandType.VariablesSetA,
                     88
@@ -289,7 +289,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     "Phogue"
                 })
@@ -297,7 +297,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountSetPassword,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Phogue",
                     "password"
                 })
@@ -308,7 +308,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Phogue",
                     "de-DE"
                 })
@@ -316,7 +316,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountAddPlayer,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Phogue",
                     CommonProtocolType.DiceBattlefield3,
                     "ABCDEF"
@@ -336,48 +336,48 @@ namespace Potato.Core.Test.Security {
             var commands = loadConfig.RootOf<SecurityController>().Children<JObject>().Select(item => item.ToObject<IConfigCommand>(JsonSerialization.Minimal)).ToList();
 
             Assert.AreEqual("SecurityAddGroup", commands[0].Command.Name);
-            Assert.AreEqual("Guest", commands[0].Command.Parameters[0].First<String>());
+            Assert.AreEqual("Guest", commands[0].Command.Parameters[0].First<string>());
 
             Assert.AreEqual("SecurityAddGroup", commands[1].Command.Name);
-            Assert.AreEqual("GroupName", commands[1].Command.Parameters[0].First<String>());
+            Assert.AreEqual("GroupName", commands[1].Command.Parameters[0].First<string>());
 
             Assert.AreEqual("SecurityGroupSetPermission", commands[2].Command.Name);
-            Assert.AreEqual("GroupName", commands[2].Command.Parameters[0].First<String>());
-            Assert.AreEqual(CommandType.VariablesSet.ToString(), commands[2].Command.Parameters[1].First<String>());
-            Assert.AreEqual("77", commands[2].Command.Parameters[2].First<String>());
+            Assert.AreEqual("GroupName", commands[2].Command.Parameters[0].First<string>());
+            Assert.AreEqual(CommandType.VariablesSet.ToString(), commands[2].Command.Parameters[1].First<string>());
+            Assert.AreEqual("77", commands[2].Command.Parameters[2].First<string>());
 
             Assert.AreEqual("SecurityGroupSetPermission", commands[3].Command.Name);
-            Assert.AreEqual("GroupName", commands[3].Command.Parameters[0].First<String>());
-            Assert.AreEqual(CommandType.VariablesSetA.ToString(), commands[3].Command.Parameters[1].First<String>());
-            Assert.AreEqual("88", commands[3].Command.Parameters[2].First<String>());
+            Assert.AreEqual("GroupName", commands[3].Command.Parameters[0].First<string>());
+            Assert.AreEqual(CommandType.VariablesSetA.ToString(), commands[3].Command.Parameters[1].First<string>());
+            Assert.AreEqual("88", commands[3].Command.Parameters[2].First<string>());
 
             Assert.AreEqual("SecurityGroupSetPermission", commands[4].Command.Name);
-            Assert.AreEqual("GroupName", commands[4].Command.Parameters[0].First<String>());
-            Assert.AreEqual("CustomPermission", commands[4].Command.Parameters[1].First<String>());
-            Assert.AreEqual("22", commands[4].Command.Parameters[2].First<String>());
+            Assert.AreEqual("GroupName", commands[4].Command.Parameters[0].First<string>());
+            Assert.AreEqual("CustomPermission", commands[4].Command.Parameters[1].First<string>());
+            Assert.AreEqual("22", commands[4].Command.Parameters[2].First<string>());
 
             Assert.AreEqual("SecurityGroupAddAccount", commands[5].Command.Name);
-            Assert.AreEqual("GroupName", commands[5].Command.Parameters[0].First<String>());
-            Assert.AreEqual("Phogue", commands[5].Command.Parameters[1].First<String>());
+            Assert.AreEqual("GroupName", commands[5].Command.Parameters[0].First<string>());
+            Assert.AreEqual("Phogue", commands[5].Command.Parameters[1].First<string>());
 
             Assert.AreEqual("SecurityAccountSetPasswordHash", commands[6].Command.Name);
-            Assert.AreEqual("Phogue", commands[6].Command.Parameters[0].First<String>());
+            Assert.AreEqual("Phogue", commands[6].Command.Parameters[0].First<string>());
             // We can only test if this isn't null as it contains a random salt and resulting hash.
-            Assert.IsNotNull(commands[6].Command.Parameters[1].First<String>());
+            Assert.IsNotNull(commands[6].Command.Parameters[1].First<string>());
 
             Assert.AreEqual("SecurityAccountSetPreferredLanguageCode", commands[7].Command.Name);
-            Assert.AreEqual("Phogue", commands[7].Command.Parameters[0].First<String>());
-            Assert.AreEqual("de-DE", commands[7].Command.Parameters[1].First<String>());
+            Assert.AreEqual("Phogue", commands[7].Command.Parameters[0].First<string>());
+            Assert.AreEqual("de-DE", commands[7].Command.Parameters[1].First<string>());
 
             Assert.AreEqual("SecurityAccountAddPlayer", commands[8].Command.Name);
-            Assert.AreEqual("Phogue", commands[8].Command.Parameters[0].First<String>());
-            Assert.AreEqual(CommonProtocolType.DiceBattlefield3, commands[8].Command.Parameters[1].First<String>());
-            Assert.AreEqual("ABCDEF", commands[8].Command.Parameters[2].First<String>());
+            Assert.AreEqual("Phogue", commands[8].Command.Parameters[0].First<string>());
+            Assert.AreEqual(CommonProtocolType.DiceBattlefield3, commands[8].Command.Parameters[1].First<string>());
+            Assert.AreEqual("ABCDEF", commands[8].Command.Parameters[2].First<string>());
 
             Assert.AreEqual("SecurityAccountAppendAccessToken", commands[9].Command.Name);
-            Assert.AreEqual("Phogue", commands[9].Command.Parameters[0].First<String>());
+            Assert.AreEqual("Phogue", commands[9].Command.Parameters[0].First<string>());
             Assert.AreEqual(Guid.Parse("f380eb1e-1438-48c0-8c3d-ad55f2d40538"), commands[9].Command.Parameters[1].First<Guid>());
-            Assert.AreEqual("Token Hash", commands[9].Command.Parameters[2].First<String>());
+            Assert.AreEqual("Token Hash", commands[9].Command.Parameters[2].First<string>());
             Assert.AreEqual(DateTime.Parse("2024-04-14 20:51:00 PM"), commands[9].Command.Parameters[3].First<DateTime>());
         }
     }

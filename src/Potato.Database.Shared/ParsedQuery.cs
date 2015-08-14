@@ -32,7 +32,7 @@ namespace Potato.Database.Shared {
         /// Initializes all defaults
         /// </summary>
         public ParsedQuery() : base() {
-            this.Children = new List<IParsedQuery>();
+            Children = new List<IParsedQuery>();
         }
     }
 }

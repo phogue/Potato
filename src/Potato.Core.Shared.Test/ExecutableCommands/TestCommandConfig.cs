@@ -26,7 +26,7 @@ namespace Potato.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestScopeNulledWhenNulled() {
-            IConfigCommand command = new Command() {
+            var command = new Command() {
                 Scope = null
             }.ToConfigCommand();
 
@@ -38,7 +38,7 @@ namespace Potato.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestScopeNulledWhenBothEmpty() {
-            IConfigCommand command = new Command() {
+            var command = new Command() {
                 Scope = {
                     ConnectionGuid = Guid.Empty,
                     PluginGuid = Guid.Empty
@@ -53,9 +53,9 @@ namespace Potato.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestScopeMaintainedWhenConnectionGuidNotEmpty() {
-            Guid guid = Guid.NewGuid();
+            var guid = Guid.NewGuid();
 
-            IConfigCommand command = new Command() {
+            var command = new Command() {
                 Scope = {
                     ConnectionGuid = guid,
                     PluginGuid = Guid.Empty
@@ -71,9 +71,9 @@ namespace Potato.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestScopeMaintainedWhenPluginGuidNotEmpty() {
-            Guid guid = Guid.NewGuid();
+            var guid = Guid.NewGuid();
 
-            IConfigCommand command = new Command() {
+            var command = new Command() {
                 Scope = {
                     ConnectionGuid = Guid.Empty,
                     PluginGuid = guid
@@ -89,7 +89,7 @@ namespace Potato.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestAuthenticationNulled() {
-            IConfigCommand command = new Command() {
+            var command = new Command() {
                 Authentication = new CommandAuthenticationModel() {
                     Uid = "Never seen"
                 }
@@ -103,7 +103,7 @@ namespace Potato.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestAuthenticationNulledWhenNulled() {
-            IConfigCommand command = new Command() {
+            var command = new Command() {
                 Authentication = null
             }.ToConfigCommand();
 

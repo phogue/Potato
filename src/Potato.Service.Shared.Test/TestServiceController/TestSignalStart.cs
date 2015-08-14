@@ -101,7 +101,7 @@ namespace Potato.Service.Shared.Test.TestServiceController {
         [Test]
         public void TestMethodCalledArguments() {
             var service = new ServiceController() {
-                Arguments = new List<String>() {
+                Arguments = new List<string>() {
                     "A",
                     "B"
                 },

@@ -34,7 +34,7 @@ namespace Potato.Core.Test.Security.Account {
         /// </summary>
         [Test]
         public void TestAuthenticationSuccess() {
-            String generatedAuthenticatePassword = StringExtensions.RandomString(10);
+            var generatedAuthenticatePassword = StringExtensions.RandomString(10);
 
             var security = new SecurityController();
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
@@ -43,7 +43,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityAccountAuthenticate, 50).SetOrigin(CommandOrigin.Local));
 
             // Now authenticate against an empty security object which has no accounts.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword, String.Empty).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword, string.Empty).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -57,7 +57,7 @@ namespace Potato.Core.Test.Security.Account {
         /// </summary>
         [Test]
         public void TestAccountGroupReturnedInResult() {
-            String generatedAuthenticatePassword = StringExtensions.RandomString(10);
+            var generatedAuthenticatePassword = StringExtensions.RandomString(10);
 
             var security = new SecurityController();
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
@@ -66,7 +66,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityAccountAuthenticate, 50).SetOrigin(CommandOrigin.Local));
 
             // Now authenticate against an empty security object which has no accounts.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword, String.Empty).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword, string.Empty).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -80,14 +80,14 @@ namespace Potato.Core.Test.Security.Account {
         /// </summary>
         [Test]
         public void TestAccountDoesNotExist() {
-            String generatedAuthenticatePassword = StringExtensions.RandomString(10);
+            var generatedAuthenticatePassword = StringExtensions.RandomString(10);
 
             var security = new SecurityController();
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "ThisExists").SetOrigin(CommandOrigin.Local));
 
             // Now authenticate against an empty security object which has no accounts.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("DoesNotExist", generatedAuthenticatePassword, String.Empty).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("DoesNotExist", generatedAuthenticatePassword, string.Empty).SetOrigin(CommandOrigin.Local));
 
             // Validate that we get nothing back.
             Assert.IsFalse(result.Success);
@@ -99,8 +99,8 @@ namespace Potato.Core.Test.Security.Account {
         /// </summary>
         [Test]
         public void TestIncorrectPassword() {
-            String generatedSetPassword = StringExtensions.RandomString(10);
-            String generatedAuthenticatePassword = StringExtensions.RandomString(10);
+            var generatedSetPassword = StringExtensions.RandomString(10);
+            var generatedAuthenticatePassword = StringExtensions.RandomString(10);
 
             var security = new SecurityController();
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
@@ -110,7 +110,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAccountSetPassword("Phogue", generatedSetPassword).SetOrigin(CommandOrigin.Local));
 
             // Now validate that we can authenticate against the newly set password.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword, String.Empty).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword, string.Empty).SetOrigin(CommandOrigin.Local));
 
             // Validate that we could authenticate with our new password.
             Assert.IsFalse(result.Success);
@@ -128,7 +128,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountSetPassword("Phogue", "password").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", "password", String.Empty).SetOrigin(CommandOrigin.Local).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", "password", string.Empty).SetOrigin(CommandOrigin.Local).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -146,7 +146,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now send an empty password through to authenticate against.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", String.Empty, String.Empty).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", string.Empty, string.Empty).SetOrigin(CommandOrigin.Local));
 
             // Validate that we couldn't login because the server does not have a password set for it yet.
             Assert.IsFalse(result.Success);
@@ -158,7 +158,7 @@ namespace Potato.Core.Test.Security.Account {
         /// </summary>
         [Test]
         public void TestAuthenticationSuccessTokenGenerated() {
-            String generatedAuthenticatePassword = StringExtensions.RandomString(10);
+            var generatedAuthenticatePassword = StringExtensions.RandomString(10);
 
             var security = new SecurityController();
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
@@ -166,7 +166,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAccountSetPassword("Phogue", generatedAuthenticatePassword).SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityAccountAuthenticate, 50).SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword, "192.168.1.1").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword, "192.168.1.1").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -178,7 +178,7 @@ namespace Potato.Core.Test.Security.Account {
         /// </summary>
         [Test]
         public void TestAuthenticationSuccessCanThenAuthenticateWithToken() {
-            String generatedAuthenticatePassword = StringExtensions.RandomString(10);
+            var generatedAuthenticatePassword = StringExtensions.RandomString(10);
 
             var security = new SecurityController();
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
@@ -187,11 +187,11 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityAccountAuthenticate, 50).SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityAccountAuthenticateToken, 50).SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword, "192.168.1.1").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword, "192.168.1.1").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
-            AccessTokenTransportModel token = result.Scope.AccessTokens.First();
+            var token = result.Scope.AccessTokens.First();
 
             result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(token.Id, token.Token, "192.168.1.1").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Token = token.Token,
@@ -208,7 +208,7 @@ namespace Potato.Core.Test.Security.Account {
         /// <remarks>This is tested more thoroughly elsewhere, but this is just testing the entire process.</remarks>
         [Test]
         public void TestAuthenticationFailureWhenAuthenticateWithTokenDifferentIdentifier() {
-            String generatedAuthenticatePassword = StringExtensions.RandomString(10);
+            var generatedAuthenticatePassword = StringExtensions.RandomString(10);
 
             var security = new SecurityController();
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
@@ -217,11 +217,11 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityAccountAuthenticate, 50).SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityAccountAuthenticateToken, 50).SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword, "192.168.1.1").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedAuthenticatePassword, "192.168.1.1").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
-            AccessTokenTransportModel token = result.Scope.AccessTokens.First();
+            var token = result.Scope.AccessTokens.First();
 
             result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(token.Id, token.Token, "192.168.1.2").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Token = token.Token,

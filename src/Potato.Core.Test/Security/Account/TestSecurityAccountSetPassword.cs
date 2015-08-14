@@ -33,7 +33,7 @@ namespace Potato.Core.Test.Security.Account {
         /// </summary>
         [Test]
         public void TestSuccess() {
-            String generatedPassword = StringExtensions.RandomString(10);
+            var generatedPassword = StringExtensions.RandomString(10);
 
             var security = new SecurityController();
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
@@ -43,7 +43,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAccountSetPassword("Phogue", generatedPassword).SetOrigin(CommandOrigin.Local));
 
             // Now validate that we can authenticate against the newly set password.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedPassword, String.Empty).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAuthenticate("Phogue", generatedPassword, string.Empty).SetOrigin(CommandOrigin.Local));
 
             // Validate that we could authenticate with our new password.
             Assert.IsTrue(result.Success);
@@ -61,7 +61,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "ThisExists").SetOrigin(CommandOrigin.Local));
 
             // Now change the password of the account.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountSetPassword("DoesNotExist", "password").SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountSetPassword("DoesNotExist", "password").SetOrigin(CommandOrigin.Local));
 
             // Validate that we could not set a password and the result returned false.
             Assert.IsFalse(result.Success);
@@ -79,7 +79,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountSetPassword("Phogue", "password").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = security.Tunnel(CommandBuilder.SecurityAccountSetPassword("Phogue", "password").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -97,7 +97,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now change the password of the account.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountSetPassword("Phogue", String.Empty).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountSetPassword("Phogue", string.Empty).SetOrigin(CommandOrigin.Local));
 
             // Validate that we could not set a password and the result returned false.
             Assert.IsFalse(result.Success);

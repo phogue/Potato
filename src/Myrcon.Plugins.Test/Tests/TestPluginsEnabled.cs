@@ -21,22 +21,22 @@ namespace Myrcon.Plugins.Test.Tests {
     public class TestPluginsEnabled : CoreController {
 
         public TestPluginsEnabled() : base() {
-            this.CommandDispatchers.Add(
+            CommandDispatchers.Add(
                 new CommandDispatch() {
                     Name = "TestPluginsEnabledCommandResult",
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "parameterMessage",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.TestPluginsEnabledCommandResult
+                    Handler = TestPluginsEnabledCommandResult
                 }
             );
         }
 
-        protected ICommandResult TestPluginsEnabledCommandResult(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            String parameterMessage = parameters["parameterMessage"].First<String>();
+        protected ICommandResult TestPluginsEnabledCommandResult(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var parameterMessage = parameters["parameterMessage"].First<string>();
 
             command.Result.Message = parameterMessage;
             command.Result.CommandResultType = CommandResultType.Success;

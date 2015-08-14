@@ -26,7 +26,7 @@ namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
         private int _testNumber;
 
         public ExecutableBasicTester() : base() {
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     ParameterTypes = new List<CommandParameterType>() {
@@ -35,11 +35,11 @@ namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
                             Type = typeof (int)
                         }
                     },
-                    Handler = this.SetTestFlag
+                    Handler = SetTestFlag
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.VariablesGet,
-                    Handler = this.GetTestFlag
+                    Handler = GetTestFlag
                 },
                 new CommandDispatch() {
                     Name = "CustomSet",
@@ -49,7 +49,7 @@ namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
                             Type = typeof (int)
                         }
                     },
-                    Handler = this.CustomSetTestFlag
+                    Handler = CustomSetTestFlag
                 }
             });
         }
@@ -58,15 +58,15 @@ namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
             get { return _testNumber; }
             set {
                 _testNumber = value;
-                this.OnPropertyChanged(this, "TestNumber");
+                OnPropertyChanged(this, "TestNumber");
             }
         }
 
         /// <summary>
         ///     Sets the value of the test flag.
         /// </summary>
-        public ICommandResult SetTestFlag(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            int value = parameters["value"].First<int>();
+        public ICommandResult SetTestFlag(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var value = parameters["value"].First<int>();
 
             TestNumber = value;
 
@@ -88,7 +88,7 @@ namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
         /// <summary>
         ///     Gets the value as an integer for the single test flag.
         /// </summary>
-        public ICommandResult GetTestFlag(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult GetTestFlag(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             return new CommandResult() {
                 Success = true,
                 CommandResultType = CommandResultType.Success,
@@ -107,7 +107,7 @@ namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
         /// <summary>
         ///     Sets the value of the test flag, but with a custom name.
         /// </summary>
-        public ICommandResult CustomSetTestFlag(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult CustomSetTestFlag(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             return SetTestFlag(command, parameters);
         }
     }

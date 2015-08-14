@@ -26,9 +26,9 @@ namespace Potato.Net.Shared.Models {
         /// Initializes the underlying networkmodel with the required collections.
         /// </summary>
         public BanModel() : base() {
-            this.Scope.Content = new List<String>();
-            this.Scope.Players = new List<PlayerModel>();
-            this.Scope.Times = new List<TimeSubsetModel>();
+            Scope.Content = new List<string>();
+            Scope.Players = new List<PlayerModel>();
+            Scope.Times = new List<TimeSubsetModel>();
         }
     }
 }

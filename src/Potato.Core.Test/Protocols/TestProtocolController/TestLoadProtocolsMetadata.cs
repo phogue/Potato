@@ -30,18 +30,18 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
         /// </summary>
         [SetUp]
         public void CleanPackagesDirectory() {
-            this.TestLoadProtocolsMetadataDirectory.Refresh();
+            TestLoadProtocolsMetadataDirectory.Refresh();
 
-            if (this.TestLoadProtocolsMetadataDirectory.Exists) {
-                this.TestLoadProtocolsMetadataDirectory.Delete(true);
+            if (TestLoadProtocolsMetadataDirectory.Exists) {
+                TestLoadProtocolsMetadataDirectory.Delete(true);
             }
 
-            this.TestLoadProtocolsMetadataDirectory.Create();
+            TestLoadProtocolsMetadataDirectory.Create();
         }
 
         [TearDown]
         public void TearDownCleanPackagesDirectory() {
-            this.CleanPackagesDirectory();
+            CleanPackagesDirectory();
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
         /// </summary>
         [Test]
         public void TestLoadedWithSingleVersionOfPackage() {
-            DirectoryInfo package = new DirectoryInfo(Path.Combine(this.TestLoadProtocolsMetadataDirectory.FullName, "Something.Protocols.Something"));
+            var package = new DirectoryInfo(Path.Combine(TestLoadProtocolsMetadataDirectory.FullName, "Something.Protocols.Something"));
 
             var dll = new FileInfo(Path.Combine(package.FullName, "lib", "Something.Protocols.Something.dll"));
             if (dll.Directory != null) dll.Directory.Create();
@@ -60,7 +60,7 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
             File.WriteAllText(json.FullName, @"{ }");
 
             var protocols = new ProtocolController() {
-                PackagesDirectory = this.TestLoadProtocolsMetadataDirectory
+                PackagesDirectory = TestLoadProtocolsMetadataDirectory
             };
 
             protocols.LoadProtocolsMetadata();
@@ -74,7 +74,7 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
         /// <remarks>We only test the process is succesful, loading protocol metadata is tested elsewhere.</remarks>
         [Test]
         public void TestProtocolVariablesLoaded() {
-            DirectoryInfo package = new DirectoryInfo(Path.Combine(this.TestLoadProtocolsMetadataDirectory.FullName, "Something.Protocols.Something"));
+            var package = new DirectoryInfo(Path.Combine(TestLoadProtocolsMetadataDirectory.FullName, "Something.Protocols.Something"));
 
             var dll = new FileInfo(Path.Combine(package.FullName, "lib", "Something.Protocols.Something.dll"));
             if (dll.Directory != null) dll.Directory.Create();
@@ -85,7 +85,7 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
             File.WriteAllText(json.FullName, @"{ ""ProtocolTypes"": [ { ""Provider"": ""Myrcon"",""Name"": ""Battlefield 4"",""Type"": ""DiceBattlefield4"" } ] }");
 
             var protocols = new ProtocolController() {
-                PackagesDirectory = this.TestLoadProtocolsMetadataDirectory
+                PackagesDirectory = TestLoadProtocolsMetadataDirectory
             };
 
             protocols.LoadProtocolsMetadata();
@@ -98,8 +98,8 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
         /// </summary>
         [Test]
         public void TestSingleProtocolLoadedWithMultipleVersionsOfPackage() {
-            DirectoryInfo newest = new DirectoryInfo(Path.Combine(this.TestLoadProtocolsMetadataDirectory.FullName, "Something.Protocols.Something.2.0.0"));
-            DirectoryInfo oldest = new DirectoryInfo(Path.Combine(this.TestLoadProtocolsMetadataDirectory.FullName, "Something.Protocols.Something.1.0.0"));
+            var newest = new DirectoryInfo(Path.Combine(TestLoadProtocolsMetadataDirectory.FullName, "Something.Protocols.Something.2.0.0"));
+            var oldest = new DirectoryInfo(Path.Combine(TestLoadProtocolsMetadataDirectory.FullName, "Something.Protocols.Something.1.0.0"));
 
             var newestdll = new FileInfo(Path.Combine(newest.FullName, "lib", "Something.Protocols.Something.dll"));
             if (newestdll.Directory != null) newestdll.Directory.Create();
@@ -118,7 +118,7 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
             File.WriteAllText(oldestjson.FullName, @"{ }");
 
             var protocols = new ProtocolController() {
-                PackagesDirectory = this.TestLoadProtocolsMetadataDirectory
+                PackagesDirectory = TestLoadProtocolsMetadataDirectory
             };
 
             protocols.LoadProtocolsMetadata();
@@ -131,8 +131,8 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
         /// </summary>
         [Test]
         public void TestLatestLoadedLoadedWithMultipleVersionsOfPackage() {
-            DirectoryInfo newest = new DirectoryInfo(Path.Combine(this.TestLoadProtocolsMetadataDirectory.FullName, "Something.Protocols.Something.2.0.0"));
-            DirectoryInfo oldest = new DirectoryInfo(Path.Combine(this.TestLoadProtocolsMetadataDirectory.FullName, "Something.Protocols.Something.1.0.0"));
+            var newest = new DirectoryInfo(Path.Combine(TestLoadProtocolsMetadataDirectory.FullName, "Something.Protocols.Something.2.0.0"));
+            var oldest = new DirectoryInfo(Path.Combine(TestLoadProtocolsMetadataDirectory.FullName, "Something.Protocols.Something.1.0.0"));
 
             var newestdll = new FileInfo(Path.Combine(newest.FullName, "lib", "Something.Protocols.Something.dll"));
             if (newestdll.Directory != null) newestdll.Directory.Create();
@@ -151,7 +151,7 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
             File.WriteAllText(oldestjson.FullName, @"{ }");
 
             var protocols = new ProtocolController() {
-                PackagesDirectory = this.TestLoadProtocolsMetadataDirectory
+                PackagesDirectory = TestLoadProtocolsMetadataDirectory
             };
 
             protocols.LoadProtocolsMetadata();

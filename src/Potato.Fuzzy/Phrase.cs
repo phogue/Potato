@@ -47,7 +47,7 @@ namespace Potato.Fuzzy {
         /// </summary>
         /// <param name="tokens">The tokens to append</param>
         public Phrase(IEnumerable<Token> tokens) {
-            this.AddRange(tokens);
+            AddRange(tokens);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Potato.Fuzzy {
             var largestToken = phraseList.OrderByDescending(token => token.Text.Length).FirstOrDefault();
 
             if (largestToken != null) {
-                float largestTokenErrorRatio = largestToken.Similarity / 100;
+                var largestTokenErrorRatio = largestToken.Similarity / 100;
 
                 phraseList.ReplaceRange(0, phraseList.Count, phraseList.OrderByDescending(token => token.Similarity - (largestToken.Text.Length - token.Text.Length) * largestTokenErrorRatio).ToList());
             }
@@ -80,7 +80,7 @@ namespace Potato.Fuzzy {
                 delegateParseMethod.Value(state, this);
             }
 
-            Phrase.OrderByWeightedSimilarity(this);
+            OrderByWeightedSimilarity(this);
 
             return this;
         }
@@ -95,10 +95,10 @@ namespace Potato.Fuzzy {
                 token,
                 newToken
             })
-            .Where(token => String.CompareOrdinal(token.token.ToString(), token.newToken.ToString()) == 0 && token.newToken.Similarity < token.token.Similarity)
+            .Where(token => string.CompareOrdinal(token.token.ToString(), token.newToken.ToString()) == 0 && token.newToken.Similarity < token.token.Similarity)
             .Select(token => token.newToken);
 
-            collection.Where(token => worseMatch.Contains(token) == false).ToList().ForEach(this.Add);
+            collection.Where(token => worseMatch.Contains(token) == false).ToList().ForEach(Add);
 
             return this;
         }

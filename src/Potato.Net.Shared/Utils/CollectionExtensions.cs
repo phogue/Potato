@@ -44,7 +44,7 @@ namespace Potato.Net.Shared.Utils {
             float count = items.Count();
 
             if (count > 1) {
-                float sum = items.Select(value).Sum(s => (s - mean) * (s - mean));
+                var sum = items.Select(value).Sum(s => (s - mean) * (s - mean));
 
                 standardDeviation = (float)Math.Sqrt(sum / count);
             }

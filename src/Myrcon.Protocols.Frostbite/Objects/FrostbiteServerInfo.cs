@@ -58,32 +58,32 @@ namespace Myrcon.Protocols.Frostbite.Objects {
 
         public FrostbiteServerInfo()
             : base() {
-            this.ServerName = String.Empty;
-            this.Map = String.Empty;
-            this.GameMode = String.Empty;
-            this.ConnectionState = String.Empty;
+            ServerName = string.Empty;
+            Map = string.Empty;
+            GameMode = string.Empty;
+            ConnectionState = string.Empty;
 
-            this.PlayerCount = 0;
-            this.MaxPlayerCount = 0;
-            this.CurrentRound = 0;
-            this.TotalRounds = 0;
+            PlayerCount = 0;
+            MaxPlayerCount = 0;
+            CurrentRound = 0;
+            TotalRounds = 0;
         }
 
         public FrostbiteServerInfo Parse(List<string> words, List<string> parameters) {
 
-            this.RoundTime = this.ServerUptime = -1;
+            RoundTime = ServerUptime = -1;
 
             for (int paramCount = 0, varCount = 0; paramCount < parameters.Count && varCount < words.Count; paramCount++, varCount++) {
 
                 switch (parameters[paramCount]) {
                     case "TeamScores":
 
-                        int scoresCount = 0;
+                        var scoresCount = 0;
 
                         if (int.TryParse(words[varCount], out scoresCount) == true) {
                             scoresCount++;
 
-                            this.TeamScores = new TeamScoreList().Parse(words.GetRange(varCount, scoresCount));
+                            TeamScores = new TeamScoreList().Parse(words.GetRange(varCount, scoresCount));
 
                             varCount += scoresCount;
                         }
@@ -95,16 +95,16 @@ namespace Myrcon.Protocols.Frostbite.Objects {
                     case "GameMod":
 
                         if (Enum.IsDefined(typeof(GameMods), words[varCount]) == true) {
-                            this.GameMod = (GameMods)Enum.Parse(typeof(GameMods), words[varCount]);
+                            GameMod = (GameMods)Enum.Parse(typeof(GameMods), words[varCount]);
                         }
 
                         break;
                     default:
                         PropertyInfo property = null;
-                        if ((property = this.GetType().GetProperty(parameters[paramCount])) != null) {
+                        if ((property = GetType().GetProperty(parameters[paramCount])) != null) {
 
                             try {
-                                object value = TypeDescriptor.GetConverter(property.PropertyType).ConvertFrom(words[varCount]);
+                                var value = TypeDescriptor.GetConverter(property.PropertyType).ConvertFrom(words[varCount]);
 
                                 if (value != null) {
                                     property.SetValue(this, value, null);

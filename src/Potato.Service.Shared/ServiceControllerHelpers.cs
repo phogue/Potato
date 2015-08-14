@@ -28,12 +28,12 @@ namespace Potato.Service.Shared {
         /// </summary>
         /// <param name="hint">A hint for where the exception occured</param>
         /// <param name="e">The exception to log</param>
-        public static void LogUnhandledException(String hint, Exception e) {
+        public static void LogUnhandledException(string hint, Exception e) {
             Defines.ErrorsLogsDirectory.Create();
 
-            var lines = new List<String>() {
-                String.Format("Hint: {0}", hint),
-                String.Format("Exception: {0}", e)
+            var lines = new List<string>() {
+                string.Format("Hint: {0}", hint),
+                string.Format("Exception: {0}", e)
             };
 
             File.WriteAllLines(Path.Combine(Defines.ErrorsLogsDirectory.FullName, DateTime.UtcNow.ToString("yyyy-MM-ddTHH-mm-ss-fffffff")), lines);

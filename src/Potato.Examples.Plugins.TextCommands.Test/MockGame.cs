@@ -23,15 +23,15 @@ namespace Potato.Examples.Plugins.TextCommands.Test {
     public class MockGame : Protocol {
         public MockGame() : base() {
             
-            this.Client = new MockClient();
+            Client = new MockClient();
 
-            this.State.Players.TryAdd("EA_1", new PlayerModel() {
+            State.Players.TryAdd("EA_1", new PlayerModel() {
                 Name = "Phogue",
                 Uid = "EA_1",
                 Score = 50
             });
 
-            this.State.Players.TryAdd("EA_2", new PlayerModel() {
+            State.Players.TryAdd("EA_2", new PlayerModel() {
                 Name = "Zaeed",
                 Uid = "EA_2",
                 Score = 0

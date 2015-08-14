@@ -51,64 +51,64 @@ namespace Potato.Core.Packages {
         /// Initiates the package controller with the default values.
         /// </summary>
         public PackagesController() {
-            this.Shared = new SharedReferences();
+            Shared = new SharedReferences();
 
-            this.Cache = new RepositoryCache();
+            Cache = new RepositoryCache();
 
-            this.LocalRepository = PackageRepositoryFactory.Default.CreateRepository(Defines.PackagesDirectory.FullName);
+            LocalRepository = PackageRepositoryFactory.Default.CreateRepository(Defines.PackagesDirectory.FullName);
 
-            this.GroupedVariableListener = new GroupedVariableListener() {
-                Variables = this.Shared.Variables,
+            GroupedVariableListener = new GroupedVariableListener() {
+                Variables = Shared.Variables,
                 GroupsVariableName = CommonVariableNames.PackagesConfigGroups.ToString(),
-                ListeningVariablesNames = new List<String>() {
+                ListeningVariablesNames = new List<string>() {
                     CommonVariableNames.PackagesRepositoryUri.ToString()
                 }
             };
 
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.PackagesMergePackage,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "packageId",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.PackagesMergePackage
+                    Handler = PackagesMergePackage
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.PackagesUninstallPackage,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "packageId",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.PackagesUninstallPackage
+                    Handler = PackagesUninstallPackage
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.PackagesFetchPackages,
-                    Handler = this.PackagesFetchPackages
+                    Handler = PackagesFetchPackages
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.PackagesAppendRepository,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "uri",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.PackagesAppendRepository
+                    Handler = PackagesAppendRepository
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.PackagesRemoveRepository,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "uri",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.PackagesRemoveRepository
+                    Handler = PackagesRemoveRepository
                 }
             });
         }
@@ -119,15 +119,15 @@ namespace Potato.Core.Packages {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult PackagesMergePackage(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult PackagesMergePackage(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String packageId = parameters["packageId"].First<String>();
+            var packageId = parameters["packageId"].First<string>();
 
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                if (String.IsNullOrEmpty(packageId) == false) {
-                    var repository = this.Cache.Repositories.FirstOrDefault(repo => repo.Packages.Any(pack => pack.Id == packageId) == true);
-                    var package = this.Cache.Repositories.SelectMany(repo => repo.Packages).FirstOrDefault(pack => pack.Id == packageId);
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                if (string.IsNullOrEmpty(packageId) == false) {
+                    var repository = Cache.Repositories.FirstOrDefault(repo => repo.Packages.Any(pack => pack.Id == packageId) == true);
+                    var package = Cache.Repositories.SelectMany(repo => repo.Packages).FirstOrDefault(pack => pack.Id == packageId);
 
                     if (repository != null && package != null) {
 
@@ -135,10 +135,10 @@ namespace Potato.Core.Packages {
                             // Send command as local. Users may be granted permission to install a package
                             // from a known package repository (this method) but not have permission to install from an
                             // arbitrary source (InstanceServiceMergePackage)
-                            this.Bubble(CommandBuilder.PotatoServiceMergePackage(repository.Uri, package.Id).SetOrigin(CommandOrigin.Local));
+                            Bubble(CommandBuilder.PotatoServiceMergePackage(repository.Uri, package.Id).SetOrigin(CommandOrigin.Local));
 
                             result = new CommandResult() {
-                                Message = String.Format("Dispatched merge signal on package id {0}.", packageId),
+                                Message = string.Format("Dispatched merge signal on package id {0}.", packageId),
                                 CommandResultType = CommandResultType.Success,
                                 Success = true,
                                 Now = {
@@ -153,7 +153,7 @@ namespace Potato.Core.Packages {
                         }
                         else {
                             result = new CommandResult() {
-                                Message = String.Format(@"Package with id ""{0}"" is already installed and up to date.", packageId),
+                                Message = string.Format(@"Package with id ""{0}"" is already installed and up to date.", packageId),
                                 CommandResultType = CommandResultType.AlreadyExists,
                                 Success = false
                             };
@@ -161,7 +161,7 @@ namespace Potato.Core.Packages {
                     }
                     else {
                         result = new CommandResult() {
-                            Message = String.Format(@"Repository with package id ""{0}"" is not known or the package does not exist.", packageId),
+                            Message = string.Format(@"Repository with package id ""{0}"" is not known or the package does not exist.", packageId),
                             CommandResultType = CommandResultType.DoesNotExists,
                             Success = false
                         };
@@ -169,7 +169,7 @@ namespace Potato.Core.Packages {
                 }
                 else {
                     result = new CommandResult() {
-                        Message = String.Format(@"Invalid or missing parameter ""packageId""."),
+                        Message = string.Format(@"Invalid or missing parameter ""packageId""."),
                         CommandResultType = CommandResultType.InvalidParameter,
                         Success = false
                     };
@@ -188,25 +188,25 @@ namespace Potato.Core.Packages {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult PackagesUninstallPackage(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult PackagesUninstallPackage(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String packageId = parameters["packageId"].First<String>();
+            var packageId = parameters["packageId"].First<string>();
 
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                if (String.IsNullOrEmpty(packageId) == false) {
-                    var repository = this.Cache.Repositories.FirstOrDefault(repo => repo.Packages.Any(pack => pack.Id == packageId) == true);
-                    var package = this.Cache.Repositories.SelectMany(repo => repo.Packages).FirstOrDefault(pack => pack.Id == packageId);
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                if (string.IsNullOrEmpty(packageId) == false) {
+                    var repository = Cache.Repositories.FirstOrDefault(repo => repo.Packages.Any(pack => pack.Id == packageId) == true);
+                    var package = Cache.Repositories.SelectMany(repo => repo.Packages).FirstOrDefault(pack => pack.Id == packageId);
 
                     if (repository != null && package != null) {
                         if (package.State == PackageState.Installed || package.State == PackageState.UpdateAvailable) {
                             // Send command as local. Users may be granted permission to install a package
                             // from a known package repository (this method) but not have permission to uninstall from an
                             // arbitrary source (InstanceServiceMergePackage)
-                            this.Bubble(CommandBuilder.PotatoServiceUninstallPackage(package.Id).SetOrigin(CommandOrigin.Local));
+                            Bubble(CommandBuilder.PotatoServiceUninstallPackage(package.Id).SetOrigin(CommandOrigin.Local));
 
                             result = new CommandResult() {
-                                Message = String.Format("Dispatched uninstall signal on package id {0}.", packageId),
+                                Message = string.Format("Dispatched uninstall signal on package id {0}.", packageId),
                                 CommandResultType = CommandResultType.Success,
                                 Success = true,
                                 Now = {
@@ -221,7 +221,7 @@ namespace Potato.Core.Packages {
                         }
                         else {
                             result = new CommandResult() {
-                                Message = String.Format(@"Package with id ""{0}"" is not installed.", packageId),
+                                Message = string.Format(@"Package with id ""{0}"" is not installed.", packageId),
                                 CommandResultType = CommandResultType.AlreadyExists,
                                 Success = false
                             };
@@ -229,7 +229,7 @@ namespace Potato.Core.Packages {
                     }
                     else {
                         result = new CommandResult() {
-                            Message = String.Format(@"Repository with package id ""{0}"" is not known or the package does not exist.", packageId),
+                            Message = string.Format(@"Repository with package id ""{0}"" is not known or the package does not exist.", packageId),
                             CommandResultType = CommandResultType.DoesNotExists,
                             Success = false
                         };
@@ -237,7 +237,7 @@ namespace Potato.Core.Packages {
                 }
                 else {
                     result = new CommandResult() {
-                        Message = String.Format(@"Invalid or missing parameter ""packageId""."),
+                        Message = string.Format(@"Invalid or missing parameter ""packageId""."),
                         CommandResultType = CommandResultType.InvalidParameter,
                         Success = false
                     };
@@ -257,22 +257,22 @@ namespace Potato.Core.Packages {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult PackagesFetchPackages(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult PackagesFetchPackages(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 // Give a representation of what we know right now
                 result = new CommandResult() {
-                    Message = String.Format("Dispatched packages fetch signal."),
+                    Message = string.Format("Dispatched packages fetch signal."),
                     CommandResultType = CommandResultType.Success,
                     Success = true,
                     Now = {
-                        Repositories = new List<RepositoryModel>(this.Cache.Repositories)
+                        Repositories = new List<RepositoryModel>(Cache.Repositories)
                     }
                 };
 
                 // Now dispatch an update.
-                Task.Factory.StartNew(this.Poke);
+                Task.Factory.StartNew(Poke);
             }
             else {
                 result = CommandResult.InsufficientPermissions;
@@ -286,23 +286,23 @@ namespace Potato.Core.Packages {
         /// a new repository url to fetch packages from.
         /// </summary>
         /// <returns></returns>
-        public ICommandResult PackagesAppendRepository(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult PackagesAppendRepository(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String uri = parameters["uri"].First<String>();
+            var uri = parameters["uri"].First<string>();
             
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 var sluggedUri = uri.Slug();
 
-                this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetA(VariableModel.NamespaceVariableName(sluggedUri, CommonVariableNames.PackagesRepositoryUri), uri).SetOrigin(CommandOrigin.Local));
+                Shared.Variables.Tunnel(CommandBuilder.VariablesSetA(VariableModel.NamespaceVariableName(sluggedUri, CommonVariableNames.PackagesRepositoryUri), uri).SetOrigin(CommandOrigin.Local));
 
-                ICommandResult uris = this.Shared.Variables.Tunnel(CommandBuilder.VariablesGet(CommonVariableNames.PackagesConfigGroups).SetOrigin(CommandOrigin.Local));
+                var uris = Shared.Variables.Tunnel(CommandBuilder.VariablesGet(CommonVariableNames.PackagesConfigGroups).SetOrigin(CommandOrigin.Local));
 
-                var content = uris.Now.Variables != null ? uris.Now.Variables.SelectMany(variable => variable.ToList<String>()).ToList() : new List<String>();
+                var content = uris.Now.Variables != null ? uris.Now.Variables.SelectMany(variable => variable.ToList<string>()).ToList() : new List<string>();
 
                 // If the name has not been registered already..
                 if (uris.Success == true && content.Contains(sluggedUri) == false) {
-                    this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetA(CommonVariableNames.PackagesConfigGroups, content.Union(new List<String>() {
+                    Shared.Variables.Tunnel(CommandBuilder.VariablesSetA(CommonVariableNames.PackagesConfigGroups, content.Union(new List<string>() {
                         sluggedUri
                     }).ToList()).SetOrigin(CommandOrigin.Local));
 
@@ -310,12 +310,12 @@ namespace Potato.Core.Packages {
                         Success = true,
                         CommandResultType = CommandResultType.Success,
                         Now = {
-                            Repositories = this.Cache.Repositories.Where(repository => repository.Slug == sluggedUri).ToList()
+                            Repositories = Cache.Repositories.Where(repository => repository.Slug == sluggedUri).ToList()
                         }
                     };
 
-                    if (this.Shared.Events != null) {
-                        this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PackagesRepositoryAppended));
+                    if (Shared.Events != null) {
+                        Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PackagesRepositoryAppended));
                     }
                 }
                 else {
@@ -337,29 +337,29 @@ namespace Potato.Core.Packages {
         /// a url from the list of repositories to fetch.
         /// </summary>
         /// <returns></returns>
-        public ICommandResult PackagesRemoveRepository(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult PackagesRemoveRepository(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String uri = parameters["uri"].First<String>();
+            var uri = parameters["uri"].First<string>();
             
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 var sluggedUri = uri.Slug();
 
                 // Store a copy of the repositories being removed so they can be included in the event.
-                var repositories = this.Cache.Repositories.Where(repository => repository.Slug == sluggedUri).ToList();
+                var repositories = Cache.Repositories.Where(repository => repository.Slug == sluggedUri).ToList();
 
-                this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetA(VariableModel.NamespaceVariableName(sluggedUri, CommonVariableNames.PackagesRepositoryUri), "").SetOrigin(CommandOrigin.Local));
+                Shared.Variables.Tunnel(CommandBuilder.VariablesSetA(VariableModel.NamespaceVariableName(sluggedUri, CommonVariableNames.PackagesRepositoryUri), "").SetOrigin(CommandOrigin.Local));
 
-                ICommandResult uris = this.Shared.Variables.Tunnel(CommandBuilder.VariablesGet(CommonVariableNames.PackagesConfigGroups).SetOrigin(CommandOrigin.Local));
+                var uris = Shared.Variables.Tunnel(CommandBuilder.VariablesGet(CommonVariableNames.PackagesConfigGroups).SetOrigin(CommandOrigin.Local));
 
-                var content = uris.Now.Variables != null ? uris.Now.Variables.SelectMany(variable => variable.ToList<String>()).ToList() : new List<String>();
+                var content = uris.Now.Variables != null ? uris.Now.Variables.SelectMany(variable => variable.ToList<string>()).ToList() : new List<string>();
 
                 // If the name has not been registered already..
                 if (uris.Success == true && content.Contains(sluggedUri) == true) {
 
                     content.RemoveAll(item => item == sluggedUri);
 
-                    this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetA(CommonVariableNames.PackagesConfigGroups, content).SetOrigin(CommandOrigin.Local));
+                    Shared.Variables.Tunnel(CommandBuilder.VariablesSetA(CommonVariableNames.PackagesConfigGroups, content).SetOrigin(CommandOrigin.Local));
 
                     result = new CommandResult() {
                         Success = true,
@@ -369,8 +369,8 @@ namespace Potato.Core.Packages {
                         }
                     };
 
-                    if (this.Shared.Events != null) {
-                        this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PackagesRepositoryRemoved));
+                    if (Shared.Events != null) {
+                        Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PackagesRepositoryRemoved));
                     }
                 }
                 else {
@@ -395,14 +395,14 @@ namespace Potato.Core.Packages {
         ///     <para>This method can potentially be time consuming and should be run in a new thread.</para>
         /// </remarks>
         public override void Poke() {
-            if (this.Cache != null) {
-                lock (this.Cache) {
-                    this.Cache.Build(this.LocalRepository);
+            if (Cache != null) {
+                lock (Cache) {
+                    Cache.Build(LocalRepository);
 
-                    this.Shared.Events.Log(new GenericEvent() {
+                    Shared.Events.Log(new GenericEvent() {
                         GenericEventType = GenericEventType.PackagesCacheRebuilt,
                         Now = {
-                            Repositories = new List<RepositoryModel>(this.Cache.Repositories)
+                            Repositories = new List<RepositoryModel>(Cache.Repositories)
                         }
                     });
                 }
@@ -414,18 +414,18 @@ namespace Potato.Core.Packages {
         /// </summary>
         protected void AssignEvents() {
             // Remove all current handlers, also clears the list in this.ListeningVariables
-            this.UnassignEvents();
+            UnassignEvents();
 
-            this.GroupedVariableListener.AssignEvents();
-            this.GroupedVariableListener.VariablesModified += GroupedVariableListenerOnVariablesModified;
+            GroupedVariableListener.AssignEvents();
+            GroupedVariableListener.VariablesModified += GroupedVariableListenerOnVariablesModified;
         }
 
         /// <summary>
         /// Removes all current event handlers.
         /// </summary>
         protected void UnassignEvents() {
-            this.GroupedVariableListener.VariablesModified -= GroupedVariableListenerOnVariablesModified;
-            this.GroupedVariableListener.UnassignEvents();
+            GroupedVariableListener.VariablesModified -= GroupedVariableListenerOnVariablesModified;
+            GroupedVariableListener.UnassignEvents();
         }
 
         /// <summary>
@@ -433,38 +433,38 @@ namespace Potato.Core.Packages {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="repositoryGroupNames"></param>
-        private void GroupedVariableListenerOnVariablesModified(GroupedVariableListener sender, List<String> repositoryGroupNames) {
-            this.Cache.Clear();
+        private void GroupedVariableListenerOnVariablesModified(GroupedVariableListener sender, List<string> repositoryGroupNames) {
+            Cache.Clear();
 
-            foreach (String repositoryGroupName in repositoryGroupNames) {
-                String uri = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(repositoryGroupName, CommonVariableNames.PackagesRepositoryUri), String.Empty);
+            foreach (var repositoryGroupName in repositoryGroupNames) {
+                var uri = Shared.Variables.Get(VariableModel.NamespaceVariableName(repositoryGroupName, CommonVariableNames.PackagesRepositoryUri), string.Empty);
 
-                if (String.IsNullOrEmpty(uri) == false) {
-                    this.Cache.Add(uri);
+                if (string.IsNullOrEmpty(uri) == false) {
+                    Cache.Add(uri);
                 }
             }
             
-            this.AssignEvents();
+            AssignEvents();
         }
 
         public override ICoreController Execute() {
-            this.GroupedVariableListener.Variables = this.Shared.Variables;
+            GroupedVariableListener.Variables = Shared.Variables;
 
-            this.AssignEvents();
+            AssignEvents();
 
             return base.Execute();
         }
 
         public override void Dispose() {
-            this.UnassignEvents();
-            this.GroupedVariableListener = null;
+            UnassignEvents();
+            GroupedVariableListener = null;
 
-            lock (this.Cache) {
-                this.Cache.Clear();
-                this.Cache = null;
+            lock (Cache) {
+                Cache.Clear();
+                Cache = null;
             }
 
-            this.LocalRepository = null;
+            LocalRepository = null;
 
             base.Dispose();
         }

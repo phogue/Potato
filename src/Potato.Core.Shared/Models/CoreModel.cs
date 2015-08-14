@@ -35,15 +35,15 @@ namespace Potato.Core.Shared.Models {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="property"></param>
-        protected void OnPropertyChanged(Object sender, String property) {
-            var handler = this.PropertyChanged;
+        protected void OnPropertyChanged(object sender, string property) {
+            var handler = PropertyChanged;
             if (handler != null) {
                 handler(sender, new PropertyChangedEventArgs(property));
             }
         }
 
         public object Clone() {
-            return this.MemberwiseClone();
+            return MemberwiseClone();
         }
     }
 }

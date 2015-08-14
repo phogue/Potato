@@ -33,7 +33,7 @@ namespace Potato.Core.Test.Variables {
 
         internal class VariableComplexValue {
             public int PropertyOne { get; set; }
-            public String PropertyTwo { get; set; }
+            public string PropertyTwo { get; set; }
         }
 
         /// <summary>

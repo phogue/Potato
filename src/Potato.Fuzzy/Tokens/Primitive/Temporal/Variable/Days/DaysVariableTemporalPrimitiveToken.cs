@@ -20,12 +20,12 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Days {
     using Syntax.Adjectives;
 
     public class DaysVariableTemporalPrimitiveToken : DateTimeTemporalPrimitiveToken {
-        public static Phrase ReduceAdjectiveDays(IFuzzyState state, Dictionary<String, Token> parameters) {
-            AdjectiveSyntaxToken adjective = (AdjectiveSyntaxToken) parameters["adjective"];
-            DaysVariableTemporalPrimitiveToken days = (DaysVariableTemporalPrimitiveToken) parameters["days"];
+        public static Phrase ReduceAdjectiveDays(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var adjective = (AdjectiveSyntaxToken) parameters["adjective"];
+            var days = (DaysVariableTemporalPrimitiveToken) parameters["days"];
 
 
-            DateTime newDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            var newDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
 
             if (adjective is LastAdjectiveSyntaxToken) {
                 // Today - Maximum of 7
@@ -54,7 +54,7 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Days {
                         Month = newDateTime.Month,
                         Day = newDateTime.Day
                     },
-                    Text = String.Format("{0} {1}", adjective.Text, days.Text),
+                    Text = string.Format("{0} {1}", adjective.Text, days.Text),
                     Similarity = (days.Similarity + adjective.Similarity) / 2.0F
                 }
             };

@@ -29,7 +29,7 @@ namespace Potato.Net.Shared.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestWordifySingleWord() {
-            List<string> words = "single".Wordify();
+            var words = "single".Wordify();
 
             Assert.AreEqual(1, words.Count);
             Assert.AreEqual("single", words.First());
@@ -40,7 +40,7 @@ namespace Potato.Net.Shared.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestWordifyDoubleWord() {
-            List<string> words = "first second".Wordify();
+            var words = "first second".Wordify();
 
             Assert.AreEqual(2, words.Count);
             Assert.AreEqual("first", words.First());
@@ -52,7 +52,7 @@ namespace Potato.Net.Shared.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestWordifyTripleWordFirstTwoQuoted() {
-            List<string> words = "\"first second\" third".Wordify();
+            var words = "\"first second\" third".Wordify();
 
             Assert.AreEqual(2, words.Count);
             Assert.AreEqual("first second", words.First());
@@ -64,7 +64,7 @@ namespace Potato.Net.Shared.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestWordifyTripleWordLastTwoQuoted() {
-            List<string> words = "first \"second third\"".Wordify();
+            var words = "first \"second third\"".Wordify();
 
             Assert.AreEqual(2, words.Count);
             Assert.AreEqual("first", words.First());
@@ -76,7 +76,7 @@ namespace Potato.Net.Shared.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestWordifyEscapedNewLine() {
-            List<string> words = "first\\nsecond".Wordify();
+            var words = "first\\nsecond".Wordify();
 
             Assert.AreEqual(1, words.Count);
             Assert.AreEqual("first\nsecond", words.First());
@@ -87,7 +87,7 @@ namespace Potato.Net.Shared.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestWordifyEscapedCarriageReturn() {
-            List<string> words = "first\\rsecond".Wordify();
+            var words = "first\\rsecond".Wordify();
 
             Assert.AreEqual(1, words.Count);
             Assert.AreEqual("first\rsecond", words.First());
@@ -98,7 +98,7 @@ namespace Potato.Net.Shared.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestWordifyEscapedTab() {
-            List<string> words = "first\\tsecond".Wordify();
+            var words = "first\\tsecond".Wordify();
 
             Assert.AreEqual(1, words.Count);
             Assert.AreEqual("first\tsecond", words.First());
@@ -109,7 +109,7 @@ namespace Potato.Net.Shared.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestWordifyEscapedBackslash() {
-            List<string> words = "first\\\\second".Wordify();
+            var words = "first\\\\second".Wordify();
 
             Assert.AreEqual(1, words.Count);
             Assert.AreEqual("first\\second", words.First());
@@ -120,7 +120,7 @@ namespace Potato.Net.Shared.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestWordifyQuoteWithinQuote() {
-            List<string> words = "\"first \\\"second\" third".Wordify();
+            var words = "\"first \\\"second\" third".Wordify();
 
             Assert.AreEqual(2, words.Count);
             Assert.AreEqual("first \"second", words.First());

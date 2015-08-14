@@ -26,7 +26,7 @@ namespace Potato.Net.Utils.Tests {
         public bool Found { get; set; }
 
         public override string ToString() {
-            return this.Regex == null ? this.Text : String.Format("/{0}/", this.Regex);
+            return Regex == null ? Text : string.Format("/{0}/", Regex);
         }
     }
 }

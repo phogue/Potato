@@ -29,8 +29,8 @@ namespace Potato.Net.Shared.Test.Actions.Deferred {
         /// </summary>
         [Test]
         public void TestSuccessfulSinglePacketDoneAction() {
-            WaitingActions waitingActions = new WaitingActions();
-            bool doneFlag = false;
+            var waitingActions = new WaitingActions();
+            var doneFlag = false;
 
             waitingActions.Done = (action, requests, responses) => { doneFlag = true; };
 
@@ -57,8 +57,8 @@ namespace Potato.Net.Shared.Test.Actions.Deferred {
         /// </summary>
         [Test]
         public void TestFailedDoneAction() {
-            WaitingActions waitingActions = new WaitingActions();
-            bool doneFlag = false;
+            var waitingActions = new WaitingActions();
+            var doneFlag = false;
 
             waitingActions.Done = (action, requests, responses) => { doneFlag = true; };
 
@@ -84,8 +84,8 @@ namespace Potato.Net.Shared.Test.Actions.Deferred {
         /// </summary>
         [Test]
         public void TestSuccessfulDoublePacketDoneAction() {
-            WaitingActions waitingActions = new WaitingActions();
-            bool doneFlag = false;
+            var waitingActions = new WaitingActions();
+            var doneFlag = false;
 
             waitingActions.Done = (action, requests, responses) => { doneFlag = true; };
 
@@ -123,8 +123,8 @@ namespace Potato.Net.Shared.Test.Actions.Deferred {
         /// </summary>
         [Test]
         public void TestFailedDoublePacketActionWithTwoSameResponses() {
-            WaitingActions waitingActions = new WaitingActions();
-            bool doneFlag = false;
+            var waitingActions = new WaitingActions();
+            var doneFlag = false;
 
             waitingActions.Done = (action, requests, responses) => { doneFlag = true; };
 
@@ -162,8 +162,8 @@ namespace Potato.Net.Shared.Test.Actions.Deferred {
         /// </summary>
         [Test]
         public void TestExpiredAction() {
-            WaitingActions waitingActions = new WaitingActions();
-            bool expiredFlag = false;
+            var waitingActions = new WaitingActions();
+            var expiredFlag = false;
 
             waitingActions.Expired = (action, requests, responses) => { expiredFlag = true; };
 

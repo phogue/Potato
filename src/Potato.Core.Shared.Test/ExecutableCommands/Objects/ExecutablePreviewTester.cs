@@ -23,7 +23,7 @@ using System.Collections.Generic;
 namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
     public class ExecutablePreviewTester : ExecutableBasicTester {
         public ExecutablePreviewTester() : base() {
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     CommandAttributeType = CommandAttributeType.Preview,
@@ -33,7 +33,7 @@ namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
                             Type = typeof (int)
                         }
                     },
-                    Handler = this.SetTestFlagPreview
+                    Handler = SetTestFlagPreview
                 }
             });
         }
@@ -41,10 +41,10 @@ namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
         /// <summary>
         ///     Sets the value of the test flag.
         /// </summary>
-        public ICommandResult SetTestFlagPreview(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            int value = parameters["value"].First<int>();
+        public ICommandResult SetTestFlagPreview(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var value = parameters["value"].First<int>();
 
-            ICommandResult result = command.Result;
+            var result = command.Result;
 
             if (value == 10) {
                 result.CommandResultType = CommandResultType.None;

@@ -22,9 +22,9 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Date.Day {
         }
 
         public TomorrowDayVariableTemporalPrimitiveToken() {
-            DateTime dt = DateTime.Now.AddDays(1);
+            var dt = DateTime.Now.AddDays(1);
 
-            this.Pattern = new FuzzyDateTimePattern() {
+            Pattern = new FuzzyDateTimePattern() {
                 Rule = TimeType.Definitive,
                 Year = dt.Year,
                 Month = dt.Month,

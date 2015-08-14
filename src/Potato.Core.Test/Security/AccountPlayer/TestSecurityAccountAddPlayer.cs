@@ -39,7 +39,7 @@ namespace Potato.Core.Test.Security.AccountPlayer {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now add a player to the "Phogue" account.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
 
             // Validate the player was added successfully.
             Assert.IsTrue(result.Success);
@@ -58,7 +58,7 @@ namespace Potato.Core.Test.Security.AccountPlayer {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now add a player to the "Phogue" account.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, String.Empty).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, string.Empty).SetOrigin(CommandOrigin.Local));
 
             // Validate the player was added successfully.
             Assert.IsFalse(result.Success);
@@ -79,7 +79,7 @@ namespace Potato.Core.Test.Security.AccountPlayer {
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
 
             // Now add the same player to the "PapaCharlie9" account.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("PapaCharlie9", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("PapaCharlie9", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
 
             // Validate the command was a success and the player is attached to the "PapaCharlie9" account
             // and no longer attached to the "Phogue" account.
@@ -99,7 +99,7 @@ namespace Potato.Core.Test.Security.AccountPlayer {
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("PapaCharlie9", CommonProtocolType.DiceBattlefield3, "ABCDEF")
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("PapaCharlie9", CommonProtocolType.DiceBattlefield3, "ABCDEF")
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     Username = "Phogue"

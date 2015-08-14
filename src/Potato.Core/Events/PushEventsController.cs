@@ -32,7 +32,7 @@ namespace Potato.Core.Events {
         /// <summary>
         /// The end points to push new events to.
         /// </summary>
-        public Dictionary<String, IPushEventsEndPoint> EndPoints { get; set; }
+        public Dictionary<string, IPushEventsEndPoint> EndPoints { get; set; }
 
         /// <summary>
         /// Our own task controller since various sources can set their own interval to be pushed.
@@ -50,25 +50,25 @@ namespace Potato.Core.Events {
         /// Initializes with default attributes
         /// </summary>
         public PushEventsController() : base() {
-            this.Shared = new SharedReferences();
-            this.EndPoints = new Dictionary<String, IPushEventsEndPoint>();
-            this.Tasks = new List<Timer>();
+            Shared = new SharedReferences();
+            EndPoints = new Dictionary<string, IPushEventsEndPoint>();
+            Tasks = new List<Timer>();
 
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.EventsEstablishJsonStream,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "name",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "uri",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "key",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "interval",
@@ -77,25 +77,25 @@ namespace Potato.Core.Events {
                         new CommandParameterType() {
                             IsList = true,
                             Name = "inclusive",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.EventsEstablishJsonStream
+                    Handler = EventsEstablishJsonStream
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.EventsEstablishJsonStream,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "name",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "uri",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "key",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "interval",
@@ -103,16 +103,16 @@ namespace Potato.Core.Events {
                         },
                         new CommandParameterType() {
                             Name = "inclusive",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.EventsEstablishJsonStream
+                    Handler = EventsEstablishJsonStream
                 }
             });
 
-            this.GroupedVariableListener = new GroupedVariableListener() {
+            GroupedVariableListener = new GroupedVariableListener() {
                 GroupsVariableName = CommonVariableNames.EventsPushConfigGroups.ToString(),
-                ListeningVariablesNames = new List<String>() {
+                ListeningVariablesNames = new List<string>() {
                     CommonVariableNames.EventsPushUri.ToString(),
                     CommonVariableNames.EventPushIntervalSeconds.ToString(),
                     CommonVariableNames.EventPushContentType.ToString(),
@@ -129,22 +129,22 @@ namespace Potato.Core.Events {
         /// </summary>
         public void AssignEvents() {
             // Remove all current handlers, also clears the list in this.ListeningVariables
-            this.UnassignEvents();
+            UnassignEvents();
 
-            this.GroupedVariableListener.AssignEvents();
-            this.GroupedVariableListener.VariablesModified += GroupedVariableListenerOnVariablesModified;
+            GroupedVariableListener.AssignEvents();
+            GroupedVariableListener.VariablesModified += GroupedVariableListenerOnVariablesModified;
             
-            this.Shared.Events.EventLogged += new EventsController.EventLoggedHandler(MasterEvents_EventLogged);
+            Shared.Events.EventLogged += new EventsController.EventLoggedHandler(MasterEvents_EventLogged);
         }
 
         /// <summary>
         /// Removes all current event handlers.
         /// </summary>
         public void UnassignEvents() {
-            this.GroupedVariableListener.VariablesModified -= GroupedVariableListenerOnVariablesModified;
-            this.GroupedVariableListener.UnassignEvents();
+            GroupedVariableListener.VariablesModified -= GroupedVariableListenerOnVariablesModified;
+            GroupedVariableListener.UnassignEvents();
 
-            this.Shared.Events.EventLogged -= new EventsController.EventLoggedHandler(MasterEvents_EventLogged);
+            Shared.Events.EventLogged -= new EventsController.EventLoggedHandler(MasterEvents_EventLogged);
         }
 
         /// <summary>
@@ -152,56 +152,56 @@ namespace Potato.Core.Events {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="pushEventsGroupNames"></param>
-        public void GroupedVariableListenerOnVariablesModified(GroupedVariableListener sender, List<String> pushEventsGroupNames) {
-            foreach (String pushEventsGroupName in pushEventsGroupNames) {
-                String pushUri = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventsPushUri), String.Empty);
+        public void GroupedVariableListenerOnVariablesModified(GroupedVariableListener sender, List<string> pushEventsGroupNames) {
+            foreach (var pushEventsGroupName in pushEventsGroupNames) {
+                var pushUri = Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventsPushUri), string.Empty);
 
                 // Make sure we have the available data to setup this end point.
-                if (String.IsNullOrEmpty(pushUri) == false) {
-                    if (this.EndPoints.ContainsKey(pushEventsGroupName) == false) {
+                if (string.IsNullOrEmpty(pushUri) == false) {
+                    if (EndPoints.ContainsKey(pushEventsGroupName) == false) {
                         IPushEventsEndPoint endPoint = new PushEventsEndPoint() {
                             // Deliberately done this way so two end points can't share identical credentials
                             // but share identical Uri's. Who knows what people might be doing?
                             Id = pushEventsGroupName,
 
                             // The password used to push data. Optional. Can be blank, null or garbage. It's just passed on to the server.
-                            StreamKey = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushStreamKey), String.Empty),
+                            StreamKey = Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushStreamKey), string.Empty),
 
-                            Uri = new Uri(this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventsPushUri), String.Empty)),
+                            Uri = new Uri(Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventsPushUri), string.Empty)),
 
                             // Defaults to a 1 second interval
-                            Interval = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushIntervalSeconds), 1),
+                            Interval = Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushIntervalSeconds), 1),
 
                             // Defaults to Xml serialization
-                            ContentType = Mime.ToMimeType(this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushContentType), Mime.ApplicationJson), Mime.ApplicationJson),
+                            ContentType = Mime.ToMimeType(Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushContentType), Mime.ApplicationJson), Mime.ApplicationJson),
 
                             // Defaults to empty list.
-                            InclusiveNames = this.Shared.Variables.Variable(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushInclusiveNames)).ToList<String>()
+                            InclusiveNames = Shared.Variables.Variable(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushInclusiveNames)).ToList<string>()
                         };
 
                         // Now make sure we don't already push to this Uri with the same interval.
-                        if (this.EndPoints.ContainsValue(endPoint) == false) {
-                            this.EndPoints.Add(pushEventsGroupName, endPoint);
+                        if (EndPoints.ContainsValue(endPoint) == false) {
+                            EndPoints.Add(pushEventsGroupName, endPoint);
                         }
                     }
                     // Else, modify the existing end point.
                     else {
-                        this.EndPoints[pushEventsGroupName].StreamKey = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushStreamKey), String.Empty);
-                        this.EndPoints[pushEventsGroupName].Uri = new Uri(this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventsPushUri), String.Empty));
-                        this.EndPoints[pushEventsGroupName].Interval = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushIntervalSeconds), 1);
-                        this.EndPoints[pushEventsGroupName].ContentType = Mime.ToMimeType(this.Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushContentType), Mime.ApplicationJson), Mime.ApplicationJson);
-                        this.EndPoints[pushEventsGroupName].InclusiveNames = this.Shared.Variables.Variable(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushInclusiveNames)).ToList<String>();
+                        EndPoints[pushEventsGroupName].StreamKey = Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushStreamKey), string.Empty);
+                        EndPoints[pushEventsGroupName].Uri = new Uri(Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventsPushUri), string.Empty));
+                        EndPoints[pushEventsGroupName].Interval = Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushIntervalSeconds), 1);
+                        EndPoints[pushEventsGroupName].ContentType = Mime.ToMimeType(Shared.Variables.Get(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushContentType), Mime.ApplicationJson), Mime.ApplicationJson);
+                        EndPoints[pushEventsGroupName].InclusiveNames = Shared.Variables.Variable(VariableModel.NamespaceVariableName(pushEventsGroupName, CommonVariableNames.EventPushInclusiveNames)).ToList<string>();
                     }
                 }
             }
 
             // Clear all tasks. We'll reestablish them again. Just easier than juggling what
             // has been added or not.
-            this.Tasks.ForEach(task => task.Dispose());
-            this.Tasks.Clear();
+            Tasks.ForEach(task => task.Dispose());
+            Tasks.Clear();
 
-            foreach (var endPoint in this.EndPoints) {
-                this.Tasks.Add(
+            foreach (var endPoint in EndPoints) {
+                Tasks.Add(
                     new Timer(OnTick, endPoint.Value, TimeSpan.FromMilliseconds(0), TimeSpan.FromSeconds(endPoint.Value.Interval))
                 );
             }
@@ -220,11 +220,11 @@ namespace Potato.Core.Events {
         }
 
         public override ICoreController Execute() {
-            this.GroupedVariableListener.Variables = this.Shared.Variables;
+            GroupedVariableListener.Variables = Shared.Variables;
 
-            this.AssignEvents();
+            AssignEvents();
 
-            this.GroupedVariableListener.Execute();
+            GroupedVariableListener.Execute();
             
             return base.Execute();
         }
@@ -233,7 +233,7 @@ namespace Potato.Core.Events {
         /// Called whenever an event is logged.
         /// </summary>
         protected void MasterEvents_EventLogged(object sender, IGenericEvent e) {
-            foreach (var endPoint in this.EndPoints) {
+            foreach (var endPoint in EndPoints) {
                 endPoint.Value.Append(e);
             }
         }
@@ -241,32 +241,32 @@ namespace Potato.Core.Events {
         /// <summary>
         /// Establishes a json stream to an endpoint
         /// </summary>
-        public ICommandResult EventsEstablishJsonStream(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult EventsEstablishJsonStream(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String name = parameters["name"].First<String>();
-            String uri = parameters["uri"].First<String>();
-            String key = parameters["key"].First<String>();
-            int interval = parameters["interval"].First<int>();
-            List<String> inclusive = parameters["inclusive"].All<String>();
+            var name = parameters["name"].First<string>();
+            var uri = parameters["uri"].First<string>();
+            var key = parameters["key"].First<string>();
+            var interval = parameters["interval"].First<int>();
+            var inclusive = parameters["inclusive"].All<string>();
 
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetF(VariableModel.NamespaceVariableName(name, CommonVariableNames.EventPushContentType), Mime.ApplicationJson).SetOrigin(CommandOrigin.Local));
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                Shared.Variables.Tunnel(CommandBuilder.VariablesSetF(VariableModel.NamespaceVariableName(name, CommonVariableNames.EventPushContentType), Mime.ApplicationJson).SetOrigin(CommandOrigin.Local));
 
-                this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetF(VariableModel.NamespaceVariableName(name, CommonVariableNames.EventsPushUri), uri).SetOrigin(CommandOrigin.Local));
-                this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetF(VariableModel.NamespaceVariableName(name, CommonVariableNames.EventPushIntervalSeconds), interval.ToString(CultureInfo.InvariantCulture)).SetOrigin(CommandOrigin.Local));
-                this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetF(VariableModel.NamespaceVariableName(name, CommonVariableNames.EventPushStreamKey), key).SetOrigin(CommandOrigin.Local));
-                this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetF(VariableModel.NamespaceVariableName(name, CommonVariableNames.EventPushInclusiveNames), inclusive).SetOrigin(CommandOrigin.Local));
+                Shared.Variables.Tunnel(CommandBuilder.VariablesSetF(VariableModel.NamespaceVariableName(name, CommonVariableNames.EventsPushUri), uri).SetOrigin(CommandOrigin.Local));
+                Shared.Variables.Tunnel(CommandBuilder.VariablesSetF(VariableModel.NamespaceVariableName(name, CommonVariableNames.EventPushIntervalSeconds), interval.ToString(CultureInfo.InvariantCulture)).SetOrigin(CommandOrigin.Local));
+                Shared.Variables.Tunnel(CommandBuilder.VariablesSetF(VariableModel.NamespaceVariableName(name, CommonVariableNames.EventPushStreamKey), key).SetOrigin(CommandOrigin.Local));
+                Shared.Variables.Tunnel(CommandBuilder.VariablesSetF(VariableModel.NamespaceVariableName(name, CommonVariableNames.EventPushInclusiveNames), inclusive).SetOrigin(CommandOrigin.Local));
 
-                ICommandResult uris = this.Shared.Variables.Tunnel(CommandBuilder.VariablesGet(CommonVariableNames.EventsPushConfigGroups).SetOrigin(CommandOrigin.Local));
+                var uris = Shared.Variables.Tunnel(CommandBuilder.VariablesGet(CommonVariableNames.EventsPushConfigGroups).SetOrigin(CommandOrigin.Local));
 
-                var content = uris.Now.Variables != null ? uris.Now.Variables.SelectMany(variable => variable.ToList<String>()).ToList() : new List<String>();
+                var content = uris.Now.Variables != null ? uris.Now.Variables.SelectMany(variable => variable.ToList<string>()).ToList() : new List<string>();
 
                 // If the name has not been registered already..
                 // We always need to set the flash variable. We may have loaded
                 // from a flash variable, which is why we know of the host already.
                 if (uris.Success == true) {
-                    this.Shared.Variables.Tunnel(CommandBuilder.VariablesSetF(CommonVariableNames.EventsPushConfigGroups, content.Union(new List<String>() {
+                    Shared.Variables.Tunnel(CommandBuilder.VariablesSetF(CommonVariableNames.EventsPushConfigGroups, content.Union(new List<string>() {
                         name
                     }).ToList()).SetOrigin(CommandOrigin.Local));
                 }
@@ -284,17 +284,17 @@ namespace Potato.Core.Events {
         }
 
         public override void Dispose() {
-            this.UnassignEvents();
+            UnassignEvents();
 
-            foreach (var endPoint in this.EndPoints) {
+            foreach (var endPoint in EndPoints) {
                 endPoint.Value.Dispose();
             }
-            this.EndPoints.Clear();
-            this.EndPoints = null;
+            EndPoints.Clear();
+            EndPoints = null;
 
-            this.Tasks.ForEach(task => task.Dispose());
-            this.Tasks.Clear();
-            this.Tasks = null;
+            Tasks.ForEach(task => task.Dispose());
+            Tasks.Clear();
+            Tasks = null;
 
             base.Dispose();
         }

@@ -26,30 +26,30 @@ namespace Myrcon.Plugins.Test.Tests {
     public class TestPluginsWebUi : CoreController {
 
         public TestPluginsWebUi() : base() {
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     Name = "/",
-                    Handler = this.TestPluginIndex
+                    Handler = TestPluginIndex
                 },
                 new CommandDispatch() {
                     Name = "/widget/overview",
-                    Handler = this.TestPluginIndex
+                    Handler = TestPluginIndex
                 },
                 new CommandDispatch() {
                     Name = "/widget/settings",
-                    Handler = this.TestPluginIndex
+                    Handler = TestPluginIndex
                 },
                 new CommandDispatch() {
                     Name = "/widget/player",
-                    Handler = this.TestPluginIndex
+                    Handler = TestPluginIndex
                 },
                 new CommandDispatch() {
                     Name = "/script.js",
-                    Handler = this.TestPluginScript
+                    Handler = TestPluginScript
                 },
                 new CommandDispatch() {
                     Name = "/style.css",
-                    Handler = this.TestPluginStyle
+                    Handler = TestPluginStyle
                 },
                 new CommandDispatch() {
                     Name = "TestPluginSimpleMultiplyByTwoCommand",
@@ -59,27 +59,27 @@ namespace Myrcon.Plugins.Test.Tests {
                             Type = typeof(int)
                         }
                     },
-                    Handler = this.TestPluginSimpleMultiplyByTwoCommand
+                    Handler = TestPluginSimpleMultiplyByTwoCommand
                 },
                 new CommandDispatch() {
                     Name = "/test/parameters",
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "name",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "score",
                             Type = typeof(int)
                         }
                     },
-                    Handler = this.TestPluginParameters
+                    Handler = TestPluginParameters
                 }
             });
         }
 
-        protected ICommandResult TestPluginIndex(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            IndexPageView index = new IndexPageView();
+        protected ICommandResult TestPluginIndex(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var index = new IndexPageView();
 
             command.Result = new CommandResult() {
                 Now = new CommandData() {
@@ -95,10 +95,10 @@ namespace Myrcon.Plugins.Test.Tests {
             return command.Result;
         }
 
-        protected ICommandResult TestPluginScript(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        protected ICommandResult TestPluginScript(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             command.Result = new CommandResult() {
                 Now = new CommandData() {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         Resources.Script
                     }
                 },
@@ -110,10 +110,10 @@ namespace Myrcon.Plugins.Test.Tests {
             return command.Result;
         }
 
-        protected ICommandResult TestPluginStyle(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        protected ICommandResult TestPluginStyle(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             command.Result = new CommandResult() {
                 Now = new CommandData() {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         Resources.Style
                     }
                 },
@@ -125,25 +125,25 @@ namespace Myrcon.Plugins.Test.Tests {
             return command.Result;
         }
 
-        protected ICommandResult TestPluginSimpleMultiplyByTwoCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            int number = parameters["number"].First<int>();
+        protected ICommandResult TestPluginSimpleMultiplyByTwoCommand(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var number = parameters["number"].First<int>();
 
-            command.Result.Message = String.Format("{0}", number * 2);
+            command.Result.Message = string.Format("{0}", number * 2);
             command.Result.CommandResultType = CommandResultType.Success;
 
             return command.Result;
         }
 
-        protected ICommandResult TestPluginParameters(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            String name = parameters["name"].First<String>();
-            int score = parameters["score"].First<int>();
+        protected ICommandResult TestPluginParameters(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var name = parameters["name"].First<string>();
+            var score = parameters["score"].First<int>();
 
-            PlayerModel player = new PlayerModel() {
+            var player = new PlayerModel() {
                 Name = name,
                 Score = score
             };
 
-            TestParameterPageView index = new TestParameterPageView() {
+            var index = new TestParameterPageView() {
                 Player = player
             };
 

@@ -24,7 +24,7 @@ namespace Potato.Net.Shared {
     /// Wraps an assembly reference and supported protocol types.
     /// </summary>
     public class ProtocolAssemblyMetadata : IProtocolAssemblyMetadata {
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         public FileInfo Assembly { get; set; }
 
@@ -38,7 +38,7 @@ namespace Potato.Net.Shared {
         /// Initalizes meta data with default values.
         /// </summary>
         public ProtocolAssemblyMetadata() {
-            this.ProtocolTypes = new List<IProtocolType>();
+            ProtocolTypes = new List<IProtocolType>();
         }
 
         /// <summary>
@@ -46,14 +46,14 @@ namespace Potato.Net.Shared {
         /// </summary>
         /// <param name="path">The directory path to load the meta data from.</param>
         /// <returns>True if the meta data loaded, false if an error occured or metadata/assembly is missing</returns>
-        public bool Load(String path) {
-            this.Directory = new DirectoryInfo(path);
-            this.Name = this.Directory.Name;
+        public bool Load(string path) {
+            Directory = new DirectoryInfo(path);
+            Name = Directory.Name;
 
-            this.Assembly = new FileInfo(Path.Combine(this.Directory.FullName, this.Name + ".dll"));
-            this.Meta = new FileInfo(Path.Combine(this.Directory.FullName, this.Name + ".json"));
+            Assembly = new FileInfo(Path.Combine(Directory.FullName, Name + ".dll"));
+            Meta = new FileInfo(Path.Combine(Directory.FullName, Name + ".json"));
 
-            return this.Load();
+            return Load();
         }
 
         /// <summary>
@@ -61,11 +61,11 @@ namespace Potato.Net.Shared {
         /// </summary>
         /// <returns></returns>
         public bool Load() {
-            bool loaded = true;
+            var loaded = true;
 
-            if (this.Assembly != null && this.Assembly.Exists == true && this.Meta != null && this.Meta.Exists == true) {
+            if (Assembly != null && Assembly.Exists == true && Meta != null && Meta.Exists == true) {
                 try {
-                    using (var stream = new StreamReader(this.Meta.FullName)) {
+                    using (var stream = new StreamReader(Meta.FullName)) {
                         using (JsonReader reader = new JsonTextReader(stream)) {
                             JsonSerialization.Minimal.Populate(reader, this);
                         }

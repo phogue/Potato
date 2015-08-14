@@ -30,7 +30,7 @@ namespace Potato.Core.Shared {
         /// <summary>
         /// List of strings to use as general content (localization(s), html etc.)
         /// </summary>
-        List<String> Content { get; set; }
+        List<string> Content { get; set; }
 
         /// <summary>
         /// Connections effected by this event.

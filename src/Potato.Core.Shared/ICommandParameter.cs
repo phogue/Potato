@@ -33,7 +33,7 @@ namespace Potato.Core.Shared {
         /// <param name="value">The value to be changed</param>
         /// <param name="conversionType">The type to be changed to</param>
         /// <returns>The changed type</returns>
-        Object ChangeType(Object value, Type conversionType);
+        object ChangeType(object value, Type conversionType);
 
         /// <summary>
         /// Checks if this parameter has a specific data type.
@@ -72,13 +72,13 @@ namespace Potato.Core.Shared {
         /// Fetches the first matching object
         /// </summary>
         /// <returns></returns>
-        Object First(Type t, bool convert = true);
+        object First(Type t, bool convert = true);
 
         /// <summary>
         /// Fetches all of the objects of the specified type.
         /// </summary>
         /// <returns></returns>
-        Object All(Type t, bool convert = true);
+        object All(Type t, bool convert = true);
 
         /// <summary>
         /// Fetches all of the objects of the specified type.

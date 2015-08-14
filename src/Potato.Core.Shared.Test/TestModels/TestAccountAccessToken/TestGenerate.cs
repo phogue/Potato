@@ -6,16 +6,16 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
     [TestFixture]
     public class TestGenerate {
 
-        public const String Identifer = "identifer";
+        public const string Identifer = "identifer";
 
         /// <summary>
         /// Tests a null (no) token is returned if no one owns the access token.
         /// </summary>
         [Test]
         public void TestNullTokenReturnedWhenAccountEmpty() {
-            AccessTokenModel accessToken = new AccessTokenModel();
+            var accessToken = new AccessTokenModel();
 
-            var token = accessToken.Generate(TestGenerate.Identifer);
+            var token = accessToken.Generate(Identifer);
 
             Assert.IsNull(token);
         }
@@ -25,13 +25,13 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestNullTokenReturnedWhenAccountHashNull() {
-            AccessTokenModel accessToken = new AccessTokenModel() {
+            var accessToken = new AccessTokenModel() {
                 Account = new AccountModel() {
                     PasswordHash = null
                 }
             };
 
-            var token = accessToken.Generate(TestGenerate.Identifer);
+            var token = accessToken.Generate(Identifer);
 
             Assert.IsNull(token);
         }
@@ -41,13 +41,13 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestNullTokenReturnedWhenAccountHashEmpty() {
-            AccessTokenModel accessToken = new AccessTokenModel() {
+            var accessToken = new AccessTokenModel() {
                 Account = new AccountModel() {
                     PasswordHash = ""
                 }
             };
 
-            var token = accessToken.Generate(TestGenerate.Identifer);
+            var token = accessToken.Generate(Identifer);
 
             Assert.IsNull(token);
         }
@@ -57,7 +57,7 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestNullTokenReturnedWhenIdentiferNull() {
-            AccessTokenModel accessToken = new AccessTokenModel() {
+            var accessToken = new AccessTokenModel() {
                 Account = new AccountModel() {
                     PasswordHash = "password"
                 }
@@ -73,7 +73,7 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestNullTokenReturnedWhenIdentiferEmpty() {
-            AccessTokenModel accessToken = new AccessTokenModel() {
+            var accessToken = new AccessTokenModel() {
                 Account = new AccountModel() {
                     PasswordHash = "password"
                 }
@@ -89,7 +89,7 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestGoodTokenReturnedWhenAllCredentialsPassed() {
-            AccessTokenModel accessToken = new AccessTokenModel() {
+            var accessToken = new AccessTokenModel() {
                 Account = new AccountModel() {
                     PasswordHash = "password"
                 }
@@ -105,7 +105,7 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestReturnedTokenIsRandom() {
-            AccessTokenModel accessToken = new AccessTokenModel() {
+            var accessToken = new AccessTokenModel() {
                 Account = new AccountModel() {
                     PasswordHash = "password"
                 }
@@ -124,7 +124,7 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestLastTouchedResetToCurrentDateTime() {
-            AccessTokenModel accessToken = new AccessTokenModel() {
+            var accessToken = new AccessTokenModel() {
                 Account = new AccountModel() {
                     PasswordHash = "password"
                 },

@@ -36,7 +36,7 @@ namespace Potato.Core.Test.Events.TestEventsController {
         public void TestInsufficientPermissions() {
             var pushEvents = new PushEventsController();
 
-            var result = pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id", "http://localhost/", "key", 1, new List<String>() {
+            var result = pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id", "http://localhost/", "key", 1, new List<string>() {
                 "EventName"
             })
             .SetOrigin(CommandOrigin.Remote)
@@ -59,7 +59,7 @@ namespace Potato.Core.Test.Events.TestEventsController {
             pushEvents.Shared.Security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
             pushEvents.Shared.Security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.EventsEstablishJsonStream, 5).SetOrigin(CommandOrigin.Local));
 
-            var result = pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id", "http://localhost/", "key", 1, new List<String>() {
+            var result = pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id", "http://localhost/", "key", 1, new List<string>() {
                 "EventName"
             }).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
@@ -78,7 +78,7 @@ namespace Potato.Core.Test.Events.TestEventsController {
 
             pushEvents.Execute();
 
-            pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id", "http://localhost/", "key", 10, new List<String>() {
+            pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id", "http://localhost/", "key", 10, new List<string>() {
                 "EventName"
             }).SetOrigin(CommandOrigin.Local));
 
@@ -86,7 +86,7 @@ namespace Potato.Core.Test.Events.TestEventsController {
             Assert.AreEqual(new Uri("http://localhost/"), pushEvents.EndPoints.First().Value.Uri);
             Assert.AreEqual("key", pushEvents.EndPoints.First().Value.StreamKey);
             Assert.AreEqual(10, pushEvents.EndPoints.First().Value.Interval);
-            Assert.AreEqual(new List<String>() {
+            Assert.AreEqual(new List<string>() {
                 "EventName"
             }, pushEvents.EndPoints.First().Value.InclusiveNames);
         }
@@ -100,7 +100,7 @@ namespace Potato.Core.Test.Events.TestEventsController {
 
             pushEvents.Execute();
 
-            pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id", "http://localhost/", "key", 10, new List<String>() {
+            pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id", "http://localhost/", "key", 10, new List<string>() {
                 "EventOne",
                 "EventTwo"
             }).SetOrigin(CommandOrigin.Local));
@@ -109,7 +109,7 @@ namespace Potato.Core.Test.Events.TestEventsController {
             Assert.AreEqual(new Uri("http://localhost/"), pushEvents.EndPoints.First().Value.Uri);
             Assert.AreEqual("key", pushEvents.EndPoints.First().Value.StreamKey);
             Assert.AreEqual(10, pushEvents.EndPoints.First().Value.Interval);
-            Assert.AreEqual(new List<String>() {
+            Assert.AreEqual(new List<string>() {
                 "EventOne",
                 "EventTwo"
             }, pushEvents.EndPoints.First().Value.InclusiveNames);
@@ -124,11 +124,11 @@ namespace Potato.Core.Test.Events.TestEventsController {
 
             pushEvents.Execute();
 
-            pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id1", "http://localhost/", "key1", 10, new List<String>() {
+            pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id1", "http://localhost/", "key1", 10, new List<string>() {
                 "EventName1"
             }).SetOrigin(CommandOrigin.Local));
 
-            pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id2", "http://lolcatshost/", "key2", 20, new List<String>() {
+            pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id2", "http://lolcatshost/", "key2", 20, new List<string>() {
                 "EventName2"
             }).SetOrigin(CommandOrigin.Local));
 
@@ -144,15 +144,15 @@ namespace Potato.Core.Test.Events.TestEventsController {
 
             pushEvents.Execute();
 
-            pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id1", "http://localhost/", "key1", 10, new List<String>() {
+            pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id1", "http://localhost/", "key1", 10, new List<string>() {
                 "EventName1"
             }).SetOrigin(CommandOrigin.Local));
 
-            pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id2", "http://lolcatshost/", "key2", 20, new List<String>() {
+            pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id2", "http://lolcatshost/", "key2", 20, new List<string>() {
                 "EventName2"
             }).SetOrigin(CommandOrigin.Local));
 
-            Assert.AreEqual(2, pushEvents.Shared.Variables.FlashVariables.First(archive => archive.Key.ToLower() == CommonVariableNames.EventsPushConfigGroups.ToString().ToLower()).Value.ToList<String>().Count);
+            Assert.AreEqual(2, pushEvents.Shared.Variables.FlashVariables.First(archive => archive.Key.ToLower() == CommonVariableNames.EventsPushConfigGroups.ToString().ToLower()).Value.ToList<string>().Count);
         }
 
         /// <summary>
@@ -172,12 +172,12 @@ namespace Potato.Core.Test.Events.TestEventsController {
             pushEvents.Execute();
 
             // Setup a end point to use previously set EventsPushConfigGroups id
-            pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id1", "http://localhost/", "key1", 10, new List<String>() {
+            pushEvents.Tunnel(CommandBuilder.EventsEstablishJsonStream("id1", "http://localhost/", "key1", 10, new List<string>() {
                 "EventName1"
             }).SetOrigin(CommandOrigin.Local));
 
             // This id should be set in the config.
-            Assert.AreEqual(1, pushEvents.Shared.Variables.FlashVariables.First(archive => archive.Key.ToLower() == CommonVariableNames.EventsPushConfigGroups.ToString().ToLower()).Value.ToList<String>().Count);
+            Assert.AreEqual(1, pushEvents.Shared.Variables.FlashVariables.First(archive => archive.Key.ToLower() == CommonVariableNames.EventsPushConfigGroups.ToString().ToLower()).Value.ToList<string>().Count);
         }
     }
 }

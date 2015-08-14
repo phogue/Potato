@@ -27,39 +27,39 @@ namespace Potato.Service.Shared {
         public int DisposeServiceTimeout { get; set; }
         public string PackagesDefaultSourceRepositoryUri { get; set; }
 
-        public void ParseArguments(IDictionary<String, String> arguments) {
+        public void ParseArguments(IDictionary<string, string> arguments) {
             // If we have not been told anything update updating core OR the update has been explictely set to true
             // default: check for update, unless "-updatecore false" is passed in.
             if (arguments.ContainsKey("serviceupdatecore") == true) {
-                this.ServiceUpdateCore = ArgumentHelper.IsFalsey(arguments["serviceupdatecore"]) == false;
+                ServiceUpdateCore = ArgumentHelper.IsFalsey(arguments["serviceupdatecore"]) == false;
             }
 
             if (arguments.ContainsKey("servicepollingtimeout") == true) {
                 // Attempt to parse the value or maintain existing value if an error occurs.
-                this.ServicePollingTimeout = (int)ArgumentHelper.ParseNumeric(arguments["servicepollingtimeout"], this.ServicePollingTimeout);
+                ServicePollingTimeout = (int)ArgumentHelper.ParseNumeric(arguments["servicepollingtimeout"], ServicePollingTimeout);
             }
 
             if (arguments.ContainsKey("packagesdefaultsourcerepositoryuri") == true) {
-                this.PackagesDefaultSourceRepositoryUri = arguments["packagesdefaultsourcerepositoryuri"];
+                PackagesDefaultSourceRepositoryUri = arguments["packagesdefaultsourcerepositoryuri"];
             }
         }
 
         /// <summary>
         /// Initializes the settings with the default values.
         /// </summary>
-        public ServiceSettings() : this(new List<String>()) { }
+        public ServiceSettings() : this(new List<string>()) { }
 
         /// <summary>
         /// Initializes the settings with the default values and processes input as arguments
         /// </summary>
         public ServiceSettings(IList<string> input) {
-            this.ServiceUpdateCore = true;
-            this.ServicePollingTimeout = Defines.DefaultServicePollingTimeout;
-            this.WriteServiceConfigTimeout = Defines.DefaultWriteServiceConfigTimeout;
-            this.DisposeServiceTimeout = Defines.DefaultDisposeServiceTimeout;
-            this.PackagesDefaultSourceRepositoryUri = Defines.PackagesDefaultSourceRepositoryUri;
+            ServiceUpdateCore = true;
+            ServicePollingTimeout = Defines.DefaultServicePollingTimeout;
+            WriteServiceConfigTimeout = Defines.DefaultWriteServiceConfigTimeout;
+            DisposeServiceTimeout = Defines.DefaultDisposeServiceTimeout;
+            PackagesDefaultSourceRepositoryUri = Defines.PackagesDefaultSourceRepositoryUri;
 
-            this.ParseArguments(ArgumentHelper.ToArguments(input));
+            ParseArguments(ArgumentHelper.ToArguments(input));
         }
     }
 }

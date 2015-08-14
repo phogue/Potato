@@ -34,37 +34,37 @@ namespace Potato.Net.Shared.Protocols {
         /// <summary>
         /// No game type specified.
         /// </summary>
-        public const String None = "None";
+        public const string None = "None";
 
         /// <summary>
         /// The game type is unknown. Even though it is not defined in this list though
         /// you can still define it on your type.
         /// </summary>
-        public const String Unknown = "Unknown";
+        public const string Unknown = "Unknown";
 
         /// <summary>
         /// Bad company 2
         /// </summary>
-        public const String DiceBattlefieldBadCompany2 = "DiceBattlefieldBadCompany2";
+        public const string DiceBattlefieldBadCompany2 = "DiceBattlefieldBadCompany2";
 
         /// <summary>
         /// Battlefield 3
         /// </summary>
-        public const String DiceBattlefield3 = "DiceBattlefield3";
+        public const string DiceBattlefield3 = "DiceBattlefield3";
 
         /// <summary>
         /// Battlefield 4
         /// </summary>
-        public const String DiceBattlefield4 = "DiceBattlefield4";
+        public const string DiceBattlefield4 = "DiceBattlefield4";
 
         /// <summary>
         /// Battlefield 5
         /// </summary>
-        public const String TreyarchCallOfDutyBlackOps = "TreyarchCallOfDutyBlackOps";
+        public const string TreyarchCallOfDutyBlackOps = "TreyarchCallOfDutyBlackOps";
 
         /// <summary>
         /// Medal of Honor 2010
         /// </summary>
-        public const String DiceMedalOfHonor2010 = "DiceMedalOfHonor2010";
+        public const string DiceMedalOfHonor2010 = "DiceMedalOfHonor2010";
     }
 }

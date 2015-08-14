@@ -36,7 +36,7 @@ namespace Potato.Service.Shared.Test {
         /// </summary>
         [Test]
         public void TestServiceSettingsOverrideServiceUpdateCore() {
-            var settings = new ServiceSettings(new List<String>() {
+            var settings = new ServiceSettings(new List<string>() {
                 "-ServiceUpdateCore",
                 "false"
             });
@@ -51,7 +51,7 @@ namespace Potato.Service.Shared.Test {
         /// </summary>
         [Test]
         public void TestServiceSettingsOverrideServicePollingTimeout() {
-            var settings = new ServiceSettings(new List<String>() {
+            var settings = new ServiceSettings(new List<string>() {
                 "-ServicePollingTimeout",
                 "10"
             });
@@ -66,7 +66,7 @@ namespace Potato.Service.Shared.Test {
         /// </summary>
         [Test]
         public void TestServiceSettingsOverridePackagesDefaultSourceRepositoryUri() {
-            var settings = new ServiceSettings(new List<String>() {
+            var settings = new ServiceSettings(new List<string>() {
                 "-PackagesDefaultSourceRepositoryUri",
                 "localhost"
             });

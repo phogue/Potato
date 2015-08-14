@@ -25,12 +25,12 @@ namespace Potato.Core.Events {
         /// <summary>
         /// The identifier of this stream
         /// </summary>
-        public String Id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// The stream key (temporary password) specified by the stream end point when setting up.
         /// </summary>
-        public String StreamKey { get; set; }
+        public string StreamKey { get; set; }
 
         /// <summary>
         /// A list of events to serialize and send.

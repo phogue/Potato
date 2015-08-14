@@ -19,15 +19,15 @@ namespace Potato.Net.Shared.Test.Mocks {
 
         public MockTcpClient() : base() {
 
-            this.PacketSerializer = new MockPacketSerializer();
+            PacketSerializer = new MockPacketSerializer();
         }
 
         public MockTcpClient(System.Net.Sockets.TcpClient client) : base() {
-            this.Client = client;
-            this.Stream = client.GetStream();
-            this.ConnectionState = ConnectionState.ConnectionLoggedIn;
+            Client = client;
+            Stream = client.GetStream();
+            ConnectionState = ConnectionState.ConnectionLoggedIn;
 
-            this.PacketSerializer = new MockPacketSerializer();
+            PacketSerializer = new MockPacketSerializer();
         }
     }
 }

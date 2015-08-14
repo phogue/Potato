@@ -29,10 +29,10 @@ namespace Potato.Net.Shared.Truths {
         /// <param name="trees">The list of trees to merge together</param>
         /// <returns>A new tree with all branches merged together</returns>
         public static Tree Union(params Tree[] trees) {
-            Tree tree = new Tree();
+            var tree = new Tree();
 
-            foreach (Tree branch in trees) {
-                Tree.Merge(tree, branch);
+            foreach (var branch in trees) {
+                Merge(tree, branch);
             }
 
             return tree;
@@ -41,11 +41,11 @@ namespace Potato.Net.Shared.Truths {
         protected static ITruth Merge(ITruth source, ITruth other) {
             // Only merge if the roots match types.
             if (source.GetType() == other.GetType()) {
-                foreach (ITruth otherNode in other) {
-                    ITruth existingSourceNode = source.FirstOrDefault(c => c.GetType().IsInstanceOfType(otherNode));
+                foreach (var otherNode in other) {
+                    var existingSourceNode = source.FirstOrDefault(c => c.GetType().IsInstanceOfType(otherNode));
 
                     if (existingSourceNode != null) {
-                        Tree.Merge(existingSourceNode, otherNode);
+                        Merge(existingSourceNode, otherNode);
                     }
                     else {
                         source.Add(otherNode);

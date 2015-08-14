@@ -23,7 +23,7 @@ namespace Potato.Service.Shared.Test.TestDefines {
     public class TestSearchPaths {
         [SetUp]
         public void SetUp() {
-            this.Cleanup();
+            Cleanup();
         }
 
         [TearDown]
@@ -31,7 +31,7 @@ namespace Potato.Service.Shared.Test.TestDefines {
             var directory = new DirectoryInfo(Path.Combine(Defines.PackagesDirectory.FullName, "Exists.1.0.0"));
             if (directory.Exists == true) directory.Delete(true);
 
-            FileInfo file = new FileInfo(Path.Combine(Defines.BaseDirectory.FullName, "Potato.Core.txt"));
+            var file = new FileInfo(Path.Combine(Defines.BaseDirectory.FullName, "Potato.Core.txt"));
             if (file.Exists == true) file.Delete();
         }
 
@@ -40,7 +40,7 @@ namespace Potato.Service.Shared.Test.TestDefines {
         /// </summary>
         [Test]
         public void TestFileExistsInBaseDirectory() {
-            List<String> paths = Defines.SearchPaths("Potato.Service.Shared.Test.dll", new List<String>() {
+            var paths = Defines.SearchPaths("Potato.Service.Shared.Test.dll", new List<string>() {
                 Defines.BaseDirectory.FullName
             });
 
@@ -52,7 +52,7 @@ namespace Potato.Service.Shared.Test.TestDefines {
         /// </summary>
         [Test]
         public void TestFileDoesNotExist() {
-            List<String> paths = Defines.SearchPaths("lulz.dll", new List<String>() {
+            var paths = Defines.SearchPaths("lulz.dll", new List<string>() {
                 Defines.BaseDirectory.FullName
             });
 
@@ -64,13 +64,13 @@ namespace Potato.Service.Shared.Test.TestDefines {
         /// </summary>
         [Test]
         public void TestFileExistsInPackagesDirectory() {
-            DirectoryInfo directory = new DirectoryInfo(Path.Combine(Defines.PackagesDirectory.FullName, "Exists.1.0.0", "lib", "net40"));
-            FileInfo file = new FileInfo(Path.Combine(directory.FullName, "Potato.Core.txt"));
+            var directory = new DirectoryInfo(Path.Combine(Defines.PackagesDirectory.FullName, "Exists.1.0.0", "lib", "net40"));
+            var file = new FileInfo(Path.Combine(directory.FullName, "Potato.Core.txt"));
             directory.Create();
 
             File.WriteAllText(file.FullName, "Test Output");
 
-            List<String> paths = Defines.SearchPaths(file.Name, new List<String>() {
+            var paths = Defines.SearchPaths(file.Name, new List<string>() {
                 directory.FullName
             });
 
@@ -82,15 +82,15 @@ namespace Potato.Service.Shared.Test.TestDefines {
         /// </summary>
         [Test]
         public void TestFileExistsInPackagesAndBaseDirectory() {
-            DirectoryInfo directory = new DirectoryInfo(Path.Combine(Defines.PackagesDirectory.FullName, "Exists.1.0.0", "lib", "net40"));
-            FileInfo file = new FileInfo(Path.Combine(directory.FullName, "Potato.Core.txt"));
+            var directory = new DirectoryInfo(Path.Combine(Defines.PackagesDirectory.FullName, "Exists.1.0.0", "lib", "net40"));
+            var file = new FileInfo(Path.Combine(directory.FullName, "Potato.Core.txt"));
             directory.Create();
 
             File.WriteAllText(file.FullName, "Test Output");
 
             File.WriteAllText(Path.Combine(Defines.BaseDirectory.FullName, "Potato.Core.txt"), "Test Output");
 
-            List<String> paths = Defines.SearchPaths(file.Name, new List<String>() {
+            var paths = Defines.SearchPaths(file.Name, new List<string>() {
                 Defines.BaseDirectory.FullName,
                 directory.FullName
             });

@@ -26,7 +26,7 @@ namespace Potato.Net.Shared.Models {
         /// Initializes the underlying networkmodel with the required collections.
         /// </summary>
         public ChatModel() : base() {
-            this.Now.Content = new List<String>();
+            Now.Content = new List<string>();
         }
     }
 }

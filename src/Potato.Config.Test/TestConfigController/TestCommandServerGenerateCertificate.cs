@@ -46,7 +46,7 @@ namespace Potato.Config.Test.TestConfigController {
         /// </summary>
         [Test]
         public void TestEmptyArguments() {
-            var result = ConfigController.Dispatch("CommandServerGenerateCertificate", new Dictionary<String, String>());
+            var result = ConfigController.Dispatch("CommandServerGenerateCertificate", new Dictionary<string, string>());
 
             var password = result.Arguments["Password"];
 
@@ -65,7 +65,7 @@ namespace Potato.Config.Test.TestConfigController {
         public void TestSuppliedPassword() {
             const string password = "TestSuppliedPassword";
 
-            ConfigController.Dispatch("CommandServerGenerateCertificate", new Dictionary<String, String>() {
+            ConfigController.Dispatch("CommandServerGenerateCertificate", new Dictionary<string, string>() {
                 { "password", password }
             });
 
@@ -84,7 +84,7 @@ namespace Potato.Config.Test.TestConfigController {
         public void TestSuppliedPasswordReturnedInMessage() {
             const string password = "TestSuppliedPassword";
 
-            var result = ConfigController.Dispatch("CommandServerGenerateCertificate", new Dictionary<String, String>() {
+            var result = ConfigController.Dispatch("CommandServerGenerateCertificate", new Dictionary<string, string>() {
                 { "password", password }
             });
 

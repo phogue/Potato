@@ -31,7 +31,7 @@ namespace Potato.Core.Test.Security.Permission {
 
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecuritySetPredefinedAdministratorsPermissions("GroupName").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = security.Tunnel(CommandBuilder.SecuritySetPredefinedAdministratorsPermissions("GroupName").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -48,7 +48,7 @@ namespace Potato.Core.Test.Security.Permission {
             var security = new SecurityController();
             security.Tunnel(CommandBuilder.SecurityAddGroup("ThisIsValid").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecuritySetPredefinedAdministratorsPermissions("ThisIsNotValid").SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecuritySetPredefinedAdministratorsPermissions("ThisIsNotValid").SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.DoesNotExists, result.CommandResultType);
@@ -61,7 +61,7 @@ namespace Potato.Core.Test.Security.Permission {
         public void TestGuestGroupFailure() {
             var security = new SecurityController();
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecuritySetPredefinedAdministratorsPermissions("Guest").SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecuritySetPredefinedAdministratorsPermissions("Guest").SetOrigin(CommandOrigin.Local));
 
             // Make sure it was not successful.
             Assert.IsFalse(result.Success);
@@ -77,7 +77,7 @@ namespace Potato.Core.Test.Security.Permission {
 
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecuritySetPredefinedAdministratorsPermissions("GroupName").SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecuritySetPredefinedAdministratorsPermissions("GroupName").SetOrigin(CommandOrigin.Local));
 
             // Make sure it was not successful.
             Assert.IsTrue(result.Success);

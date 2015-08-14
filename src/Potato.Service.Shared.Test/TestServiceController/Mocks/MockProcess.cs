@@ -18,7 +18,7 @@ namespace Potato.Service.Shared.Test.TestServiceController.Mocks {
         public bool OnKill { get; set; }
 
         public void Kill() {
-            this.OnKill = true;
+            OnKill = true;
         }
     }
 }

@@ -45,49 +45,49 @@ namespace Potato.Service.Shared.Packages {
         /// Called after packages have been fetched, checks have been completed and the
         /// action (installing/uninstalling) is 
         /// </summary>
-        Action<String> PackageActionCanceled { get; set; }
+        Action<string> PackageActionCanceled { get; set; }
 
         /// <summary>
         /// Called after fetching source and local and unable to find a package
         /// </summary>
-        Action<String> PackageMissing { get; set; }
+        Action<string> PackageMissing { get; set; }
 
         /// <summary>
         /// Called when an exception occurs during a package operation
         /// </summary>
-        Action<String, Exception> RepositoryException { get; set; }
+        Action<string, Exception> RepositoryException { get; set; }
 
         /// <summary>
         /// Called when a package is being installed by a package manager
         /// </summary>
-        Action<Object, String, String> PackageInstalling { get; set; }
+        Action<object, string, string> PackageInstalling { get; set; }
 
         /// <summary>
         /// Called when a package has been installed by a package manager
         /// </summary>
-        Action<Object, String, String> PackageInstalled { get; set; }
+        Action<object, string, string> PackageInstalled { get; set; }
 
         /// <summary>
         /// Called when a package is being uninstalled by a package manager
         /// </summary>
-        Action<Object, String, String> PackageUninstalling { get; set; }
+        Action<object, string, string> PackageUninstalling { get; set; }
 
         /// <summary>
         /// Called when a package has been uninstalled by a package manager
         /// </summary>
-        Action<Object, String, String> PackageUninstalled { get; set; }
+        Action<object, string, string> PackageUninstalled { get; set; }
 
         /// <summary>
         /// Installs or updates a package given a repository
         /// </summary>
         /// <param name="uri">The source repository of the package</param>
         /// <param name="packageId">The package id to search for and install/update</param>
-        void MergePackage(String uri, String packageId);
+        void MergePackage(string uri, string packageId);
 
         /// <summary>
         /// Uninstalls a package 
         /// </summary>
         /// <param name="packageId"></param>
-        void UninstallPackage(String packageId);
+        void UninstallPackage(string packageId);
     }
 }

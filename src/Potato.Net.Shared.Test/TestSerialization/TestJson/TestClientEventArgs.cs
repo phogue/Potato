@@ -52,7 +52,7 @@ namespace Potato.Net.Shared.Test.TestSerialization.TestJson {
                             Uid = Guid.Empty
                         }
                     },
-                    Exceptions = new List<String>() {
+                    Exceptions = new List<string>() {
                         ""
                     },
                     Packets = new List<IPacket>() {
@@ -67,7 +67,7 @@ namespace Potato.Net.Shared.Test.TestSerialization.TestJson {
                             Uid = Guid.Empty
                         }
                     },
-                    Exceptions = new List<String>() {
+                    Exceptions = new List<string>() {
                         ""
                     },
                     Packets = new List<IPacket>() {

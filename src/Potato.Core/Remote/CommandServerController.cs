@@ -52,25 +52,25 @@ namespace Potato.Core.Remote {
         /// Initalizes the command server controller with default values
         /// </summary>
         public CommandServerController() : base() {
-            this.Shared = new SharedReferences();
-            this.Certificate = new CertificateController();
-            this.Interface = new InterfaceController();
+            Shared = new SharedReferences();
+            Certificate = new CertificateController();
+            Interface = new InterfaceController();
         }
 
         public override ICoreController Execute() {
-            this.Shared.Variables.Variable(CommonVariableNames.CommandServerEnabled).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
-            this.Shared.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
-            this.Shared.Variables.Variable(CommonVariableNames.CommandServerCertificatePath).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
+            Shared.Variables.Variable(CommonVariableNames.CommandServerEnabled).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
+            Shared.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
+            Shared.Variables.Variable(CommonVariableNames.CommandServerCertificatePath).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
 
-            this.TunnelObjects.Add(this.Interface);
+            TunnelObjects.Add(Interface);
 
             // Copy for unit testing purposes if variables is modified.
-            this.Certificate.Shared.Variables = this.Shared.Variables;
-            this.Certificate.Execute();
+            Certificate.Shared.Variables = Shared.Variables;
+            Certificate.Execute();
 
-            this.Interface.Execute();
+            Interface.Execute();
 
-            this.Configure();
+            Configure();
 
             return base.Execute();
         }
@@ -78,16 +78,16 @@ namespace Potato.Core.Remote {
         public override void Dispose() {
             base.Dispose();
 
-            this.Shared.Variables.Variable(CommonVariableNames.CommandServerEnabled).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
-            this.Shared.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
-            this.Shared.Variables.Variable(CommonVariableNames.CommandServerCertificatePath).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
+            Shared.Variables.Variable(CommonVariableNames.CommandServerEnabled).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
+            Shared.Variables.Variable(CommonVariableNames.CommandServerPort).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
+            Shared.Variables.Variable(CommonVariableNames.CommandServerCertificatePath).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(OnPropertyChanged);
             
-            if (this.CommandServerListener != null) this.CommandServerListener.Dispose();
-            this.CommandServerListener = null;
+            if (CommandServerListener != null) CommandServerListener.Dispose();
+            CommandServerListener = null;
         }
 
         private void OnPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-            this.Configure();
+            Configure();
         }
 
         /// <summary>
@@ -98,8 +98,8 @@ namespace Potato.Core.Remote {
             // Method implemented here instead of calling the public method so we can do
             // additional work during a Poke in the future.
 
-            if (this.CommandServerListener != null) {
-                this.CommandServerListener.Poke();
+            if (CommandServerListener != null) {
+                CommandServerListener.Poke();
             }
         }
 
@@ -110,26 +110,26 @@ namespace Potato.Core.Remote {
         /// We should fetch and listen for changes to the CommandServer* variables
         /// </summary>
         public void Configure() {
-            if (this.Shared.Variables.Get<bool>(CommonVariableNames.CommandServerEnabled) == true) {
-                if (this.Certificate.Certificate != null) {
-                    this.CommandServerListener = new CommandServerListener {
-                        Certificate = this.Certificate.Certificate,
-                        Port = this.Shared.Variables.Get<int>(CommonVariableNames.CommandServerPort),
+            if (Shared.Variables.Get<bool>(CommonVariableNames.CommandServerEnabled) == true) {
+                if (Certificate.Certificate != null) {
+                    CommandServerListener = new CommandServerListener {
+                        Certificate = Certificate.Certificate,
+                        Port = Shared.Variables.Get<int>(CommonVariableNames.CommandServerPort),
                         PacketReceived = OnPacketReceived,
                         BeginException = OnBeginException,
                         ListenerException = OnListenerException
                     };
 
                     // Start accepting connections.
-                    if (this.CommandServerListener.BeginListener() == true) {
-                        this.Shared.Events.Log(new GenericEvent() {
+                    if (CommandServerListener.BeginListener() == true) {
+                        Shared.Events.Log(new GenericEvent() {
                             GenericEventType = GenericEventType.CommandServerStarted,
                             Success = true,
                             CommandResultType = CommandResultType.Success
                         });
                     }
                     else {
-                        this.Shared.Events.Log(new GenericEvent() {
+                        Shared.Events.Log(new GenericEvent() {
                             GenericEventType = GenericEventType.CommandServerStarted,
                             Success = false,
                             CommandResultType = CommandResultType.Failed
@@ -137,11 +137,11 @@ namespace Potato.Core.Remote {
                     }
                 }
             }
-            else if (this.CommandServerListener != null) {
-                this.CommandServerListener.Dispose();
-                this.CommandServerListener = null;
+            else if (CommandServerListener != null) {
+                CommandServerListener.Dispose();
+                CommandServerListener = null;
 
-                this.Shared.Events.Log(new GenericEvent() {
+                Shared.Events.Log(new GenericEvent() {
                     GenericEventType = GenericEventType.CommandServerStopped,
                     Success = true,
                     CommandResultType = CommandResultType.Success
@@ -154,7 +154,7 @@ namespace Potato.Core.Remote {
         /// </summary>
         /// <param name="exception"></param>
         public void OnBeginException(Exception exception) {
-            this.Shared.Events.Log(new GenericEvent() {
+            Shared.Events.Log(new GenericEvent() {
                 GenericEventType = GenericEventType.CommandServerStopped,
                 Success = false,
                 CommandResultType = CommandResultType.Failed
@@ -169,7 +169,7 @@ namespace Potato.Core.Remote {
         /// </summary>
         /// <param name="exception"></param>
         public void OnListenerException(Exception exception) {
-            this.Shared.Events.Log(new GenericEvent() {
+            Shared.Events.Log(new GenericEvent() {
                 GenericEventType = GenericEventType.CommandServerStopped,
                 Success = false,
                 CommandResultType = CommandResultType.Failed
@@ -180,7 +180,7 @@ namespace Potato.Core.Remote {
 
             // Now start the listener back up. It was running successfully, but a problem occured
             // while processing a client. The error has been logged 
-            this.Configure();
+            Configure();
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace Potato.Core.Remote {
         /// </summary>
         /// <param name="request">The request received from the client</param>
         /// <returns>The extracted identifer or an empty string if none exists</returns>
-        protected String ExtractIdentifer(CommandServerPacket request) {
+        protected string ExtractIdentifer(CommandServerPacket request) {
             var identifer = "";
 
             if (request != null && request.Packet != null && request.Packet.RemoteEndPoint != null && request.Packet.RemoteEndPoint.Address != null) {
@@ -210,11 +210,11 @@ namespace Potato.Core.Remote {
         protected ICommandResult Authenticate(CommandServerPacket request, ICommand command) {
             ICommandResult result = null;
 
-            if (String.IsNullOrEmpty(command.Authentication.Username) == false && String.IsNullOrEmpty(command.Authentication.PasswordPlainText) == false) {
-                result = this.Shared.Security.Tunnel(CommandBuilder.SecurityAccountAuthenticate(command.Authentication.Username, command.Authentication.PasswordPlainText, this.ExtractIdentifer(request)).SetOrigin(CommandOrigin.Remote));
+            if (string.IsNullOrEmpty(command.Authentication.Username) == false && string.IsNullOrEmpty(command.Authentication.PasswordPlainText) == false) {
+                result = Shared.Security.Tunnel(CommandBuilder.SecurityAccountAuthenticate(command.Authentication.Username, command.Authentication.PasswordPlainText, ExtractIdentifer(request)).SetOrigin(CommandOrigin.Remote));
             }
-            else if (command.Authentication.TokenId != Guid.Empty && String.IsNullOrEmpty(command.Authentication.Token) == false) {
-                result = this.Shared.Security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(command.Authentication.TokenId, command.Authentication.Token, this.ExtractIdentifer(request)).SetOrigin(CommandOrigin.Remote));
+            else if (command.Authentication.TokenId != Guid.Empty && string.IsNullOrEmpty(command.Authentication.Token) == false) {
+                result = Shared.Security.Tunnel(CommandBuilder.SecurityAccountAuthenticateToken(command.Authentication.TokenId, command.Authentication.Token, ExtractIdentifer(request)).SetOrigin(CommandOrigin.Remote));
             }
             else {
                 result = new CommandResult() {
@@ -233,7 +233,7 @@ namespace Potato.Core.Remote {
         /// <param name="client">The client to send back the response</param>
         /// <param name="request">The request packet recieved</param>
         public void OnPacketReceived(IClient client, CommandServerPacket request) {
-            CommandServerPacket response = new CommandServerPacket() {
+            var response = new CommandServerPacket() {
                 Packet = {
                     Type = PacketType.Response,
                     Origin = PacketOrigin.Client,
@@ -246,26 +246,26 @@ namespace Potato.Core.Remote {
                 }
             };
             
-            ICommand command = CommandServerSerializer.DeserializeCommand(request);
+            var command = CommandServerSerializer.DeserializeCommand(request);
 
             if (command != null) {
-                ICommandResult authentication = this.Authenticate(request, command);
+                var authentication = Authenticate(request, command);
 
                 if (authentication.Success == true) {
                     // If all they wanted to do was check the authentication..
-                    if (String.CompareOrdinal(command.Name, CommandType.SecurityAccountAuthenticate.ToString()) == 0 || String.CompareOrdinal(command.Name, CommandType.SecurityAccountAuthenticateToken.ToString()) == 0) {
+                    if (string.CompareOrdinal(command.Name, CommandType.SecurityAccountAuthenticate.ToString()) == 0 || string.CompareOrdinal(command.Name, CommandType.SecurityAccountAuthenticateToken.ToString()) == 0) {
                         // Success
                         response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command, request), response, authentication);
                     }
                     else if (Method.Equals(request.Method, Method.Get)) {
                         // Propagate their command
-                        ICommandResult result = this.Interface.Tunnel(command);
+                        var result = Interface.Tunnel(command);
 
                         response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command, request), response, result);
                     }
                     else {
                         // Propagate their command
-                        ICommandResult result = this.Tunnel(command);
+                        var result = Tunnel(command);
 
                         response = CommandServerSerializer.CompleteResponsePacket(CommandServerSerializer.ResponseContentType(command, request), response, result);
                     }
@@ -277,7 +277,7 @@ namespace Potato.Core.Remote {
                     response.StatusCode = HttpStatusCode.Unauthorized;
 
                     // Apply return header
-                    response.Headers.Add(HttpResponseHeader.WwwAuthenticate, String.Format(@"Basic realm=""{0}""", request.Request.Host));
+                    response.Headers.Add(HttpResponseHeader.WwwAuthenticate, string.Format(@"Basic realm=""{0}""", request.Request.Host));
                 }
             }
             else {

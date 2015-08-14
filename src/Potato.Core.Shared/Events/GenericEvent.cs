@@ -28,16 +28,16 @@ namespace Potato.Core.Shared.Events {
 
         public ulong Id { get; set; }
 
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [JsonIgnore]
         public GenericEventType GenericEventType {
-            get { return this._eventType; }
+            get { return _eventType; }
             set {
-                this._eventType = value;
+                _eventType = value;
 
-                if (this._eventType != GenericEventType.None) {
-                    this.Name = value.ToString();
+                if (_eventType != GenericEventType.None) {
+                    Name = value.ToString();
                 }
             }
         }

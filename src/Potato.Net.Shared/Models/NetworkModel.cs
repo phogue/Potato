@@ -37,18 +37,18 @@ namespace Potato.Net.Shared.Models {
         /// Initializes the model with the default values.
         /// </summary>
         public NetworkModel() {
-            this.Created = DateTime.Now;
+            Created = DateTime.Now;
 
-            this.Scope = new NetworkModelData();
-            this.Then = new NetworkModelData();
-            this.Now = new NetworkModelData();
+            Scope = new NetworkModelData();
+            Then = new NetworkModelData();
+            Now = new NetworkModelData();
         }
 
         /// <summary>
         /// Returns a shallow copy of this object.
         /// </summary>
         public object Clone() {
-            return this.MemberwiseClone();
+            return MemberwiseClone();
         }
     }
 }

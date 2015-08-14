@@ -31,7 +31,7 @@ namespace Potato.Service.Shared.Test.TestServicePackages {
         public void TestUninstallDispatched() {
             var dispatcher = new MockPackageManagerDispatch();
 
-            var sources = new ConcurrentDictionary<String, IPackageRepository>();
+            var sources = new ConcurrentDictionary<string, IPackageRepository>();
 
             sources.TryAdd("localhost", new MockPackageRepository());
 
@@ -60,7 +60,7 @@ namespace Potato.Service.Shared.Test.TestServicePackages {
         public void TestPackageMissing() {
             var missing = false;
 
-            var sources = new ConcurrentDictionary<String, IPackageRepository>();
+            var sources = new ConcurrentDictionary<string, IPackageRepository>();
 
             sources.TryAdd("localhost", new MockPackageRepository(new List<IPackage>() {
                 new DataServicePackage() {
@@ -126,7 +126,7 @@ namespace Potato.Service.Shared.Test.TestServicePackages {
         public void TestOnRepositoryExceptionUninstallPackage() {
             var hint = "";
 
-            var sources = new ConcurrentDictionary<String, IPackageRepository>();
+            var sources = new ConcurrentDictionary<string, IPackageRepository>();
 
             sources.TryAdd("localhost", new MockPackageRepository());
 
@@ -155,7 +155,7 @@ namespace Potato.Service.Shared.Test.TestServicePackages {
         public void TestOnBeforeLocalPackageFetch() {
             var before = false;
 
-            var sources = new ConcurrentDictionary<String, IPackageRepository>();
+            var sources = new ConcurrentDictionary<string, IPackageRepository>();
 
             sources.TryAdd("localhost", new MockPackageRepository(new List<IPackage>() {
                 new DataServicePackage() {

@@ -43,7 +43,7 @@ namespace Potato.Core.Test.Database {
             SharedReferences.Setup();
         }
 
-        public static DatabaseController OpenSqLiteDriver(String @namespace = "") {
+        public static DatabaseController OpenSqLiteDriver(string @namespace = "") {
             var variables = new VariableController();
 
             var database = new DatabaseController() {
@@ -65,7 +65,7 @@ namespace Potato.Core.Test.Database {
             variables.Set(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet
-            }, CommonVariableNames.DatabaseConfigGroups, new List<String>() {
+            }, CommonVariableNames.DatabaseConfigGroups, new List<string>() {
                 @namespace
             });
 
@@ -78,7 +78,7 @@ namespace Potato.Core.Test.Database {
         /// </summary>
         [Test]
         public void TestSqLiteMemoryDatabaseDisposed() {
-            DatabaseController database = OpenSqLiteDriver();
+            var database = OpenSqLiteDriver();
 
             Assert.AreEqual(1, database.OpenDrivers.Count);
 
@@ -94,7 +94,7 @@ namespace Potato.Core.Test.Database {
         /// </summary>
         [Test]
         public void TestSqLiteMemoryDatabaseOpened() {
-            DatabaseController database = OpenSqLiteDriver();
+            var database = OpenSqLiteDriver();
 
             Assert.AreEqual(1, database.OpenDrivers.Count);
         }
@@ -104,9 +104,9 @@ namespace Potato.Core.Test.Database {
         /// </summary>
         [Test]
         public void TestSqLiteMemoryDatabaseOpenedNamespaced() {
-            String @namespace = StringExtensions.RandomString(10);
+            var @namespace = StringExtensions.RandomString(10);
 
-            DatabaseController database = OpenSqLiteDriver(@namespace);
+            var database = OpenSqLiteDriver(@namespace);
 
             Assert.AreEqual(1, database.OpenDrivers.Count);
         }
@@ -117,12 +117,12 @@ namespace Potato.Core.Test.Database {
         [Test]
         public void TestSqLiteQueryMissingNamespaced() {
             // Setup the db on one namespace, but query another.
-            String databaseNamespace = StringExtensions.RandomString(10);
-            String queryNamespace = StringExtensions.RandomString(10);
+            var databaseNamespace = StringExtensions.RandomString(10);
+            var queryNamespace = StringExtensions.RandomString(10);
 
-            DatabaseController database = OpenSqLiteDriver(databaseNamespace);
+            var database = OpenSqLiteDriver(databaseNamespace);
 
-            ICommandResult result = database.Tunnel(new Command() {
+            var result = database.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.DatabaseQuery,
                 Parameters = new List<ICommandParameter>() {
@@ -156,7 +156,7 @@ namespace Potato.Core.Test.Database {
         /// </remarks>
         [Test]
         public void TestSqLiteSetupAndFindQuery() {
-            DatabaseController database = OpenSqLiteDriver();
+            var database = OpenSqLiteDriver();
 
             database.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -176,7 +176,7 @@ namespace Potato.Core.Test.Database {
                 }
             });
 
-            ICommandResult result = database.Tunnel(new Command() {
+            var result = database.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.DatabaseQuery,
                 Parameters = new List<ICommandParameter>() {
@@ -207,9 +207,9 @@ namespace Potato.Core.Test.Database {
         /// </summary>
         [Test]
         public void TestSqLiteSetupAndFindQueryNamespaced() {
-            String @namespace = StringExtensions.RandomString(10);
+            var @namespace = StringExtensions.RandomString(10);
 
-            DatabaseController database = OpenSqLiteDriver(@namespace);
+            var database = OpenSqLiteDriver(@namespace);
 
             database.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
@@ -236,7 +236,7 @@ namespace Potato.Core.Test.Database {
                 }
             });
 
-            ICommandResult result = database.Tunnel(new Command() {
+            var result = database.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.DatabaseQuery,
                 Parameters = new List<ICommandParameter>() {

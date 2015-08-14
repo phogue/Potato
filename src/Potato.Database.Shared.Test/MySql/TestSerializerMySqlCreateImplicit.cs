@@ -23,43 +23,43 @@ namespace Potato.Database.Shared.Test.MySql {
     public class TestSerializerMySqlCreateImplicit : TestSerializerCreate {
         [Test]
         public override void TestCreateDatabasePotato() {
-            Assert.AreEqual(@"CREATE DATABASE `Potato`", new SerializerMySql().Parse(this.TestCreateDatabasePotatoImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"CREATE DATABASE `Potato`", new SerializerMySql().Parse(TestCreateDatabasePotatoImplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestCreatePlayerWithFieldStringName() {
-            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL)", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldStringNameImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL)", new SerializerMySql().Parse(TestCreatePlayerWithFieldStringNameImplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestCreatePlayerWithFieldStringSpecifiedLengthName() {
-            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(40) NULL)", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldStringSpecifiedLengthNameImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(40) NULL)", new SerializerMySql().Parse(TestCreatePlayerWithFieldStringSpecifiedLengthNameImplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestCreatePlayerWithFieldStringSpecifiedLengthNameAndFieldIntegerScore() {
-            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(40) NULL, `Score` INT NULL)", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldStringSpecifiedLengthNameAndFieldIntegerScoreImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(40) NULL, `Score` INT NULL)", new SerializerMySql().Parse(TestCreatePlayerWithFieldStringSpecifiedLengthNameAndFieldIntegerScoreImplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestCreatePlayerWithFieldStringSpecifiedLengthNameNotNullAndFieldIntegerScore() {
-            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(40) NOT NULL, `Score` INT NULL)", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldStringSpecifiedLengthNameNotNullAndFieldIntegerScoreImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(40) NOT NULL, `Score` INT NULL)", new SerializerMySql().Parse(TestCreatePlayerWithFieldStringSpecifiedLengthNameNotNullAndFieldIntegerScoreImplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestCreatePlayerWithFieldIntegerScoreUnsigned() {
-            Assert.AreEqual(@"CREATE TABLE `Player` (`Score` INT UNSIGNED NULL)", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldIntegerScoreUnsignedImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Score` INT UNSIGNED NULL)", new SerializerMySql().Parse(TestCreatePlayerWithFieldIntegerScoreUnsignedImplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestCreatePlayerWithFieldIntegerScoreUnsignedAutoIncrement() {
-            Assert.AreEqual(@"CREATE TABLE `Player` (`Score` INT UNSIGNED NULL AUTO_INCREMENT)", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldIntegerScoreUnsignedAutoIncrementImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Score` INT UNSIGNED NULL AUTO_INCREMENT)", new SerializerMySql().Parse(TestCreatePlayerWithFieldIntegerScoreUnsignedAutoIncrementImplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithIndexOnName() {
             ISerializer serializer = new SerializerMySql();
-            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameImplicit).Compile();
+            var serialized = serializer.Parse(TestCreatePlayerWithFieldStringNameWithIndexOnNameImplicit).Compile();
 
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL)", serialized.Compiled.First());
             Assert.AreEqual(@"ALTER TABLE `Player` ADD INDEX `Name_INDEX` (`Name`)", serialized.Children.First().Compiled.First());
@@ -68,7 +68,7 @@ namespace Potato.Database.Shared.Test.MySql {
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithIndexOnNameDescending() {
             ISerializer serializer = new SerializerMySql();
-            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameDescendingImplicit).Compile();
+            var serialized = serializer.Parse(TestCreatePlayerWithFieldStringNameWithIndexOnNameDescendingImplicit).Compile();
 
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL)", serialized.Compiled.First());
             Assert.AreEqual(@"ALTER TABLE `Player` ADD INDEX `Name_INDEX` (`Name` DESC)", serialized.Children.First().Compiled.First());
@@ -77,7 +77,7 @@ namespace Potato.Database.Shared.Test.MySql {
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithIndexOnNameScore() {
             ISerializer serializer = new SerializerMySql();
-            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreImplicit).Compile();
+            var serialized = serializer.Parse(TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreImplicit).Compile();
 
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL)", serialized.Compiled.First());
             Assert.AreEqual(@"ALTER TABLE `Player` ADD INDEX `Name_INDEX` (`Name`)", serialized.Children.First().Compiled.First());
@@ -87,7 +87,7 @@ namespace Potato.Database.Shared.Test.MySql {
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreCompound() {
             ISerializer serializer = new SerializerMySql();
-            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreCompoundImplicit).Compile();
+            var serialized = serializer.Parse(TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreCompoundImplicit).Compile();
 
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL)", serialized.Compiled.First());
             Assert.AreEqual(@"ALTER TABLE `Player` ADD INDEX `Name_Score_INDEX` (`Name`, `Score`)", serialized.Children.First().Compiled.First());
@@ -96,7 +96,7 @@ namespace Potato.Database.Shared.Test.MySql {
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreDescendingCompound() {
             ISerializer serializer = new SerializerMySql();
-            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreDescendingCompoundImplicit).Compile();
+            var serialized = serializer.Parse(TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreDescendingCompoundImplicit).Compile();
 
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL)", serialized.Compiled.First());
             Assert.AreEqual(@"ALTER TABLE `Player` ADD INDEX `Name_Score_INDEX` (`Name`, `Score` DESC)", serialized.Children.First().Compiled.First());
@@ -105,7 +105,7 @@ namespace Potato.Database.Shared.Test.MySql {
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnName() {
             ISerializer serializer = new SerializerMySql();
-            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnNameImplicit).Compile();
+            var serialized = serializer.Parse(TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnNameImplicit).Compile();
 
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL, PRIMARY KEY (`Name`))", serialized.Compiled.First());
         }
@@ -113,7 +113,7 @@ namespace Potato.Database.Shared.Test.MySql {
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithUniqueIndexOnName() {
             ISerializer serializer = new SerializerMySql();
-            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithUniqueIndexOnNameImplicit).Compile();
+            var serialized = serializer.Parse(TestCreatePlayerWithFieldStringNameWithUniqueIndexOnNameImplicit).Compile();
 
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL)", serialized.Compiled.First());
             Assert.AreEqual(@"ALTER TABLE `Player` ADD UNIQUE INDEX `Name_INDEX` (`Name`)", serialized.Children.First().Compiled.First());
@@ -121,18 +121,18 @@ namespace Potato.Database.Shared.Test.MySql {
 
         [Test]
         public override void TestCreatePlayerWithFieldStringNameIfNotExists() {
-            Assert.AreEqual(@"CREATE TABLE IF NOT EXISTS `Player` (`Name` VARCHAR(255))", new SerializerSqLite().Parse(this.TestCreatePlayerWithFieldStringNameIfNotExistsImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"CREATE TABLE IF NOT EXISTS `Player` (`Name` VARCHAR(255))", new SerializerSqLite().Parse(TestCreatePlayerWithFieldStringNameIfNotExistsImplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestCreatePlayerWithFieldDateTimeStamp() {
-            Assert.AreEqual(@"CREATE TABLE `Player` (`Stamp` DATETIME NULL)", new SerializerMySql().Parse(this.TestCreatePlayerWithFieldDateTimeStampImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"CREATE TABLE `Player` (`Stamp` DATETIME NULL)", new SerializerMySql().Parse(TestCreatePlayerWithFieldDateTimeStampImplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithIndexIfNotExistsOnName() {
             ISerializer serializer = new SerializerMySql();
-            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexIfNotExistsOnNameImplicit).Compile();
+            var serialized = serializer.Parse(TestCreatePlayerWithFieldStringNameWithIndexIfNotExistsOnNameImplicit).Compile();
 
             Assert.AreEqual(@"CREATE TABLE `Player` (`Name` VARCHAR(255) NULL)", serialized.Compiled.First());
             Assert.AreEqual(@"ALTER TABLE `Player` ADD INDEX `Name_INDEX` (`Name`)", serialized.Children.First().Compiled.First());

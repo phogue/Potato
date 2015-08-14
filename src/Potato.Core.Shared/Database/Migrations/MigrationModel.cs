@@ -23,12 +23,12 @@ namespace Potato.Core.Shared.Database.Migrations {
         /// <summary>
         /// The origin of the migration (Core, Plugin)
         /// </summary>
-        public String Origin { get; set; }
+        public string Origin { get; set; }
 
         /// <summary>
         /// The name of the stream.
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The version of the stream on this entry.

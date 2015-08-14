@@ -26,7 +26,7 @@ namespace Potato.Database {
         /// <summary>
         /// The name of this driver.
         /// </summary>
-        public abstract String Name { get; }
+        public abstract string Name { get; }
 
         /// <summary>
         /// The settings used to connect & authenticate with the database
@@ -63,7 +63,7 @@ namespace Potato.Database {
         public abstract void Close();
 
         public object Clone() {
-            return this.MemberwiseClone();
+            return MemberwiseClone();
         }
     }
 }

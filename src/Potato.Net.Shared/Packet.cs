@@ -53,17 +53,17 @@ namespace Potato.Net.Shared {
         /// <summary>
         /// Textual representation of this packet
         /// </summary>
-        public String Text { get; set; }
+        public string Text { get; set; }
 
         /// <summary>
         /// Textual representation of the packet
         /// </summary>
-        public String DebugText { get; set; }
+        public string DebugText { get; set; }
 
         /// <summary>
         /// The wordified version of the text string version of the packet.
         /// </summary>
-        public List<String> Words { get; set; }
+        public List<string> Words { get; set; }
 
         /// <summary>
         /// The remote end point for the packet.
@@ -74,9 +74,9 @@ namespace Potato.Net.Shared {
         /// Initializes the packet with the default values.
         /// </summary>
         public Packet() {
-            this.RequestId = null;
-            this.Stamp = DateTime.Now;
-            this.Words = new List<String>();
+            RequestId = null;
+            Stamp = DateTime.Now;
+            Words = new List<string>();
         }
     }
 }

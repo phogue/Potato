@@ -31,24 +31,24 @@ namespace Potato.Core.Shared.Test.TestConfig {
 
         [SetUp]
         public void ClearConfigDirectory() {
-            this.ConfigFileA.Refresh();
+            ConfigFileA.Refresh();
 
-            if (this.ConfigFileA.Directory != null) {
-                if (this.ConfigFileA.Directory.Exists == true) {
-                    this.ConfigFileA.Directory.Delete(true);
+            if (ConfigFileA.Directory != null) {
+                if (ConfigFileA.Directory.Exists == true) {
+                    ConfigFileA.Directory.Delete(true);
                 }
 
-                this.ConfigFileA.Directory.Create();
+                ConfigFileA.Directory.Create();
             }
 
-            this.ConfigFileB.Refresh();
+            ConfigFileB.Refresh();
 
-            if (this.ConfigFileB.Directory != null) {
-                if (this.ConfigFileB.Directory.Exists == true) {
-                    this.ConfigFileB.Directory.Delete(true);
+            if (ConfigFileB.Directory != null) {
+                if (ConfigFileB.Directory.Exists == true) {
+                    ConfigFileB.Directory.Delete(true);
                 }
 
-                this.ConfigFileB.Directory.Create();
+                ConfigFileB.Directory.Create();
             }
         }
     }

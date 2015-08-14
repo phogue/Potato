@@ -40,7 +40,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Ike").SetOrigin(CommandOrigin.Local));
 
             // Now change the language of the account.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountSetPreferredLanguageCode("Ike", "de-DE")
+            var result = security.Tunnel(CommandBuilder.SecurityAccountSetPreferredLanguageCode("Ike", "de-DE")
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     Username = "Phogue"
@@ -61,7 +61,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now change the language of the account.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountSetPreferredLanguageCode("Phogue", "de-DE").SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountSetPreferredLanguageCode("Phogue", "de-DE").SetOrigin(CommandOrigin.Local));
 
             // Make sure it was successful.
             Assert.IsTrue(result.Success);
@@ -78,7 +78,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountSetPreferredLanguageCode("Phogue", "de-DE")
+            var result = security.Tunnel(CommandBuilder.SecurityAccountSetPreferredLanguageCode("Phogue", "de-DE")
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     Username = "Phogue"        
@@ -101,7 +101,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "ThisExists").SetOrigin(CommandOrigin.Local));
 
             // Now change the language of the account.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountSetPreferredLanguageCode("ThisDoesNotExist", "de-DE").SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountSetPreferredLanguageCode("ThisDoesNotExist", "de-DE").SetOrigin(CommandOrigin.Local));
 
             // Make sure we get nothing back if we try to change the language code of
             // an account that does not exist.
@@ -120,7 +120,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now change the language of the account.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountSetPreferredLanguageCode("Phogue", "zu-ZU").SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountSetPreferredLanguageCode("Phogue", "zu-ZU").SetOrigin(CommandOrigin.Local));
 
             // Make sure it was successful.
             Assert.IsTrue(result.Success);

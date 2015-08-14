@@ -24,7 +24,7 @@ namespace Potato.Net.Shared.Actions {
         /// <summary>
         /// The name of the action to take.
         /// </summary>
-        String Name { get; set; }
+        string Name { get; set; }
 
         /// <summary>
         /// The specific type of action taken with this object.

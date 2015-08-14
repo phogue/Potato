@@ -45,7 +45,7 @@ namespace Potato.Examples.Plugins.TextCommands.Test {
                 Port = 9000
             });
 
-            ConnectionController connection = new ConnectionController() {
+            var connection = new ConnectionController() {
                 // This won't actually connect to anything.
                 // It's just a mock so the GameState is available to be modified.
                 // See MockGame for all the mock data we create.
@@ -77,7 +77,7 @@ namespace Potato.Examples.Plugins.TextCommands.Test {
         /// </summary>
         [Test]
         public void TestBasicCommand() {
-            ConnectionController connection = this.CreateConnection();
+            var connection = CreateConnection();
 
             // 3. Execute a text command. This could come from in game text or via the daemon.
             // When executed from in game the command built is identical but the content is
@@ -104,7 +104,7 @@ namespace Potato.Examples.Plugins.TextCommands.Test {
         /// </summary>
         [Test]
         public void TestCommandPhogue() {
-            ConnectionController connection = this.CreateConnection();
+            var connection = CreateConnection();
 
             // 3. Execute a text command. This could come from in game text or via the daemon.
             // When executed from in game the command built is identical but the content is
@@ -131,7 +131,7 @@ namespace Potato.Examples.Plugins.TextCommands.Test {
         /// </summary>
         [Test]
         public void TestCommandScoreEqualsZero() {
-            ConnectionController connection = this.CreateConnection();
+            var connection = CreateConnection();
 
             // 3. Execute a text command. This could come from in game text or via the daemon.
             // When executed from in game the command built is identical but the content is
@@ -158,7 +158,7 @@ namespace Potato.Examples.Plugins.TextCommands.Test {
         /// </summary>
         [Test]
         public void TestRouteCommand() {
-            ConnectionController connection = this.CreateConnection();
+            var connection = CreateConnection();
 
             // 3. Execute a text command. This could come from in game text or via the daemon.
             // When executed from in game the command built is identical but the content is
@@ -184,7 +184,7 @@ namespace Potato.Examples.Plugins.TextCommands.Test {
         /// </summary>
         [Test]
         public void TestRouteCommandPlayer() {
-            ConnectionController connection = this.CreateConnection();
+            var connection = CreateConnection();
 
             // 3. Execute a text command. This could come from in game text or via the daemon.
             // When executed from in game the command built is identical but the content is

@@ -22,14 +22,14 @@ using Potato.Net.Shared.Models;
 namespace Myrcon.Protocols.Frostbite.Test.TestConfig {
     [TestFixture]
     public class TestLoad {
-        public static String ConfigDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs/Protocols/Myrcon");
+        public static string ConfigDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs/Protocols/Myrcon");
 
         /// <summary>
         /// Checks all configs can be loaded (no json errors)
         /// </summary>
         [Test]
         public void TestJsonIntegrity() {
-            foreach (var file in Directory.EnumerateFiles(TestLoad.ConfigDirectory, "*.json", SearchOption.AllDirectories)) {
+            foreach (var file in Directory.EnumerateFiles(ConfigDirectory, "*.json", SearchOption.AllDirectories)) {
                 var config = ProtocolConfigLoader.Load<ProtocolConfigModel>(file);
 
                 Assert.IsNotNull(config, "Failed to load config {0}. Validate json structure.", Path.GetFileName(file));
@@ -41,7 +41,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestMapGamemodeIntegrity() {
-            foreach (var file in Directory.EnumerateFiles(TestLoad.ConfigDirectory, "*.json", SearchOption.AllDirectories)) {
+            foreach (var file in Directory.EnumerateFiles(ConfigDirectory, "*.json", SearchOption.AllDirectories)) {
                 var config = ProtocolConfigLoader.Load<ProtocolConfigModel>(file);
 
                 foreach (var map in config.MapPool) {

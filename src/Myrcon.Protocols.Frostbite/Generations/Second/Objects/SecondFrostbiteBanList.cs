@@ -24,10 +24,10 @@ namespace Myrcon.Protocols.Frostbite.Generations.Second.Objects {
     public class SecondFrostbiteBanList {
 
         public static List<BanModel> Parse(List<string> words) {
-            List<BanModel> bans = new List<BanModel>();
+            var bans = new List<BanModel>();
 
-            for (int i = 0; i < words.Count; i += 6) {
-                List<string> banWords = words.GetRange(i, 6);
+            for (var i = 0; i < words.Count; i += 6) {
+                var banWords = words.GetRange(i, 6);
                 banWords.RemoveAt(4);
                 bans.Add(FrostbiteBan.ParseBanListItem(banWords));
             }

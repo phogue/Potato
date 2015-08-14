@@ -112,7 +112,7 @@ namespace Potato.Core.Test.Packages {
         /// </summary>
         [Test]
         public void TestInstalledBuilderEmptyRepository() {
-            List<PackageWrapperModel> packages = new List<PackageWrapperModel>();
+            var packages = new List<PackageWrapperModel>();
 
             new InstalledCacheBuilder() {
                 Cache = packages,
@@ -192,7 +192,7 @@ namespace Potato.Core.Test.Packages {
         /// </summary>
         [Test]
         public void TestOrphanedBuilderEmptyRepository() {
-            List<PackageWrapperModel> packages = new List<PackageWrapperModel>();
+            var packages = new List<PackageWrapperModel>();
 
             new OrphanedCacheBuilder() {
                 Cache = packages,

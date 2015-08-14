@@ -37,253 +37,253 @@ namespace Potato.Core.Security {
         /// Initializes a security controller with the default values and dispatch.
         /// </summary>
         public SecurityController() : base() {
-            this.Shared = new SharedReferences();
-            this.Groups = new List<GroupModel>() {
+            Shared = new SharedReferences();
+            Groups = new List<GroupModel>() {
                 new GroupModel() {
                     Name = "Guest",
                     IsGuest = true
                 }
             };
 
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityAddGroup,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "groupName",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.SecurityAddGroup
+                    Handler = SecurityAddGroup
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityRemoveGroup,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "groupName",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.SecurityRemoveGroup
+                    Handler = SecurityRemoveGroup
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityRemoveAccount,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "username",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.SecurityRemoveAccount
+                    Handler = SecurityRemoveAccount
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityRemovePlayer,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "gameType",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "uid",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.SecurityRemovePlayer
+                    Handler = SecurityRemovePlayer
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityQueryPermission,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "commandName",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "targetGameType",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "targetUid",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.DispatchPermissionsCheckByAccountPlayerDetails
+                    Handler = DispatchPermissionsCheckByAccountPlayerDetails
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityQueryPermission,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "commandName",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "targetAccountName",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.DispatchPermissionsCheckByAccountDetails
+                    Handler = DispatchPermissionsCheckByAccountDetails
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityQueryPermission,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "commandName",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.DispatchPermissionsCheckByCommand
+                    Handler = DispatchPermissionsCheckByCommand
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityGroupSetPermission,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "groupName",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "permissionName",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "authority",
                             Type = typeof(int)
                         }
                     },
-                    Handler = this.SecurityGroupSetPermission
+                    Handler = SecurityGroupSetPermission
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityGroupAppendPermissionTrait,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "groupName",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "permissionName",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "trait",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.SecurityGroupAppendPermissionTrait
+                    Handler = SecurityGroupAppendPermissionTrait
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityGroupRemovePermissionTrait,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "groupName",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "permissionName",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "trait",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.SecurityGroupRemovePermissionTrait
+                    Handler = SecurityGroupRemovePermissionTrait
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityGroupSetPermissionDescription,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "groupName",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "permissionName",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "description",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.SecurityGroupSetPermissionDescription
+                    Handler = SecurityGroupSetPermissionDescription
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityGroupCopyPermissions,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "sourceGroupName",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "destinationGroupName",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.SecurityGroupCopyPermissions
+                    Handler = SecurityGroupCopyPermissions
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityGroupAddAccount,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "groupName",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "username",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.SecurityGroupAddAccount
+                    Handler = SecurityGroupAddAccount
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityAccountAddPlayer,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "username",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "gameType",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "uid",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.SecurityAccountAddPlayer
+                    Handler = SecurityAccountAddPlayer
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityAccountSetPassword,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "username",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "password",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.SecurityAccountSetPassword
+                    Handler = SecurityAccountSetPassword
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityAccountSetPasswordHash,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "username",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "passwordHash",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.SecurityAccountSetPasswordHash
+                    Handler = SecurityAccountSetPasswordHash
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityAccountAppendAccessToken,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "username",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "id",
@@ -291,32 +291,32 @@ namespace Potato.Core.Security {
                         },
                         new CommandParameterType() {
                             Name = "tokenHash",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "lastTouched",
                             Type = typeof(DateTime)
                         }
                     },
-                    Handler = this.SecurityAccountAppendAccessToken
+                    Handler = SecurityAccountAppendAccessToken
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityAccountAuthenticate,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "username",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "passwordPlainText",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "identifier",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.SecurityAccountAuthenticate
+                    Handler = SecurityAccountAuthenticate
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityAccountAuthenticateToken,
@@ -327,48 +327,48 @@ namespace Potato.Core.Security {
                         },
                         new CommandParameterType() {
                             Name = "token",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "identifier",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.SecurityAccountAuthenticateToken
+                    Handler = SecurityAccountAuthenticateToken
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "username",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "languageCode",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.SecurityAccountSetPreferredLanguageCode
+                    Handler = SecurityAccountSetPreferredLanguageCode
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecuritySetPredefinedStreamPermissions,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "groupName",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.SecuritySetPredefinedStreamPermissions
+                    Handler = SecuritySetPredefinedStreamPermissions
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.SecuritySetPredefinedAdministratorsPermissions,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "groupName",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.SecuritySetPredefinedAdministratorsPermissions
+                    Handler = SecuritySetPredefinedAdministratorsPermissions
                 }
             });
         }
@@ -377,12 +377,12 @@ namespace Potato.Core.Security {
         /// Relies on children classes to implement this.
         /// </summary>
         public override void Dispose() {
-            foreach (GroupModel group in this.Groups) {
+            foreach (var group in Groups) {
                 group.Dispose();
             }
 
-            this.Groups.Clear();
-            this.Groups = null;
+            Groups.Clear();
+            Groups = null;
         }
 
         /// <summary>
@@ -392,9 +392,9 @@ namespace Potato.Core.Security {
             base.Poke();
 
             // When we should remove expired tokens
-            var expiredThreshold = DateTime.Now.AddSeconds(-1 * Math.Abs(this.Shared.Variables.Get(CommonVariableNames.SecurityMaximumAccessTokenLastTouchedLengthSeconds, 172800)));
+            var expiredThreshold = DateTime.Now.AddSeconds(-1 * Math.Abs(Shared.Variables.Get(CommonVariableNames.SecurityMaximumAccessTokenLastTouchedLengthSeconds, 172800)));
 
-            foreach (AccountModel account in this.Groups.SelectMany(group => group.Accounts)) {
+            foreach (var account in Groups.SelectMany(group => group.Accounts)) {
                 // Remove all tokens that were last touched beyond the threshold
                 foreach (var tokenId in account.AccessTokens.Where(token => token.Value.LastTouched < expiredThreshold).Select(token => token.Key)) {
                     AccessTokenModel removed;
@@ -406,26 +406,26 @@ namespace Potato.Core.Security {
         /// <summary>
         /// Relies on children classes to implement this.
         /// </summary>
-        public override void WriteConfig(IConfig config, String password = null) {
+        public override void WriteConfig(IConfig config, string password = null) {
             base.WriteConfig(config, password);
 
-            foreach (GroupModel group in this.Groups) {
+            foreach (var group in Groups) {
                 config.Append(CommandBuilder.SecurityAddGroup(group.Name).ToConfigCommand());
 
-                foreach (PermissionModel permission in group.Permissions) {
+                foreach (var permission in group.Permissions) {
                     if (permission.Authority.HasValue == true) {
                         config.Append(CommandBuilder.SecurityGroupSetPermission(group.Name, permission.Name, permission.Authority.Value).ToConfigCommand());
                     }
                 }
 
-                foreach (AccountModel account in group.Accounts) {
+                foreach (var account in group.Accounts) {
                     config.Append(CommandBuilder.SecurityGroupAddAccount(group.Name, account.Username).ToConfigCommand());
 
                     config.Append(CommandBuilder.SecurityAccountSetPasswordHash(account.Username, account.PasswordHash).ToConfigCommand());
 
                     config.Append(CommandBuilder.SecurityAccountSetPreferredLanguageCode(account.Username, account.PreferredLanguageCode).ToConfigCommand());
 
-                    foreach (AccountPlayerModel assignment in account.Players) {
+                    foreach (var assignment in account.Players) {
                         config.Append(CommandBuilder.SecurityAccountAddPlayer(account.Username, assignment.ProtocolType, assignment.Uid).ToConfigCommand());
                     }
 
@@ -439,24 +439,24 @@ namespace Potato.Core.Security {
         /// <summary>
         /// Creates a new group if the specified name is unique.
         /// </summary>
-        public ICommandResult SecurityAddGroup(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult SecurityAddGroup(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String groupName = parameters["groupName"].First<String>();
+            var groupName = parameters["groupName"].First<string>();
 
-            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (groupName.Length > 0) {
-                    if (this.Groups.FirstOrDefault(group => @group.Name == groupName) == null) {
-                        GroupModel group = new GroupModel() {
+                    if (Groups.FirstOrDefault(group => @group.Name == groupName) == null) {
+                        var group = new GroupModel() {
                             Name = groupName
                         };
 
-                        this.Groups.Add(group);
+                        Groups.Add(group);
 
                         result = new CommandResult() {
                             Success = true,
                             CommandResultType = CommandResultType.Success,
-                            Message = String.Format(@"Group ""{0}"" created.", groupName),
+                            Message = string.Format(@"Group ""{0}"" created.", groupName),
                             Now = new CommandData() {
                                 Groups = new List<GroupModel>() {
                                     group
@@ -464,15 +464,15 @@ namespace Potato.Core.Security {
                             }
                         };
 
-                        if (this.Shared.Events != null) {
-                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupAdded));
+                        if (Shared.Events != null) {
+                            Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupAdded));
                         }
                     }
                     else {
                         result = new CommandResult() {
                             Success = false,
                             CommandResultType = CommandResultType.AlreadyExists,
-                            Message = String.Format(@"Group ""{0}"" already exists.", groupName)
+                            Message = string.Format(@"Group ""{0}"" already exists.", groupName)
                         };
                     }
                 }
@@ -497,15 +497,15 @@ namespace Potato.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult SecurityRemoveGroup(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult SecurityRemoveGroup(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String groupName = parameters["groupName"].First<String>();
+            var groupName = parameters["groupName"].First<string>();
 
-            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (groupName.Length > 0) {
-                    if (this.DispatchGroupCheck(command, groupName).Success == false) {
-                        GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
+                    if (DispatchGroupCheck(command, groupName).Success == false) {
+                        var group = Groups.FirstOrDefault(g => g.Name == groupName);
 
                         if (group != null) {
                             if (group.IsGuest == false) {
@@ -514,7 +514,7 @@ namespace Potato.Core.Security {
                                 result = new CommandResult() {
                                     Success = true,
                                     CommandResultType = CommandResultType.Success,
-                                    Message = String.Format(@"Group ""{0}"" removed.", groupName),
+                                    Message = string.Format(@"Group ""{0}"" removed.", groupName),
                                     Then = new CommandData() {
                                         Groups = new List<GroupModel>() {
                                         group.Clone() as GroupModel
@@ -522,8 +522,8 @@ namespace Potato.Core.Security {
                                     }
                                 };
 
-                                if (this.Shared.Events != null) {
-                                    this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupRemoved));
+                                if (Shared.Events != null) {
+                                    Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupRemoved));
                                 }
 
                                 // Now cleanup our stored account
@@ -541,7 +541,7 @@ namespace Potato.Core.Security {
                             result = new CommandResult() {
                                 Success = false,
                                 CommandResultType = CommandResultType.DoesNotExists,
-                                Message = String.Format(@"Group ""{0}"" does not exist.", groupName)
+                                Message = string.Format(@"Group ""{0}"" does not exist.", groupName)
                             };
                         }
                     }
@@ -571,17 +571,17 @@ namespace Potato.Core.Security {
         /// <summary>
         /// Removes an account, whatever group it is assigned to.
         /// </summary>
-        public ICommandResult SecurityRemoveAccount(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult SecurityRemoveAccount(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String username = parameters["username"].First<String>();
+            var username = parameters["username"].First<string>();
 
-            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (username.Length > 0) {
 
-                    if (this.DispatchIdentityCheck(command, username).Success == false) {
+                    if (DispatchIdentityCheck(command, username).Success == false) {
                         // Fetch the account, whatever group it is added to.
-                        AccountModel account = this.Groups.SelectMany(group => @group.Accounts).FirstOrDefault(a => String.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
+                        var account = Groups.SelectMany(group => @group.Accounts).FirstOrDefault(a => string.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
 
                         if (account != null) {
                             account.Group.Accounts.Remove(account);
@@ -589,7 +589,7 @@ namespace Potato.Core.Security {
                             result = new CommandResult() {
                                 Success = true,
                                 CommandResultType = CommandResultType.Success,
-                                Message = String.Format(@"Account ""{0}"" removed.", account.Username),
+                                Message = string.Format(@"Account ""{0}"" removed.", account.Username),
                                 Then = new CommandData() {
                                     Accounts = new List<AccountModel>() {
                                         account.Clone() as AccountModel
@@ -600,8 +600,8 @@ namespace Potato.Core.Security {
                                 }
                             };
 
-                            if (this.Shared.Events != null) {
-                                this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityAccountRemoved));
+                            if (Shared.Events != null) {
+                                Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityAccountRemoved));
                             }
 
                             // Now cleanup our stored account
@@ -611,7 +611,7 @@ namespace Potato.Core.Security {
                             result = new CommandResult() {
                                 Success = false,
                                 CommandResultType = CommandResultType.DoesNotExists,
-                                Message = String.Format(@"Account ""{0}"" does not exist.", username)
+                                Message = string.Format(@"Account ""{0}"" does not exist.", username)
                             };
                         }
                     }
@@ -645,16 +645,16 @@ namespace Potato.Core.Security {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public ICommandResult SecurityRemovePlayer(ICommand command, Dictionary<String, ICommandParameter> parameters) { // (Command command, String gameType, String uid) {
+        public ICommandResult SecurityRemovePlayer(ICommand command, Dictionary<string, ICommandParameter> parameters) { // (Command command, String gameType, String uid) {
             ICommandResult result = null;
 
-            String gameType = parameters["gameType"].First<String>();
-            String uid = parameters["uid"].First<String>();
+            var gameType = parameters["gameType"].First<string>();
+            var uid = parameters["uid"].First<string>();
 
-            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (DispatchPermissionsCheck(command, command.Name).Success == true) {
 
                 if (uid.Length > 0) {
-                    AccountPlayerModel player = this.Groups.SelectMany(group => @group.Accounts)
+                    var player = Groups.SelectMany(group => @group.Accounts)
                                                .SelectMany(account => account.Players).FirstOrDefault(x => x.ProtocolType == gameType && x.Uid == uid);
 
                     // If the player exists for any other player..
@@ -665,7 +665,7 @@ namespace Potato.Core.Security {
                         result = new CommandResult() {
                             Success = true,
                             CommandResultType = CommandResultType.Success,
-                            Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" removed from account ""{2}"".", player.Uid, player.ProtocolType, player.Account.Username),
+                            Message = string.Format(@"Player with UID of ""{0}"" in game type ""{1}"" removed from account ""{2}"".", player.Uid, player.ProtocolType, player.Account.Username),
                             Then = new CommandData() {
                                 AccountPlayers = new List<AccountPlayerModel>() {
                                     player.Clone() as AccountPlayerModel
@@ -676,8 +676,8 @@ namespace Potato.Core.Security {
                             }
                         };
 
-                        if (this.Shared.Events != null) {
-                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityPlayerRemoved));
+                        if (Shared.Events != null) {
+                            Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityPlayerRemoved));
                         }
 
                         // Now cleanup our stored player
@@ -687,7 +687,7 @@ namespace Potato.Core.Security {
                         result = new CommandResult() {
                             Success = false,
                             CommandResultType = CommandResultType.DoesNotExists,
-                            Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" does not exist.", uid, gameType)
+                            Message = string.Format(@"Player with UID of ""{0}"" in game type ""{1}"" does not exist.", uid, gameType)
                         };
                     }
                 }
@@ -714,11 +714,11 @@ namespace Potato.Core.Security {
         /// <param name="targetAccount">Who the action is being taken against</param>
         /// <param name="guestAuthority">The fallback authority to use if neither initiator or target is passed or does not have an authority defined for the command.</param>
         /// <returns>A command result describing if the action can be taken</returns>
-        private static ICommandResult CheckPermissions(AccountModel initiatorAccount, String commandName, AccountModel targetAccount, int? guestAuthority) {
+        private static ICommandResult CheckPermissions(AccountModel initiatorAccount, string commandName, AccountModel targetAccount, int? guestAuthority) {
             ICommandResult result = null;
 
-            int? initiatorAuthority = SecurityController.HighestAuthority(initiatorAccount, commandName) ?? guestAuthority;
-            int? targetAuthority = SecurityController.HighestAuthority(targetAccount, commandName) ?? guestAuthority;
+            var initiatorAuthority = HighestAuthority(initiatorAccount, commandName) ?? guestAuthority;
+            var targetAuthority = HighestAuthority(targetAccount, commandName) ?? guestAuthority;
 
             if (initiatorAuthority.HasValue == true && initiatorAuthority.Value > 0) {
                 if (targetAuthority.HasValue == true && targetAuthority.Value > 0) {
@@ -765,10 +765,10 @@ namespace Potato.Core.Security {
         /// <param name="commandName"></param>
         /// <param name="targetAccount"></param>
         /// <returns></returns>
-        protected ICommandResult DispatchPermissionsCheck(ICommand command, AccountModel initiatorAccount, String commandName, AccountModel targetAccount = null) {
+        protected ICommandResult DispatchPermissionsCheck(ICommand command, AccountModel initiatorAccount, string commandName, AccountModel targetAccount = null) {
             ICommandResult result = null;
 
-            var guestAuthority = this.Groups.Where(group => group.IsGuest)
+            var guestAuthority = Groups.Where(group => group.IsGuest)
                 .SelectMany(group => group.Permissions)
                 .Where(permission => permission.Name == commandName)
                 .Select(permission => permission.Authority)
@@ -791,11 +791,11 @@ namespace Potato.Core.Security {
                 }
                 else {
                     // The plugin has supplied us with details on who has initiated the command.
-                    result = SecurityController.CheckPermissions(initiatorAccount, commandName, targetAccount, guestAuthority);
+                    result = CheckPermissions(initiatorAccount, commandName, targetAccount, guestAuthority);
                 }
             }
             else if (command.Origin == CommandOrigin.Remote) {
-                result = SecurityController.CheckPermissions(initiatorAccount, commandName, targetAccount, guestAuthority);
+                result = CheckPermissions(initiatorAccount, commandName, targetAccount, guestAuthority);
             }
             else {
                 result = new CommandResult() {
@@ -813,12 +813,12 @@ namespace Potato.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult DispatchPermissionsCheckByAccountPlayerDetails(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            String commandName = parameters["commandName"].First<String>();
-            String targetGameType = parameters["targetGameType"].First<String>();
-            String targetUid = parameters["targetUid"].First<String>();
+        public ICommandResult DispatchPermissionsCheckByAccountPlayerDetails(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var commandName = parameters["commandName"].First<string>();
+            var targetGameType = parameters["targetGameType"].First<string>();
+            var targetUid = parameters["targetUid"].First<string>();
 
-            return this.DispatchPermissionsCheck(command, this.GetAccount(command), commandName, this.GetAccount(targetGameType, targetUid));
+            return DispatchPermissionsCheck(command, GetAccount(command), commandName, GetAccount(targetGameType, targetUid));
         }
 
         /// <summary>
@@ -827,11 +827,11 @@ namespace Potato.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult DispatchPermissionsCheckByAccountDetails(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            String commandName = parameters["commandName"].First<String>();
-            String targetAccountName = parameters["targetAccountName"].First<String>();
+        public ICommandResult DispatchPermissionsCheckByAccountDetails(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var commandName = parameters["commandName"].First<string>();
+            var targetAccountName = parameters["targetAccountName"].First<string>();
 
-            return this.DispatchPermissionsCheck(command, this.GetAccount(command), commandName, this.GetAccount(targetAccountName));
+            return DispatchPermissionsCheck(command, GetAccount(command), commandName, GetAccount(targetAccountName));
         }
 
         /// <summary>
@@ -840,9 +840,9 @@ namespace Potato.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult DispatchPermissionsCheckByCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            String commandName = parameters["commandName"].First<String>();
-            return this.DispatchPermissionsCheck(command, this.GetAccount(command), commandName);
+        public ICommandResult DispatchPermissionsCheckByCommand(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var commandName = parameters["commandName"].First<string>();
+            return DispatchPermissionsCheck(command, GetAccount(command), commandName);
         }
 
         /// <summary>
@@ -851,8 +851,8 @@ namespace Potato.Core.Security {
         /// <param name="command"></param>
         /// <param name="commandName"></param>
         /// <returns></returns>
-        public ICommandResult DispatchPermissionsCheck(ICommand command, String commandName) {
-            return this.DispatchPermissionsCheck(command, this.GetAccount(command), commandName);
+        public ICommandResult DispatchPermissionsCheck(ICommand command, string commandName) {
+            return DispatchPermissionsCheck(command, GetAccount(command), commandName);
         }
 
         /// <summary>
@@ -862,11 +862,11 @@ namespace Potato.Core.Security {
         /// <param name="command">The command to extract the executor from</param>
         /// <param name="username">The username of the target account</param>
         /// <returns>The result of the comparison</returns>
-        public ICommandResult DispatchIdentityCheck(ICommand command, String username) {
+        public ICommandResult DispatchIdentityCheck(ICommand command, string username) {
             ICommandResult result = null;
 
-            AccountModel executor = this.GetAccount(command);
-            AccountModel target = this.GetAccount(username);
+            var executor = GetAccount(command);
+            var target = GetAccount(username);
 
             if (executor != null && executor.Equals(target) == true) {
                 result = new CommandResult() {
@@ -892,11 +892,11 @@ namespace Potato.Core.Security {
         /// <param name="gameType"></param>
         /// <param name="uid"></param>
         /// <returns>The result of the comparison</returns>
-        public ICommandResult DispatchIdentityCheck(ICommand command, String gameType, String uid) {
+        public ICommandResult DispatchIdentityCheck(ICommand command, string gameType, string uid) {
             ICommandResult result = null;
 
-            AccountModel executor = this.GetAccount(command);
-            AccountModel target = this.GetAccount(gameType, uid);
+            var executor = GetAccount(command);
+            var target = GetAccount(gameType, uid);
 
             if (executor != null && executor.Equals(target) == true) {
                 result = new CommandResult() {
@@ -921,10 +921,10 @@ namespace Potato.Core.Security {
         /// <param name="command">The command to extract the executor from</param>
         /// <param name="groupName">The name of the group to check against</param>
         /// <returns>The result of the comparison</returns>
-        public ICommandResult DispatchGroupCheck(ICommand command, String groupName) {
+        public ICommandResult DispatchGroupCheck(ICommand command, string groupName) {
             ICommandResult result = null;
 
-            AccountModel executor = this.GetAccount(command);
+            var executor = GetAccount(command);
 
             if (executor != null && executor.Group != null && executor.Group.Name == groupName) {
                 result = new CommandResult() {
@@ -942,7 +942,7 @@ namespace Potato.Core.Security {
             return result;
         }
 
-        private static int? HighestAuthority(AccountModel account, String permission) {
+        private static int? HighestAuthority(AccountModel account, string permission) {
             return account != null ? account.Group.Permissions.Where(perm => perm.Name == permission).Select(perm => perm.Authority).FirstOrDefault() : null;
         }
 
@@ -952,14 +952,14 @@ namespace Potato.Core.Security {
         /// <param name="command"></param>
         /// <returns></returns>
         public AccountModel GetAccount(ICommand command) {
-            return this.GetAccount(command.Authentication.Username) ?? this.GetAccount(command.Authentication.TokenId) ?? this.GetAccount(command.Authentication.GameType, command.Authentication.Uid);
+            return GetAccount(command.Authentication.Username) ?? GetAccount(command.Authentication.TokenId) ?? GetAccount(command.Authentication.GameType, command.Authentication.Uid);
         }
 
         /// <summary>
         /// Retrieves an account that contains a specified uid.
         /// </summary>
-        public AccountModel GetAccount(String gameType, String uid) {
-            return this.Groups.SelectMany(group => group.Accounts)
+        public AccountModel GetAccount(string gameType, string uid) {
+            return Groups.SelectMany(group => group.Accounts)
                               .SelectMany(account => account.Players)
                               .Where(player => player.ProtocolType == gameType)
                               .Where(player => player.Uid == uid)
@@ -970,16 +970,16 @@ namespace Potato.Core.Security {
         /// <summary>
         /// Retrieves an account whose username matches the username specified.
         /// </summary>
-        public AccountModel GetAccount(String username) {
-            return this.Groups.SelectMany(group => group.Accounts)
-                              .FirstOrDefault(account => String.Compare(account.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
+        public AccountModel GetAccount(string username) {
+            return Groups.SelectMany(group => group.Accounts)
+                              .FirstOrDefault(account => string.Compare(account.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
         }
 
         /// <summary>
         /// Retrieves an account who has an access token matching the guid specified.
         /// </summary>
         public AccountModel GetAccount(Guid tokenId) {
-            return this.Groups.SelectMany(group => group.Accounts)
+            return Groups.SelectMany(group => group.Accounts)
                               .FirstOrDefault(account => account.AccessTokens.ContainsKey(tokenId));
         }
 
@@ -991,25 +991,25 @@ namespace Potato.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult SecurityGroupSetPermission(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult SecurityGroupSetPermission(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String groupName = parameters["groupName"].First<String>();
-            String permissionName = parameters["permissionName"].First<String>();
-            int authority = parameters["authority"].First<int>();
+            var groupName = parameters["groupName"].First<string>();
+            var permissionName = parameters["permissionName"].First<string>();
+            var authority = parameters["authority"].First<int>();
 
-            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (DispatchPermissionsCheck(command, command.Name).Success == true) {
                 // If it's the users group AND (the permission to set permissions OR the permission is to authenticate) AND they are changing the permission to nothing
-                bool willResultInSystemLockout = this.DispatchGroupCheck(command, groupName).Success == true && (permissionName == CommandType.SecurityGroupSetPermission.ToString() || permissionName == CommandType.SecurityAccountAuthenticate.ToString()) && authority <= 0;
+                var willResultInSystemLockout = DispatchGroupCheck(command, groupName).Success == true && (permissionName == CommandType.SecurityGroupSetPermission.ToString() || permissionName == CommandType.SecurityAccountAuthenticate.ToString()) && authority <= 0;
 
                 if (willResultInSystemLockout == false) {
-                    GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
+                    var group = Groups.FirstOrDefault(g => g.Name == groupName);
 
                     if (group != null) {
                         // Fetch or create the permission. Should always exist in our config, even if it is null.
                         // This also allows for new permissions to be added to CommandName in the future
                         // without breaking old configs.
-                        PermissionModel permission = group.Permissions.FirstOrDefault(perm => perm.Name == permissionName);
+                        var permission = group.Permissions.FirstOrDefault(perm => perm.Name == permissionName);
 
                         if (permission == null) {
                             permission = new PermissionModel() {
@@ -1026,7 +1026,7 @@ namespace Potato.Core.Security {
                         result = new CommandResult() {
                             Success = true,
                             CommandResultType = CommandResultType.Success,
-                            Message = String.Format(@"Permission ""{0}"" set to {1}.", permission.Name, permission.Authority),
+                            Message = string.Format(@"Permission ""{0}"" set to {1}.", permission.Name, permission.Authority),
                             Scope = new CommandData() {
                                 Groups = new List<GroupModel>() {
                                     group
@@ -1039,13 +1039,13 @@ namespace Potato.Core.Security {
                             }
                         };
 
-                        if (this.Shared.Events != null) {
-                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionAuthorityChanged));
+                        if (Shared.Events != null) {
+                            Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionAuthorityChanged));
                         }
                     }
                     else {
                         result = new CommandResult() {
-                            Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
+                            Message = string.Format(@"Group with name ""{0}"" does not exists.", groupName),
                             Success = false,
                             CommandResultType = CommandResultType.DoesNotExists
                         };
@@ -1053,7 +1053,7 @@ namespace Potato.Core.Security {
                 }
                 else {
                     result = new CommandResult() {
-                        Message = String.Format(@"You cannot lock your group out of the system."),
+                        Message = string.Format(@"You cannot lock your group out of the system."),
                         Success = false,
                         CommandResultType = CommandResultType.InvalidParameter
                     };
@@ -1072,22 +1072,22 @@ namespace Potato.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult SecurityGroupAppendPermissionTrait(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult SecurityGroupAppendPermissionTrait(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String groupName = parameters["groupName"].First<String>();
-            String permissionName = parameters["permissionName"].First<String>();
-            String trait = parameters["trait"].First<String>();
+            var groupName = parameters["groupName"].First<string>();
+            var permissionName = parameters["permissionName"].First<string>();
+            var trait = parameters["trait"].First<string>();
 
-            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (DispatchPermissionsCheck(command, command.Name).Success == true) {
 
-                GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
+                var group = Groups.FirstOrDefault(g => g.Name == groupName);
 
                 if (group != null) {
                     // Fetch or create the permission. Should always exist in our config, even if it is null.
                     // This also allows for new permissions to be added to CommandName in the future
                     // without breaking old configs.
-                    PermissionModel permission = group.Permissions.FirstOrDefault(perm => perm.Name == permissionName);
+                    var permission = group.Permissions.FirstOrDefault(perm => perm.Name == permissionName);
 
                     if (permission == null) {
                         permission = new PermissionModel() {
@@ -1100,13 +1100,13 @@ namespace Potato.Core.Security {
                         group.Permissions.Add(permission);
                     }
                     else {
-                        permission.Traits = permission.Traits.Union(new List<String>() { trait }).Distinct().ToList();
+                        permission.Traits = permission.Traits.Union(new List<string>() { trait }).Distinct().ToList();
                     }
 
                     result = new CommandResult() {
                         Success = true,
                         CommandResultType = CommandResultType.Success,
-                        Message = String.Format(@"Permission ""{0}"" appended trait {1}.", permission.Name, trait),
+                        Message = string.Format(@"Permission ""{0}"" appended trait {1}.", permission.Name, trait),
                         Scope = new CommandData() {
                             Groups = new List<GroupModel>() {
                                 group
@@ -1119,13 +1119,13 @@ namespace Potato.Core.Security {
                         }
                     };
 
-                    if (this.Shared.Events != null) {
-                        this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionTraitAppended));
+                    if (Shared.Events != null) {
+                        Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionTraitAppended));
                     }
                 }
                 else {
                     result = new CommandResult() {
-                        Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
+                        Message = string.Format(@"Group with name ""{0}"" does not exists.", groupName),
                         Success = false,
                         CommandResultType = CommandResultType.DoesNotExists
                     };
@@ -1144,27 +1144,27 @@ namespace Potato.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult SecurityGroupRemovePermissionTrait(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult SecurityGroupRemovePermissionTrait(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String groupName = parameters["groupName"].First<String>();
-            String permissionName = parameters["permissionName"].First<String>();
-            String trait = parameters["trait"].First<String>();
+            var groupName = parameters["groupName"].First<string>();
+            var permissionName = parameters["permissionName"].First<string>();
+            var trait = parameters["trait"].First<string>();
 
-            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (DispatchPermissionsCheck(command, command.Name).Success == true) {
 
-                GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
+                var group = Groups.FirstOrDefault(g => g.Name == groupName);
 
                 if (group != null) {
-                    PermissionModel permission = group.Permissions.FirstOrDefault(perm => perm.Name == permissionName);
+                    var permission = group.Permissions.FirstOrDefault(perm => perm.Name == permissionName);
 
                     if (permission != null) {
-                        permission.Traits.RemoveAll(item => String.Compare(item, trait, StringComparison.OrdinalIgnoreCase) == 0);
+                        permission.Traits.RemoveAll(item => string.Compare(item, trait, StringComparison.OrdinalIgnoreCase) == 0);
 
                         result = new CommandResult() {
                             Success = true,
                             CommandResultType = CommandResultType.Success,
-                            Message = String.Format(@"Permission ""{0}"" appended trait {1}.", permission.Name, trait),
+                            Message = string.Format(@"Permission ""{0}"" appended trait {1}.", permission.Name, trait),
                             Scope = new CommandData() {
                                 Groups = new List<GroupModel>() {
                                     group
@@ -1177,13 +1177,13 @@ namespace Potato.Core.Security {
                             }
                         };
 
-                        if (this.Shared.Events != null) {
-                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionTraitRemoved));
+                        if (Shared.Events != null) {
+                            Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionTraitRemoved));
                         }
                     }
                     else {
                         result = new CommandResult() {
-                            Message = String.Format(@"Permission with name ""{0}"" does not exists.", permissionName),
+                            Message = string.Format(@"Permission with name ""{0}"" does not exists.", permissionName),
                             Success = false,
                             CommandResultType = CommandResultType.DoesNotExists
                         };
@@ -1193,7 +1193,7 @@ namespace Potato.Core.Security {
                 }
                 else {
                     result = new CommandResult() {
-                        Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
+                        Message = string.Format(@"Group with name ""{0}"" does not exists.", groupName),
                         Success = false,
                         CommandResultType = CommandResultType.DoesNotExists
                     };
@@ -1212,22 +1212,22 @@ namespace Potato.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult SecurityGroupSetPermissionDescription(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult SecurityGroupSetPermissionDescription(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String groupName = parameters["groupName"].First<String>();
-            String permissionName = parameters["permissionName"].First<String>();
-            String description = parameters["description"].First<String>();
+            var groupName = parameters["groupName"].First<string>();
+            var permissionName = parameters["permissionName"].First<string>();
+            var description = parameters["description"].First<string>();
 
-            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (DispatchPermissionsCheck(command, command.Name).Success == true) {
 
-                GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
+                var group = Groups.FirstOrDefault(g => g.Name == groupName);
 
                 if (group != null) {
                     // Fetch or create the permission. Should always exist in our config, even if it is null.
                     // This also allows for new permissions to be added to CommandName in the future
                     // without breaking old configs.
-                    PermissionModel permission = group.Permissions.FirstOrDefault(perm => perm.Name == permissionName);
+                    var permission = group.Permissions.FirstOrDefault(perm => perm.Name == permissionName);
 
                     if (permission == null) {
                         permission = new PermissionModel() {
@@ -1244,7 +1244,7 @@ namespace Potato.Core.Security {
                     result = new CommandResult() {
                         Success = true,
                         CommandResultType = CommandResultType.Success,
-                        Message = String.Format(@"Permission ""{0}"" set the description {1}.", permission.Name, description),
+                        Message = string.Format(@"Permission ""{0}"" set the description {1}.", permission.Name, description),
                         Scope = new CommandData() {
                             Groups = new List<GroupModel>() {
                                 group
@@ -1257,13 +1257,13 @@ namespace Potato.Core.Security {
                         }
                     };
 
-                    if (this.Shared.Events != null) {
-                        this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionTraitAppended));
+                    if (Shared.Events != null) {
+                        Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionTraitAppended));
                     }
                 }
                 else {
                     result = new CommandResult() {
-                        Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
+                        Message = string.Format(@"Group with name ""{0}"" does not exists.", groupName),
                         Success = false,
                         CommandResultType = CommandResultType.DoesNotExists
                     };
@@ -1282,22 +1282,22 @@ namespace Potato.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult SecurityGroupCopyPermissions(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult SecurityGroupCopyPermissions(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String sourceGroupName = parameters["sourceGroupName"].First<String>();
-            String destinationGroupName = parameters["destinationGroupName"].First<String>();
+            var sourceGroupName = parameters["sourceGroupName"].First<string>();
+            var destinationGroupName = parameters["destinationGroupName"].First<string>();
 
-            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                GroupModel destinationGroup = this.Groups.FirstOrDefault(g => g.Name == destinationGroupName);
+            if (DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var destinationGroup = Groups.FirstOrDefault(g => g.Name == destinationGroupName);
 
                 if (destinationGroup != null) {
-                    GroupModel sourceGroup = this.Groups.FirstOrDefault(group => @group.Name == sourceGroupName);
+                    var sourceGroup = Groups.FirstOrDefault(group => @group.Name == sourceGroupName);
 
                     if (sourceGroup != null) {
 
-                        foreach (PermissionModel sourcePermission in sourceGroup.Permissions) {
-                            PermissionModel destinationPermission = destinationGroup.Permissions.FirstOrDefault(permission => sourcePermission.Name == permission.Name);
+                        foreach (var sourcePermission in sourceGroup.Permissions) {
+                            var destinationPermission = destinationGroup.Permissions.FirstOrDefault(permission => sourcePermission.Name == permission.Name);
 
                             if (destinationPermission != null) {
                                 destinationPermission.Authority = sourcePermission.Authority;
@@ -1307,7 +1307,7 @@ namespace Potato.Core.Security {
                         result = new CommandResult() {
                             Success = true,
                             CommandResultType = CommandResultType.Success,
-                            Message = String.Format(@"Successfully copied permissions from group ""{0}"" to {1}.", sourceGroup.Name, destinationGroup.Name),
+                            Message = string.Format(@"Successfully copied permissions from group ""{0}"" to {1}.", sourceGroup.Name, destinationGroup.Name),
                             Scope = new CommandData() {
                                 Groups = new List<GroupModel>() {
                                     destinationGroup
@@ -1318,15 +1318,15 @@ namespace Potato.Core.Security {
                             }
                         };
 
-                        if (this.Shared.Events != null) {
-                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionsCopied));
+                        if (Shared.Events != null) {
+                            Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityGroupPermissionsCopied));
                         }
                     }
                     else {
                         result = new CommandResult() {
                             Success = false,
                             CommandResultType = CommandResultType.DoesNotExists,
-                            Message = String.Format(@"Source group ""{0}"" does not exist.", sourceGroupName)
+                            Message = string.Format(@"Source group ""{0}"" does not exist.", sourceGroupName)
                         };
                     }
                 }
@@ -1334,7 +1334,7 @@ namespace Potato.Core.Security {
                     result = new CommandResult() {
                         Success = false,
                         CommandResultType = CommandResultType.DoesNotExists,
-                        Message = String.Format(@"Destination group ""{0}"" does not exist.", sourceGroupName)
+                        Message = string.Format(@"Destination group ""{0}"" does not exist.", sourceGroupName)
                     };
                 }
             }
@@ -1348,19 +1348,19 @@ namespace Potato.Core.Security {
         /// <summary>
         /// Creates a new account if the specified name is unique.
         /// </summary>
-        public ICommandResult SecurityGroupAddAccount(ICommand command, Dictionary<String, ICommandParameter> parameters) { // , String groupName, String username) {
+        public ICommandResult SecurityGroupAddAccount(ICommand command, Dictionary<string, ICommandParameter> parameters) { // , String groupName, String username) {
             ICommandResult result = null;
 
-            String groupName = parameters["groupName"].First<String>();
-            String username = parameters["username"].First<String>();
+            var groupName = parameters["groupName"].First<string>();
+            var username = parameters["username"].First<string>();
 
-            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
+            if (DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var group = Groups.FirstOrDefault(g => g.Name == groupName);
 
                 if (group != null) {
                     if (group.IsGuest == false) {
                         if (username.Length > 0) {
-                            AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => String.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
+                            var account = Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => string.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
 
                             // If the account does not exist in any other group yet..
                             if (account == null) {
@@ -1374,7 +1374,7 @@ namespace Potato.Core.Security {
                                 result = new CommandResult() {
                                     Success = true,
                                     CommandResultType = CommandResultType.Success,
-                                    Message = String.Format(@"Account ""{0}"" added to group ""{1}"".", account.Username, group.Name),
+                                    Message = string.Format(@"Account ""{0}"" added to group ""{1}"".", account.Username, group.Name),
                                     Scope = new CommandData() {
                                         Groups = new List<GroupModel>() {
                                         group
@@ -1387,13 +1387,13 @@ namespace Potato.Core.Security {
                                     }
                                 };
 
-                                if (this.Shared.Events != null) {
-                                    this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityAccountAdded));
+                                if (Shared.Events != null) {
+                                    Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityAccountAdded));
                                 }
                             }
                             // Else the account exists already, relocate it.
                             else {
-                                GroupModel existingGroup = account.Group;
+                                var existingGroup = account.Group;
 
                                 // Remove it from the other group
                                 account.Group.Accounts.Remove(account);
@@ -1405,7 +1405,7 @@ namespace Potato.Core.Security {
                                 result = new CommandResult() {
                                     Success = true,
                                     CommandResultType = CommandResultType.Success,
-                                    Message = String.Format(@"Account ""{0}"" added to group ""{1}"".", account.Username, group.Name),
+                                    Message = string.Format(@"Account ""{0}"" added to group ""{1}"".", account.Username, group.Name),
                                     Scope = new CommandData() {
                                         Accounts = new List<AccountModel>() {
                                         account
@@ -1423,8 +1423,8 @@ namespace Potato.Core.Security {
                                     }
                                 };
 
-                                if (this.Shared.Events != null) {
-                                    this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityAccountAdded));
+                                if (Shared.Events != null) {
+                                    Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityAccountAdded));
                                 }
                             }
                         }
@@ -1446,7 +1446,7 @@ namespace Potato.Core.Security {
                 }
                 else {
                     result = new CommandResult() {
-                        Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
+                        Message = string.Format(@"Group with name ""{0}"" does not exists.", groupName),
                         Success = false,
                         CommandResultType = CommandResultType.DoesNotExists
                     };
@@ -1469,22 +1469,22 @@ namespace Potato.Core.Security {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public ICommandResult SecurityAccountAddPlayer(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult SecurityAccountAddPlayer(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             // <param name="username">The unique name of the account.  Account.Name</param>
             // <param name="gameType">The name of the game, found in Potato.Core.Connections.Support</param>
             // <param name="uid">The UID of the player by cd key, name - etc.</param>
-            String username = parameters["username"].First<String>();
-            String gameType = parameters["gameType"].First<String>();
-            String uid = parameters["uid"].First<String>();
+            var username = parameters["username"].First<string>();
+            var gameType = parameters["gameType"].First<string>();
+            var uid = parameters["uid"].First<string>();
 
-            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => String.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
+            if (DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var account = Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => string.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
 
                 if (account != null) {
                     if (uid.Length > 0) {
-                        AccountPlayerModel player = this.Groups.SelectMany(group => @group.Accounts)
+                        var player = Groups.SelectMany(group => @group.Accounts)
                                                    .SelectMany(a => a.Players)
                                                    .FirstOrDefault(x => x.ProtocolType == gameType && x.Uid == uid);
 
@@ -1501,7 +1501,7 @@ namespace Potato.Core.Security {
                             result = new CommandResult() {
                                 Success = true,
                                 CommandResultType = CommandResultType.Success,
-                                Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" added to account ""{2}"".", player.Uid, player.ProtocolType, account.Username),
+                                Message = string.Format(@"Player with UID of ""{0}"" in game type ""{1}"" added to account ""{2}"".", player.Uid, player.ProtocolType, account.Username),
                                 Scope = new CommandData() {
                                     Accounts = new List<AccountModel>() {
                                         account
@@ -1517,13 +1517,13 @@ namespace Potato.Core.Security {
                                 }
                             };
 
-                            if (this.Shared.Events != null) {
-                                this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityPlayerAdded));
+                            if (Shared.Events != null) {
+                                Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityPlayerAdded));
                             }
                         }
                         // Else the player already exists and is attached to another account. Reassign it.
                         else {
-                            AccountModel existingAccount = player.Account;
+                            var existingAccount = player.Account;
 
                             // Remove the player from the other account
                             player.Account.Players.Remove(player);
@@ -1535,7 +1535,7 @@ namespace Potato.Core.Security {
                             result = new CommandResult() {
                                 Success = true,
                                 CommandResultType = CommandResultType.Success,
-                                Message = String.Format(@"Player with UID of ""{0}"" in game type ""{1}"" added to account ""{2}"".", player.Uid, player.ProtocolType, account.Username),
+                                Message = string.Format(@"Player with UID of ""{0}"" in game type ""{1}"" added to account ""{2}"".", player.Uid, player.ProtocolType, account.Username),
                                 Scope = new CommandData() {
                                     AccountPlayers = new List<AccountPlayerModel>() {
                                         player
@@ -1553,8 +1553,8 @@ namespace Potato.Core.Security {
                                 }
                             };
 
-                            if (this.Shared.Events != null) {
-                                this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityPlayerAdded));
+                            if (Shared.Events != null) {
+                                Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityPlayerAdded));
                             }
                         }
                     }
@@ -1568,7 +1568,7 @@ namespace Potato.Core.Security {
                 }
                 else {
                     result = new CommandResult() {
-                        Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
+                        Message = string.Format(@"Account with username ""{0}"" does not exists.", username),
                         Success = false,
                         CommandResultType = CommandResultType.DoesNotExists
                     };
@@ -1587,16 +1587,16 @@ namespace Potato.Core.Security {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public ICommandResult SecurityAccountSetPassword(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult SecurityAccountSetPassword(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             // <param name="username">The unique name of the account.  Account.Name</param>
             // <param name="password">The person password to login to the layer.  Account.Password</param>
-            String username = parameters["username"].First<String>();
-            String password = parameters["password"].First<String>();
+            var username = parameters["username"].First<string>();
+            var password = parameters["password"].First<string>();
 
-            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => String.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
+            if (DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var account = Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => string.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
 
                 if (account != null) {
                     if (password.Length > 0) {
@@ -1605,7 +1605,7 @@ namespace Potato.Core.Security {
                         result = new CommandResult() {
                             Success = true,
                             CommandResultType = CommandResultType.Success,
-                            Message = String.Format(@"Successfully changed password for account with username ""{0}"".", account.Username)
+                            Message = string.Format(@"Successfully changed password for account with username ""{0}"".", account.Username)
                         };
                     }
                     else {
@@ -1618,7 +1618,7 @@ namespace Potato.Core.Security {
                 }
                 else {
                     result = new CommandResult() {
-                        Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
+                        Message = string.Format(@"Account with username ""{0}"" does not exists.", username),
                         Success = false,
                         CommandResultType = CommandResultType.DoesNotExists
                     };
@@ -1637,14 +1637,14 @@ namespace Potato.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult SecurityAccountSetPasswordHash(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult SecurityAccountSetPasswordHash(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String username = parameters["username"].First<String>();
-            String passwordHash = parameters["passwordHash"].First<String>();
+            var username = parameters["username"].First<string>();
+            var passwordHash = parameters["passwordHash"].First<string>();
 
-            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => String.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
+            if (DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var account = Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => string.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
 
                 if (account != null) {
                     if (passwordHash.Length > 0) {
@@ -1653,7 +1653,7 @@ namespace Potato.Core.Security {
                         result = new CommandResult() {
                             Success = true,
                             CommandResultType = CommandResultType.Success,
-                            Message = String.Format(@"Successfully set password for account with username ""{0}"".", account.Username)
+                            Message = string.Format(@"Successfully set password for account with username ""{0}"".", account.Username)
                         };
                     }
                     else {
@@ -1666,7 +1666,7 @@ namespace Potato.Core.Security {
                 }
                 else {
                     result = new CommandResult() {
-                        Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
+                        Message = string.Format(@"Account with username ""{0}"" does not exists.", username),
                         Success = false,
                         CommandResultType = CommandResultType.DoesNotExists
                     };
@@ -1682,19 +1682,19 @@ namespace Potato.Core.Security {
         /// <summary>
         /// Appends an access token onto an accounts acceptable token list.
         /// </summary>
-        public ICommandResult SecurityAccountAppendAccessToken(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult SecurityAccountAppendAccessToken(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String username = parameters["username"].First<String>();
-            Guid id = parameters["id"].First<Guid>();
-            String tokenHash = parameters["tokenHash"].First<String>();
-            DateTime lastTouched = parameters["lastTouched"].First<DateTime>();
+            var username = parameters["username"].First<string>();
+            var id = parameters["id"].First<Guid>();
+            var tokenHash = parameters["tokenHash"].First<string>();
+            var lastTouched = parameters["lastTouched"].First<DateTime>();
 
-            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => String.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
+            if (DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var account = Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => string.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
                 
                 if (account != null) {
-                    if (id != Guid.Empty && tokenHash.Length > 0 && lastTouched > DateTime.Now.AddSeconds(-1 * Math.Abs(this.Shared.Variables.Get(CommonVariableNames.SecurityMaximumAccessTokenLastTouchedLengthSeconds, 172800)))) {
+                    if (id != Guid.Empty && tokenHash.Length > 0 && lastTouched > DateTime.Now.AddSeconds(-1 * Math.Abs(Shared.Variables.Get(CommonVariableNames.SecurityMaximumAccessTokenLastTouchedLengthSeconds, 172800)))) {
 
                         // Upsert the token hash
                         account.AccessTokens.AddOrUpdate(id, guid => new AccessTokenModel() {
@@ -1702,7 +1702,7 @@ namespace Potato.Core.Security {
                             Account = account,
                             TokenHash = tokenHash,
                             LastTouched = lastTouched,
-                            ExpiredWindowSeconds = this.Shared.Variables.Get(CommonVariableNames.SecurityMaximumAccessTokenLastTouchedLengthSeconds, 172800)
+                            ExpiredWindowSeconds = Shared.Variables.Get(CommonVariableNames.SecurityMaximumAccessTokenLastTouchedLengthSeconds, 172800)
                         }, (guid, model) => {
                             model.TokenHash = tokenHash;
                             model.LastTouched = lastTouched;
@@ -1711,7 +1711,7 @@ namespace Potato.Core.Security {
                         });
 
                         // Keep removing token hashes if we've added too many
-                        while (account.AccessTokens.Count > 0 && account.AccessTokens.Count > this.Shared.Variables.Get(CommonVariableNames.SecurityMaximumAccessTokensPerAccount, 5)) {
+                        while (account.AccessTokens.Count > 0 && account.AccessTokens.Count > Shared.Variables.Get(CommonVariableNames.SecurityMaximumAccessTokensPerAccount, 5)) {
                             var oldestId = account.AccessTokens.OrderBy(accessToken => accessToken.Value.LastTouched).First();
 
                             // Remove the token that was touched the longest ago.
@@ -1722,7 +1722,7 @@ namespace Potato.Core.Security {
                         result = new CommandResult() {
                             Success = true,
                             CommandResultType = CommandResultType.Success,
-                            Message = String.Format(@"Successfully added token hash to account ""{0}"".", account.Username)
+                            Message = string.Format(@"Successfully added token hash to account ""{0}"".", account.Username)
                         };
                     }
                     else {
@@ -1735,7 +1735,7 @@ namespace Potato.Core.Security {
                 }
                 else {
                     result = new CommandResult() {
-                        Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
+                        Message = string.Format(@"Account with username ""{0}"" does not exists.", username),
                         Success = false,
                         CommandResultType = CommandResultType.DoesNotExists
                     };
@@ -1754,19 +1754,19 @@ namespace Potato.Core.Security {
         /// <param name="account">The account to create the access token for</param>
         /// <param name="identifier">The identifying peice of information to mixin with the token</param>
         /// <returns>An access token for transport, or null if the user can't have tokens or something went wrong while making the token.</returns>
-        protected AccessTokenTransportModel GenerateAccessToken(AccountModel account, String identifier) {
+        protected AccessTokenTransportModel GenerateAccessToken(AccountModel account, string identifier) {
             AccessTokenTransportModel accessTokenTransport = null;
 
             var accessToken = new AccessTokenModel() {
                 Account = account,
-                ExpiredWindowSeconds = this.Shared.Variables.Get(CommonVariableNames.SecurityMaximumAccessTokenLastTouchedLengthSeconds, 172800)
+                ExpiredWindowSeconds = Shared.Variables.Get(CommonVariableNames.SecurityMaximumAccessTokenLastTouchedLengthSeconds, 172800)
             };
 
             var token = accessToken.Generate(identifier);
 
-            if (String.IsNullOrEmpty(token) == false) {
+            if (string.IsNullOrEmpty(token) == false) {
                 // Save the token hash for future authentication.
-                this.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken(account.Username, accessToken.Id, accessToken.TokenHash, accessToken.LastTouched).SetOrigin(CommandOrigin.Local));
+                Tunnel(CommandBuilder.SecurityAccountAppendAccessToken(account.Username, accessToken.Id, accessToken.TokenHash, accessToken.LastTouched).SetOrigin(CommandOrigin.Local));
 
                 accessTokenTransport = new AccessTokenTransportModel() {
                     Id = accessToken.Id,
@@ -1783,26 +1783,26 @@ namespace Potato.Core.Security {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult SecurityAccountAuthenticate(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult SecurityAccountAuthenticate(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String username = parameters["username"].First<String>();
-            String passwordPlainText = parameters["passwordPlainText"].First<String>();
-            String identifier = parameters["identifier"].First<String>();
+            var username = parameters["username"].First<string>();
+            var passwordPlainText = parameters["passwordPlainText"].First<string>();
+            var identifier = parameters["identifier"].First<string>();
 
-            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => String.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
+            if (DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var account = Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => string.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
 
                 if (account != null) {
                     if (account.PasswordHash.Length > 0) {
-                        if (String.CompareOrdinal(account.PasswordHash, BCrypt.Net.BCrypt.HashPassword(passwordPlainText, account.PasswordHash)) == 0) {
+                        if (string.CompareOrdinal(account.PasswordHash, BCrypt.Net.BCrypt.HashPassword(passwordPlainText, account.PasswordHash)) == 0) {
 
-                            var accessTokenTransport = this.GenerateAccessToken(account, identifier);
+                            var accessTokenTransport = GenerateAccessToken(account, identifier);
 
                             result = new CommandResult() {
                                 Success = true,
                                 CommandResultType = CommandResultType.Success,
-                                Message = String.Format(@"Successfully authenticated against account with username ""{0}"".", account.Username),
+                                Message = string.Format(@"Successfully authenticated against account with username ""{0}"".", account.Username),
                                 Scope = {
                                     Accounts = new List<AccountModel>() {
                                         account
@@ -1850,22 +1850,22 @@ namespace Potato.Core.Security {
         /// <summary>
         /// Authenticates an account against a access token
         /// </summary>
-        public ICommandResult SecurityAccountAuthenticateToken(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult SecurityAccountAuthenticateToken(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            Guid id = parameters["id"].First<Guid>();
-            String token = parameters["token"].First<String>();
-            String identifier = parameters["identifier"].First<String>();
+            var id = parameters["id"].First<Guid>();
+            var token = parameters["token"].First<string>();
+            var identifier = parameters["identifier"].First<string>();
 
-            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                AccessTokenModel accountAccessToken = this.Groups.SelectMany(group => group.Accounts).Where(account => account.AccessTokens.ContainsKey(id)).SelectMany(account => account.AccessTokens).Where(accessToken => accessToken.Key == id).Select(accessToken => accessToken.Value).FirstOrDefault();
+            if (DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var accountAccessToken = Groups.SelectMany(group => group.Accounts).Where(account => account.AccessTokens.ContainsKey(id)).SelectMany(account => account.AccessTokens).Where(accessToken => accessToken.Key == id).Select(accessToken => accessToken.Value).FirstOrDefault();
 
                 if (accountAccessToken != null) {
                     if (accountAccessToken.Authenticate(id, token, identifier)) {
                         result = new CommandResult() {
                             Success = true,
                             CommandResultType = CommandResultType.Success,
-                            Message = String.Format(@"Successfully authenticated against account with username ""{0}"".", accountAccessToken.Account.Username),
+                            Message = string.Format(@"Successfully authenticated against account with username ""{0}"".", accountAccessToken.Account.Username),
                             Scope = {
                                 Accounts = new List<AccountModel>() {
                                     accountAccessToken.Account
@@ -1876,8 +1876,8 @@ namespace Potato.Core.Security {
                             }
                         };
 
-                        if (this.Shared.Events != null) {
-                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityAccountTokenAuthenticated));
+                        if (Shared.Events != null) {
+                            Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.SecurityAccountTokenAuthenticated));
                         }
                     }
                     else {
@@ -1909,20 +1909,20 @@ namespace Potato.Core.Security {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public ICommandResult SecurityAccountSetPreferredLanguageCode(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult SecurityAccountSetPreferredLanguageCode(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             // <param name="username">The unique name of the account.  Account.Name</param>
             // <param name="languageCode">ISO 639-1 preferred language code</param>
-            String username = parameters["username"].First<String>();
-            String languageCode = parameters["languageCode"].First<String>();
+            var username = parameters["username"].First<string>();
+            var languageCode = parameters["languageCode"].First<string>();
 
             // If the user has permission or they are setting their own authenticated account.
-            if (this.DispatchPermissionsCheck(command, command.Name).Success == true || this.DispatchIdentityCheck(command, username).Success == true) {
-                AccountModel account = this.Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => String.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
+            if (DispatchPermissionsCheck(command, command.Name).Success == true || DispatchIdentityCheck(command, username).Success == true) {
+                var account = Groups.SelectMany(g => g.Accounts).FirstOrDefault(a => string.Compare(a.Username, username, StringComparison.OrdinalIgnoreCase) == 0);
 
                 if (account != null) {
-                    LanguageModel language = this.Shared.Languages.LoadedLanguageFiles.Where(l => l.LanguageModel.LanguageCode == languageCode).Select(l => l.LanguageModel).FirstOrDefault();
+                    var language = Shared.Languages.LoadedLanguageFiles.Where(l => l.LanguageModel.LanguageCode == languageCode).Select(l => l.LanguageModel).FirstOrDefault();
 
                     // If we have the language code we fixup the casing just to be pretty and stuff.
                     if (language != null) {
@@ -1934,12 +1934,12 @@ namespace Potato.Core.Security {
                     result = new CommandResult() {
                         Success = true,
                         CommandResultType = CommandResultType.Success,
-                        Message = String.Format(@"Account with username ""{0}"" set preferred language to ""{1}"".", account.Username, languageCode)
+                        Message = string.Format(@"Account with username ""{0}"" set preferred language to ""{1}"".", account.Username, languageCode)
                     };
                 }
                 else {
                     result = new CommandResult() {
-                        Message = String.Format(@"Account with username ""{0}"" does not exists.", username),
+                        Message = string.Format(@"Account with username ""{0}"" does not exists.", username),
                         Success = false,
                         CommandResultType = CommandResultType.DoesNotExists
                     };
@@ -1958,18 +1958,18 @@ namespace Potato.Core.Security {
         /// Sets a group's permissions to a predefined list of permissions required
         /// for a simple streaming account.
         /// </summary>
-        public ICommandResult SecuritySetPredefinedStreamPermissions(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult SecuritySetPredefinedStreamPermissions(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String groupName = parameters["groupName"].First<String>();
+            var groupName = parameters["groupName"].First<string>();
 
-            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
+            if (DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var group = Groups.FirstOrDefault(g => g.Name == groupName);
 
                 if (group != null) {
                     if (group.IsGuest == false) {
                         // A list of permissions to keep as "1", all others will be nulled out.
-                        List<CommandType> permissions = new List<CommandType>() {
+                        var permissions = new List<CommandType>() {
                             CommandType.PotatoPing,
                             CommandType.SecurityAccountAuthenticate,
                             CommandType.EventsEstablishJsonStream,
@@ -1991,7 +1991,7 @@ namespace Potato.Core.Security {
                         result = new CommandResult() {
                             Success = true,
                             CommandResultType = CommandResultType.Success,
-                            Message = String.Format(@"Group with name ""{0}"" set permissions to predefined stream setup.", group.Name)
+                            Message = string.Format(@"Group with name ""{0}"" set permissions to predefined stream setup.", group.Name)
                         };
                     }
                     else {
@@ -2004,7 +2004,7 @@ namespace Potato.Core.Security {
                 }
                 else {
                     result = new CommandResult() {
-                        Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
+                        Message = string.Format(@"Group with name ""{0}"" does not exists.", groupName),
                         Success = false,
                         CommandResultType = CommandResultType.DoesNotExists
                     };
@@ -2020,13 +2020,13 @@ namespace Potato.Core.Security {
         /// <summary>
         /// Sets a group's permissions to maximo for the true Administrator experience.
         /// </summary>
-        public ICommandResult SecuritySetPredefinedAdministratorsPermissions(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult SecuritySetPredefinedAdministratorsPermissions(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String groupName = parameters["groupName"].First<String>();
+            var groupName = parameters["groupName"].First<string>();
 
-            if (this.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                GroupModel group = this.Groups.FirstOrDefault(g => g.Name == groupName);
+            if (DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var group = Groups.FirstOrDefault(g => g.Name == groupName);
 
                 if (group != null) {
                     if (group.IsGuest == false) {
@@ -2037,7 +2037,7 @@ namespace Potato.Core.Security {
                         result = new CommandResult() {
                             Success = true,
                             CommandResultType = CommandResultType.Success,
-                            Message = String.Format(@"Group with name ""{0}"" set permissions to predefined administrator setup.", group.Name)
+                            Message = string.Format(@"Group with name ""{0}"" set permissions to predefined administrator setup.", group.Name)
                         };
                     }
                     else {
@@ -2050,7 +2050,7 @@ namespace Potato.Core.Security {
                 }
                 else {
                     result = new CommandResult() {
-                        Message = String.Format(@"Group with name ""{0}"" does not exists.", groupName),
+                        Message = string.Format(@"Group with name ""{0}"" does not exists.", groupName),
                         Success = false,
                         CommandResultType = CommandResultType.DoesNotExists
                     };

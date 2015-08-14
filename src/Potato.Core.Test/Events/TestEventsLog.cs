@@ -33,9 +33,9 @@ namespace Potato.Core.Test.Events {
         /// </summary>
         [Test]
         public void TestResultInsufficientPermissions() {
-            EventsController events = new EventsController();
+            var events = new EventsController();
 
-            ICommandResult result = events.Tunnel(CommandBuilder.EventsLog(new GenericEvent() {
+            var result = events.Tunnel(CommandBuilder.EventsLog(new GenericEvent() {
                 Name = "Nothing"
             }).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
@@ -50,9 +50,9 @@ namespace Potato.Core.Test.Events {
         /// </summary>
         [Test]
         public void TestResultSuccess() {
-            EventsController events = new EventsController();
+            var events = new EventsController();
 
-            ICommandResult result = events.Tunnel(CommandBuilder.EventsLog(new GenericEvent() {
+            var result = events.Tunnel(CommandBuilder.EventsLog(new GenericEvent() {
                 Name = "Nothing"
             }).SetOrigin(CommandOrigin.Local));
 

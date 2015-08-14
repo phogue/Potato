@@ -28,7 +28,7 @@ namespace Potato.Core.Test.TextCommands.Fuzzy {
         /// </summary>
         [Test]
         public void TestKickEveryoneWithExclusionOnPhoguePhilImpliedJoin() {
-            TextCommandController textCommandController = CreateTextCommandController();
+            var textCommandController = CreateTextCommandController();
 
             AssertCommandPlayerListMapList(textCommandController, "kick everyone but not phogue phil", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Values.Except(new List<PlayerModel>() {
                 PlayerPhogue,

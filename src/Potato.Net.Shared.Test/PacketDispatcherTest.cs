@@ -29,9 +29,9 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestMockPacketDispatcherSuccess() {
-            bool dispatched = false;
+            var dispatched = false;
 
-            MockPacketDispatcher dispatcher = new MockPacketDispatcher();
+            var dispatcher = new MockPacketDispatcher();
 
             dispatcher.Append(new Dictionary<IPacketDispatch, Action<IPacketWrapper, IPacketWrapper>>() {
                 { 
@@ -60,10 +60,10 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestMockPacketDispatcherDifferentOriginFailed() {
-            bool dispatched = false;
-            bool failed = false;
+            var dispatched = false;
+            var failed = false;
 
-            MockPacketDispatcher dispatcher = new MockPacketDispatcher() {
+            var dispatcher = new MockPacketDispatcher() {
                 MissingDispatchHandler = (identifer, request, response) => { failed = true; }
             };
 
@@ -95,10 +95,10 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestMockPacketDispatcherMissingDispatchNameFailed() {
-            bool dispatched = false;
-            bool failed = false;
+            var dispatched = false;
+            var failed = false;
 
-            MockPacketDispatcher dispatcher = new MockPacketDispatcher() {
+            var dispatcher = new MockPacketDispatcher() {
                 MissingDispatchHandler = (identifer, request, response) => { failed = true; }
             };
 
@@ -131,9 +131,9 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestMockPacketDispatcherReplacedDispatcherSuccess() {
-            int handler = 0;
+            var handler = 0;
 
-            MockPacketDispatcher dispatcher = new MockPacketDispatcher();
+            var dispatcher = new MockPacketDispatcher();
 
             dispatcher.Append(new Dictionary<IPacketDispatch, Action<IPacketWrapper, IPacketWrapper>>() {
                 { 

@@ -27,14 +27,14 @@ namespace Potato.Net.Shared.Models {
         /// </summary>
         public KillModel() : base() {
             // Target
-            this.Scope.Content = new List<String>();
-            this.Scope.Players = new List<PlayerModel>();
-            this.Scope.Items = new List<ItemModel>();
-            this.Scope.HumanHitLocations = new List<HumanHitLocation>();
+            Scope.Content = new List<string>();
+            Scope.Players = new List<PlayerModel>();
+            Scope.Items = new List<ItemModel>();
+            Scope.HumanHitLocations = new List<HumanHitLocation>();
 
             // Killer
-            this.Now.Players = new List<PlayerModel>();
-            this.Now.Items = new List<ItemModel>();
+            Now.Players = new List<PlayerModel>();
+            Now.Items = new List<ItemModel>();
         }
     }
 }

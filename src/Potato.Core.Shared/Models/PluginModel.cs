@@ -25,12 +25,12 @@ namespace Potato.Core.Shared.Models {
         /// <summary>
         /// The assembly name of the plugin
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The friendly human readable name for the plugin
         /// </summary>
-        public String Title { get; set; }
+        public string Title { get; set; }
 
         /// <summary>
         /// The loaded plugin GUID
@@ -45,6 +45,6 @@ namespace Potato.Core.Shared.Models {
         /// <summary>
         /// A simple list of commands this plugin has registered handlers.
         /// </summary>
-        public List<String> Commands { get; set; }
+        public List<string> Commands { get; set; }
     }
 }

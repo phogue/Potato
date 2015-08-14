@@ -27,37 +27,37 @@ namespace Potato.Net.Shared {
         /// <summary>
         /// All current information about each player in the server
         /// </summary>
-        ConcurrentDictionary<String, PlayerModel> Players { get; set; }
+        ConcurrentDictionary<string, PlayerModel> Players { get; set; }
 
         /// <summary>
         /// The current maplist
         /// </summary>
-        ConcurrentDictionary<String, MapModel> Maps { get; set; }
+        ConcurrentDictionary<string, MapModel> Maps { get; set; }
 
         /// <summary>
         /// The current banlist
         /// </summary>
-        ConcurrentDictionary<String, BanModel> Bans { get; set; }
+        ConcurrentDictionary<string, BanModel> Bans { get; set; }
 
         /// <summary>
         /// List of available maps for this game
         /// </summary>
-        ConcurrentDictionary<String, MapModel> MapPool { get; set; }
+        ConcurrentDictionary<string, MapModel> MapPool { get; set; }
 
         /// <summary>
         /// List of available game modes for this game.
         /// </summary>
-        ConcurrentDictionary<String, GameModeModel> GameModePool { get; set; }
+        ConcurrentDictionary<string, GameModeModel> GameModePool { get; set; }
 
         /// <summary>
         /// List of potential groups available 
         /// </summary>
-        ConcurrentDictionary<String, GroupModel> Groups { get; set; }
+        ConcurrentDictionary<string, GroupModel> Groups { get; set; }
 
         /// <summary>
         /// List of potential items available in this game.
         /// </summary>
-        ConcurrentDictionary<String, ItemModel> Items { get; set; }
+        ConcurrentDictionary<string, ItemModel> Items { get; set; }
 
         /// <summary>
         /// Various settings that are sent by the server.

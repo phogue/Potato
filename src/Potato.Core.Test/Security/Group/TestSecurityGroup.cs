@@ -41,10 +41,10 @@ namespace Potato.Core.Test.Security.Group {
             var security = new SecurityController();
 
             // Add a group.
-            ICommandResult result = security.Tunnel(new Command() {
+            var result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
@@ -60,10 +60,10 @@ namespace Potato.Core.Test.Security.Group {
         [Test]
         public void TestSecurityAddGroupDuplicateGroupName() {
             var security = new SecurityController();
-            ICommandResult result = security.Tunnel(new Command() {
+            var result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
@@ -75,7 +75,7 @@ namespace Potato.Core.Test.Security.Group {
             result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
@@ -93,11 +93,11 @@ namespace Potato.Core.Test.Security.Group {
             var security = new SecurityController();
 
             // Add a group with an empty name.
-            ICommandResult result = security.Tunnel(new Command() {
+            var result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    String.Empty
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
+                    string.Empty
                 })
             });
 
@@ -114,13 +114,13 @@ namespace Potato.Core.Test.Security.Group {
             var security = new SecurityController();
 
             // Add a group.
-            ICommandResult result = security.Tunnel(new Command() {
+            var result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityAddGroup,
                 Authentication = {
                     Username = "Phogue"
                 },
                 Origin = CommandOrigin.Remote,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
@@ -138,7 +138,7 @@ namespace Potato.Core.Test.Security.Group {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "FirstGroupName"
                 })
             });
@@ -146,7 +146,7 @@ namespace Potato.Core.Test.Security.Group {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "SecondGroupName"
                 })
             });
@@ -159,7 +159,7 @@ namespace Potato.Core.Test.Security.Group {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "FirstGroupName",
                     CommandType.VariablesSet,
                     77
@@ -168,7 +168,7 @@ namespace Potato.Core.Test.Security.Group {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "FirstGroupName",
                     CommandType.VariablesSetA,
                     88
@@ -185,10 +185,10 @@ namespace Potato.Core.Test.Security.Group {
             Assert.IsNull(secondGroup.Permissions.First(permission => permission.Name == CommandType.VariablesSetA.ToString()).Authority);
 
             // Now copy the permissions from the first group, to the other group.
-            ICommandResult result = security.Tunnel(new Command() {
+            var result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupCopyPermissions,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "FirstGroupName",
                     "SecondGroupName"
                 })
@@ -210,25 +210,25 @@ namespace Potato.Core.Test.Security.Group {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "FirstGroupName"
                 })
             });
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "SecondGroupName"
                 })
             });
 
-            ICommandResult result = security.Tunnel(new Command() {
+            var result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityGroupCopyPermissions,
                 Authentication = {
                     Username = "Phogue"
                 },
                 Origin = CommandOrigin.Remote,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "FirstGroupName",
                     "SecondGroupName"
                 })
@@ -247,7 +247,7 @@ namespace Potato.Core.Test.Security.Group {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "SecondGroupName"
                 })
             });
@@ -256,10 +256,10 @@ namespace Potato.Core.Test.Security.Group {
             Assert.IsNotNull(security.Groups.FirstOrDefault(group => @group.Name == "SecondGroupName"));
 
             // Now copy the permissions from the first group, to the other group.
-            ICommandResult result = security.Tunnel(new Command() {
+            var result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupCopyPermissions,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "FirstGroupName",
                     "SecondGroupName"
                 })
@@ -278,7 +278,7 @@ namespace Potato.Core.Test.Security.Group {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
@@ -287,10 +287,10 @@ namespace Potato.Core.Test.Security.Group {
             Assert.AreEqual(security.Groups.Last().Name, "GroupName");
 
             // Now set the kick permission
-            ICommandResult result = security.Tunnel(new Command() {
+            var result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     "CustomPermission",
                     50
@@ -309,7 +309,7 @@ namespace Potato.Core.Test.Security.Group {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
@@ -318,10 +318,10 @@ namespace Potato.Core.Test.Security.Group {
             Assert.AreEqual(security.Groups.Last().Name, "GroupName");
 
             // Now set the kick permission
-            ICommandResult result = security.Tunnel(new Command() {
+            var result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     CommandType.VariablesSet,
                     50
@@ -344,7 +344,7 @@ namespace Potato.Core.Test.Security.Group {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
@@ -359,10 +359,10 @@ namespace Potato.Core.Test.Security.Group {
             Assert.IsNull(security.Groups.Last().Permissions.FirstOrDefault(permission => permission.Name == CommandType.VariablesSet.ToString()));
 
             // Now set the kick permission
-            ICommandResult result = security.Tunnel(new Command() {
+            var result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     CommandType.VariablesSet,
                     50
@@ -382,16 +382,16 @@ namespace Potato.Core.Test.Security.Group {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "ThisIsValid"
                 })
             });
 
             // Now set the kick permission
-            ICommandResult result = security.Tunnel(new Command() {
+            var result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "ThisIsNotValid",
                     CommandType.VariablesSet,
                     50
@@ -416,7 +416,7 @@ namespace Potato.Core.Test.Security.Group {
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityGroupSetPermission, 50).SetOrigin(CommandOrigin.Local));
 
             // Now attempt to revoke our permission to set a permission
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityGroupSetPermission, 0).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityGroupSetPermission, 0).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue",
                 PasswordPlainText = "password"
             }));
@@ -440,7 +440,7 @@ namespace Potato.Core.Test.Security.Group {
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityAccountAuthenticate, 50).SetOrigin(CommandOrigin.Local));
 
             // Now attempt to revoke our permission to authenticate with the system
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityAccountAuthenticate, 0).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityAccountAuthenticate, 0).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue",
                 PasswordPlainText = "password"
             }));
@@ -459,18 +459,18 @@ namespace Potato.Core.Test.Security.Group {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
 
-            ICommandResult result = security.Tunnel(new Command() {
+            var result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityGroupSetPermission,
                 Authentication = {
                     Username = "Phogue"
                 },
                 Origin = CommandOrigin.Remote,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     CommandType.VariablesSet,
                     50
@@ -490,7 +490,7 @@ namespace Potato.Core.Test.Security.Group {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
@@ -499,10 +499,10 @@ namespace Potato.Core.Test.Security.Group {
             Assert.AreEqual(security.Groups.Last().Name, "GroupName");
 
             // Now set the kick permission
-            ICommandResult result = security.Tunnel(new Command() {
+            var result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     CommandType.VariablesSet.ToString(),
                     60
@@ -524,7 +524,7 @@ namespace Potato.Core.Test.Security.Group {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
@@ -532,10 +532,10 @@ namespace Potato.Core.Test.Security.Group {
             // Test that the group was initially added.
             Assert.AreEqual(security.Groups.Last().Name, "GroupName");
 
-            ICommandResult result = security.Tunnel(new Command() {
+            var result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityRemoveGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
@@ -554,7 +554,7 @@ namespace Potato.Core.Test.Security.Group {
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityRemoveGroup("GroupName").SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityRemoveGroup("GroupName").SetOrigin(CommandOrigin.Local));
 
             // Make sure it was successful.
             Assert.IsTrue(result.Success);
@@ -571,7 +571,7 @@ namespace Potato.Core.Test.Security.Group {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.SecurityRemoveGroup, 1).SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityRemoveGroup("GroupName").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = security.Tunnel(CommandBuilder.SecurityRemoveGroup("GroupName").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -587,10 +587,10 @@ namespace Potato.Core.Test.Security.Group {
         public void TestSecurityRemoveGuestGroup() {
             var security = new SecurityController();
 
-            ICommandResult result = security.Tunnel(new Command() {
+            var result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityRemoveGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Guest"
                 })
             });
@@ -609,11 +609,11 @@ namespace Potato.Core.Test.Security.Group {
             var security = new SecurityController();
 
             // Add a group with an empty name.
-            ICommandResult result = security.Tunnel(new Command() {
+            var result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityRemoveGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    String.Empty
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
+                    string.Empty
                 })
             });
 
@@ -628,18 +628,18 @@ namespace Potato.Core.Test.Security.Group {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
 
-            ICommandResult result = security.Tunnel(new Command() {
+            var result = security.Tunnel(new Command() {
                 CommandType = CommandType.SecurityRemoveGroup,
                 Authentication = {
                     Username = "Phogue"
                 },
                 Origin = CommandOrigin.Remote,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
@@ -654,10 +654,10 @@ namespace Potato.Core.Test.Security.Group {
         [Test]
         public void TestSecurityRemoveGroupNotExists() {
             var security = new SecurityController();
-            ICommandResult result = security.Tunnel(new Command() {
+            var result = security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityRemoveGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });

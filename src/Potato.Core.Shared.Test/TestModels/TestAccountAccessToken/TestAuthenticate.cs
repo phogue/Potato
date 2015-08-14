@@ -8,11 +8,11 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
 
         public AccessTokenModel Valid { get; set; }
 
-        public const String Identifer = "identifer";
+        public const string Identifer = "identifer";
 
         [SetUp]
         public void Setup() {
-            this.Valid = new AccessTokenModel() {
+            Valid = new AccessTokenModel() {
                 Account = new AccountModel() {
                     PasswordHash = "Password Hash"
                 }
@@ -24,9 +24,9 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestSuccessfullyAuthenticate() {
-            var token = this.Valid.Generate(TestAuthenticate.Identifer);
+            var token = Valid.Generate(Identifer);
 
-            Assert.IsTrue(this.Valid.Authenticate(this.Valid.Id, token, TestAuthenticate.Identifer));
+            Assert.IsTrue(Valid.Authenticate(Valid.Id, token, Identifer));
         }
 
         /// <summary>
@@ -34,13 +34,13 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestSuccessfullyAuthenticationTouchesTime() {
-            var token = this.Valid.Generate(TestAuthenticate.Identifer);
+            var token = Valid.Generate(Identifer);
 
-            this.Valid.LastTouched = DateTime.Now.AddDays(-1);
+            Valid.LastTouched = DateTime.Now.AddDays(-1);
 
-            this.Valid.Authenticate(this.Valid.Id, token, TestAuthenticate.Identifer);
+            Valid.Authenticate(Valid.Id, token, Identifer);
 
-            Assert.GreaterOrEqual(this.Valid.LastTouched, DateTime.Now.AddMinutes(-1));
+            Assert.GreaterOrEqual(Valid.LastTouched, DateTime.Now.AddMinutes(-1));
         }
 
         /// <summary>
@@ -49,11 +49,11 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestAlteringPasswordHashNegatesAccessToken() {
-            var token = this.Valid.Generate(TestAuthenticate.Identifer);
+            var token = Valid.Generate(Identifer);
 
-            this.Valid.Account.PasswordHash = "Reset My Password";
+            Valid.Account.PasswordHash = "Reset My Password";
 
-            Assert.IsFalse(this.Valid.Authenticate(this.Valid.Id, token, TestAuthenticate.Identifer));
+            Assert.IsFalse(Valid.Authenticate(Valid.Id, token, Identifer));
         }
 
         /// <summary>
@@ -61,9 +61,9 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestDifferentIdentifierNegatesAccessToken() {
-            var token = this.Valid.Generate(TestAuthenticate.Identifer);
+            var token = Valid.Generate(Identifer);
 
-            Assert.IsFalse(this.Valid.Authenticate(this.Valid.Id, token, "different"));
+            Assert.IsFalse(Valid.Authenticate(Valid.Id, token, "different"));
         }
 
         /// <summary>
@@ -71,9 +71,9 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestMissmatchIdReturnsFalse() {
-            var token = this.Valid.Generate(TestAuthenticate.Identifer);
+            var token = Valid.Generate(Identifer);
 
-            Assert.IsFalse(this.Valid.Authenticate(Guid.NewGuid(), token, TestAuthenticate.Identifer));
+            Assert.IsFalse(Valid.Authenticate(Guid.NewGuid(), token, Identifer));
         }
 
         /// <summary>
@@ -81,11 +81,11 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestExpiredAccessTokenDenied() {
-            var token = this.Valid.Generate(TestAuthenticate.Identifer);
+            var token = Valid.Generate(Identifer);
 
-            this.Valid.LastTouched = DateTime.Now.AddDays(-3);
+            Valid.LastTouched = DateTime.Now.AddDays(-3);
 
-            Assert.IsFalse(this.Valid.Authenticate(this.Valid.Id, token, TestAuthenticate.Identifer));
+            Assert.IsFalse(Valid.Authenticate(Valid.Id, token, Identifer));
         }
 
         /// <summary>
@@ -93,9 +93,9 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestNulledTokenReturnsFalse() {
-            this.Valid.Generate(TestAuthenticate.Identifer);
+            Valid.Generate(Identifer);
 
-            Assert.IsFalse(this.Valid.Authenticate(Guid.NewGuid(), null, TestAuthenticate.Identifer));
+            Assert.IsFalse(Valid.Authenticate(Guid.NewGuid(), null, Identifer));
         }
 
         /// <summary>
@@ -103,9 +103,9 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestEmptyTokenReturnsFalse() {
-            this.Valid.Generate(TestAuthenticate.Identifer);
+            Valid.Generate(Identifer);
 
-            Assert.IsFalse(this.Valid.Authenticate(Guid.NewGuid(), "", TestAuthenticate.Identifer));
+            Assert.IsFalse(Valid.Authenticate(Guid.NewGuid(), "", Identifer));
         }
 
         /// <summary>
@@ -113,9 +113,9 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestNulledIdentiferReturnsFalse() {
-            var token = this.Valid.Generate(TestAuthenticate.Identifer);
+            var token = Valid.Generate(Identifer);
 
-            Assert.IsFalse(this.Valid.Authenticate(Guid.NewGuid(), token, null));
+            Assert.IsFalse(Valid.Authenticate(Guid.NewGuid(), token, null));
         }
 
         /// <summary>
@@ -123,9 +123,9 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestEmptyIdentiferReturnsFalse() {
-            var token = this.Valid.Generate(TestAuthenticate.Identifer);
+            var token = Valid.Generate(Identifer);
 
-            Assert.IsFalse(this.Valid.Authenticate(Guid.NewGuid(), token, ""));
+            Assert.IsFalse(Valid.Authenticate(Guid.NewGuid(), token, ""));
         }
 
         /// <summary>
@@ -133,11 +133,11 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestNulledTokenHashReturnsFalse() {
-            var token = this.Valid.Generate(TestAuthenticate.Identifer);
+            var token = Valid.Generate(Identifer);
 
-            this.Valid.TokenHash = null;
+            Valid.TokenHash = null;
 
-            Assert.IsFalse(this.Valid.Authenticate(Guid.NewGuid(), token, TestAuthenticate.Identifer));
+            Assert.IsFalse(Valid.Authenticate(Guid.NewGuid(), token, Identifer));
         }
 
         /// <summary>
@@ -145,11 +145,11 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestEmptyTokenHashReturnsFalse() {
-            var token = this.Valid.Generate(TestAuthenticate.Identifer);
+            var token = Valid.Generate(Identifer);
 
-            this.Valid.TokenHash = "";
+            Valid.TokenHash = "";
 
-            Assert.IsFalse(this.Valid.Authenticate(Guid.NewGuid(), token, TestAuthenticate.Identifer));
+            Assert.IsFalse(Valid.Authenticate(Guid.NewGuid(), token, Identifer));
         }
 
         /// <summary>
@@ -157,11 +157,11 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestNulledAccountReturnsFalse() {
-            var token = this.Valid.Generate(TestAuthenticate.Identifer);
+            var token = Valid.Generate(Identifer);
 
-            this.Valid.Account = null;
+            Valid.Account = null;
 
-            Assert.IsFalse(this.Valid.Authenticate(Guid.NewGuid(), token, TestAuthenticate.Identifer));
+            Assert.IsFalse(Valid.Authenticate(Guid.NewGuid(), token, Identifer));
         }
 
         /// <summary>
@@ -169,11 +169,11 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestNulledPasswordHashReturnsFalse() {
-            var token = this.Valid.Generate(TestAuthenticate.Identifer);
+            var token = Valid.Generate(Identifer);
 
-            this.Valid.Account.PasswordHash = null;
+            Valid.Account.PasswordHash = null;
 
-            Assert.IsFalse(this.Valid.Authenticate(Guid.NewGuid(), token, TestAuthenticate.Identifer));
+            Assert.IsFalse(Valid.Authenticate(Guid.NewGuid(), token, Identifer));
         }
 
         /// <summary>
@@ -181,11 +181,11 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestEmptyPasswordHashReturnsFalse() {
-            var token = this.Valid.Generate(TestAuthenticate.Identifer);
+            var token = Valid.Generate(Identifer);
 
-            this.Valid.Account.PasswordHash = "";
+            Valid.Account.PasswordHash = "";
 
-            Assert.IsFalse(this.Valid.Authenticate(Guid.NewGuid(), token, TestAuthenticate.Identifer));
+            Assert.IsFalse(Valid.Authenticate(Guid.NewGuid(), token, Identifer));
         }
     }
 }

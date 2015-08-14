@@ -41,7 +41,7 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
             });
 
             var segment = new ProtocolStateSegment() {
-                Players = new ConcurrentDictionary<String, PlayerModel>()
+                Players = new ConcurrentDictionary<string, PlayerModel>()
             };
             segment.Players.TryAdd("1", new PlayerModel() {
                 Uid = "1",
@@ -76,7 +76,7 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
             });
 
             var segment = new ProtocolStateSegment() {
-                Maps = new ConcurrentDictionary<String, MapModel>()
+                Maps = new ConcurrentDictionary<string, MapModel>()
             };
             segment.Maps.TryAdd("gamemode1/map1", new MapModel() {
                 Name = "map1",
@@ -112,7 +112,7 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
             });
 
             var segment = new ProtocolStateSegment() {
-                Maps = new ConcurrentDictionary<String, MapModel>()
+                Maps = new ConcurrentDictionary<string, MapModel>()
             };
             segment.Maps.TryAdd("gamemode1/map1", new MapModel() {
                 Name = "map1",
@@ -166,7 +166,7 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
             });
 
             var segment = new ProtocolStateSegment() {
-                Bans = new ConcurrentDictionary<String, BanModel>()
+                Bans = new ConcurrentDictionary<string, BanModel>()
             };
             segment.Bans.TryAdd("Round/Uid/1", new BanModel() {
                 Scope = {
@@ -226,7 +226,7 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
             });
 
             var segment = new ProtocolStateSegment() {
-                Bans = new ConcurrentDictionary<String, BanModel>()
+                Bans = new ConcurrentDictionary<string, BanModel>()
             };
             segment.Bans.TryAdd("Permanent/Ip/1", new BanModel() {
                 Scope = {
@@ -286,7 +286,7 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
             });
 
             var segment = new ProtocolStateSegment() {
-                Bans = new ConcurrentDictionary<String, BanModel>()
+                Bans = new ConcurrentDictionary<string, BanModel>()
             };
             // Technically it would have an incorrect key, so next sync it would be
             // removed because it does not exist..
@@ -334,7 +334,7 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
             });
 
             var segment = new ProtocolStateSegment() {
-                MapPool = new ConcurrentDictionary<String, MapModel>()
+                MapPool = new ConcurrentDictionary<string, MapModel>()
             };
             segment.MapPool.TryAdd("gamemode1/map1", new MapModel() {
                 Name = "map1",
@@ -370,7 +370,7 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
             });
 
             var segment = new ProtocolStateSegment() {
-                MapPool = new ConcurrentDictionary<String, MapModel>()
+                MapPool = new ConcurrentDictionary<string, MapModel>()
             };
             segment.MapPool.TryAdd("gamemode1/map1", new MapModel() {
                 Name = "map1",
@@ -402,7 +402,7 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
             });
 
             var segment = new ProtocolStateSegment() {
-                GameModePool = new ConcurrentDictionary<String, GameModeModel>()
+                GameModePool = new ConcurrentDictionary<string, GameModeModel>()
             };
             segment.GameModePool.TryAdd("gamemode1", new GameModeModel() {
                 Name = "gamemode 1",
@@ -433,7 +433,7 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
             });
 
             var segment = new ProtocolStateSegment() {
-                Groups = new ConcurrentDictionary<String, GroupModel>()
+                Groups = new ConcurrentDictionary<string, GroupModel>()
             };
             segment.Groups.TryAdd("Team/1", new GroupModel() {
                 Uid = "1",
@@ -463,7 +463,7 @@ namespace Potato.Net.Shared.Test.TestProtocolState {
             });
 
             var segment = new ProtocolStateSegment() {
-                Items = new ConcurrentDictionary<String, ItemModel>()
+                Items = new ConcurrentDictionary<string, ItemModel>()
             };
             segment.Items.TryAdd("1", new ItemModel() {
                 Name = "1",

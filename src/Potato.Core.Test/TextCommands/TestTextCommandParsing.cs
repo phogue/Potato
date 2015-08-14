@@ -67,7 +67,7 @@ namespace Potato.Core.Test.TextCommands {
                                 new TextCommandModel() {
                                     PluginGuid = Guid.NewGuid(),
                                     PluginCommand = "Command1",
-                                    Commands = new List<String>() {
+                                    Commands = new List<string>() {
                                         "ExecuteTest"
                                     }
                                 }
@@ -80,10 +80,10 @@ namespace Potato.Core.Test.TextCommands {
             Assert.AreEqual(1, textCommands.TextCommands.Count);
             Assert.AreEqual("ExecuteTest", textCommands.TextCommands.First().Commands.First());
 
-            ICommandResult result = textCommands.Tunnel(new Command() {
+            var result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsExecute,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "ExecuteTest stuff"
                 })
             });
@@ -103,13 +103,13 @@ namespace Potato.Core.Test.TextCommands {
                 }
             };
 
-            ICommandResult result = textCommands.Tunnel(new Command() {
+            var result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
                 Authentication = {
                     Username = "Phogue"
                 },
                 CommandType = CommandType.TextCommandsExecute,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "!test something something something dark side"
                 })
             });
@@ -128,14 +128,14 @@ namespace Potato.Core.Test.TextCommands {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "TestGroup"
                 })
             });
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "TestGroup",
                     "Phogue"
                 })
@@ -143,7 +143,7 @@ namespace Potato.Core.Test.TextCommands {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountAddPlayer,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Phogue",
                     CommonProtocolType.DiceBattlefield3,
                     "EA_63A9F96745B22DFB509C558FC8B5C50F"
@@ -152,7 +152,7 @@ namespace Potato.Core.Test.TextCommands {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountSetPreferredLanguageCode,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Phogue",
                     "de-DE"
                 })
@@ -160,7 +160,7 @@ namespace Potato.Core.Test.TextCommands {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "TestGroup",
                     CommandType.TextCommandsExecute,
                     100
@@ -194,7 +194,7 @@ namespace Potato.Core.Test.TextCommands {
                                 new TextCommandModel() {
                                     PluginGuid = Guid.NewGuid(),
                                     PluginCommand = "Command1",
-                                    Commands = new List<String>() {
+                                    Commands = new List<string>() {
                                         "ExecuteTest"
                                     }
                                 }
@@ -207,13 +207,13 @@ namespace Potato.Core.Test.TextCommands {
             Assert.AreEqual(1, textCommands.TextCommands.Count);
             Assert.AreEqual("ExecuteTest", textCommands.TextCommands.First().Commands.First());
 
-            ICommandResult result = textCommands.Tunnel(new Command() {
+            var result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Plugin,
                 Authentication = {
                     Username = "Phogue"
                 },
                 CommandType = CommandType.TextCommandsExecute,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "ExecuteTest stuff"
                 })
             });
@@ -251,7 +251,7 @@ namespace Potato.Core.Test.TextCommands {
                                 new TextCommandModel() {
                                     PluginGuid = Guid.NewGuid(),
                                     PluginCommand = "Command1",
-                                    Commands = new List<String>() {
+                                    Commands = new List<string>() {
                                         "ExecuteTest"
                                     }
                                 }
@@ -264,10 +264,10 @@ namespace Potato.Core.Test.TextCommands {
             Assert.AreEqual(1, textCommands.TextCommands.Count);
             Assert.AreEqual("ExecuteTest", textCommands.TextCommands.First().Commands.First());
 
-            ICommandResult result = textCommands.Tunnel(new Command() {
+            var result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsPreview,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "ExecuteTest stuff"
                 })
             });
@@ -287,13 +287,13 @@ namespace Potato.Core.Test.TextCommands {
                 }
             };
 
-            ICommandResult result = textCommands.Tunnel(new Command() {
+            var result = textCommands.Tunnel(new Command() {
                 CommandType = CommandType.TextCommandsPreview,
                 Authentication = {
                     Username = "Phogue"
                 },
                 Origin = CommandOrigin.Remote,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "!test something something something dark side"
                 })
             });

@@ -25,7 +25,7 @@ namespace Potato.Core.Shared {
         /// <summary>
         /// The command being executed. This is the only value used to match up a command.
         /// </summary>
-        String Name { get; set; }
+        string Name { get; set; }
 
         /// <summary>
         /// The command to be executed, will be converted to a string in Name
@@ -50,7 +50,7 @@ namespace Potato.Core.Shared {
         /// <summary>
         /// The handler to dispatch the command to
         /// </summary>
-        Func<ICommand, Dictionary<String, ICommandParameter>, ICommandResult> Handler { get; set; }
+        Func<ICommand, Dictionary<string, ICommandParameter>, ICommandResult> Handler { get; set; }
 
         /// <summary>
         /// Checks if this dspatcher can handle the command
@@ -63,6 +63,6 @@ namespace Potato.Core.Shared {
         /// a dictionary of parameter names to the parameters supplied is returned, otherwise null is returned implying
         /// and error was encountered or a type wasn't found.
         /// </summary>
-        Dictionary<String, ICommandParameter> BuildParameterDictionary(IList<ICommandParameter> parameters);
+        Dictionary<string, ICommandParameter> BuildParameterDictionary(IList<ICommandParameter> parameters);
     }
 }

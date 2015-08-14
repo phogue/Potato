@@ -29,7 +29,7 @@ namespace Potato.Core.Test.TextCommands.Fuzzy {
     public class TestFuzzyComplexTemporal : TestTextCommandParserBase {
         [Test]
         public void TestTemporalKickPhogueInTwoMinutesOnPortValdezForAMinute() {
-            ICommandResult args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue in two minutes on port valdez for a minute");
+            var args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue in two minutes on port valdez for a minute");
 
             AssertExecutedCommandAgainstPlayerListMapList(args, TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue
@@ -42,7 +42,7 @@ namespace Potato.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestTemporalKickPhogueInTwoMinutesOnPortValdezForAMinuteEveryHour() {
-            ICommandResult args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue in two minutes on port valdez for a minute every hour");
+            var args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue in two minutes on port valdez for a minute every hour");
 
             AssertExecutedCommandAgainstPlayerListMapList(args, TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue
@@ -58,7 +58,7 @@ namespace Potato.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestTemporalKickPhogueOnPortValdezEveryMinute() {
-            ICommandResult args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue on port valdez every minute");
+            var args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue on port valdez every minute");
 
             AssertExecutedCommandAgainstPlayerListMapList(args, TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue
@@ -74,7 +74,7 @@ namespace Potato.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestTemporalKickPhogueOnPortValdezForAMinute() {
-            ICommandResult args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue on port valdez for a minute");
+            var args = ExecuteTextCommand(CreateTextCommandController(), "kick phogue on port valdez for a minute");
 
             AssertExecutedCommandAgainstPlayerListMapList(args, TextCommandKick, new List<PlayerModel>() {
                 PlayerPhogue

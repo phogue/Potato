@@ -33,9 +33,9 @@ namespace Potato.Core.Shared {
             Message = "You have Insufficient Permissions to execute this command."
         };
 
-        public String Name { get; set; }
+        public string Name { get; set; }
 
-        public String Message { get; set; }
+        public string Message { get; set; }
 
         public DateTime Stamp { get; set; }
 
@@ -45,21 +45,21 @@ namespace Potato.Core.Shared {
 
         public ICommandData Now { get; set; }
 
-        public Boolean Success { get; set; }
+        public bool Success { get; set; }
 
         public CommandResultType CommandResultType {
-            get { return this._mCommandResultType; }
+            get { return _mCommandResultType; }
             set {
-                this._mCommandResultType = value;
+                _mCommandResultType = value;
 
-                if (this._mCommandResultType != CommandResultType.None) {
-                    this.Name = value.ToString();
+                if (_mCommandResultType != CommandResultType.None) {
+                    Name = value.ToString();
                 }
             }
         }
         private CommandResultType _mCommandResultType;
 
-        public String ContentType { get; set; }
+        public string ContentType { get; set; }
 
         /// <summary>
         /// Called when the object is being disposed.
@@ -71,17 +71,17 @@ namespace Potato.Core.Shared {
         /// Initializes the command result with the default values.
         /// </summary>
         public CommandResult() {
-            this.Name = String.Empty;
-            this.Stamp = DateTime.Now;
-            this.Message = String.Empty;
+            Name = string.Empty;
+            Stamp = DateTime.Now;
+            Message = string.Empty;
 
-            this.Scope = new CommandData();
-            this.Then = new CommandData();
-            this.Now = new CommandData();
+            Scope = new CommandData();
+            Then = new CommandData();
+            Now = new CommandData();
         }
 
         protected virtual void OnDisposed() {
-            EventHandler handler = Disposed;
+            var handler = Disposed;
 
             if (handler != null) {
                 handler(this, EventArgs.Empty);
@@ -93,19 +93,19 @@ namespace Potato.Core.Shared {
         /// but does not dispose the items it holds.
         /// </summary>
         public void Dispose() {
-            this.Name = null;
-            this.Message = null;
+            Name = null;
+            Message = null;
 
-            this.Scope.Dispose();
-            this.Scope = null;
+            Scope.Dispose();
+            Scope = null;
 
-            this.Then.Dispose();
-            this.Then = null;
+            Then.Dispose();
+            Then = null;
 
-            this.Now.Dispose();
-            this.Now = null;
+            Now.Dispose();
+            Now = null;
 
-            this.OnDisposed();
+            OnDisposed();
         }
     }
 }

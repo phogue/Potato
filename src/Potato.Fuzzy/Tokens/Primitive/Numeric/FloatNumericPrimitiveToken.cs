@@ -24,16 +24,16 @@ namespace Potato.Fuzzy.Tokens.Primitive.Numeric {
         /// </summary>
         /// <returns></returns>
         public float ToFloat() {
-            float returnValue = 0.0F;
+            var returnValue = 0.0F;
 
-            if (this.Value is float) {
-                returnValue = (float) this.Value;
+            if (Value is float) {
+                returnValue = (float) Value;
             }
-            else if (this.Value is string) {
-                if (float.TryParse(((string) this.Value).Replace(" ", ""), out returnValue) == true) {
+            else if (Value is string) {
+                if (float.TryParse(((string) Value).Replace(" ", ""), out returnValue) == true) {
                     // So future conversions don't need to be converted.
-                    this.Value = returnValue;
-                    this.Text = this.Text.Replace(" ", "");
+                    Value = returnValue;
+                    Text = Text.Replace(" ", "");
                 }
             }
 
@@ -41,7 +41,7 @@ namespace Potato.Fuzzy.Tokens.Primitive.Numeric {
         }
 
         public int ToInteger() {
-            return (int) this.ToFloat();
+            return (int) ToFloat();
         }
     }
 }

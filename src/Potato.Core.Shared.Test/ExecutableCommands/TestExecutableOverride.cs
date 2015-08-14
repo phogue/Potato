@@ -44,7 +44,7 @@ namespace Potato.Core.Shared.Test.ExecutableCommands {
                 Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
-                            Content = new List<String>() {
+                            Content = new List<string>() {
                                 "166.7"
                             }
                         }

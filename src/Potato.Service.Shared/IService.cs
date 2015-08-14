@@ -40,7 +40,7 @@ namespace Potato.Service.Shared {
         /// Parse the command line args, putting them into the Variables object for the instance.
         /// </summary>
         /// <param name="arguments"></param>
-        void ParseCommandLineArguments(List<String> arguments);
+        void ParseCommandLineArguments(List<string> arguments);
 
         /// <summary>
         /// Polls the service for a running status or other message.

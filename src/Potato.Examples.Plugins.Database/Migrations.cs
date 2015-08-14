@@ -34,7 +34,7 @@ namespace Potato.Examples.Plugins.Database {
 
         public override ICoreController Execute() {
             // 1. Create our migration controller 
-            this.MigrationController = new MigrationController() {
+            MigrationController = new MigrationController() {
                 // 2. Tell the migration controller where it should send it's commands.
                 BubbleObjects = {
                     // Pipe all commands to this controller, which is in turn passed onto Program.cs
@@ -60,7 +60,7 @@ namespace Potato.Examples.Plugins.Database {
                     new Migration() {
                         // Up, moving upstream in changes.
                         Up = () => {
-                            ICommandResult result = this.Bubble(
+                            var result = Bubble(
                                 CommandBuilder.DatabaseQuery(
                                     new Create()
                                     // You should namespace/prefix your collections/tables to avoid clashes with other plugins
@@ -78,7 +78,7 @@ namespace Potato.Examples.Plugins.Database {
                             // Including Down is not critical when moving upstream, but it's good
                             // practice to include Down. We may in the future include plugin uninstalling
                             // and down migrations would allow the database to be uninstalled.
-                            ICommandResult result = this.Bubble(
+                            var result = Bubble(
                                 CommandBuilder.DatabaseQuery(
                                     new Drop()
                                     .Collection("Potato_Example_Database_Users")
@@ -93,7 +93,7 @@ namespace Potato.Examples.Plugins.Database {
                     new Migration() {
                         Up = () => {
                             // Add another field to our example
-                            ICommandResult result = this.Bubble(
+                            var result = Bubble(
                                 CommandBuilder.DatabaseQuery(
                                     new Alter()
                                     .Collection("Potato_Example_Database_Users")
@@ -109,7 +109,7 @@ namespace Potato.Examples.Plugins.Database {
                         Down = () => {
                             // Drop the field, so people can revert this migration or uninstall can go
                             // through the motions.
-                            ICommandResult result = this.Bubble(
+                            var result = Bubble(
                                 CommandBuilder.DatabaseQuery(
                                     new Alter()
                                     .Collection("Potato_Example_Database_Users")
@@ -128,10 +128,10 @@ namespace Potato.Examples.Plugins.Database {
 
             // 5. This will setup the basic migration tables if they do not exists already (your plugin
             // might be first to use migrations). You should always call Execute on a newly formed ExecutableBase anyway.
-            this.MigrationController.Execute();
+            MigrationController.Execute();
 
             // 6. Now run through the migrations until we are at the latest version.
-            this.MigrationController.Up();
+            MigrationController.Up();
 
             return base.Execute();
         }

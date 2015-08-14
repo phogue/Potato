@@ -26,17 +26,17 @@ namespace Potato.Core.Shared.Remote {
     /// </summary>
     [Serializable]
     public class HttpCommandRequest : ICommandRequest {
-        public Dictionary<String, String> Tags { get; set; }
-        public List<String> Content { get; set; }
+        public Dictionary<string, string> Tags { get; set; }
+        public List<string> Content { get; set; }
         public List<IPacket> Packets { get; set; }
 
         /// <summary>
         /// Initalizes the request with default values.
         /// </summary>
         public HttpCommandRequest() {
-            this.Tags = new Dictionary<String, String>();
-            this.Content = new List<String>();
-            this.Packets = new List<IPacket>();
+            Tags = new Dictionary<string, string>();
+            Content = new List<string>();
+            Packets = new List<IPacket>();
         }
 
         /// <summary>
@@ -44,8 +44,8 @@ namespace Potato.Core.Shared.Remote {
         /// </summary>
         /// <returns>this</returns>
         public HttpCommandRequest AppendTags(WebHeaderCollection headers) {
-            foreach (var key in headers.AllKeys.Where(key => key != null && this.Tags.ContainsKey(key) == false)) {
-                this.Tags.Add(key, headers[key]);
+            foreach (var key in headers.AllKeys.Where(key => key != null && Tags.ContainsKey(key) == false)) {
+                Tags.Add(key, headers[key]);
             }
 
             return this;
@@ -56,8 +56,8 @@ namespace Potato.Core.Shared.Remote {
         /// </summary>
         /// <returns>this</returns>
         public HttpCommandRequest AppendTags(NameValueCollection query) {
-            foreach (var key in query.AllKeys.Where(key => key != null && this.Tags.ContainsKey(key) == false)) {
-                this.Tags.Add(key, query[key]);
+            foreach (var key in query.AllKeys.Where(key => key != null && Tags.ContainsKey(key) == false)) {
+                Tags.Add(key, query[key]);
             }
 
             return this;

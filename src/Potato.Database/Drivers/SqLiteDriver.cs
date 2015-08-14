@@ -38,43 +38,43 @@ namespace Potato.Database.Drivers {
         /// </summary>
         protected DbConnection Connection { get; set; }
 
-        public override String Name {
+        public override string Name {
             get {
                 return "SQLite";
             }
         }
 
         public override bool Connect() {
-            bool opened = true;
+            var opened = true;
 
-            if (this.Connection == null || this.Connection.State == ConnectionState.Closed) {
-                if (this.Connection != null) {
-                    this.Connection.Close();
-                    this.Connection = null;
+            if (Connection == null || Connection.State == ConnectionState.Closed) {
+                if (Connection != null) {
+                    Connection.Close();
+                    Connection = null;
                 }
 
                 var dataSource = "";
 
-                if (this.Settings.Memory == true) {
+                if (Settings.Memory == true) {
                     dataSource = ":memory:";
                 }
-                else if (this.Settings.Database != null) {
-                    dataSource = this.Settings.Database + (this.Settings.Database.EndsWith(".sqlite") == false ? ".sqlite" : "");
+                else if (Settings.Database != null) {
+                    dataSource = Settings.Database + (Settings.Database.EndsWith(".sqlite") == false ? ".sqlite" : "");
                 }
 
-                SQLiteConnectionStringBuilder connectionBuilder = new SQLiteConnectionStringBuilder {
+                var connectionBuilder = new SQLiteConnectionStringBuilder {
                     DataSource = dataSource,
-                    Password = this.Settings.Password,
+                    Password = Settings.Password,
                     
                 };
 
                 try {
-                    this.Connection = new SQLiteConnection(connectionBuilder.ToString());
-                    this.Connection.Open();
+                    Connection = new SQLiteConnection(connectionBuilder.ToString());
+                    Connection.Open();
 
-                    if (this.Connection.State != ConnectionState.Open) {
-                        this.Connection.Close();
-                        this.Connection = null;
+                    if (Connection.State != ConnectionState.Open) {
+                        Connection.Close();
+                        Connection = null;
                     }
                 }
                 catch {
@@ -86,13 +86,13 @@ namespace Potato.Database.Drivers {
         }
 
         public override List<IDatabaseObject> Query(IDatabaseObject query) {
-            this.Connect();
+            Connect();
 
-            return this.Query(new SerializerSqLite().Parse(this.EscapeStringValues(query)).Compile());
+            return Query(new SerializerSqLite().Parse(EscapeStringValues(query)).Compile());
         }
 
         public override IDatabaseObject EscapeStringValues(IDatabaseObject query) {
-            foreach (StringValue item in query.DescendantsAndSelf<StringValue>()) {
+            foreach (var item in query.DescendantsAndSelf<StringValue>()) {
                 // todo is there something in the SQLite library that does the same?
                 // without googling I would imagine this would have some obscure way to ruin data.
                 item.Data = MySql.Data.MySqlClient.MySqlHelper.EscapeString(item.Data);
@@ -108,16 +108,16 @@ namespace Potato.Database.Drivers {
         /// <param name="result"></param>
         /// <returns></returns>
         protected CollectionValue Read(ICompiledQuery query, CollectionValue result) {
-            if (this.Connection != null && this.Connection.State == ConnectionState.Open) {
-                using (IDbCommand command = this.Connection.CreateCommand()) {
+            if (Connection != null && Connection.State == ConnectionState.Open) {
+                using (IDbCommand command = Connection.CreateCommand()) {
                     command.CommandText = query.Compiled.FirstOrDefault();
 
-                    using (IDataReader reader = command.ExecuteReader()) {
+                    using (var reader = command.ExecuteReader()) {
                         if (reader != null) {
                             while (reader.Read() == true) {
-                                DocumentValue row = new DocumentValue();
+                                var row = new DocumentValue();
 
-                                for (int field = 0; field < reader.FieldCount; field++) {
+                                for (var field = 0; field < reader.FieldCount; field++) {
                                     row.Set(reader.GetName(field), reader.GetValue(field));
                                 }
 
@@ -138,8 +138,8 @@ namespace Potato.Database.Drivers {
         /// <param name="result"></param>
         /// <returns></returns>
         protected CollectionValue Execute(ICompiledQuery query, CollectionValue result) {
-            if (this.Connection != null && this.Connection.State == ConnectionState.Open) {
-                using (IDbCommand command = this.Connection.CreateCommand()) {
+            if (Connection != null && Connection.State == ConnectionState.Open) {
+                using (IDbCommand command = Connection.CreateCommand()) {
                     command.CommandText = query.Compiled.FirstOrDefault();
 
                     result.Add(
@@ -156,12 +156,12 @@ namespace Potato.Database.Drivers {
         }
 
         protected override List<IDatabaseObject> Query(ICompiledQuery query) {
-            CollectionValue result = new CollectionValue();
+            var result = new CollectionValue();
 
-            List<IDatabaseObject> results = new List<IDatabaseObject>();
+            var results = new List<IDatabaseObject>();
 
             try {
-                results.Add(query.Root is Find ? this.Read(query, result) : this.Execute(query, result));
+                results.Add(query.Root is Find ? Read(query, result) : Execute(query, result));
             }
             catch (Exception exception) {
                 results.Add(new Error() {
@@ -172,19 +172,19 @@ namespace Potato.Database.Drivers {
             }
 
             // Execute any index calls.
-            foreach (ICompiledQuery child in query.Children.Where(child => !(child.Root is Merge))) {
-                results.AddRange(this.Query(child));
+            foreach (var child in query.Children.Where(child => !(child.Root is Merge))) {
+                results.AddRange(Query(child));
             }
 
             return results;
         }
 
         public override void Close() {
-            if (this.Connection != null) {
-                this.Connection.Close();
+            if (Connection != null) {
+                Connection.Close();
                 // Is this already disposed when closed?
-                this.Connection.Dispose();
-                this.Connection = null;
+                Connection.Dispose();
+                Connection = null;
             }
         }
     }

@@ -33,7 +33,7 @@ namespace Potato.Core.Shared.Test.ExecutableCommands {
         [Test]
         public void TestCommandDataDispose() {
             var data = new CommandData() {
-                Content = new List<String>(),
+                Content = new List<string>(),
                 Connections = new List<ConnectionModel>(),
                 Groups = new List<Core.Shared.Models.GroupModel>(),
                 Accounts = new List<AccountModel>(),

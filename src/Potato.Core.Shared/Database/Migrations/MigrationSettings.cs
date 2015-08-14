@@ -28,7 +28,7 @@ namespace Potato.Core.Shared.Database.Migrations {
         /// <summary>
         /// The name of the stream to focus on.
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The current version of the migration for the specified name.

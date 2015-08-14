@@ -25,12 +25,12 @@ namespace Potato.Core.Shared {
         /// <summary>
         /// Dictionary of base string variables attached to the request.
         /// </summary>
-        Dictionary<String, String> Tags { get; set; }
+        Dictionary<string, string> Tags { get; set; }
 
         /// <summary>
         /// The full content of the original request
         /// </summary>
-        List<String> Content { get; set; }
+        List<string> Content { get; set; }
 
         /// <summary>
         /// Any packets attached to this request

@@ -35,22 +35,22 @@ namespace Potato.Examples.Plugins.Support {
 
         public Program() : base() {
 
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     Name = "TestSupportToKillPlayersUsingBranchBuilder",
                     CommandAttributeType = CommandAttributeType.Handler,
-                    Handler = this.TestSupportToKillPlayersUsingBranchBuilder
+                    Handler = TestSupportToKillPlayersUsingBranchBuilder
                 },
                 new CommandDispatch() {
                     Name = "TestSupportCustomBuildAndTest",
                     CommandAttributeType = CommandAttributeType.Handler,
-                    Handler = this.TestSupportCustomBuildAndTest
+                    Handler = TestSupportCustomBuildAndTest
                 }
             });
         }
 
-        public ICommandResult TestSupportToKillPlayersUsingBranchBuilder(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            bool canKillPlayer = this.ProtocolState.Support.Test(BranchBuilder.ProtocolCanKillPlayer());
+        public ICommandResult TestSupportToKillPlayersUsingBranchBuilder(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var canKillPlayer = ProtocolState.Support.Test(BranchBuilder.ProtocolCanKillPlayer());
 
             // If we can issue a kill action against a player
             command.Result.Message = canKillPlayer.ToString();
@@ -58,8 +58,8 @@ namespace Potato.Examples.Plugins.Support {
             return command.Result;
         }
 
-        public ICommandResult TestSupportCustomBuildAndTest(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            bool canKillPlayer = this.ProtocolState.Support.BuildAndTest(new ProtocolAgent(), new CanFlow(), new KillGoal(), new PlayerAgent());
+        public ICommandResult TestSupportCustomBuildAndTest(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var canKillPlayer = ProtocolState.Support.BuildAndTest(new ProtocolAgent(), new CanFlow(), new KillGoal(), new PlayerAgent());
 
             // If we can issue a kill action against a player, but we built the condition ourselves. Allows for
             // very specific checks for a particular protocol that truly has some unique functionality in it.

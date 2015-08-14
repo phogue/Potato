@@ -36,9 +36,9 @@ namespace Potato.Core.Test.Packages.TestPackagesController {
         /// </summary>
         [Test]
         public void TestResultInsufficientPermissions() {
-            PackagesController packages = new PackagesController();
+            var packages = new PackagesController();
 
-            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("id").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("id").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -51,9 +51,9 @@ namespace Potato.Core.Test.Packages.TestPackagesController {
         /// </summary>
         [Test]
         public void TestResultInvalidParameter() {
-            PackagesController packages = new PackagesController();
+            var packages = new PackagesController();
 
-            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("").SetOrigin(CommandOrigin.Local));
+            var result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("").SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.InvalidParameter, result.CommandResultType);
@@ -64,9 +64,9 @@ namespace Potato.Core.Test.Packages.TestPackagesController {
         /// </summary>
         [Test]
         public void TestResultDoesNotExists() {
-            PackagesController packages = new PackagesController();
+            var packages = new PackagesController();
 
-            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("this-does-not-exist").SetOrigin(CommandOrigin.Local));
+            var result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("this-does-not-exist").SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.DoesNotExists, result.CommandResultType);
@@ -93,11 +93,11 @@ namespace Potato.Core.Test.Packages.TestPackagesController {
 
             cache.Build(localRepository);
 
-            PackagesController packages = new PackagesController() {
+            var packages = new PackagesController() {
                 Cache = cache
             };
 
-            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("A").SetOrigin(CommandOrigin.Local));
+            var result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("A").SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.AlreadyExists, result.CommandResultType);
@@ -129,11 +129,11 @@ namespace Potato.Core.Test.Packages.TestPackagesController {
 
             cache.Build(localRepository);
 
-            PackagesController packages = new PackagesController() {
+            var packages = new PackagesController() {
                 Cache = cache
             };
 
-            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("A").SetOrigin(CommandOrigin.Local));
+            var result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("A").SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
@@ -165,11 +165,11 @@ namespace Potato.Core.Test.Packages.TestPackagesController {
 
             cache.Build(localRepository);
 
-            PackagesController packages = new PackagesController() {
+            var packages = new PackagesController() {
                 Cache = cache
             };
 
-            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("A").SetOrigin(CommandOrigin.Local));
+            var result = packages.Tunnel(CommandBuilder.PackagesUninstallPackage("A").SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);

@@ -28,7 +28,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestAllIntegerConversionFailure() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "1",
                         "2",
                         "Invalid"
@@ -36,7 +36,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
                 }
             };
 
-            var items = parameter.All(typeof (int)) as List<Object>;
+            var items = parameter.All(typeof (int)) as List<object>;
 
             Assert.IsNull(items);
         }
@@ -45,7 +45,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestAllIntegerConversionSuccess() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "1",
                         "2",
                         "3"
@@ -53,7 +53,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
                 }
             };
 
-            var list = (List<Object>)parameter.All(typeof (int));
+            var list = (List<object>)parameter.All(typeof (int));
 
             Assert.AreEqual(1, list[0]);
             Assert.AreEqual(2, list[1]);
@@ -67,7 +67,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestFirstIntegerConversionFailed() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "Invalid"
                     }
                 }
@@ -84,7 +84,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestFirstIntegerConversionSuccess() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "1"
                     }
                 }
@@ -101,7 +101,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasManyIntegerConversionFailed() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "1",
                         "2",
                         "Invalid"
@@ -120,7 +120,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasManyIntegerConversionSuccess() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "1",
                         "2"
                     }
@@ -138,7 +138,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasOneIntegerConversionFailure() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "one"
                     }
                 }
@@ -155,7 +155,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasOneIntegerConversionSuccess() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "1"
                     }
                 }
@@ -172,7 +172,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasOneIntegerConversionSuccessWithMultiple() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "1",
                         "2"
                     }
@@ -191,7 +191,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasOneIntegerConversionSuccessWithMultipleAndInvalid() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "1",
                         "Invalid"
                     }

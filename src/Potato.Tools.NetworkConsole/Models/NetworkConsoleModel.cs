@@ -25,9 +25,9 @@ namespace Potato.Tools.NetworkConsole.Models {
         /// <summary>
         /// The history of commands sent to the server
         /// </summary>
-        public LinkedList<String> CommandHistory { get; set; }
+        public LinkedList<string> CommandHistory { get; set; }
 
-        public LinkedListNode<String> CommandHistoryCurrentNode { get; set; }
+        public LinkedListNode<string> CommandHistoryCurrentNode { get; set; }
 
         /// <summary>
         /// Simple boolean for executing synchronization
@@ -40,30 +40,30 @@ namespace Potato.Tools.NetworkConsole.Models {
         protected System.Timers.Timer SynchornizationTimer { get; set; }
 
         public NetworkConsoleModel() {
-            this.CommandHistory = new LinkedList<string>();
+            CommandHistory = new LinkedList<string>();
 
-            this.Variables = new VariableController();
+            Variables = new VariableController();
 
-            this.ProtocolController = new ProtocolController();
-            this.ProtocolController.Execute();
+            ProtocolController = new ProtocolController();
+            ProtocolController.Execute();
 
-            this.Connection = new ConnectionController();
-            this.Connection.Execute();
+            Connection = new ConnectionController();
+            Connection.Execute();
 
-            this.SynchornizationEnabled = true;
+            SynchornizationEnabled = true;
 
-            this.SynchornizationTimer = new System.Timers.Timer(10000);
-            this.SynchornizationTimer.Elapsed += new ElapsedEventHandler(Timer_Elapsed);
-            this.SynchornizationTimer.Start();
+            SynchornizationTimer = new System.Timers.Timer(10000);
+            SynchornizationTimer.Elapsed += new ElapsedEventHandler(Timer_Elapsed);
+            SynchornizationTimer.Start();
         }
 
-        public void ParseArguments(IEnumerable<String> args) {
-            this.Variables.ParseArguments(new List<String>(args));
+        public void ParseArguments(IEnumerable<string> args) {
+            Variables.ParseArguments(new List<string>(args));
         }
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e) {
-            if (this.SynchornizationEnabled == true) {
-                this.Connection.Poke();
+            if (SynchornizationEnabled == true) {
+                Connection.Poke();
             }
         }
 

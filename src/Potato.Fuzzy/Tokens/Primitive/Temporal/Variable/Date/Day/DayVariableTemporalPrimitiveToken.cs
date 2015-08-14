@@ -23,9 +23,9 @@ using Potato.Fuzzy.Utils;
 namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Date.Day {
 
     public class DayVariableTemporalPrimitiveToken : DateVariableTemporalPrimitiveToken {
-        public static Phrase ReduceNumberDays(IFuzzyState state, Dictionary<String, Token> parameters) {
-            FloatNumericPrimitiveToken number = (FloatNumericPrimitiveToken) parameters["number"];
-            DaysUnitTemporalPrimitiveToken days = (DaysUnitTemporalPrimitiveToken) parameters["days"];
+        public static Phrase ReduceNumberDays(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var number = (FloatNumericPrimitiveToken) parameters["number"];
+            var days = (DaysUnitTemporalPrimitiveToken) parameters["days"];
 
             return new Phrase() {
                 new DayVariableTemporalPrimitiveToken() {
@@ -33,15 +33,15 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Date.Day {
                         Rule = TimeType.Relative,
                         Day = (int) number.ToFloat().ConvertTo(typeof (int))
                     },
-                    Text = String.Format("{0} {1}", number.Text, days.Text),
+                    Text = string.Format("{0} {1}", number.Text, days.Text),
                     Similarity = (days.Similarity + number.Similarity) / 2.0F
                 }
             };
         }
 
-        public static Phrase ReduceNumberWeeks(IFuzzyState state, Dictionary<String, Token> parameters) {
-            FloatNumericPrimitiveToken number = (FloatNumericPrimitiveToken) parameters["number"];
-            WeeksUnitTemporalPrimitiveToken weeks = (WeeksUnitTemporalPrimitiveToken) parameters["weeks"];
+        public static Phrase ReduceNumberWeeks(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var number = (FloatNumericPrimitiveToken) parameters["number"];
+            var weeks = (WeeksUnitTemporalPrimitiveToken) parameters["weeks"];
 
             return new Phrase() {
                 new DayVariableTemporalPrimitiveToken() {
@@ -49,15 +49,15 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Date.Day {
                         Rule = TimeType.Relative,
                         Day = (int) number.ToFloat().ConvertTo(typeof (int)) * 7
                     },
-                    Text = String.Format("{0} {1}", number.Text, weeks.Text),
+                    Text = string.Format("{0} {1}", number.Text, weeks.Text),
                     Similarity = (weeks.Similarity + number.Similarity) / 2.0F
                 }
             };
         }
 
-        public static Phrase ReduceArticleDays(IFuzzyState state, Dictionary<String, Token> parameters) {
-            IndefiniteArticlesSyntaxToken article = (IndefiniteArticlesSyntaxToken) parameters["article"];
-            DaysUnitTemporalPrimitiveToken days = (DaysUnitTemporalPrimitiveToken) parameters["days"];
+        public static Phrase ReduceArticleDays(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var article = (IndefiniteArticlesSyntaxToken) parameters["article"];
+            var days = (DaysUnitTemporalPrimitiveToken) parameters["days"];
 
             return new Phrase() {
                 new DayVariableTemporalPrimitiveToken() {
@@ -65,15 +65,15 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Date.Day {
                         Rule = TimeType.Relative,
                         Day = 1
                     },
-                    Text = String.Format("{0} {1}", article.Text, days.Text),
+                    Text = string.Format("{0} {1}", article.Text, days.Text),
                     Similarity = (days.Similarity + article.Similarity) / 2.0F
                 }
             };
         }
 
-        public static Phrase ReduceArticleWeeks(IFuzzyState state, Dictionary<String, Token> parameters) {
-            IndefiniteArticlesSyntaxToken article = (IndefiniteArticlesSyntaxToken) parameters["article"];
-            WeeksUnitTemporalPrimitiveToken weeks = (WeeksUnitTemporalPrimitiveToken) parameters["weeks"];
+        public static Phrase ReduceArticleWeeks(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var article = (IndefiniteArticlesSyntaxToken) parameters["article"];
+            var weeks = (WeeksUnitTemporalPrimitiveToken) parameters["weeks"];
 
             return new Phrase() {
                 new DayVariableTemporalPrimitiveToken() {
@@ -81,7 +81,7 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Date.Day {
                         Rule = TimeType.Relative,
                         Day = 7
                     },
-                    Text = String.Format("{0} {1}", article.Text, weeks.Text),
+                    Text = string.Format("{0} {1}", article.Text, weeks.Text),
                     Similarity = (weeks.Similarity + article.Similarity) / 2.0F
                 }
             };

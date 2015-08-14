@@ -25,16 +25,16 @@ namespace Potato.Core.Shared {
     /// </summary>
     [Serializable]
     public class Command : ICommand {
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [JsonIgnore]
         public CommandType CommandType {
-            get { return this._mCommandType; }
+            get { return _mCommandType; }
             set {
-                this._mCommandType = value;
+                _mCommandType = value;
 
-                if (this._mCommandType != CommandType.None) {
-                    this.Name = value.ToString();
+                if (_mCommandType != CommandType.None) {
+                    Name = value.ToString();
                 }
             }
         }
@@ -59,27 +59,27 @@ namespace Potato.Core.Shared {
         /// Initializes a new command with the default values.
         /// </summary>
         public Command() {
-            this.CommandGuid = Guid.NewGuid();
+            CommandGuid = Guid.NewGuid();
 
-            this.Authentication = new CommandAuthenticationModel();
+            Authentication = new CommandAuthenticationModel();
 
-            this.Scope = new CommandScopeModel();
+            Scope = new CommandScopeModel();
         }
 
         public ICommand SetOrigin(CommandOrigin origin) {
-            this.Origin = origin;
+            Origin = origin;
 
             return this;
         }
 
         public ICommand SetAuthentication(CommandAuthenticationModel authentication) {
-            this.Authentication = authentication;
+            Authentication = authentication;
 
             return this;
         }
 
         public ICommand SetScope(CommandScopeModel scope) {
-            this.Scope = scope;
+            Scope = scope;
 
             return this;
         }
@@ -90,19 +90,19 @@ namespace Potato.Core.Shared {
         /// </summary>
         /// <param name="command"></param>
         public Command(ICommand command) {
-            this.CommandType = command.CommandType;
-            this.Name = command.Name;
-            this.Authentication = command.Authentication;
-            this.Origin = command.Origin;
-            this.Scope = command.Scope;
-            this.Parameters = new List<ICommandParameter>(command.Parameters ?? new List<ICommandParameter>());
+            CommandType = command.CommandType;
+            Name = command.Name;
+            Authentication = command.Authentication;
+            Origin = command.Origin;
+            Scope = command.Scope;
+            Parameters = new List<ICommandParameter>(command.Parameters ?? new List<ICommandParameter>());
         }
 
         public IConfigCommand ToConfigCommand() {
             ICommand command = new Command(this);
 
             // If the scope model does not have any useful information within.
-            if (this.Scope != null && this.Scope.ConnectionGuid == Guid.Empty && this.Scope.PluginGuid == Guid.Empty) {
+            if (Scope != null && Scope.ConnectionGuid == Guid.Empty && Scope.PluginGuid == Guid.Empty) {
                 // Null it out. This avoids storing empty GUID's for no reason.
                 command.Scope = null;
             }
@@ -115,12 +115,12 @@ namespace Potato.Core.Shared {
             };
         }
 
-        public ICommand ParseCommandType(String commandName) {
+        public ICommand ParseCommandType(string commandName) {
             if (Enum.IsDefined(typeof(CommandType), commandName)) {
-                this.CommandType = (CommandType)Enum.Parse(typeof(CommandType), commandName);
+                CommandType = (CommandType)Enum.Parse(typeof(CommandType), commandName);
             }
             else {
-                this.Name = commandName;
+                Name = commandName;
             }
 
             return this;

@@ -30,18 +30,18 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
         /// </summary>
         [SetUp]
         public void CleanPackagesDirectory() {
-            this.TestTestGetProtocolPackages.Refresh();
+            TestTestGetProtocolPackages.Refresh();
 
-            if (this.TestTestGetProtocolPackages.Exists) {
-                this.TestTestGetProtocolPackages.Delete(true);
+            if (TestTestGetProtocolPackages.Exists) {
+                TestTestGetProtocolPackages.Delete(true);
             }
 
-            this.TestTestGetProtocolPackages.Create();
+            TestTestGetProtocolPackages.Create();
         }
 
         [TearDown]
         public void TearDownCleanPackagesDirectory() {
-            this.CleanPackagesDirectory();
+            CleanPackagesDirectory();
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
         /// </summary>
         [Test]
         public void TestPackageDirectoryReturnedSingleDepth() {
-            DirectoryInfo package = new DirectoryInfo(Path.Combine(this.TestTestGetProtocolPackages.FullName, "Something.Protocols.Something"));
+            var package = new DirectoryInfo(Path.Combine(TestTestGetProtocolPackages.FullName, "Something.Protocols.Something"));
 
             var dll = new FileInfo(Path.Combine(package.FullName, "Something.Protocols.Something.dll"));
             if (dll.Directory != null) dll.Directory.Create();
@@ -57,7 +57,7 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
             File.WriteAllText(dll.FullName, @"binary");
 
             var protocols = new ProtocolController() {
-                PackagesDirectory = this.TestTestGetProtocolPackages
+                PackagesDirectory = TestTestGetProtocolPackages
             };
 
             var packages = protocols.GetProtocolPackages(new List<FileInfo>() { dll });
@@ -71,7 +71,7 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
         /// </summary>
         [Test]
         public void TestPackageDirectoryReturnedSecondDepth() {
-            DirectoryInfo package = new DirectoryInfo(Path.Combine(this.TestTestGetProtocolPackages.FullName, "Something.Protocols.Something"));
+            var package = new DirectoryInfo(Path.Combine(TestTestGetProtocolPackages.FullName, "Something.Protocols.Something"));
 
             var dll = new FileInfo(Path.Combine(package.FullName, "SubDirectory", "Something.Protocols.Something.dll"));
             if (dll.Directory != null) dll.Directory.Create();
@@ -79,7 +79,7 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
             File.WriteAllText(dll.FullName, @"binary");
 
             var protocols = new ProtocolController() {
-                PackagesDirectory = this.TestTestGetProtocolPackages
+                PackagesDirectory = TestTestGetProtocolPackages
             };
 
             var packages = protocols.GetProtocolPackages(new List<FileInfo>() { dll });
@@ -93,8 +93,8 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
         /// </summary>
         [Test]
         public void TestLatestPackagePathReturned() {
-            DirectoryInfo latest = new DirectoryInfo(Path.Combine(this.TestTestGetProtocolPackages.FullName, "Something.Protocols.Something.2.0.0"));
-            DirectoryInfo oldest = new DirectoryInfo(Path.Combine(this.TestTestGetProtocolPackages.FullName, "Something.Protocols.Something.1.0.0"));
+            var latest = new DirectoryInfo(Path.Combine(TestTestGetProtocolPackages.FullName, "Something.Protocols.Something.2.0.0"));
+            var oldest = new DirectoryInfo(Path.Combine(TestTestGetProtocolPackages.FullName, "Something.Protocols.Something.1.0.0"));
 
             var latestDll = new FileInfo(Path.Combine(latest.FullName, "SubDirectory", "Something.Protocols.Something.dll"));
             if (latestDll.Directory != null) latestDll.Directory.Create();
@@ -105,7 +105,7 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
             File.WriteAllText(oldestDll.FullName, @"binary");
 
             var protocols = new ProtocolController() {
-                PackagesDirectory = this.TestTestGetProtocolPackages
+                PackagesDirectory = TestTestGetProtocolPackages
             };
 
             var packages = protocols.GetProtocolPackages(new List<FileInfo>() { latestDll, oldestDll });

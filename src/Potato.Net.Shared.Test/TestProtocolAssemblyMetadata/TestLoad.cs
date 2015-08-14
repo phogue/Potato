@@ -29,13 +29,13 @@ namespace Potato.Net.Shared.Test.TestProtocolAssemblyMetadata {
         /// </summary>
         [SetUp]
         public void DeleteTestPathDirectory() {
-            this.TestPath.Refresh();
+            TestPath.Refresh();
 
-            if (this.TestPath.Exists == true) {
-                this.TestPath.Delete(true);
+            if (TestPath.Exists == true) {
+                TestPath.Delete(true);
             }
 
-            this.TestPath.Create();
+            TestPath.Create();
         }
 
         /// <summary>
@@ -45,9 +45,9 @@ namespace Potato.Net.Shared.Test.TestProtocolAssemblyMetadata {
         public void TestMetaFileSetOnObject() {
             var meta = new ProtocolAssemblyMetadata();
 
-            meta.Load(this.TestPath.FullName);
+            meta.Load(TestPath.FullName);
 
-            Assert.AreEqual(Path.Combine(this.TestPath.FullName, "Myrcon.Protocols.Frostbite.json"), meta.Meta.FullName);
+            Assert.AreEqual(Path.Combine(TestPath.FullName, "Myrcon.Protocols.Frostbite.json"), meta.Meta.FullName);
         }
 
         /// <summary>
@@ -57,9 +57,9 @@ namespace Potato.Net.Shared.Test.TestProtocolAssemblyMetadata {
         public void TestAssemblyFileSetOnObject() {
             var assembly = new ProtocolAssemblyMetadata();
 
-            assembly.Load(this.TestPath.FullName);
+            assembly.Load(TestPath.FullName);
 
-            Assert.AreEqual(Path.Combine(this.TestPath.FullName, "Myrcon.Protocols.Frostbite.dll"), assembly.Assembly.FullName);
+            Assert.AreEqual(Path.Combine(TestPath.FullName, "Myrcon.Protocols.Frostbite.dll"), assembly.Assembly.FullName);
         }
 
         /// <summary>
@@ -67,9 +67,9 @@ namespace Potato.Net.Shared.Test.TestProtocolAssemblyMetadata {
         /// </summary>
         [Test]
         public void TestFailureWhenDllFileNotFound() {
-            File.WriteAllText(Path.Combine(this.TestPath.FullName, "Myrcon.Protocols.Frostbite.json"), "{}");
+            File.WriteAllText(Path.Combine(TestPath.FullName, "Myrcon.Protocols.Frostbite.json"), "{}");
 
-            var result = new ProtocolAssemblyMetadata().Load(this.TestPath.FullName);
+            var result = new ProtocolAssemblyMetadata().Load(TestPath.FullName);
 
             Assert.IsFalse(result);
         }
@@ -79,9 +79,9 @@ namespace Potato.Net.Shared.Test.TestProtocolAssemblyMetadata {
         /// </summary>
         [Test]
         public void TestFailureWhenJsonFileNotFound() {
-            File.WriteAllText(Path.Combine(this.TestPath.FullName, "Myrcon.Protocols.Frostbite.dll"), "binary");
+            File.WriteAllText(Path.Combine(TestPath.FullName, "Myrcon.Protocols.Frostbite.dll"), "binary");
 
-            var result = new ProtocolAssemblyMetadata().Load(this.TestPath.FullName);
+            var result = new ProtocolAssemblyMetadata().Load(TestPath.FullName);
 
             Assert.IsFalse(result);
         }
@@ -91,10 +91,10 @@ namespace Potato.Net.Shared.Test.TestProtocolAssemblyMetadata {
         /// </summary>
         [Test]
         public void TestSuccessWhenBothFilesPresent() {
-            File.WriteAllText(Path.Combine(this.TestPath.FullName, "Myrcon.Protocols.Frostbite.dll"), "binary");
-            File.WriteAllText(Path.Combine(this.TestPath.FullName, "Myrcon.Protocols.Frostbite.json"), "{}");
+            File.WriteAllText(Path.Combine(TestPath.FullName, "Myrcon.Protocols.Frostbite.dll"), "binary");
+            File.WriteAllText(Path.Combine(TestPath.FullName, "Myrcon.Protocols.Frostbite.json"), "{}");
 
-            var result = new ProtocolAssemblyMetadata().Load(this.TestPath.FullName);
+            var result = new ProtocolAssemblyMetadata().Load(TestPath.FullName);
 
             Assert.IsTrue(result);
         }
@@ -104,10 +104,10 @@ namespace Potato.Net.Shared.Test.TestProtocolAssemblyMetadata {
         /// </summary>
         [Test]
         public void TestFailureWhenIncorrectFormatJsonFile() {
-            File.WriteAllText(Path.Combine(this.TestPath.FullName, "Myrcon.Protocols.Frostbite.dll"), "binary");
-            File.WriteAllText(Path.Combine(this.TestPath.FullName, "Myrcon.Protocols.Frostbite.json"), "not json data at all!");
+            File.WriteAllText(Path.Combine(TestPath.FullName, "Myrcon.Protocols.Frostbite.dll"), "binary");
+            File.WriteAllText(Path.Combine(TestPath.FullName, "Myrcon.Protocols.Frostbite.json"), "not json data at all!");
 
-            var result = new ProtocolAssemblyMetadata().Load(this.TestPath.FullName);
+            var result = new ProtocolAssemblyMetadata().Load(TestPath.FullName);
 
             Assert.IsFalse(result);
         }
@@ -117,12 +117,12 @@ namespace Potato.Net.Shared.Test.TestProtocolAssemblyMetadata {
         /// </summary>
         [Test]
         public void TestProtocolTypesLoadedSuccessfully() {
-            File.WriteAllText(Path.Combine(this.TestPath.FullName, "Myrcon.Protocols.Frostbite.dll"), "binary");
-            File.WriteAllText(Path.Combine(this.TestPath.FullName, "Myrcon.Protocols.Frostbite.json"), @"{ ""ProtocolTypes"": [ { ""Provider"": ""Myrcon"",""Name"": ""Battlefield 4"",""Type"": ""DiceBattlefield4"" } ] }");
+            File.WriteAllText(Path.Combine(TestPath.FullName, "Myrcon.Protocols.Frostbite.dll"), "binary");
+            File.WriteAllText(Path.Combine(TestPath.FullName, "Myrcon.Protocols.Frostbite.json"), @"{ ""ProtocolTypes"": [ { ""Provider"": ""Myrcon"",""Name"": ""Battlefield 4"",""Type"": ""DiceBattlefield4"" } ] }");
 
             var meta = new ProtocolAssemblyMetadata();
 
-            meta.Load(this.TestPath.FullName);
+            meta.Load(TestPath.FullName);
 
             Assert.IsNotEmpty(meta.ProtocolTypes);
         }
@@ -132,12 +132,12 @@ namespace Potato.Net.Shared.Test.TestProtocolAssemblyMetadata {
         /// </summary>
         [Test]
         public void TestProtocolTypesDataLoadedSuccessfully() {
-            File.WriteAllText(Path.Combine(this.TestPath.FullName, "Myrcon.Protocols.Frostbite.dll"), "binary");
-            File.WriteAllText(Path.Combine(this.TestPath.FullName, "Myrcon.Protocols.Frostbite.json"), @"{ ""ProtocolTypes"": [ { ""Provider"": ""Myrcon"",""Name"": ""Battlefield 4"",""Type"": ""DiceBattlefield4"" } ] }");
+            File.WriteAllText(Path.Combine(TestPath.FullName, "Myrcon.Protocols.Frostbite.dll"), "binary");
+            File.WriteAllText(Path.Combine(TestPath.FullName, "Myrcon.Protocols.Frostbite.json"), @"{ ""ProtocolTypes"": [ { ""Provider"": ""Myrcon"",""Name"": ""Battlefield 4"",""Type"": ""DiceBattlefield4"" } ] }");
 
             var meta = new ProtocolAssemblyMetadata();
 
-            meta.Load(this.TestPath.FullName);
+            meta.Load(TestPath.FullName);
 
             Assert.AreEqual("Battlefield 4", meta.ProtocolTypes.First().Name);
             Assert.AreEqual("Myrcon", meta.ProtocolTypes.First().Provider);

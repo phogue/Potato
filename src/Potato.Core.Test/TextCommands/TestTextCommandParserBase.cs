@@ -359,14 +359,14 @@ namespace Potato.Core.Test.TextCommands {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     "Phogue"
                 })
@@ -374,7 +374,7 @@ namespace Potato.Core.Test.TextCommands {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountAddPlayer,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Phogue",
                     CommonProtocolType.DiceBattlefield3,
                     "EA_63A9F96745B22DFB509C558FC8B5C50F"
@@ -424,11 +424,11 @@ namespace Potato.Core.Test.TextCommands {
             textCommandController.Connection.ProtocolState.Players.TryAdd(PlayerSayaNishino.Uid, PlayerSayaNishino);
             textCommandController.Connection.ProtocolState.Players.TryAdd(PlayerMrDiacritic.Uid, PlayerMrDiacritic);
 
-            textCommandController.Connection.ProtocolState.Items = new ConcurrentDictionary<String, ItemModel>(textCommandController.Connection.ProtocolState.Players.Values.SelectMany(player => player.Inventory.Now.Items).ToDictionary(i => i.Name, i => i));
+            textCommandController.Connection.ProtocolState.Items = new ConcurrentDictionary<string, ItemModel>(textCommandController.Connection.ProtocolState.Players.Values.SelectMany(player => player.Inventory.Now.Items).ToDictionary(i => i.Name, i => i));
 
-            textCommandController.Connection.ProtocolState.MapPool.TryAdd(String.Format("{0}/{1}", MapPortValdez.GameMode.Name, MapPortValdez.Name), MapPortValdez);
-            textCommandController.Connection.ProtocolState.MapPool.TryAdd(String.Format("{0}/{1}", MapValparaiso.GameMode.Name, MapValparaiso.Name), MapValparaiso);
-            textCommandController.Connection.ProtocolState.MapPool.TryAdd(String.Format("{0}/{1}", MapPanamaCanal.GameMode.Name, MapPanamaCanal.Name), MapPanamaCanal);
+            textCommandController.Connection.ProtocolState.MapPool.TryAdd(string.Format("{0}/{1}", MapPortValdez.GameMode.Name, MapPortValdez.Name), MapPortValdez);
+            textCommandController.Connection.ProtocolState.MapPool.TryAdd(string.Format("{0}/{1}", MapValparaiso.GameMode.Name, MapValparaiso.Name), MapValparaiso);
+            textCommandController.Connection.ProtocolState.MapPool.TryAdd(string.Format("{0}/{1}", MapPanamaCanal.GameMode.Name, MapPanamaCanal.Name), MapPanamaCanal);
 
             return textCommandController;
         }
@@ -440,13 +440,13 @@ namespace Potato.Core.Test.TextCommands {
         /// <param name="command">The text based command to execute.</param>
         /// <param name="username">A username to execute the command as.</param>
         /// <returns>The event generated when executing the text command.</returns>
-        protected static ICommandResult ExecuteTextCommand(TextCommandController textCommandController, String command, String username = "Phogue") {
-            ICommandResult result = textCommandController.TextCommandsExecute(new Command() {
+        protected static ICommandResult ExecuteTextCommand(TextCommandController textCommandController, string command, string username = "Phogue") {
+            var result = textCommandController.TextCommandsExecute(new Command() {
                 Authentication = {
                     Username = "Phogue"
                 },
                 Origin = CommandOrigin.Local
-            }, new Dictionary<String, ICommandParameter>() {
+            }, new Dictionary<string, ICommandParameter>() {
                 {"text", new CommandParameter() {
                     Data = {
                         Content = new List<string>() {
@@ -460,20 +460,20 @@ namespace Potato.Core.Test.TextCommands {
         }
 
         protected static void AssertExecutedCommand(ICommandResult args, TextCommandModel primaryCommand) {
-            Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
+            Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), string.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
         }
 
-        protected static void AssertExecutedCommandAgainstSentencesList(ICommandResult args, TextCommandModel primaryCommand, List<String> sentences) {
-            Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
+        protected static void AssertExecutedCommandAgainstSentencesList(ICommandResult args, TextCommandModel primaryCommand, List<string> sentences) {
+            Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), string.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
             Assert.AreEqual(sentences.Count, args.Now.TextCommandMatches.First().Quotes != null ? args.Now.TextCommandMatches.First().Quotes.Count : 0, "Incorrect numbers of sentences returned");
 
-            foreach (String sentence in sentences) {
-                Assert.IsTrue(args.Now.TextCommandMatches.First().Quotes.Contains(sentence) == true, String.Format("Could not find sentence '{0}'", sentence));
+            foreach (var sentence in sentences) {
+                Assert.IsTrue(args.Now.TextCommandMatches.First().Quotes.Contains(sentence) == true, string.Format("Could not find sentence '{0}'", sentence));
             }
         }
 
-        protected static void AssertCommandSentencesList(TextCommandController textCommandController, String command, TextCommandModel primaryCommand, List<String> sentences) {
-            ICommandResult args = ExecuteTextCommand(textCommandController, command);
+        protected static void AssertCommandSentencesList(TextCommandController textCommandController, string command, TextCommandModel primaryCommand, List<string> sentences) {
+            var args = ExecuteTextCommand(textCommandController, command);
 
             AssertExecutedCommandAgainstSentencesList(args, primaryCommand, sentences);
         }
@@ -486,16 +486,16 @@ namespace Potato.Core.Test.TextCommands {
         /// <param name="players">The list of players that must be in the resulting matched players (nothing more, nothing less)</param>
         /// <param name="maps">The list of maps that must be in the resulting matched maps (nothing more, nothing less)</param>
         protected static void AssertExecutedCommandAgainstPlayerListMapList(ICommandResult args, TextCommandModel primaryCommand, ICollection<PlayerModel> players, ICollection<MapModel> maps) {
-            Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
+            Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), string.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
             Assert.AreEqual(players.Count, args.Now.TextCommandMatches.First().Players != null ? args.Now.TextCommandMatches.First().Players.Count : 0, "Incorrect numbers of players returned");
             Assert.AreEqual(maps.Count, args.Now.TextCommandMatches.First().Maps != null ? args.Now.TextCommandMatches.First().Maps.Count : 0, "Incorrect numbers of maps returned");
 
-            foreach (PlayerModel player in players) {
-                Assert.IsTrue(args.Now.TextCommandMatches.First().Players.Contains(player) == true, String.Format("Could not find player '{0}'", player.Name));
+            foreach (var player in players) {
+                Assert.IsTrue(args.Now.TextCommandMatches.First().Players.Contains(player) == true, string.Format("Could not find player '{0}'", player.Name));
             }
 
-            foreach (MapModel map in maps) {
-                Assert.IsTrue(args.Now.TextCommandMatches.First().Maps.Contains(map) == true, String.Format("Could not find map '{0}'", map.Name));
+            foreach (var map in maps) {
+                Assert.IsTrue(args.Now.TextCommandMatches.First().Maps.Contains(map) == true, string.Format("Could not find map '{0}'", map.Name));
             }
         }
 
@@ -507,8 +507,8 @@ namespace Potato.Core.Test.TextCommands {
         /// <param name="primaryCommand">The command to check against - the returning primary command must be this</param>
         /// <param name="players">The list of players that must be in the resulting matched players (nothing more, nothing less)</param>
         /// <param name="maps">The list of maps that must be in the resulting matched maps (nothing more, nothing less)</param>
-        protected static void AssertCommandPlayerListMapList(TextCommandController textCommandController, String command, TextCommandModel primaryCommand, ICollection<PlayerModel> players, List<MapModel> maps) {
-            ICommandResult args = ExecuteTextCommand(textCommandController, command);
+        protected static void AssertCommandPlayerListMapList(TextCommandController textCommandController, string command, TextCommandModel primaryCommand, ICollection<PlayerModel> players, List<MapModel> maps) {
+            var args = ExecuteTextCommand(textCommandController, command);
 
             AssertExecutedCommandAgainstPlayerListMapList(args, primaryCommand, players, maps);
         }
@@ -520,7 +520,7 @@ namespace Potato.Core.Test.TextCommands {
         /// <param name="primaryCommand">The command to check against - the returning primary command must be this</param>
         /// <param name="value">The value of the arithmetic return. There must be only one value returned.</param>
         protected static void AssertExecutedCommandAgainstNumericValue(ICommandResult args, TextCommandModel primaryCommand, float value) {
-            Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
+            Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), string.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
             Assert.AreEqual(1, args.Now.TextCommandMatches.First().Numeric.Count, "Not exactly one numeric value returned");
             Assert.AreEqual(value, args.Now.TextCommandMatches.First().Numeric.FirstOrDefault());
         }
@@ -532,16 +532,16 @@ namespace Potato.Core.Test.TextCommands {
         /// <param name="command">The text command to execute</param>
         /// <param name="primaryCommand">The command to check against - the returning primary command must be this</param>
         /// <param name="value">The value of the arithmetic return. There must be only one value returned.</param>
-        protected static void AssertNumericCommand(TextCommandController textCommandController, String command, TextCommandModel primaryCommand, float value) {
-            ICommandResult args = ExecuteTextCommand(textCommandController, command);
+        protected static void AssertNumericCommand(TextCommandController textCommandController, string command, TextCommandModel primaryCommand, float value) {
+            var args = ExecuteTextCommand(textCommandController, command);
 
             AssertExecutedCommandAgainstNumericValue(args, primaryCommand, value);
         }
 
         protected static void AssertExecutedCommandAgainstTemporalValue(ICommandResult args, TextCommandModel primaryCommand, TimeSpan? period = null, DateTime? delay = null, FuzzyDateTimePattern interval = null) {
-            Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), String.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
+            Assert.AreEqual(primaryCommand, args.Now.TextCommands.First(), string.Format("Has not used the '{0}' command", primaryCommand.PluginCommand));
 
-            TextCommandMatchModel match = args.Now.TextCommandMatches.First();
+            var match = args.Now.TextCommandMatches.First();
 
             Assert.IsNotNull(match);
 
@@ -580,8 +580,8 @@ namespace Potato.Core.Test.TextCommands {
             }
         }
 
-        protected static void AssertTemporalCommand(TextCommandController textCommandController, String command, TextCommandModel primaryCommand, TimeSpan? period = null, DateTime? delay = null, FuzzyDateTimePattern interval = null) {
-            ICommandResult args = ExecuteTextCommand(textCommandController, command);
+        protected static void AssertTemporalCommand(TextCommandController textCommandController, string command, TextCommandModel primaryCommand, TimeSpan? period = null, DateTime? delay = null, FuzzyDateTimePattern interval = null) {
+            var args = ExecuteTextCommand(textCommandController, command);
 
             AssertExecutedCommandAgainstTemporalValue(args, primaryCommand, period, delay, interval);
         }

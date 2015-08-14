@@ -31,7 +31,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerSerializer {
         /// </summary>
         [Test]
         public void TestJsonDeserialization() {
-            Command original = new Command() {
+            var original = new Command() {
                 CommandType = CommandType.VariablesSet,
                 Authentication = {
                     Username = "username",
@@ -40,14 +40,14 @@ namespace Potato.Core.Test.Remote.TestCommandServerSerializer {
                 Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
-                            Content = new List<String>() {
+                            Content = new List<string>() {
                                 "A"
                             }
                         }
                     },
                     new CommandParameter() {
                         Data = {
-                            Content = new List<String>() {
+                            Content = new List<string>() {
                                 "B"
                             }
                         }
@@ -55,7 +55,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerSerializer {
                 }
             };
 
-            ICommand deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
+            var deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
                 Content = JsonConvert.SerializeObject(original),
                 Headers = new WebHeaderCollection() {
                     { HttpRequestHeader.ContentType, Mime.ApplicationJson }
@@ -73,7 +73,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerSerializer {
         /// </summary>
         [Test]
         public void TestJsonDeserializationEmptyParameterList() {
-            Command original = new Command() {
+            var original = new Command() {
                 CommandType = CommandType.VariablesSet,
                 Authentication = {
                     Username = "username",
@@ -81,7 +81,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerSerializer {
                 }
             };
 
-            ICommand deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
+            var deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
                 Content = JsonConvert.SerializeObject(original),
                 Headers = new WebHeaderCollection() {
                     { HttpRequestHeader.ContentType, Mime.ApplicationJson }
@@ -99,7 +99,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerSerializer {
         /// </summary>
         [Test]
         public void TestIncorrectDeserialization() {
-            ICommand deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
+            var deserialized = CommandServerSerializer.DeserializeCommand(new CommandServerPacket() {
                 Content = "this is junk text that won't be deserialized.",
                 Headers = new WebHeaderCollection() {
                     { HttpRequestHeader.ContentType, Mime.ApplicationJson }

@@ -25,11 +25,11 @@ namespace Potato.Net.Shared.Test.TestShared.TestSandboxProtocolController {
 
         [SetUp]
         public void LoadMeta() {
-            this.Controller = new SandboxProtocolController() {
+            Controller = new SandboxProtocolController() {
                 SandboxedProtocol = new MockIntegrationTestProtocol()
             };
 
-            this.Controller.AssignEvents();
+            Controller.AssignEvents();
         }
 
         /// <summary>
@@ -38,13 +38,13 @@ namespace Potato.Net.Shared.Test.TestShared.TestSandboxProtocolController {
         /// </summary>
         [Test]
         public void TestSuccessProtocolEventBubbledThrough() {
-            bool called = false;
+            var called = false;
 
-            this.Controller.Bubble = new SandboxProtocolCallbackProxy() {
+            Controller.Bubble = new SandboxProtocolCallbackProxy() {
                 ProtocolEvent = (args) => { called = true; }
             };
 
-            ((MockIntegrationTestProtocol)this.Controller.SandboxedProtocol).MockProtocolEvent(null);
+            ((MockIntegrationTestProtocol)Controller.SandboxedProtocol).MockProtocolEvent(null);
 
             Assert.IsTrue(called);
         }
@@ -55,13 +55,13 @@ namespace Potato.Net.Shared.Test.TestShared.TestSandboxProtocolController {
         /// </summary>
         [Test]
         public void TestSuccessClientEventBubbledThrough() {
-            bool called = false;
+            var called = false;
 
-            this.Controller.Bubble = new SandboxProtocolCallbackProxy() {
+            Controller.Bubble = new SandboxProtocolCallbackProxy() {
                 ClientEvent = (args) => { called = true; }
             };
 
-            ((MockIntegrationTestProtocol)this.Controller.SandboxedProtocol).MockClientEvent(null);
+            ((MockIntegrationTestProtocol)Controller.SandboxedProtocol).MockClientEvent(null);
 
             Assert.IsTrue(called);
         }

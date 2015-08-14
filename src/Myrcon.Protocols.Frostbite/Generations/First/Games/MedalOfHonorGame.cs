@@ -29,7 +29,7 @@ namespace Myrcon.Protocols.Frostbite.Generations.First.Games {
     public class MedalOfHonorGame : FirstGame {
 
         public MedalOfHonorGame() : base() {
-            ServerInfoParameters = new List<String>() {
+            ServerInfoParameters = new List<string>() {
                 "ServerName",       "PlayerCount",   "MaxPlayerCount",   "GameMode",
                 "Map",              "CurrentRound",  "TotalRounds",      "TeamScores",
                 "ConnectionState",  "Ranked",        "PunkBuster",       "Passworded",
@@ -38,26 +38,26 @@ namespace Myrcon.Protocols.Frostbite.Generations.First.Games {
         }
 
         protected override List<IPacketWrapper> ActionMove(INetworkAction action) {
-            List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
+            var wrappers = new List<IPacketWrapper>();
 
             // admin.movePlayer <name: player name> <teamId: Team ID> <squadId: Squad ID> <forceKill: boolean>
-            bool forceMove = (action.ActionType == NetworkActionType.NetworkPlayerMoveForce || action.ActionType == NetworkActionType.NetworkPlayerMoveRotateForce);
+            var forceMove = (action.ActionType == NetworkActionType.NetworkPlayerMoveForce || action.ActionType == NetworkActionType.NetworkPlayerMoveRotateForce);
 
-            MapModel selectedMap = this.State.MapPool.Values.FirstOrDefault(x => String.Compare(x.Name, this.State.Settings.Current.MapNameText, StringComparison.OrdinalIgnoreCase) == 0);
+            var selectedMap = State.MapPool.Values.FirstOrDefault(x => string.Compare(x.Name, State.Settings.Current.MapNameText, StringComparison.OrdinalIgnoreCase) == 0);
 
-            PlayerModel movePlayer = this.State.Players.Values.First(player => player.Uid == action.Scope.Players.First().Uid);
+            var movePlayer = State.Players.Values.First(player => player.Uid == action.Scope.Players.First().Uid);
 
             if (selectedMap != null) {
                 // If they are just looking to rotate the player through the teams
                 if (action.ActionType == NetworkActionType.NetworkPlayerMoveRotate || action.ActionType == NetworkActionType.NetworkPlayerMoveRotateForce) {
 
-                    int currentTeamId = -1;
+                    var currentTeamId = -1;
 
                     int.TryParse(movePlayer.Groups.First(group => group.Type == GroupModel.Team).Uid, out currentTeamId);
 
                     // Avoid divide by 0 error - shouldn't ever be encountered though.
                     if (selectedMap.GameMode.TeamCount > 0) {
-                        int newTeamId = (currentTeamId + 1) % (selectedMap.GameMode.TeamCount + 1);
+                        var newTeamId = (currentTeamId + 1) % (selectedMap.GameMode.TeamCount + 1);
 
                         action.Now.Groups.Add(new GroupModel() {
                             Type = GroupModel.Team,
@@ -68,7 +68,7 @@ namespace Myrcon.Protocols.Frostbite.Generations.First.Games {
             }
 
             wrappers.Add(
-                this.CreatePacket(
+                CreatePacket(
                     "admin.movePlayer \"{0}\" {1} {2}",
                     movePlayer.Name,
                     action.Now.Groups.First(group => group.Type == GroupModel.Team).Uid,

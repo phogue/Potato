@@ -25,10 +25,10 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestMergeCollectionPlayerSaveNameScoreUpdateScore() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestMergeCollectionPlayerSaveNameScoreUpdateScoreImplicit).Compile();
+            var serialized = serializer.Parse(TestMergeCollectionPlayerSaveNameScoreUpdateScoreImplicit).Compile();
 
-            ICompiledQuery serializedSave = serialized.Children.First(child => child.Root is Save);
-            ICompiledQuery serializedModify = serialized.Children.First(child => child.Root is Modify);
+            var serializedSave = serialized.Children.First(child => child.Root is Save);
+            var serializedModify = serialized.Children.First(child => child.Root is Modify);
 
             Assert.AreEqual(@"save", serializedSave.Methods.First());
             Assert.AreEqual(@"update", serializedModify.Methods.First());
@@ -40,10 +40,10 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestMergeCollectionPlayerSaveNameScoreRankUpdateScoreRankScore() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestMergeCollectionPlayerSaveNameScoreRankUpdateScoreRankScoreImplicit).Compile();
+            var serialized = serializer.Parse(TestMergeCollectionPlayerSaveNameScoreRankUpdateScoreRankScoreImplicit).Compile();
 
-            ICompiledQuery serializedSave = serialized.Children.First(child => child.Root is Save);
-            ICompiledQuery serializedModify = serialized.Children.First(child => child.Root is Modify);
+            var serializedSave = serialized.Children.First(child => child.Root is Save);
+            var serializedModify = serialized.Children.First(child => child.Root is Modify);
 
             Assert.AreEqual(@"save", serializedSave.Methods.First());
             Assert.AreEqual(@"update", serializedModify.Methods.First());

@@ -22,7 +22,7 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Months {
         }
 
         public JanuaryMonthsVariableTemporalPrimitiveToken() {
-            this.Pattern = new FuzzyDateTimePattern() {
+            Pattern = new FuzzyDateTimePattern() {
                 Rule = TimeType.Definitive,
                 Year = DateTime.Now.Month <= 1 ? DateTime.Now.Year : DateTime.Now.Year + 1,
                 Month = 1

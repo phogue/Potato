@@ -27,6 +27,6 @@ namespace Potato.Core.Shared.Test.Database.Mocks {
     public class MockSimpleModel : DatabaseModel<MockSimpleModel> {
         public int Id { get; set; }
 
-        public String Name { get; set; }
+        public string Name { get; set; }
     }
 }

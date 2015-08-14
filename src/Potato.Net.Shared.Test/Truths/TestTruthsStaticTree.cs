@@ -77,7 +77,7 @@ namespace Potato.Net.Shared.Test.Truths {
         /// </summary>
         [Test]
         public void TestEmptyBranches() {
-            ITruth truth = this.CreateTree();
+            var truth = CreateTree();
 
             Assert.IsTrue(truth.BuildAndTest());
         }
@@ -87,7 +87,7 @@ namespace Potato.Net.Shared.Test.Truths {
         /// </summary>
         [Test]
         public void TestTwoDepthTruth() {
-            ITruth truth = this.CreateTree();
+            var truth = CreateTree();
 
             Assert.IsTrue(truth.BuildAndTest(new ProtocolAgent(), new CanFlow()));
         }
@@ -98,7 +98,7 @@ namespace Potato.Net.Shared.Test.Truths {
         /// </summary>
         [Test]
         public void TestTwoDepthFalse() {
-            ITruth truth = this.CreateTree();
+            var truth = CreateTree();
 
             Assert.IsFalse(truth.BuildAndTest(new ProtocolAgent(), new ProtocolAgent()));
         }
@@ -108,7 +108,7 @@ namespace Potato.Net.Shared.Test.Truths {
         /// </summary>
         [Test]
         public void TestPotatoCanDoChatsToGroupTruth() {
-            ITruth truth = this.CreateTree();
+            var truth = CreateTree();
 
             Assert.IsTrue(truth.BuildAndTest(new ProtocolAgent(), new CanFlow(), new ChatGoal(), new ToFlow(), new GroupAgent()));
         }
@@ -119,7 +119,7 @@ namespace Potato.Net.Shared.Test.Truths {
         /// </summary>
         [Test]
         public void TestPotatoCanDoChatsToGroupPartialTruth() {
-            ITruth truth = this.CreateTree();
+            var truth = CreateTree();
 
             Assert.IsTrue(truth.BuildAndTest(new ProtocolAgent(), new CanFlow(), new ChatGoal()));
         }
@@ -129,7 +129,7 @@ namespace Potato.Net.Shared.Test.Truths {
         /// </summary>
         [Test]
         public void TestPotatoCanDoChatsToGroupSubstitutedFalse() {
-            ITruth truth = this.CreateTree();
+            var truth = CreateTree();
 
             Assert.IsFalse(truth.BuildAndTest(new ProtocolAgent(), new KnowsWhenFlow(), new ChatGoal(), new ToFlow(), new GroupAgent()));
         }

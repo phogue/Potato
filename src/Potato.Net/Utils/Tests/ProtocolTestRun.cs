@@ -74,25 +74,25 @@ namespace Potato.Net.Utils.Tests {
         public delegate void TestEventHandler(ProtocolTestRun sender, ProtocolUnitTestEventArgs args);
 
         public ProtocolTestRun() {
-            this.ConnecionIsolation = true;
+            ConnecionIsolation = true;
         }
 
         protected virtual void OnTestBegin(ProtocolUnitTestEventArgs args) {
-            TestEventHandler handler = TestBegin;
+            var handler = TestBegin;
             if (handler != null) {
                 handler(this, args);
             }
         }
 
         protected virtual void OnTestSuccess(ProtocolUnitTestEventArgs args) {
-            TestEventHandler handler = TestSuccess;
+            var handler = TestSuccess;
             if (handler != null) {
                 handler(this, args);
             }
         }
 
         protected virtual void OnTestFailed(ProtocolUnitTestEventArgs args) {
-            TestEventHandler handler = TestFailed;
+            var handler = TestFailed;
             if (handler != null) {
                 handler(this, args);
             }
@@ -100,15 +100,15 @@ namespace Potato.Net.Utils.Tests {
 
         protected void ReplaceText() {
 
-            List<ProtocolUnitTestCommand> commands = this.Tests.SelectMany(test => test.TestCommands).ToList();
+            var commands = Tests.SelectMany(test => test.TestCommands).ToList();
 
-            List<ProtocolUnitTestPacket> packets = new List<ProtocolUnitTestPacket>();
+            var packets = new List<ProtocolUnitTestPacket>();
             packets.AddRange(commands.SelectMany(command => command.Requests).ToList());
             packets.AddRange(commands.SelectMany(command => command.Responses).ToList());
             packets.AddRange(commands.Select(command => command.Send).ToList());
 
-            foreach (ProtocolUnitTestObject replacement in this.Replacements) {
-                foreach (ProtocolUnitTestPacket packet in packets) {
+            foreach (var replacement in Replacements) {
+                foreach (var packet in packets) {
                     packet.ReplaceWith(replacement);
                 }
             }
@@ -118,9 +118,9 @@ namespace Potato.Net.Utils.Tests {
         /// Kind of late to the game, decided to change how the UI allows for tests to be re-run and such.
         /// </summary>
         protected void FalseAllFoundFlags() {
-            List<ProtocolUnitTestCommand> commands = this.Tests.SelectMany(test => test.TestCommands).ToList();
+            var commands = Tests.SelectMany(test => test.TestCommands).ToList();
 
-            List<ProtocolUnitTestPacket> packets = new List<ProtocolUnitTestPacket>();
+            var packets = new List<ProtocolUnitTestPacket>();
             packets.AddRange(commands.SelectMany(command => command.Requests).ToList());
             packets.AddRange(commands.SelectMany(command => command.Responses).ToList());
             packets.AddRange(commands.Select(command => command.Send).ToList());
@@ -134,31 +134,31 @@ namespace Potato.Net.Utils.Tests {
         /// <param name="game"></param>
         /// <param name="tests"></param>
         public void Execute(ISandboxProtocolController game, List<ProtocolUnitTest> tests) {
-            this.Start = DateTime.Now;
+            Start = DateTime.Now;
 
-            this.ReplaceText();
+            ReplaceText();
 
-            this.FalseAllFoundFlags();
+            FalseAllFoundFlags();
 
-            foreach (ProtocolUnitTest test in tests) {
+            foreach (var test in tests) {
 
-                this.OnTestBegin(new ProtocolUnitTestEventArgs() {
+                OnTestBegin(new ProtocolUnitTestEventArgs() {
                     Test = test
                 });
 
-                if (test.Execute(game, this.ConnecionIsolation) == true) {
-                    this.OnTestSuccess(new ProtocolUnitTestEventArgs() {
+                if (test.Execute(game, ConnecionIsolation) == true) {
+                    OnTestSuccess(new ProtocolUnitTestEventArgs() {
                         Test = test
                     });
                 }
                 else {
-                    this.OnTestFailed(new ProtocolUnitTestEventArgs() {
+                    OnTestFailed(new ProtocolUnitTestEventArgs() {
                         Test = test
                     });
                 }
             }
 
-            this.End = DateTime.Now;
+            End = DateTime.Now;
         }
 
         /// <summary>
@@ -166,12 +166,12 @@ namespace Potato.Net.Utils.Tests {
         /// </summary>
         /// <param name="game"></param>
         public void Execute(ISandboxProtocolController game) {
-            this.Execute(game, this.Tests);
+            Execute(game, Tests);
         }
 
         public void Dispose() {
-            this.Replacements.ForEach(e => e.Dispose());
-            this.Tests.ForEach(e => e.Dispose());
+            Replacements.ForEach(e => e.Dispose());
+            Tests.ForEach(e => e.Dispose());
         }
     }
 }

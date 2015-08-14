@@ -29,7 +29,7 @@ namespace Myrcon.Protocols.Frostbite.Test {
         /// </summary>
         [Test]
         public void TestParseBanListItemName() {
-            var bans = SecondFrostbiteBanList.Parse(new List<String>() {
+            var bans = SecondFrostbiteBanList.Parse(new List<string>() {
                 "name",
                 "Phil_k",
                 "perm",

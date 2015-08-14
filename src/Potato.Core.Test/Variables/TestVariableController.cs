@@ -70,7 +70,7 @@ namespace Potato.Core.Test.Variables {
             variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "VolatileKey",
                     "value"
                 })
@@ -79,13 +79,13 @@ namespace Potato.Core.Test.Variables {
             variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "ArchiveKey",
                     "value"
                 })
             });
 
-            VariableModel volatileVariable = variables.VolatileVariables.Values.First();
+            var volatileVariable = variables.VolatileVariables.Values.First();
 
             variables.Dispose();
 
@@ -120,7 +120,7 @@ namespace Potato.Core.Test.Variables {
         /// </summary>
         [Test]
         public void TestDynamicCreationStringKey() {
-            String key = "TestDynamicCreation" + StringExtensions.RandomString(20);
+            var key = "TestDynamicCreation" + StringExtensions.RandomString(20);
 
             var variables = new VariableController();
 
@@ -143,7 +143,7 @@ namespace Potato.Core.Test.Variables {
             saveVariables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "KeyToWriteString",
                     "this is a string"
                 })
@@ -152,7 +152,7 @@ namespace Potato.Core.Test.Variables {
             saveVariables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "KeyToWriteInteger",
                     1
                 })
@@ -161,7 +161,7 @@ namespace Potato.Core.Test.Variables {
             saveVariables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "KeyToNotWrite",
                     "This shouldn't appear in the saved file."
                 })
@@ -170,7 +170,7 @@ namespace Potato.Core.Test.Variables {
             saveVariables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     CommonVariableNames.MaximumProtocolConnections,
                     10
                 })
@@ -188,7 +188,7 @@ namespace Potato.Core.Test.Variables {
             loadConfig.Load(ConfigFileInfo);
             loadVariables.Execute(loadConfig);
 
-            Assert.AreEqual("this is a string", loadVariables.ArchiveVariables.Values.First(v => v.Name == "KeyToWriteString").ToType<String>());
+            Assert.AreEqual("this is a string", loadVariables.ArchiveVariables.Values.First(v => v.Name == "KeyToWriteString").ToType<string>());
             Assert.AreEqual(1, loadVariables.ArchiveVariables.Values.First(v => v.Name == "KeyToWriteInteger").ToType<int>());
             Assert.AreEqual(10, loadVariables.ArchiveVariables.Values.First(v => v.Name == "MaximumProtocolConnections").ToType<int>());
         }
@@ -202,7 +202,7 @@ namespace Potato.Core.Test.Variables {
             variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "NameToWriteString",
                     "this is a string"
                 })
@@ -211,7 +211,7 @@ namespace Potato.Core.Test.Variables {
             variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "NameToWriteInteger",
                     1
                 })
@@ -221,7 +221,7 @@ namespace Potato.Core.Test.Variables {
             variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "NameToignore",
                     ""
                 })
@@ -230,7 +230,7 @@ namespace Potato.Core.Test.Variables {
             variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "NameToNotWrite",
                     "This shouldn't appear in the saved file."
                 })
@@ -239,7 +239,7 @@ namespace Potato.Core.Test.Variables {
             variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSetA,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     CommonVariableNames.MaximumProtocolConnections,
                     10
                 })
@@ -261,8 +261,8 @@ namespace Potato.Core.Test.Variables {
             // Nope, not perfect.
             foreach (var command in commands) {
                 Assert.AreEqual("VariablesSetA", command.Command.Name);
-                Assert.IsTrue(new List<String>() { "NameToWriteString", "NameToWriteInteger", "MaximumProtocolConnections" }.Contains(command.Command.Parameters[0].First<String>()));
-                Assert.IsTrue(new List<String>() { "this is a string", "1", "10" }.Contains(command.Command.Parameters[1].First<String>()));
+                Assert.IsTrue(new List<string>() { "NameToWriteString", "NameToWriteInteger", "MaximumProtocolConnections" }.Contains(command.Command.Parameters[0].First<string>()));
+                Assert.IsTrue(new List<string>() { "this is a string", "1", "10" }.Contains(command.Command.Parameters[1].First<string>()));
             }
         }
     }

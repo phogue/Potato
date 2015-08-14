@@ -32,7 +32,7 @@ namespace Potato.Net.Shared.Models {
         /// A list of strings attached to this network action. A reason associated with the action.
         /// Why the action is being taken or why it was taken, or text used in the action.
         /// </summary>
-        public List<String> Content { get; set; }
+        public List<string> Content { get; set; }
 
         /// <summary>
         /// The groups attached to this action.

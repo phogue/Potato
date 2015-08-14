@@ -36,7 +36,7 @@ namespace Potato.Core.Shared.Models {
         /// <summary>
         /// The host name end point of the established connection
         /// </summary>
-        public String Hostname { get; set; }
+        public string Hostname { get; set; }
 
         /// <summary>
         /// The host port end point of the established connection
@@ -47,11 +47,11 @@ namespace Potato.Core.Shared.Models {
         /// The password used to connect to the end point.
         /// </summary>
         [JsonIgnore]
-        public String Password { get; set; }
+        public string Password { get; set; }
 
         /// <summary>
         /// Additional arguments for a connection
         /// </summary>
-        public String Arguments { get; set; }
+        public string Arguments { get; set; }
     }
 }

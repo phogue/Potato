@@ -63,7 +63,7 @@ namespace Potato.Fuzzy.Tokens {
         /// <param name="state"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public delegate Phrase ReduceDelegateHandler(IFuzzyState state, Dictionary<String, Token> parameters);
+        public delegate Phrase ReduceDelegateHandler(IFuzzyState state, Dictionary<string, Token> parameters);
 
         /// <summary>
         /// Parse method used to convert a basic phrase into a more specific token
@@ -1309,21 +1309,21 @@ namespace Potato.Fuzzy.Tokens {
         /// <param name="type"></param>
         /// <returns></returns>
         private static IEnumerable<MatchModel> SelectMatchDescendants(JObject document, Type type) {
-            if (TokenReflection.MatchDescendants == null) {
-                TokenReflection.MatchDescendants = new Dictionary<Type, List<MatchModel>>();
+            if (MatchDescendants == null) {
+                MatchDescendants = new Dictionary<Type, List<MatchModel>>();
             }
 
-            if (TokenReflection.MatchDescendants.ContainsKey(type) == false) {
-                var array = document[String.Format("{0}.{1}", type.Namespace, type.Name)];
+            if (MatchDescendants.ContainsKey(type) == false) {
+                var array = document[string.Format("{0}.{1}", type.Namespace, type.Name)];
 
-                TokenReflection.MatchDescendants.Add(type, array != null ? array.Children<JObject>().Select(item => item.ToObject<MatchModel>()).ToList() : new List<MatchModel>());
+                MatchDescendants.Add(type, array != null ? array.Children<JObject>().Select(item => item.ToObject<MatchModel>()).ToList() : new List<MatchModel>());
             }
 
-            return TokenReflection.MatchDescendants[type];
+            return MatchDescendants[type];
         }
 
         private static T CreateToken<T>(MatchModel match, Phrase phrase) where T : Token, new() {
-            T token = default(T);
+            var token = default(T);
 
             if (match.Text != null) {
                 float similarity = match.Text.StringSimularityRatio(phrase.Text);
@@ -1331,7 +1331,7 @@ namespace Potato.Fuzzy.Tokens {
                 if (similarity >= Token.MinimumSimilarity) {
                     token = new T {
                         Text = phrase.Text,
-                        Name = match.Name ?? String.Empty,
+                        Name = match.Name ?? string.Empty,
                         Similarity = similarity,
                         Value = match.Value ?? match.Text
                     };
@@ -1343,7 +1343,7 @@ namespace Potato.Fuzzy.Tokens {
                     token = new T() {
                         Text = phrase.Text,
                         Value = regexMatch.Groups["value"].Value,
-                        Name = match.Name ?? String.Empty,
+                        Name = match.Name ?? string.Empty,
                         Similarity = 100.0F
                     };
                 }
@@ -1358,8 +1358,8 @@ namespace Potato.Fuzzy.Tokens {
         /// <returns></returns>
         public static Phrase CreateDescendants<T>(IFuzzyState state, Phrase phrase, out List<T> created) where T : Token, new() {
 
-            var list = (from element in TokenReflection.SelectMatchDescendants(state.Document, typeof(T))
-                        let token = TokenReflection.CreateToken<T>(element, phrase)
+            var list = (from element in SelectMatchDescendants(state.Document, typeof(T))
+                        let token = CreateToken<T>(element, phrase)
                         where token != null
                         select token).ToList();
 
@@ -1375,7 +1375,7 @@ namespace Potato.Fuzzy.Tokens {
         /// </summary>
         /// <returns></returns>
         public static Phrase CreateDescendants<T>(IFuzzyState state, Phrase phrase) where T : Token, new() {
-            phrase.AddRange(TokenReflection.SelectMatchDescendants(state.Document, typeof(T)).Select(element => TokenReflection.CreateToken<T>(element, phrase)).Where(token => token != null));
+            phrase.AddRange(SelectMatchDescendants(state.Document, typeof(T)).Select(element => CreateToken<T>(element, phrase)).Where(token => token != null));
 
             return phrase;
         }

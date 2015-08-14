@@ -35,7 +35,7 @@ namespace Potato.Examples.Plugins.Actions.Test {
         public WaitingActions Waiting = new WaitingActions();
 
         public MockNetworkLayer() : base() {
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     Name = NetworkActionType.NetworkPlayerKick.ToString(),
                     CommandAttributeType = CommandAttributeType.Handler,
@@ -45,7 +45,7 @@ namespace Potato.Examples.Plugins.Actions.Test {
                             Type = typeof(INetworkAction)
                         }
                     },
-                    Handler = this.NetworkProtocolActionKick
+                    Handler = NetworkProtocolActionKick
                 }
             });
         }
@@ -54,7 +54,7 @@ namespace Potato.Examples.Plugins.Actions.Test {
         /// Fake receiving packets from the server.
         /// </summary>
         public void MockResponses() {
-            this.Waiting.Mark(new Packet() {
+            Waiting.Mark(new Packet() {
                 RequestId = 100,
                 Words = new List<string>() {
                     "OK"
@@ -64,7 +64,7 @@ namespace Potato.Examples.Plugins.Actions.Test {
                 Type = PacketType.Response
             });
 
-            this.Waiting.Mark(new Packet() {
+            Waiting.Mark(new Packet() {
                 RequestId = 101,
                 Words = new List<string>() {
                     "OK"
@@ -81,7 +81,7 @@ namespace Potato.Examples.Plugins.Actions.Test {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult NetworkProtocolActionKick(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult NetworkProtocolActionKick(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = new CommandResult() {
                 CommandResultType = CommandResultType.Success,
                 Success = true
@@ -89,16 +89,16 @@ namespace Potato.Examples.Plugins.Actions.Test {
 
             // You can ignore this. This is a mock of Potato's internal process, but looks nothing like it really
 
-            INetworkAction kick = parameters["action"].First<INetworkAction>();
+            var kick = parameters["action"].First<INetworkAction>();
 
-            List<IPacket> requests = new List<IPacket>() {
+            var requests = new List<IPacket>() {
                 new Packet() {
                     RequestId = 100,
                     Words = new List<string>() {
                         "admin.kickPlayer",
                         kick.Scope.Players.First().Name
                     },
-                    DebugText = String.Format("[0-admin.kickPlayer] [1-{0}]", kick.Scope.Players.First().Name),
+                    DebugText = string.Format("[0-admin.kickPlayer] [1-{0}]", kick.Scope.Players.First().Name),
                     Origin = PacketOrigin.Client,
                     Type = PacketType.Request
                 },
@@ -110,13 +110,13 @@ namespace Potato.Examples.Plugins.Actions.Test {
                         "player",
                         kick.Scope.Players.First().Name,
                     },
-                    DebugText = String.Format("[0-admin.say] [1-{0}] [2-player] [3-{1}]", kick.Scope.Content.First(), kick.Scope.Players.First().Name),
+                    DebugText = string.Format("[0-admin.say] [1-{0}] [2-player] [3-{1}]", kick.Scope.Content.First(), kick.Scope.Players.First().Name),
                     Origin = PacketOrigin.Client,
                     Type = PacketType.Request
                 }
             };
 
-            this.Waiting.Wait(new NetworkAction() {
+            Waiting.Wait(new NetworkAction() {
                 ActionType = NetworkActionType.NetworkPlayerKick,
                 Scope = kick.Scope,
                 Now = kick.Now,

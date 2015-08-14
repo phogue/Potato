@@ -34,7 +34,7 @@ namespace Potato.Service.Shared.Test.TestDefines {
         /// </summary>
         [Test]
         public void PackageDirectoryDoesNotExist() {
-            String path = Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, "does-not-exist");
+            var path = Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, "does-not-exist");
 
             Assert.IsNull(path);
         }
@@ -44,11 +44,11 @@ namespace Potato.Service.Shared.Test.TestDefines {
         /// </summary>
         [Test]
         public void PackageDirectoryExists() {
-            String packagePath = Path.Combine(Defines.PackagesDirectory.FullName, "Exists.1.0.0");
+            var packagePath = Path.Combine(Defines.PackagesDirectory.FullName, "Exists.1.0.0");
 
             Directory.CreateDirectory(packagePath);
 
-            String path = Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, "Exists");
+            var path = Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, "Exists");
 
             Assert.AreEqual(packagePath, path);
         }
@@ -58,13 +58,13 @@ namespace Potato.Service.Shared.Test.TestDefines {
         /// </summary>
         [Test]
         public void PackageLatestVersionDirectoryExists() {
-            String oldest = Path.Combine(Defines.PackagesDirectory.FullName, "Exists.1.0.0");
-            String latest = Path.Combine(Defines.PackagesDirectory.FullName, "Exists.1.1.0");
+            var oldest = Path.Combine(Defines.PackagesDirectory.FullName, "Exists.1.0.0");
+            var latest = Path.Combine(Defines.PackagesDirectory.FullName, "Exists.1.1.0");
 
             Directory.CreateDirectory(oldest);
             Directory.CreateDirectory(latest);
 
-            String path = Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, "Exists");
+            var path = Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, "Exists");
 
             Assert.AreEqual(latest, path);
         }
@@ -75,13 +75,13 @@ namespace Potato.Service.Shared.Test.TestDefines {
         [Test]
         public void PackageLatestVersionDirectoryExistsInRange() {
             for (var offset = 0; offset < 20; offset++) {
-                Directory.CreateDirectory(Path.Combine(Defines.PackagesDirectory.FullName, String.Format("Exists.1.0.{0}", offset)));
+                Directory.CreateDirectory(Path.Combine(Defines.PackagesDirectory.FullName, string.Format("Exists.1.0.{0}", offset)));
             }
 
-            String latest = Path.Combine(Defines.PackagesDirectory.FullName, "Exists.9.1.0");
+            var latest = Path.Combine(Defines.PackagesDirectory.FullName, "Exists.9.1.0");
             Directory.CreateDirectory(latest);
 
-            String path = Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, "Exists");
+            var path = Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, "Exists");
 
             Assert.AreEqual(latest, path);
         }
@@ -91,13 +91,13 @@ namespace Potato.Service.Shared.Test.TestDefines {
         /// </summary>
         [Test]
         public void InvalidSemanticVersionIsIgnored() {
-            String latest = Path.Combine(Defines.PackagesDirectory.FullName, "Exists.1.0.0");
-            String invalid = Path.Combine(Defines.PackagesDirectory.FullName, "Exists.9.j.0");
+            var latest = Path.Combine(Defines.PackagesDirectory.FullName, "Exists.1.0.0");
+            var invalid = Path.Combine(Defines.PackagesDirectory.FullName, "Exists.9.j.0");
 
             Directory.CreateDirectory(latest);
             Directory.CreateDirectory(invalid);
 
-            String path = Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, "Exists");
+            var path = Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, "Exists");
 
             Assert.AreEqual(latest, path);
         }
@@ -107,14 +107,14 @@ namespace Potato.Service.Shared.Test.TestDefines {
         /// </summary>
         [Test]
         public void InvalidSemanticVersionIsIgnoredInRange() {
-            String latest = Path.Combine(Defines.PackagesDirectory.FullName, "Exists.1.0.0");
+            var latest = Path.Combine(Defines.PackagesDirectory.FullName, "Exists.1.0.0");
             Directory.CreateDirectory(latest);
 
             for (var offset = 0; offset < 20; offset++) {
-                Directory.CreateDirectory(Path.Combine(Defines.PackagesDirectory.FullName, String.Format("Exists.2.j.{0}", offset)));
+                Directory.CreateDirectory(Path.Combine(Defines.PackagesDirectory.FullName, string.Format("Exists.2.j.{0}", offset)));
             }
 
-            String path = Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, "Exists");
+            var path = Defines.PackageVersionDirectory(Defines.PackagesDirectory.FullName, "Exists");
 
             Assert.AreEqual(latest, path);
         }

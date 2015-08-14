@@ -31,7 +31,7 @@ namespace Potato.Core.Database {
         /// <summary>
         /// The currently opened database drivers.
         /// </summary>
-        public Dictionary<String, IDriver> OpenDrivers { get; set; }
+        public Dictionary<string, IDriver> OpenDrivers { get; set; }
 
         /// <summary>
         /// Manages the grouped variable names, listening for grouped changes.
@@ -53,13 +53,13 @@ namespace Potato.Core.Database {
         /// Initializes default attributes
         /// </summary>
         public DatabaseController() : base() {
-            this.Shared = new SharedReferences();
-            this.OpenDrivers = new Dictionary<String, IDriver>();
+            Shared = new SharedReferences();
+            OpenDrivers = new Dictionary<string, IDriver>();
             
-            this.GroupedVariableListener = new GroupedVariableListener() {
-                Variables = this.Shared.Variables,
+            GroupedVariableListener = new GroupedVariableListener() {
+                Variables = Shared.Variables,
                 GroupsVariableName = CommonVariableNames.DatabaseConfigGroups.ToString(),
-                ListeningVariablesNames = new List<String>() {
+                ListeningVariablesNames = new List<string>() {
                     CommonVariableNames.DatabaseDriverName.ToString(),
                     CommonVariableNames.DatabaseHostname.ToString(),
                     CommonVariableNames.DatabasePort.ToString(),
@@ -69,7 +69,7 @@ namespace Potato.Core.Database {
                 }
             };
 
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.DatabaseQuery,
                     ParameterTypes = new List<CommandParameterType>() {
@@ -78,7 +78,7 @@ namespace Potato.Core.Database {
                             Type = typeof(IDatabaseObject)
                         }
                     },
-                    Handler = this.Query
+                    Handler = Query
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.DatabaseQuery,
@@ -89,28 +89,28 @@ namespace Potato.Core.Database {
                             IsList = true
                         }
                     },
-                    Handler = this.Query
+                    Handler = Query
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.DatabaseQuery,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "driver",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "query",
                             Type = typeof(IDatabaseObject)
                         }
                     },
-                    Handler = this.QueryDriver
+                    Handler = QueryDriver
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.DatabaseQuery,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "driver",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "query",
@@ -118,7 +118,7 @@ namespace Potato.Core.Database {
                             IsList = true
                         }
                     },
-                    Handler = this.QueryDriver
+                    Handler = QueryDriver
                 }
             });
         }
@@ -130,18 +130,18 @@ namespace Potato.Core.Database {
         /// </summary>
         protected void AssignEvents() {
             // Remove all current handlers, also clears the list in this.ListeningVariables
-            this.UnassignEvents();
+            UnassignEvents();
             
-            this.GroupedVariableListener.AssignEvents();
-            this.GroupedVariableListener.VariablesModified += GroupedVariableListenerOnVariablesModified;
+            GroupedVariableListener.AssignEvents();
+            GroupedVariableListener.VariablesModified += GroupedVariableListenerOnVariablesModified;
         }
 
         /// <summary>
         /// Removes all current event handlers.
         /// </summary>
         protected void UnassignEvents() {
-            this.GroupedVariableListener.VariablesModified -= GroupedVariableListenerOnVariablesModified;
-            this.GroupedVariableListener.UnassignEvents();
+            GroupedVariableListener.VariablesModified -= GroupedVariableListenerOnVariablesModified;
+            GroupedVariableListener.UnassignEvents();
         }
 
         /// <summary>
@@ -149,36 +149,36 @@ namespace Potato.Core.Database {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="databaseGroupNames"></param>
-        private void GroupedVariableListenerOnVariablesModified(GroupedVariableListener sender, List<String> databaseGroupNames) {
-            foreach (String databaseGroupName in databaseGroupNames) {
-                IDriver driver = this.AvailableDrivers.FirstOrDefault(pool => String.Compare(pool.Name, this.Shared.Variables.Get<String>(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseDriverName)), StringComparison.InvariantCultureIgnoreCase) == 0);
+        private void GroupedVariableListenerOnVariablesModified(GroupedVariableListener sender, List<string> databaseGroupNames) {
+            foreach (var databaseGroupName in databaseGroupNames) {
+                var driver = AvailableDrivers.FirstOrDefault(pool => string.Compare(pool.Name, Shared.Variables.Get<string>(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseDriverName)), StringComparison.InvariantCultureIgnoreCase) == 0);
 
                 if (driver != null) {
-                    if (this.OpenDrivers.ContainsKey(databaseGroupName) == false) {
+                    if (OpenDrivers.ContainsKey(databaseGroupName) == false) {
                         driver = (IDriver)driver.Clone();
 
                         driver.Settings = new DriverSettings() {
-                            Hostname = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseHostname), String.Empty),
-                            Port = this.Shared.Variables.Get<ushort>(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePort)),
-                            Username = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), String.Empty),
-                            Password = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), String.Empty),
-                            Database = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseName), String.Empty),
-                            Memory = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseMemory), false)
+                            Hostname = Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseHostname), string.Empty),
+                            Port = Shared.Variables.Get<ushort>(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePort)),
+                            Username = Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), string.Empty),
+                            Password = Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), string.Empty),
+                            Database = Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseName), string.Empty),
+                            Memory = Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseMemory), false)
                         };
 
-                        this.OpenDrivers.Add(databaseGroupName, driver);
+                        OpenDrivers.Add(databaseGroupName, driver);
                     }
                     else {
                         // Close it if it's already open.
-                        this.OpenDrivers[databaseGroupName].Close();
+                        OpenDrivers[databaseGroupName].Close();
 
-                        this.OpenDrivers[databaseGroupName].Settings = new DriverSettings() {
-                            Hostname = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseHostname), String.Empty),
-                            Port = this.Shared.Variables.Get<ushort>(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePort)),
-                            Username = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), String.Empty),
-                            Password = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), String.Empty),
-                            Database = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseName), String.Empty),
-                            Memory = this.Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseMemory), false)
+                        OpenDrivers[databaseGroupName].Settings = new DriverSettings() {
+                            Hostname = Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseHostname), string.Empty),
+                            Port = Shared.Variables.Get<ushort>(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePort)),
+                            Username = Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseUid), string.Empty),
+                            Password = Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabasePassword), string.Empty),
+                            Database = Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseName), string.Empty),
+                            Memory = Shared.Variables.Get(VariableModel.NamespaceVariableName(databaseGroupName, CommonVariableNames.DatabaseMemory), false)
                         };
                     }
                 }
@@ -186,9 +186,9 @@ namespace Potato.Core.Database {
         }
 
         public override ICoreController Execute() {
-            this.GroupedVariableListener.Variables = this.Shared.Variables;
+            GroupedVariableListener.Variables = Shared.Variables;
 
-            this.AssignEvents();
+            AssignEvents();
 
             return base.Execute();
         }
@@ -213,7 +213,7 @@ namespace Potato.Core.Database {
                 }
             };
 
-            foreach (IDatabaseObject query in queries) {
+            foreach (var query in queries) {
                 // todo is this correct, or should it instead have a CollectionValue?
                 result.Now.Queries.AddRange(driver.Query(query));
             }
@@ -227,15 +227,15 @@ namespace Potato.Core.Database {
         /// <param name="databaseGroupName">The name of the database group to use</param>
         /// <param name="queries">The queries to execute on the matching driver</param>
         /// <returns>The result of the commands containing the results of each query.</returns>
-        protected ICommandResult ExecuteQueriesOnGroupName(String databaseGroupName, List<IDatabaseObject> queries) {
+        protected ICommandResult ExecuteQueriesOnGroupName(string databaseGroupName, List<IDatabaseObject> queries) {
             ICommandResult result = null;
 
-            if (this.OpenDrivers.ContainsKey(databaseGroupName) == true) {
-                result = this.ExecuteQueriesOnDriver(this.OpenDrivers[databaseGroupName], queries);
+            if (OpenDrivers.ContainsKey(databaseGroupName) == true) {
+                result = ExecuteQueriesOnDriver(OpenDrivers[databaseGroupName], queries);
             }
             else {
                 result = new CommandResult() {
-                    Message = String.Format(@"Database driver ""{0}"" is not supported.", databaseGroupName),
+                    Message = string.Format(@"Database driver ""{0}"" is not supported.", databaseGroupName),
                     CommandResultType = CommandResultType.DoesNotExists,
                     Success = false
                 };
@@ -247,38 +247,38 @@ namespace Potato.Core.Database {
         protected ICommandResult ExecuteQueriesOnAllDrivers(List<IDatabaseObject> queries) {
             ICommandResult result = null;
 
-            foreach (var databaseGroup in this.OpenDrivers) {
-                result = this.ExecuteQueriesOnDriver(databaseGroup.Value, queries);
+            foreach (var databaseGroup in OpenDrivers) {
+                result = ExecuteQueriesOnDriver(databaseGroup.Value, queries);
             }
 
             return result;
         }
 
-        protected ICommandResult Query(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            return this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true ? this.ExecuteQueriesOnAllDrivers(parameters["query"].All<IDatabaseObject>()) : CommandResult.InsufficientPermissions;
+        protected ICommandResult Query(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            return Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true ? ExecuteQueriesOnAllDrivers(parameters["query"].All<IDatabaseObject>()) : CommandResult.InsufficientPermissions;
         }
 
-        protected ICommandResult QueryDriver(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            return this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true ? this.ExecuteQueriesOnGroupName(parameters["driver"].First<String>(), parameters["query"].All<IDatabaseObject>()) : CommandResult.InsufficientPermissions;
+        protected ICommandResult QueryDriver(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            return Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true ? ExecuteQueriesOnGroupName(parameters["driver"].First<string>(), parameters["query"].All<IDatabaseObject>()) : CommandResult.InsufficientPermissions;
         }
 
         public override void Dispose() {
-            this.UnassignEvents();
-            this.GroupedVariableListener = null;
+            UnassignEvents();
+            GroupedVariableListener = null;
 
-            foreach (var driver in this.OpenDrivers) {
+            foreach (var driver in OpenDrivers) {
                 driver.Value.Close();
             }
             
-            this.OpenDrivers.Clear();
-            this.OpenDrivers = null;
+            OpenDrivers.Clear();
+            OpenDrivers = null;
 
-            foreach (IDriver driver in this.AvailableDrivers) {
+            foreach (var driver in AvailableDrivers) {
                 driver.Close();
             }
 
-            this.AvailableDrivers.Clear();
-            this.AvailableDrivers = null;
+            AvailableDrivers.Clear();
+            AvailableDrivers = null;
 
             base.Dispose();
         }

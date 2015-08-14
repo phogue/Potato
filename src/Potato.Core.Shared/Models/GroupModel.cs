@@ -28,7 +28,7 @@ namespace Potato.Core.Shared.Models {
         /// <summary>
         /// The unique name of this group.
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Signifies the group as a guest group. Guest groups cannot have any 
@@ -49,12 +49,12 @@ namespace Potato.Core.Shared.Models {
         /// Initializes the group with default values.
         /// </summary>
         public GroupModel() : base() {
-            this.Name = String.Empty;
-            this.Accounts = new List<AccountModel>();
-            this.Permissions = new List<PermissionModel>();
+            Name = string.Empty;
+            Accounts = new List<AccountModel>();
+            Permissions = new List<PermissionModel>();
 
             // Setup the default permissions.
-            foreach (CommandType name in Enum.GetValues(typeof(CommandType)).Cast<CommandType>().Where(name => name != CommandType.None)) {
+            foreach (var name in Enum.GetValues(typeof(CommandType)).Cast<CommandType>().Where(name => name != CommandType.None)) {
                 var permission = new PermissionModel() {
                     CommandType = name,
                     // All of the CommandType are boolean.
@@ -69,11 +69,11 @@ namespace Potato.Core.Shared.Models {
                     permission.Description = attributes.Cast<DescriptionAttribute>().First().Description;
                 }
 
-                this.Permissions.Add(permission);
+                Permissions.Add(permission);
             }
 
             // List of permissions that are not simple boolean (they take into account the level of Authority)
-            var authorityConstrainedActions = new List<String>() {
+            var authorityConstrainedActions = new List<string>() {
                 "NetworkPlayerMove",
                 "NetworkPlayerMoveForce",
                 "NetworkPlayerMoveRotate",
@@ -84,7 +84,7 @@ namespace Potato.Core.Shared.Models {
                 "NetworkPlayerKill"
             };
 
-            foreach (NetworkActionType name in Enum.GetValues(typeof(NetworkActionType)).Cast<NetworkActionType>().Where(name => name != NetworkActionType.None)) {
+            foreach (var name in Enum.GetValues(typeof(NetworkActionType)).Cast<NetworkActionType>().Where(name => name != NetworkActionType.None)) {
                 var permission = new PermissionModel() {
                     Name = name.ToString()
                 };
@@ -99,13 +99,13 @@ namespace Potato.Core.Shared.Models {
                     permission.Description = attributes.Cast<DescriptionAttribute>().First().Description;
                 }
 
-                this.Permissions.Add(permission);
+                Permissions.Add(permission);
             }
 
-            List<String> booleanTraits = new List<String>() { PermissionTraitsType.Boolean };
+            var booleanTraits = new List<string>() { PermissionTraitsType.Boolean };
 
             // Set default boolean traits for default permissions
-            Dictionary<String, List<String>> defaultTraits = new Dictionary<String, List<String>>() {
+            var defaultTraits = new Dictionary<string, List<string>>() {
                 { CommandType.SecurityGroupAddAccount.ToString(), booleanTraits },
                 { CommandType.SecurityRemoveAccount.ToString(), booleanTraits },
                 { CommandType.SecurityAccountAuthenticate.ToString(), booleanTraits },
@@ -117,26 +117,26 @@ namespace Potato.Core.Shared.Models {
             };
 
             foreach (var trait in defaultTraits) {
-                this.Permissions.First(permission => permission.Name == trait.Key).Traits.AddRange(trait.Value);
+                Permissions.First(permission => permission.Name == trait.Key).Traits.AddRange(trait.Value);
             }
         }
 
         public void Dispose() {
-            foreach (AccountModel account in this.Accounts) {
+            foreach (var account in Accounts) {
                 account.Dispose();
             }
 
-            foreach (PermissionModel permission in this.Permissions) {
+            foreach (var permission in Permissions) {
                 permission.Dispose();
             }
 
-            this.Name = null;
+            Name = null;
 
-            this.Accounts.Clear();
-            this.Accounts = null;
+            Accounts.Clear();
+            Accounts = null;
 
-            this.Permissions.Clear();
-            this.Permissions = null;
+            Permissions.Clear();
+            Permissions = null;
         }
     }
 }

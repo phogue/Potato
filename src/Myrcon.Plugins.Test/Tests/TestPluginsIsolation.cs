@@ -23,32 +23,32 @@ namespace Myrcon.Plugins.Test.Tests {
     public class TestPluginsIsolation : CoreController {
 
         public TestPluginsIsolation() : base() {
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     Name = "TestPluginsIsolationCleanCurrentAppDomain",
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "parameterMessage",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.TestPluginsIsolationCleanCurrentAppDomain
+                    Handler = TestPluginsIsolationCleanCurrentAppDomain
                 },
                 new CommandDispatch() {
                     Name = "TestPluginsIsolationWriteToDirectory",
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "path",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.TestPluginsIsolationWriteToDirectory
+                    Handler = TestPluginsIsolationWriteToDirectory
                 }
             });
         }
 
-        protected ICommandResult TestPluginsIsolationCleanCurrentAppDomain(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            String parameterMessage = parameters["parameterMessage"].First<String>();
+        protected ICommandResult TestPluginsIsolationCleanCurrentAppDomain(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var parameterMessage = parameters["parameterMessage"].First<string>();
 
             command.Result.Message = parameterMessage;
             command.Result.CommandResultType = CommandResultType.Success;
@@ -56,11 +56,11 @@ namespace Myrcon.Plugins.Test.Tests {
             return command.Result;
         }
 
-        protected ICommandResult TestPluginsIsolationWriteToDirectory(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            String path = parameters["path"].First<String>();
+        protected ICommandResult TestPluginsIsolationWriteToDirectory(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var path = parameters["path"].First<string>();
 
             try {
-                using (StreamWriter file = new StreamWriter(Path.Combine(path, "IsolationWriteTest.txt"))) {
+                using (var file = new StreamWriter(Path.Combine(path, "IsolationWriteTest.txt"))) {
                     file.WriteLine("It's potentially bad if you can see this.");
                 }
 

@@ -23,7 +23,7 @@ namespace Potato.Core.Shared {
         /// <summary>
         /// The name of parameter.
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The singular type of parameter List-String- would just assign typeof(String)
@@ -44,8 +44,8 @@ namespace Potato.Core.Shared {
         /// Initializes the parameter type with default values.
         /// </summary>
         public CommandParameterType() {
-            this.IsConvertable = true;
-            this.IsList = false;
+            IsConvertable = true;
+            IsList = false;
         }
     }
 }

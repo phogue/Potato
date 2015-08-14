@@ -40,7 +40,7 @@ namespace Potato.Core.Test.TextCommands {
         public void TestTextCommandRegister() {
             var textCommands = new TextCommandController();
 
-            ICommandResult result = textCommands.Tunnel(new Command() {
+            var result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsRegister,
                 Parameters = new List<ICommandParameter>() {
@@ -50,7 +50,7 @@ namespace Potato.Core.Test.TextCommands {
                                 new TextCommandModel() {
                                     PluginGuid = Guid.NewGuid(),
                                     PluginCommand = "Command1",
-                                    Commands = new List<String>() {
+                                    Commands = new List<string>() {
                                         "RegisterTest"
                                     }
                                 }
@@ -85,7 +85,7 @@ namespace Potato.Core.Test.TextCommands {
                                 new TextCommandModel() {
                                     PluginGuid = guid,
                                     PluginCommand = "Command1",
-                                    Commands = new List<String>() {
+                                    Commands = new List<string>() {
                                         "RegisterTest"
                                     }
                                 }
@@ -95,7 +95,7 @@ namespace Potato.Core.Test.TextCommands {
                 }
             });
 
-            ICommandResult result = textCommands.Tunnel(new Command() {
+            var result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsRegister,
                 Parameters = new List<ICommandParameter>() {
@@ -105,7 +105,7 @@ namespace Potato.Core.Test.TextCommands {
                                 new TextCommandModel() {
                                     PluginGuid = guid,
                                     PluginCommand = "Command1",
-                                    Commands = new List<String>() {
+                                    Commands = new List<string>() {
                                         "RegisterTest"
                                     }
                                 }
@@ -127,7 +127,7 @@ namespace Potato.Core.Test.TextCommands {
         public void TestTextCommandRegisterInsufficientPermission() {
             var textCommands = new TextCommandController();
 
-            ICommandResult result = textCommands.Tunnel(new Command() {
+            var result = textCommands.Tunnel(new Command() {
                 Authentication = {
                     Username = "Phogue"
                 },
@@ -140,7 +140,7 @@ namespace Potato.Core.Test.TextCommands {
                                 new TextCommandModel() {
                                     PluginGuid = Guid.NewGuid(),
                                     PluginCommand = "Command1",
-                                    Commands = new List<String>() {
+                                    Commands = new List<string>() {
                                         "RegisterTest"
                                     }
                                 }
@@ -172,7 +172,7 @@ namespace Potato.Core.Test.TextCommands {
                                 new TextCommandModel() {
                                     PluginGuid = guid,
                                     PluginCommand = "Command1",
-                                    Commands = new List<String>() {
+                                    Commands = new List<string>() {
                                         "RegisterTest"
                                     }
                                 }
@@ -186,7 +186,7 @@ namespace Potato.Core.Test.TextCommands {
             Assert.AreEqual(1, textCommands.TextCommands.Count);
             Assert.AreEqual("RegisterTest", textCommands.TextCommands.First().Commands.First());
 
-            ICommandResult result = textCommands.Tunnel(new Command() {
+            var result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsUnregister,
                 Parameters = new List<ICommandParameter>() {
@@ -215,7 +215,7 @@ namespace Potato.Core.Test.TextCommands {
         public void TestTextCommandUnregisterDoesNotExist() {
             var textCommands = new TextCommandController();
 
-            ICommandResult result = textCommands.Tunnel(new Command() {
+            var result = textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsUnregister,
                 Parameters = new List<ICommandParameter>() {
@@ -254,7 +254,7 @@ namespace Potato.Core.Test.TextCommands {
                                 new TextCommandModel() {
                                     PluginGuid = guid,
                                     PluginCommand = "Command1",
-                                    Commands = new List<String>() {
+                                    Commands = new List<string>() {
                                         "RegisterTest"
                                     }
                                 }
@@ -268,7 +268,7 @@ namespace Potato.Core.Test.TextCommands {
             Assert.AreEqual(1, textCommands.TextCommands.Count);
             Assert.AreEqual("RegisterTest", textCommands.TextCommands.First().Commands.First());
 
-            ICommandResult result = textCommands.Tunnel(new Command() {
+            var result = textCommands.Tunnel(new Command() {
                 Authentication = {
                     Username = "Phogue"
                 },
@@ -281,7 +281,7 @@ namespace Potato.Core.Test.TextCommands {
                                 new TextCommandModel() {
                                     PluginGuid = guid,
                                     PluginCommand = "Command1",
-                                    Commands = new List<String>() {
+                                    Commands = new List<string>() {
                                         "RegisterTest"
                                     }
                                 }

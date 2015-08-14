@@ -24,13 +24,13 @@ namespace Myrcon.Protocols.Frostbite.Objects {
     public class FrostbiteBan {
 
         public static BanModel ParseBanListItem(List<string> words) {
-            BanModel ban = new BanModel();
+            var ban = new BanModel();
 
             if (words.Count == 5) {
 
                 ban.Scope.Times.Add(FrostbiteTimeSubset.Parse(words.GetRange(2, 2)));
 
-                if (String.CompareOrdinal(words[0], "name") == 0) {
+                if (string.CompareOrdinal(words[0], "name") == 0) {
                     ban.Scope.Players.Add(new PlayerModel() {
                         Name = words[1]
                     });
@@ -39,13 +39,13 @@ namespace Myrcon.Protocols.Frostbite.Objects {
                 //else if (String.Compare(words[0], "ip") == 0) {
                 //    this.IpAddress = words[1];
                 //}
-                else if (String.CompareOrdinal(words[0], "guid") == 0) {
+                else if (string.CompareOrdinal(words[0], "guid") == 0) {
                     ban.Scope.Players.Add(new PlayerModel() {
                         Uid = words[1]
                     });
                 }
 
-                ban.Scope.Content = new List<String>() {
+                ban.Scope.Content = new List<string>() {
                     words[4]
                 };
             }
@@ -54,14 +54,14 @@ namespace Myrcon.Protocols.Frostbite.Objects {
         }
 
         public static BanModel ParseBanRemove(List<string> words) {
-            BanModel ban = new BanModel();
+            var ban = new BanModel();
 
-            if (String.CompareOrdinal(words[0], "name") == 0) {
+            if (string.CompareOrdinal(words[0], "name") == 0) {
                 ban.Scope.Players.Add(new PlayerModel() {
                     Name = words[1]
                 });
             }
-            else if (String.CompareOrdinal(words[0], "guid") == 0) {
+            else if (string.CompareOrdinal(words[0], "guid") == 0) {
                 ban.Scope.Players.Add(new PlayerModel() {
                     Uid = words[1]
                 });
@@ -71,14 +71,14 @@ namespace Myrcon.Protocols.Frostbite.Objects {
         }
 
         public static BanModel ParseBanAdd(List<string> words) {
-            BanModel ban = new BanModel();
+            var ban = new BanModel();
 
-            if (String.CompareOrdinal(words[0], "name") == 0) {
+            if (string.CompareOrdinal(words[0], "name") == 0) {
                 ban.Scope.Players.Add(new PlayerModel() {
                     Name = words[1]
                 });
             }
-            else if (String.CompareOrdinal(words[0], "guid") == 0) {
+            else if (string.CompareOrdinal(words[0], "guid") == 0) {
                 ban.Scope.Players.Add(new PlayerModel() {
                     Uid = words[1]
                 });
@@ -92,7 +92,7 @@ namespace Myrcon.Protocols.Frostbite.Objects {
 
                 // Time has a seconds parameter
                 if (ban.Scope.Times.First().Context != TimeSubsetContext.Time) {
-                    ban.Scope.Content = new List<String>() {
+                    ban.Scope.Content = new List<string>() {
                         words[3]
                     };
                 }
@@ -100,7 +100,7 @@ namespace Myrcon.Protocols.Frostbite.Objects {
             else if (words.Count == 5) {
                 ban.Scope.Times.Add(FrostbiteTimeSubset.Parse(words.GetRange(2, 2)));
 
-                ban.Scope.Content = new List<String>() {
+                ban.Scope.Content = new List<string>() {
                     words[4]
                 };
             }

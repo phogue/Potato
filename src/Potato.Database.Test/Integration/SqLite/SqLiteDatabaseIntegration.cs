@@ -43,7 +43,7 @@ namespace Potato.Database.Test.Integration.SqLite {
                 driver.Query(item);
             }
 
-            List<IDatabaseObject> results = driver.Query(query);
+            var results = driver.Query(query);
 
             Assert.AreEqual(expected.ToString(Formatting.None), ((CollectionValue)results.First()).ToJArray().ToString(Formatting.None));
 

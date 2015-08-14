@@ -25,12 +25,12 @@ namespace Potato.Core.Events {
         /// <summary>
         /// The identifier of this stream
         /// </summary>
-        String Id { get; set; }
+        string Id { get; set; }
 
         /// <summary>
         /// The stream key (temporary password) specified by the stream end point when setting up.
         /// </summary>
-        String StreamKey { get; set; }
+        string StreamKey { get; set; }
 
         /// <summary>
         /// Simple flag to determine if a push is in progress.
@@ -51,13 +51,13 @@ namespace Potato.Core.Events {
         /// The content type of the data to be pushed. This determines how the events list should be
         /// serialized for this end point. The default is xml serialization.
         /// </summary>
-        String ContentType { get; set; }
+        string ContentType { get; set; }
 
         /// <summary>
         /// A list of names the event must match to be appended to this stream. Anything not in this list
         /// won't be pushed to the end point.
         /// </summary>
-        List<String> InclusiveNames { get; set; }
+        List<string> InclusiveNames { get; set; }
 
         /// <summary>
         /// List of objects to serialize to xml passing through as content as POST.

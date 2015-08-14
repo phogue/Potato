@@ -20,7 +20,7 @@ namespace Potato.Fuzzy.Tokens {
         /// <summary>
         /// The name of this parameter.
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The type of token required

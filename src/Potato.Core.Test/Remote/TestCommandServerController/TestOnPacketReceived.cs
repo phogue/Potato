@@ -35,7 +35,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
         public void TestSimpleCommandReturnsUnauthorizedIfAuthorizationFails() {
             CommandServerPacket packet = null;
 
-            CommandServerController commandServer = new CommandServerController() {
+            var commandServer = new CommandServerController() {
                 CommandServerListener = new CommandServerListener()
             };
 
@@ -62,7 +62,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
         public void TestMalformedRequestReturnsBadRequest() {
             CommandServerPacket packet = null;
 
-            CommandServerController commandServer = new CommandServerController() {
+            var commandServer = new CommandServerController() {
                 CommandServerListener = new CommandServerListener()
             };
 
@@ -83,21 +83,21 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
         public void TestAuthenticationSuccess() {
             CommandServerPacket packet = null;
 
-            CommandServerController commandServer = new CommandServerController() {
+            var commandServer = new CommandServerController() {
                 CommandServerListener = new CommandServerListener()
             };
 
             commandServer.Shared.Security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
             commandServer.Shared.Security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     "Phogue"
                 })
@@ -105,7 +105,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.Shared.Security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountSetPassword,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Phogue",
                     "password"
                 })
@@ -113,7 +113,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.Shared.Security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     CommandType.SecurityAccountAuthenticate,
                     1
@@ -150,21 +150,21 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
         public void TestAuthenticationFailed() {
             CommandServerPacket packet = null;
 
-            CommandServerController commandServer = new CommandServerController() {
+            var commandServer = new CommandServerController() {
                 CommandServerListener = new CommandServerListener()
             };
 
             commandServer.Shared.Security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
             commandServer.Shared.Security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     "Phogue"
                 })
@@ -172,7 +172,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.Shared.Security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountSetPassword,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Phogue",
                     "password"
                 })
@@ -180,7 +180,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.Shared.Security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     CommandType.SecurityAccountAuthenticate,
                     1
@@ -218,7 +218,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
         public void TestCommandTunnelled() {
             ICommand propogatedCommand = null;
 
-            CommandServerController commandServer = new CommandServerController() {
+            var commandServer = new CommandServerController() {
                 CommandServerListener = new CommandServerListener(),
                 TunnelObjects = new List<ICoreController>() {
                     new MockCommandHandler() {
@@ -230,14 +230,14 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.Shared.Security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
             commandServer.Shared.Security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     "Phogue"
                 })
@@ -245,7 +245,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.Shared.Security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountSetPassword,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Phogue",
                     "password"
                 })
@@ -253,7 +253,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.Shared.Security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupSetPermission,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     CommandType.SecurityAccountAuthenticate,
                     1
@@ -284,7 +284,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
         public void TestResponseConnectionClose() {
             CommandServerPacket packet = null;
 
-            CommandServerController commandServer = new CommandServerController() {
+            var commandServer = new CommandServerController() {
                 CommandServerListener = new CommandServerListener()
             };
 

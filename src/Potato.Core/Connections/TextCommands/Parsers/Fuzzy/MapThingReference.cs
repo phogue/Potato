@@ -34,20 +34,20 @@ namespace Potato.Core.Connections.TextCommands.Parsers.Fuzzy {
         }
 
         public IThingReference Union(IThingReference other) {
-            MapThingReference mapThingReference = other as MapThingReference;
+            var mapThingReference = other as MapThingReference;
 
             if (mapThingReference != null) {
-                this.Maps.AddRange(mapThingReference.Maps.Where(map => this.Maps.Contains(map) == false));
+                Maps.AddRange(mapThingReference.Maps.Where(map => Maps.Contains(map) == false));
             }
 
             return this;
         }
 
         public IThingReference Complement(IThingReference other) {
-            MapThingReference mapThingReference = other as MapThingReference;
+            var mapThingReference = other as MapThingReference;
 
             if (mapThingReference != null) {
-                this.Maps.RemoveAll(map => mapThingReference.Maps.Contains(map));
+                Maps.RemoveAll(map => mapThingReference.Maps.Contains(map));
             }
 
             return this;

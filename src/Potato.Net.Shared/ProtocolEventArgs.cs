@@ -38,11 +38,11 @@ namespace Potato.Net.Shared {
         /// Initializes the protocol event with the default values.
         /// </summary>
         public ProtocolEventArgs() {
-            this.Stamp = DateTime.Now;
-            this.ProtocolType = new ProtocolType();
-            this.Then = new ProtocolEventData();
-            this.Now = new ProtocolEventData();
-            this.StateDifference = new ProtocolStateDifference();
+            Stamp = DateTime.Now;
+            ProtocolType = new ProtocolType();
+            Then = new ProtocolEventData();
+            Now = new ProtocolEventData();
+            StateDifference = new ProtocolStateDifference();
         }
     }
 }

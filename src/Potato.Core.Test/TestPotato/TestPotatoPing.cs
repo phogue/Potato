@@ -35,9 +35,9 @@ namespace Potato.Core.Test.TestPotato {
         /// </summary>
         [Test]
         public void TestResultInsufficientPermissions() {
-            PotatoController instance = new PotatoController();
+            var instance = new PotatoController();
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoPing().SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = instance.Tunnel(CommandBuilder.PotatoPing().SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -52,9 +52,9 @@ namespace Potato.Core.Test.TestPotato {
         /// </summary>
         [Test]
         public void TestResultSuccess() {
-            PotatoController instance = new PotatoController();
+            var instance = new PotatoController();
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoPing().SetOrigin(CommandOrigin.Local));
+            var result = instance.Tunnel(CommandBuilder.PotatoPing().SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
@@ -67,11 +67,11 @@ namespace Potato.Core.Test.TestPotato {
         /// </summary>
         [Test]
         public void TestResultSuccessUptimeReturned() {
-            PotatoController instance = new PotatoController() {
+            var instance = new PotatoController() {
                 InstantiatedStamp = DateTime.Now.AddSeconds(-5)
             };
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoPing().SetOrigin(CommandOrigin.Local));
+            var result = instance.Tunnel(CommandBuilder.PotatoPing().SetOrigin(CommandOrigin.Local));
 
             Assert.GreaterOrEqual(int.Parse(result.Now.Content.First()), 5000);
 

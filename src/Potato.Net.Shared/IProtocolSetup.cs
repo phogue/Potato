@@ -24,7 +24,7 @@ namespace Potato.Net.Shared {
         /// <summary>
         /// The hostname to connect to.
         /// </summary>
-        String Hostname { get; }
+        string Hostname { get; }
 
         /// <summary>
         /// The port to connect on.
@@ -34,21 +34,21 @@ namespace Potato.Net.Shared {
         /// <summary>
         /// The password used to authenticate with the server.
         /// </summary>
-        String Password { get; }
+        string Password { get; }
 
         /// <summary>
         /// A list of generic variables to us 
         /// </summary>
-        IDictionary<String, String> Arguments { get; }
+        IDictionary<string, string> Arguments { get; }
 
         /// <summary>
         /// Convert the variables dictionary to a simple string
         /// </summary>
-        String ArgumentsString();
+        string ArgumentsString();
 
         /// <summary>
         /// The path for the protocol to look for configs at
         /// </summary>
-        String ConfigDirectory { get; set; }
+        string ConfigDirectory { get; set; }
     }
 }

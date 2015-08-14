@@ -28,12 +28,12 @@ namespace Potato.Core.Connections.TextCommands.Parsers.Fuzzy {
         /// Initializes with the default player thing reference
         /// </summary>
         public KdrPropertyReference() {
-            this.ThingReference = new PlayerThingReference();
+            ThingReference = new PlayerThingReference();
         }
 
         public bool RemoveAll(IThingReference thing, EqualityLogicalOperatorToken comparator, FloatNumericPrimitiveToken value) {
-            bool result = false;
-            PlayerThingReference playerReference = thing as PlayerThingReference;
+            var result = false;
+            var playerReference = thing as PlayerThingReference;
 
             if (playerReference != null) {
                 // Think opposite here as we remove all that don't match.

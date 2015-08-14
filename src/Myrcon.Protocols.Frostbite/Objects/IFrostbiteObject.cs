@@ -22,7 +22,7 @@ namespace Myrcon.Protocols.Frostbite.Objects {
     // Used or useful?
     public interface IFrostbiteObject {
 
-        NetworkModel Parse(List<String> words);
+        NetworkModel Parse(List<string> words);
 
     }
 }

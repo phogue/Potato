@@ -28,12 +28,12 @@ namespace Potato.Core.Test.TextCommands.Fuzzy {
     public class TestFuzzyBasicObjectMatching : TestTextCommandParserBase {
         [Test]
         public void TestBasicAlternateKickPhogueCommandSevereTypo() {
-            ICommandResult result = CreateTextCommandController().TextCommandsExecute(new Command() {
+            var result = CreateTextCommandController().TextCommandsExecute(new Command() {
                 Authentication = {
                     Username = "Phogue"
                 },
                 Origin = CommandOrigin.Local
-            }, new Dictionary<String, ICommandParameter>() {
+            }, new Dictionary<string, ICommandParameter>() {
                 {"text", new CommandParameter() {
                     Data = {
                         Content = new List<string>() {
@@ -70,12 +70,12 @@ namespace Potato.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestBasicKickPhogueCommandSevereTypo() {
-            ICommandResult result = CreateTextCommandController().TextCommandsExecute(new Command() {
+            var result = CreateTextCommandController().TextCommandsExecute(new Command() {
                 Authentication = {
                     Username = "Phogue"
                 },
                 Origin = CommandOrigin.Local
-            }, new Dictionary<String, ICommandParameter>() {
+            }, new Dictionary<string, ICommandParameter>() {
                 {"text", new CommandParameter() {
                     Data = {
                         Content = new List<string>() {
@@ -91,12 +91,12 @@ namespace Potato.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestBasicKickPhogueCommandSmallTypo() {
-            ICommandResult result = CreateTextCommandController().TextCommandsExecute(new Command() {
+            var result = CreateTextCommandController().TextCommandsExecute(new Command() {
                 Authentication = {
                     Username = "Phogue"
                 },
                 Origin = CommandOrigin.Local
-            }, new Dictionary<String, ICommandParameter>() {
+            }, new Dictionary<string, ICommandParameter>() {
                 {"text", new CommandParameter() {
                     Data = {
                         Content = new List<string>() {

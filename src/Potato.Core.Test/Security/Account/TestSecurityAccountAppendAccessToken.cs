@@ -37,7 +37,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("Phogue", Guid.NewGuid(), "TokenHash", DateTime.Now)
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("Phogue", Guid.NewGuid(), "TokenHash", DateTime.Now)
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     Username = "Phogue"
@@ -59,7 +59,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now append the token onto the account.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("DoesNotExist", Guid.NewGuid(), "TokenHash", DateTime.Now).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("DoesNotExist", Guid.NewGuid(), "TokenHash", DateTime.Now).SetOrigin(CommandOrigin.Local));
 
             // Validate that we could not set a password and the result returned false.
             Assert.IsFalse(result.Success);
@@ -76,7 +76,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now append the token onto the account.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("Phogue", Guid.Empty, "TokenHash", DateTime.Now).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("Phogue", Guid.Empty, "TokenHash", DateTime.Now).SetOrigin(CommandOrigin.Local));
 
             // Validate that we could not set a password and the result returned false.
             Assert.IsFalse(result.Success);
@@ -93,7 +93,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now append the token onto the account.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("Phogue", Guid.NewGuid(), "", DateTime.Now).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("Phogue", Guid.NewGuid(), "", DateTime.Now).SetOrigin(CommandOrigin.Local));
 
             // Validate that we could not set a password and the result returned false.
             Assert.IsFalse(result.Success);
@@ -110,7 +110,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now append the token onto the account.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("Phogue", Guid.NewGuid(), "TokenHash", DateTime.Now.AddDays(-3)).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("Phogue", Guid.NewGuid(), "TokenHash", DateTime.Now.AddDays(-3)).SetOrigin(CommandOrigin.Local));
 
             // Validate that we could not set a password and the result returned false.
             Assert.IsFalse(result.Success);
@@ -127,7 +127,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now append the token onto the account.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("Phogue", Guid.NewGuid(), "TokenHash", DateTime.Now).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("Phogue", Guid.NewGuid(), "TokenHash", DateTime.Now).SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(result.CommandResultType, CommandResultType.Success);
@@ -157,7 +157,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
-            Guid id = Guid.NewGuid();
+            var id = Guid.NewGuid();
 
             // Now append the token onto the account.
             security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("Phogue", id, "TokenHashOne", DateTime.Now).SetOrigin(CommandOrigin.Local));
@@ -175,7 +175,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
-            Guid oldest = Guid.NewGuid();
+            var oldest = Guid.NewGuid();
 
             // The default limit is 5. I figured I should test with the defaults.
             security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("Phogue", oldest, "TokenHashOldest", DateTime.Now.AddHours(-1)).SetOrigin(CommandOrigin.Local));

@@ -27,7 +27,7 @@ namespace Myrcon.Protocols.Frostbite {
         public static readonly string StringResponseOkay = "OK";
 
         public FrostbitePacket() {
-            this.Packet = new Packet();
+            Packet = new Packet();
         }
     }
 }

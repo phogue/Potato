@@ -55,7 +55,7 @@ namespace Potato.Core.Test.Packages {
                 }
             }));
 
-            PackagesController packages = new PackagesController() {
+            var packages = new PackagesController() {
                 LocalRepository = localRepository,
                 Cache = cache
             };
@@ -72,7 +72,7 @@ namespace Potato.Core.Test.Packages {
         /// </summary>
         [Test]
         public void TestRepositoryCacheBuiltEventLogged() {
-            EventsController events = new EventsController();
+            var events = new EventsController();
 
             var cache = new RepositoryCache();
             var localRepository = new MockPackageRepository(new List<IPackage>() {
@@ -94,7 +94,7 @@ namespace Potato.Core.Test.Packages {
                 }
             }));
 
-            PackagesController packages = new PackagesController() {
+            var packages = new PackagesController() {
                 LocalRepository = localRepository,
                 Cache = cache
             };

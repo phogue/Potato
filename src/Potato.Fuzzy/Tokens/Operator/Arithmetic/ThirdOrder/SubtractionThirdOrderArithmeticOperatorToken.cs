@@ -25,32 +25,32 @@ namespace Potato.Fuzzy.Tokens.Operator.Arithmetic.ThirdOrder {
             return TokenReflection.CreateDescendants<SubtractionThirdOrderArithmeticOperatorToken>(state, phrase);
         }
 
-        public static Phrase ReduceNumberSubtractionNumber(IFuzzyState state, Dictionary<String, Token> parameters) {
-            FloatNumericPrimitiveToken minuend = (FloatNumericPrimitiveToken) parameters["minuend"];
-            SubtractionThirdOrderArithmeticOperatorToken subtraction = (SubtractionThirdOrderArithmeticOperatorToken) parameters["subtraction"];
-            FloatNumericPrimitiveToken subtrahend = (FloatNumericPrimitiveToken) parameters["subtrahend"];
+        public static Phrase ReduceNumberSubtractionNumber(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var minuend = (FloatNumericPrimitiveToken) parameters["minuend"];
+            var subtraction = (SubtractionThirdOrderArithmeticOperatorToken) parameters["subtraction"];
+            var subtrahend = (FloatNumericPrimitiveToken) parameters["subtrahend"];
 
-            HyphenPunctuationSyntaxToken hyphen = new HyphenPunctuationSyntaxToken() {
+            var hyphen = new HyphenPunctuationSyntaxToken() {
                 Text = subtraction.Text,
                 Similarity = subtraction.Similarity
             };
 
-            return SubtractionThirdOrderArithmeticOperatorToken.ReduceNumberHyphenNumber(state, new Dictionary<String, Token>() {
+            return ReduceNumberHyphenNumber(state, new Dictionary<string, Token>() {
                 {"minuend", minuend},
                 {"hyphen", hyphen},
                 {"subtrahend", subtrahend}
             });
         }
 
-        public static Phrase ReduceNumberHyphenNumber(IFuzzyState state, Dictionary<String, Token> parameters) {
-            FloatNumericPrimitiveToken minuend = (FloatNumericPrimitiveToken) parameters["minuend"];
-            HyphenPunctuationSyntaxToken hyphen = (HyphenPunctuationSyntaxToken) parameters["hyphen"];
-            FloatNumericPrimitiveToken subtrahend = (FloatNumericPrimitiveToken) parameters["subtrahend"];
+        public static Phrase ReduceNumberHyphenNumber(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var minuend = (FloatNumericPrimitiveToken) parameters["minuend"];
+            var hyphen = (HyphenPunctuationSyntaxToken) parameters["hyphen"];
+            var subtrahend = (FloatNumericPrimitiveToken) parameters["subtrahend"];
 
             return new Phrase() {
                 new FloatNumericPrimitiveToken() {
                     Value = minuend.ToFloat() - subtrahend.ToFloat(),
-                    Text = String.Format("{0} {1} {2}", minuend.Text, hyphen.Text, subtrahend.Text),
+                    Text = string.Format("{0} {1} {2}", minuend.Text, hyphen.Text, subtrahend.Text),
                     Similarity = (minuend.Similarity + hyphen.Similarity + subtrahend.Similarity) / 3.0F
                 }
             };

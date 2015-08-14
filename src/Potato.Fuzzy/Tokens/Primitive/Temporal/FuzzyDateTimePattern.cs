@@ -49,7 +49,7 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal {
         public TemporalInterval TemporalInterval { get; set; }
 
         public FuzzyDateTimePattern() {
-            this.TemporalInterval = TemporalInterval.Infinite;
+            TemporalInterval = TemporalInterval.Infinite;
         }
 
         /// <summary>
@@ -103,8 +103,8 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal {
         private static object AnchoredCombine(object anchor, object defaultAnchor, object relative, object defaultRelative) {
             object returnObject = null;
 
-            object usedAnchor = anchor ?? defaultAnchor;
-            object usedRelative = relative ?? defaultRelative;
+            var usedAnchor = anchor ?? defaultAnchor;
+            var usedRelative = relative ?? defaultRelative;
 
             if (usedAnchor is int && usedRelative is int) {
                 returnObject = (int) usedAnchor + (int) usedRelative;
@@ -130,28 +130,28 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal {
         protected static FuzzyDateTimePattern AddDefinitiveRelative(FuzzyDateTimePattern definitive, FuzzyDateTimePattern relative) {
             return new FuzzyDateTimePattern {
                 Rule = TimeType.Definitive,
-                Year = (int?) FuzzyDateTimePattern.AnchoredCombine(definitive.Year, DateTime.Now.Year, relative.Year, 0),
-                Month = (int?) FuzzyDateTimePattern.AnchoredCombine(definitive.Month, DateTime.Now.Month, relative.Month, 0),
-                Day = (int?) FuzzyDateTimePattern.AnchoredCombine(definitive.Day, DateTime.Now.Day, relative.Day, 0),
-                Hour = (int?) FuzzyDateTimePattern.AnchoredCombine(definitive.Hour, DateTime.Now.Hour, relative.Hour, 0),
-                Minute = (int?) FuzzyDateTimePattern.AnchoredCombine(definitive.Minute, DateTime.Now.Minute, relative.Minute, 0),
-                Second = (int?) FuzzyDateTimePattern.AnchoredCombine(definitive.Second, DateTime.Now.Second, relative.Second, 0),
-                DayOfWeek = (System.DayOfWeek?) FuzzyDateTimePattern.AnchoredCombine(definitive.DayOfWeek, DateTime.Now.DayOfWeek, relative.DayOfWeek, 0),
-                TemporalInterval = (TemporalInterval) FuzzyDateTimePattern.Combine(definitive.TemporalInterval, relative.TemporalInterval)
+                Year = (int?) AnchoredCombine(definitive.Year, DateTime.Now.Year, relative.Year, 0),
+                Month = (int?) AnchoredCombine(definitive.Month, DateTime.Now.Month, relative.Month, 0),
+                Day = (int?) AnchoredCombine(definitive.Day, DateTime.Now.Day, relative.Day, 0),
+                Hour = (int?) AnchoredCombine(definitive.Hour, DateTime.Now.Hour, relative.Hour, 0),
+                Minute = (int?) AnchoredCombine(definitive.Minute, DateTime.Now.Minute, relative.Minute, 0),
+                Second = (int?) AnchoredCombine(definitive.Second, DateTime.Now.Second, relative.Second, 0),
+                DayOfWeek = (System.DayOfWeek?) AnchoredCombine(definitive.DayOfWeek, DateTime.Now.DayOfWeek, relative.DayOfWeek, 0),
+                TemporalInterval = (TemporalInterval) Combine(definitive.TemporalInterval, relative.TemporalInterval)
             };
         }
 
         protected static FuzzyDateTimePattern AddRelatives(FuzzyDateTimePattern relative1, FuzzyDateTimePattern relative2) {
             return new FuzzyDateTimePattern {
                 Rule = TimeType.Relative,
-                Year = (int?) FuzzyDateTimePattern.Combine(relative1.Year, relative2.Year),
-                Month = (int?) FuzzyDateTimePattern.Combine(relative1.Month, relative2.Month),
-                Day = (int?) FuzzyDateTimePattern.Combine(relative1.Day, relative2.Day),
-                Hour = (int?) FuzzyDateTimePattern.Combine(relative1.Hour, relative2.Hour),
-                Minute = (int?) FuzzyDateTimePattern.Combine(relative1.Minute, relative2.Minute),
-                Second = (int?) FuzzyDateTimePattern.Combine(relative1.Second, relative2.Second),
-                DayOfWeek = (System.DayOfWeek?) FuzzyDateTimePattern.Combine(relative1.DayOfWeek, relative2.DayOfWeek),
-                TemporalInterval = (TemporalInterval) FuzzyDateTimePattern.Combine(relative1.TemporalInterval, relative2.TemporalInterval)
+                Year = (int?) Combine(relative1.Year, relative2.Year),
+                Month = (int?) Combine(relative1.Month, relative2.Month),
+                Day = (int?) Combine(relative1.Day, relative2.Day),
+                Hour = (int?) Combine(relative1.Hour, relative2.Hour),
+                Minute = (int?) Combine(relative1.Minute, relative2.Minute),
+                Second = (int?) Combine(relative1.Second, relative2.Second),
+                DayOfWeek = (System.DayOfWeek?) Combine(relative1.DayOfWeek, relative2.DayOfWeek),
+                TemporalInterval = (TemporalInterval) Combine(relative1.TemporalInterval, relative2.TemporalInterval)
             };
         }
 
@@ -160,16 +160,16 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal {
 
             if (one.Modifier == two.Modifier || one.Modifier == TimeModifier.None || two.Modifier == TimeModifier.None) {
                 if (one.Rule == TimeType.Definitive && two.Rule == TimeType.Definitive) {
-                    newDateTimePattern = FuzzyDateTimePattern.AddDefinitives(one, two);
+                    newDateTimePattern = AddDefinitives(one, two);
                 }
                 else if (one.Rule == TimeType.Relative && two.Rule == TimeType.Definitive) {
-                    newDateTimePattern = FuzzyDateTimePattern.AddDefinitiveRelative(two, one);
+                    newDateTimePattern = AddDefinitiveRelative(two, one);
                 }
                 else if (one.Rule == TimeType.Definitive && two.Rule == TimeType.Relative) {
-                    newDateTimePattern = FuzzyDateTimePattern.AddDefinitiveRelative(one, two);
+                    newDateTimePattern = AddDefinitiveRelative(one, two);
                 }
                 else if (one.Rule == TimeType.Relative && two.Rule == TimeType.Relative) {
-                    newDateTimePattern = FuzzyDateTimePattern.AddRelatives(one, two);
+                    newDateTimePattern = AddRelatives(one, two);
                 }
 
                 if (newDateTimePattern != null) {
@@ -181,20 +181,20 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal {
         }
 
         public FuzzyDateTimePattern Negate() {
-            FuzzyDateTimePattern newDateTimePattern = new FuzzyDateTimePattern();
+            var newDateTimePattern = new FuzzyDateTimePattern();
 
-            if (this.Year != null)
-                newDateTimePattern.Year = this.Year * -1;
-            if (this.Month != null)
-                newDateTimePattern.Month = this.Month * -1;
-            if (this.Day != null)
-                newDateTimePattern.Day = this.Day * -1;
-            if (this.Hour != null)
-                newDateTimePattern.Hour = this.Hour * -1;
-            if (this.Minute != null)
-                newDateTimePattern.Minute = this.Minute * -1;
-            if (this.Second != null)
-                newDateTimePattern.Second = this.Second * -1;
+            if (Year != null)
+                newDateTimePattern.Year = Year * -1;
+            if (Month != null)
+                newDateTimePattern.Month = Month * -1;
+            if (Day != null)
+                newDateTimePattern.Day = Day * -1;
+            if (Hour != null)
+                newDateTimePattern.Hour = Hour * -1;
+            if (Minute != null)
+                newDateTimePattern.Minute = Minute * -1;
+            if (Second != null)
+                newDateTimePattern.Second = Second * -1;
 
             return newDateTimePattern;
         }
@@ -207,13 +207,13 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal {
                 //    newDateTimePattern = DateTimePatternNLP.AddDefinitives(c1, c2);
                 //}
                 if (one.Rule == TimeType.Relative && two.Rule == TimeType.Definitive) {
-                    newDateTimePattern = FuzzyDateTimePattern.AddDefinitiveRelative(two.Negate(), one);
+                    newDateTimePattern = AddDefinitiveRelative(two.Negate(), one);
                 }
                 else if (one.Rule == TimeType.Definitive && two.Rule == TimeType.Relative) {
-                    newDateTimePattern = FuzzyDateTimePattern.AddDefinitiveRelative(one, two.Negate());
+                    newDateTimePattern = AddDefinitiveRelative(one, two.Negate());
                 }
                 else if (one.Rule == TimeType.Relative && two.Rule == TimeType.Relative) {
-                    newDateTimePattern = FuzzyDateTimePattern.AddRelatives(one, two.Negate());
+                    newDateTimePattern = AddRelatives(one, two.Negate());
                 }
 
                 if (newDateTimePattern != null) {
@@ -227,15 +227,15 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal {
         public TimeSpan? ToTimeSpan() {
             TimeSpan? ts = null;
 
-            if (this.Modifier == TimeModifier.Interval) {
-                ts = new TimeSpan(this.Day == null ? 0 : (int) this.Day, this.Hour == null ? 0 : (int) this.Hour, this.Minute == null ? 0 : (int) this.Minute, this.Second == null ? 0 : (int) this.Second);
+            if (Modifier == TimeModifier.Interval) {
+                ts = new TimeSpan(Day == null ? 0 : (int) Day, Hour == null ? 0 : (int) Hour, Minute == null ? 0 : (int) Minute, Second == null ? 0 : (int) Second);
             }
             else {
-                DateTime now = DateTime.Now;
-                DateTime? thisDateTime = this.ToDateTime(now);
+                var now = DateTime.Now;
+                var thisDateTime = ToDateTime(now);
 
                 if (thisDateTime.HasValue == true) {
-                    TimeSpan tots = thisDateTime.Value - now;
+                    var tots = thisDateTime.Value - now;
 
                     ts = new TimeSpan((long) Math.Ceiling(tots.Ticks / (double) TimeSpan.TicksPerSecond) * TimeSpan.TicksPerSecond);
                 }
@@ -245,17 +245,17 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal {
         }
 
         public DateTime? ToDateTime(DateTime? now = null) {
-            FuzzyDateTimePattern dtp = this;
+            var dtp = this;
 
             if (now == null) {
                 now = DateTime.Now;
             }
 
-            if (this.Rule == TimeType.Relative) {
-                dtp = FuzzyDateTimePattern.AddDefinitiveRelative(FuzzyDateTimePattern.Now(now), this);
+            if (Rule == TimeType.Relative) {
+                dtp = AddDefinitiveRelative(Now(now), this);
             }
 
-            DateTime dt = new DateTime(1, 1, 1, 0, 0, 0);
+            var dt = new DateTime(1, 1, 1, 0, 0, 0);
 
             dt = dt.AddYears((dtp.Year != null ? (int) dtp.Year : now.Value.Year) - 1);
             dt = dt.AddMonths((dtp.Month != null ? (int) dtp.Month : now.Value.Month) - 1);
@@ -268,13 +268,13 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal {
         }
 
         public override string ToString() {
-            string rs = String.Empty;
+            var rs = string.Empty;
 
-            if (this.Modifier == TimeModifier.Interval) {
-                rs = "Every " + this.ToTimeSpan();
+            if (Modifier == TimeModifier.Interval) {
+                rs = "Every " + ToTimeSpan();
             }
             else {
-                rs = this.ToDateTime().ToString();
+                rs = ToDateTime().ToString();
             }
 
             return rs;

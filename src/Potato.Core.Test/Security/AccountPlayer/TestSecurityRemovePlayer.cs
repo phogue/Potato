@@ -42,7 +42,7 @@ namespace Potato.Core.Test.Security.AccountPlayer {
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
 
             // Now remove the player.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityRemovePlayer(CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityRemovePlayer(CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
 
             // Validate the command was a success and the player is not attached to any accounts.
             // and no longer attached to the "Phogue" account.
@@ -59,7 +59,7 @@ namespace Potato.Core.Test.Security.AccountPlayer {
             var security = new SecurityController();
 
             // Remove a player, though no accounts/players/groups exist.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityRemovePlayer(CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityRemovePlayer(CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
 
             // Validate the command failed and returned the correct error status.
             Assert.IsFalse(result.Success);
@@ -75,7 +75,7 @@ namespace Potato.Core.Test.Security.AccountPlayer {
             var security = new SecurityController();
 
             // Remove a player, though no accounts/players/groups exist.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityRemovePlayer(CommonProtocolType.DiceBattlefield3, String.Empty).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityRemovePlayer(CommonProtocolType.DiceBattlefield3, string.Empty).SetOrigin(CommandOrigin.Local));
 
             // Validate the command failed and returned the correct error status.
             Assert.IsFalse(result.Success);
@@ -94,7 +94,7 @@ namespace Potato.Core.Test.Security.AccountPlayer {
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("GroupName", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
 
             // Now remove the player.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityRemovePlayer(CommonProtocolType.DiceBattlefield3, "ABCDEF")
+            var result = security.Tunnel(CommandBuilder.SecurityRemovePlayer(CommonProtocolType.DiceBattlefield3, "ABCDEF")
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     Username = "Phogue"

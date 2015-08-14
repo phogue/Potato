@@ -25,7 +25,7 @@ namespace Potato.Net.Shared {
         /// <summary>
         /// The name of the file/directory without extension
         /// </summary>
-        String Name { get; set; }
+        string Name { get; set; }
 
         /// <summary>
         /// The reference to the dll file

@@ -26,7 +26,7 @@ namespace Potato.Config.Test.Models {
         /// </summary>
         [Test]
         public void TestGenerate() {
-            CertificateModel model = new CertificateModel();
+            var model = new CertificateModel();
 
             // Delete the certificate if it exists.
             Defines.CertificatesDirectoryCommandServerPfx.Delete();

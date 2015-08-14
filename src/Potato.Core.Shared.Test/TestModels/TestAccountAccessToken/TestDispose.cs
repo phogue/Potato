@@ -11,7 +11,7 @@ namespace Potato.Core.Shared.Test.TestModels.TestAccountAccessToken {
         /// </summary>
         [Test]
         public void TestAllValuesDefaulted() {
-            AccessTokenModel accessToken = new AccessTokenModel() {
+            var accessToken = new AccessTokenModel() {
                 Account = new AccountModel(),
                 TokenHash = "Something",
                 LastTouched = DateTime.Now,

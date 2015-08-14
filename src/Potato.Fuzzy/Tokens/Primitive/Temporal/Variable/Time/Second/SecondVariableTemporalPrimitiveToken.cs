@@ -24,9 +24,9 @@ using Potato.Fuzzy.Utils;
 namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Time.Second {
 
     public class SecondVariableTemporalPrimitiveToken : TimeVariableTemporalPrimitiveToken {
-        public static Phrase ReduceNumberSeconds(IFuzzyState state, Dictionary<String, Token> parameters) {
-            FloatNumericPrimitiveToken number = (FloatNumericPrimitiveToken) parameters["number"];
-            SecondsUnitTemporalPrimitiveToken seconds = (SecondsUnitTemporalPrimitiveToken) parameters["seconds"];
+        public static Phrase ReduceNumberSeconds(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var number = (FloatNumericPrimitiveToken) parameters["number"];
+            var seconds = (SecondsUnitTemporalPrimitiveToken) parameters["seconds"];
 
             return new Phrase() {
                 new SecondVariableTemporalPrimitiveToken() {
@@ -34,15 +34,15 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Time.Second {
                         Rule = TimeType.Relative,
                         Second = (int) number.ToFloat().ConvertTo(typeof (int))
                     },
-                    Text = String.Format("{0} {1}", number.Text, seconds.Text),
+                    Text = string.Format("{0} {1}", number.Text, seconds.Text),
                     Similarity = (seconds.Similarity + number.Similarity) / 2.0F
                 }
             };
         }
 
-        public static Phrase ReduceArticleSeconds(IFuzzyState state, Dictionary<String, Token> parameters) {
-            IndefiniteArticlesSyntaxToken article = (IndefiniteArticlesSyntaxToken) parameters["article"];
-            SecondsUnitTemporalPrimitiveToken seconds = (SecondsUnitTemporalPrimitiveToken) parameters["seconds"];
+        public static Phrase ReduceArticleSeconds(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var article = (IndefiniteArticlesSyntaxToken) parameters["article"];
+            var seconds = (SecondsUnitTemporalPrimitiveToken) parameters["seconds"];
 
             return new Phrase() {
                 new SecondVariableTemporalPrimitiveToken() {
@@ -50,15 +50,15 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Time.Second {
                         Rule = TimeType.Relative,
                         Second = 1
                     },
-                    Text = String.Format("{0} {1}", article.Text, seconds.Text),
+                    Text = string.Format("{0} {1}", article.Text, seconds.Text),
                     Similarity = (seconds.Similarity + article.Similarity) / 2.0F
                 }
             };
         }
 
-        public static Phrase ReduceEverySeconds(IFuzzyState state, Dictionary<String, Token> parameters) {
-            EveryAdjectiveSyntaxToken every = (EveryAdjectiveSyntaxToken) parameters["every"];
-            SecondsUnitTemporalPrimitiveToken seconds = (SecondsUnitTemporalPrimitiveToken) parameters["seconds"];
+        public static Phrase ReduceEverySeconds(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var every = (EveryAdjectiveSyntaxToken) parameters["every"];
+            var seconds = (SecondsUnitTemporalPrimitiveToken) parameters["seconds"];
 
             return new Phrase() {
                 new SecondsUnitTemporalPrimitiveToken() {
@@ -67,7 +67,7 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Time.Second {
                         Modifier = TimeModifier.Interval,
                         Second = 1
                     },
-                    Text = String.Format("{0} {1}", every.Text, seconds.Text),
+                    Text = string.Format("{0} {1}", every.Text, seconds.Text),
                     Similarity = (seconds.Similarity + every.Similarity) / 2.0F
                 }
             };

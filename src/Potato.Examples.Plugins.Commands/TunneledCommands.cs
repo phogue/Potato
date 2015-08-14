@@ -25,11 +25,11 @@ namespace Potato.Examples.Plugins.Commands {
     public class TunneledCommands : CoreController {
 
         public TunneledCommands() : base() {
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     Name = "ThisCommandIsInAChildObject",
                     CommandAttributeType = CommandAttributeType.Handler,
-                    Handler = this.ThisCommandIsInAChildObject
+                    Handler = ThisCommandIsInAChildObject
                 },
                 new CommandDispatch() {
                     Name = "NoParameterBubbleCommand",
@@ -40,22 +40,22 @@ namespace Potato.Examples.Plugins.Commands {
                             Type = typeof(int)
                         }
                     },
-                    Handler = this.NoParameterBubbleCommand
+                    Handler = NoParameterBubbleCommand
                 }
             });
         }
 
-        protected ICommandResult ThisCommandIsInAChildObject(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        protected ICommandResult ThisCommandIsInAChildObject(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             command.Result.Message = "ThisCommandIsInAChildObjectResult";
 
             return command.Result;
         }
 
-        protected ICommandResult NoParameterBubbleCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        protected ICommandResult NoParameterBubbleCommand(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             command.Name = "SingleConvertedParameterCommand";
 
             // Bubble the command back up to Program.cs
-            return this.Bubble(command);
+            return Bubble(command);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Potato.Net.Shared.Test.Truths {
         /// </summary>
         [Test]
         public void TestMergeTwoBranchesWithIdenticalRootNode() {
-            Tree tree = Tree.Union(
+            var tree = Tree.Union(
                 BranchBuilder.ProtocolCanKillPlayer(),
                 BranchBuilder.ProtocolKnowsWhenPlayerKillPlayer()
             );
@@ -45,7 +45,7 @@ namespace Potato.Net.Shared.Test.Truths {
         /// </summary>
         [Test]
         public void TestMergeTwoBranchesWithIdenticalRootNodeTestWithBuiltBranch() {
-            Tree tree = Tree.Union(
+            var tree = Tree.Union(
                 BranchBuilder.ProtocolCanKillPlayer(),
                 BranchBuilder.ProtocolKnowsWhenPlayerKillPlayer()
             );
@@ -58,7 +58,7 @@ namespace Potato.Net.Shared.Test.Truths {
         /// </summary>
         [Test]
         public void TestMergeTwoBranchesWithDifferentRootNode() {
-            Tree tree = Tree.Union(
+            var tree = Tree.Union(
                 BranchBuilder.ProtocolCanKillPlayer(),
                 BranchBuilder.ProtocolKnowsWhenPlayerKillPlayer(),
                 BranchBuilder.ProtocolKnowsWhenPlayerChatToEveryone(),
@@ -74,7 +74,7 @@ namespace Potato.Net.Shared.Test.Truths {
         /// </summary>
         [Test]
         public void TestMergeTwoBranchesWithDifferentRootNodeMissingNode() {
-            Tree tree = Tree.Union(
+            var tree = Tree.Union(
                 BranchBuilder.ProtocolCanKillPlayer(),
                 BranchBuilder.ProtocolKnowsWhenPlayerKillPlayer(),
                 // BranchBuilder.ProtocolKnowsWhenPlayerChatToEveryone(),
@@ -90,7 +90,7 @@ namespace Potato.Net.Shared.Test.Truths {
         /// </summary>
         [Test]
         public void TestMergeTwoBranchesWithDifferentRootNodeMissingRootNode() {
-            Tree tree = Tree.Union(
+            var tree = Tree.Union(
                 // BranchBuilder.ProtocolCanKillPlayer(),
                 BranchBuilder.ProtocolKnowsWhenPlayerKillPlayer(),
                 BranchBuilder.ProtocolKnowsWhenPlayerChatToEveryone(),

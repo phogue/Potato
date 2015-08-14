@@ -38,12 +38,12 @@ namespace Potato.Config.Core.Models {
         /// <summary>
         /// The password for the certificate
         /// </summary>
-        public String Password {
+        public string Password {
             get { return _password; }
             set {
                 if (_password != value) {
                     _password = value;
-                    this.OnPropertyChanged("Password");
+                    OnPropertyChanged("Password");
                 }
             }
         }
@@ -56,7 +56,7 @@ namespace Potato.Config.Core.Models {
             set {
                 if (_exists != value) {
                     _exists = value;
-                    this.OnPropertyChanged("Exists");
+                    OnPropertyChanged("Exists");
                 }
             }
         }
@@ -65,34 +65,34 @@ namespace Potato.Config.Core.Models {
         /// Sets up the directory watch to look for changes in the certificates folder
         /// </summary>
         public CertificateModel() {
-            this.RandomizePassword();
+            RandomizePassword();
 
-            this.Watch();
+            Watch();
         }
 
         protected void Watch() {
             // Create the directory if it does not exist.
             Defines.CertificatesDirectory.Create();
             
-            this._watcher = new FileSystemWatcher(Defines.CertificatesDirectory.FullName) {
+            _watcher = new FileSystemWatcher(Defines.CertificatesDirectory.FullName) {
                 NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName,
                 Filter = "*.pfx"
             };
 
-            this._watcher.Created += WatcherOnChanged;
-            this._watcher.Deleted += WatcherOnChanged;
-            this._watcher.Changed += WatcherOnChanged;
-            this._watcher.Renamed += WatcherOnChanged;
+            _watcher.Created += WatcherOnChanged;
+            _watcher.Deleted += WatcherOnChanged;
+            _watcher.Changed += WatcherOnChanged;
+            _watcher.Renamed += WatcherOnChanged;
 
-            this._watcher.EnableRaisingEvents = true;
+            _watcher.EnableRaisingEvents = true;
 
-            this.Exists = Defines.CertificatesDirectoryCommandServerPfx.Exists;
+            Exists = Defines.CertificatesDirectoryCommandServerPfx.Exists;
         }
         
         private void WatcherOnChanged(object sender, FileSystemEventArgs fileSystemEventArgs) {
             Defines.CertificatesDirectoryCommandServerPfx.Refresh();
 
-            this.Exists = Defines.CertificatesDirectoryCommandServerPfx.Exists;
+            Exists = Defines.CertificatesDirectoryCommandServerPfx.Exists;
         }
 
         /// <summary>
@@ -100,30 +100,30 @@ namespace Potato.Config.Core.Models {
         /// </summary>
         public void RandomizePassword() {
             const string characters = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789";
-            String password = "";
+            var password = "";
 
-            SecureRandom random = new SecureRandom(new CryptoApiRandomGenerator());
+            var random = new SecureRandom(new CryptoApiRandomGenerator());
 
             while (password.Length < 15) {
                 password += characters[random.Next(characters.Length)];
             }
 
-            this.Password = password;
+            Password = password;
         }
 
         /// <summary>
         /// Generates and saves a new certificate to the default CommandServer plx path
         /// </summary>
         public void Generate() {
-            RsaKeyPairGenerator rsaKeyPairGenerator = new RsaKeyPairGenerator();
+            var rsaKeyPairGenerator = new RsaKeyPairGenerator();
             rsaKeyPairGenerator.Init(new KeyGenerationParameters(new SecureRandom(new CryptoApiRandomGenerator()), 2048));
 
-            AsymmetricCipherKeyPair asymmetricCipherKeyPair = rsaKeyPairGenerator.GenerateKeyPair();
+            var asymmetricCipherKeyPair = rsaKeyPairGenerator.GenerateKeyPair();
 
-            X509Name certificateName = new X509Name("CN=" + Environment.MachineName);
-            BigInteger serialNumber = BigInteger.ProbablePrime(120, new SecureRandom());
+            var certificateName = new X509Name("CN=" + Environment.MachineName);
+            var serialNumber = BigInteger.ProbablePrime(120, new SecureRandom());
 
-            X509V3CertificateGenerator certificateGenerator = new X509V3CertificateGenerator();
+            var certificateGenerator = new X509V3CertificateGenerator();
             certificateGenerator.SetSerialNumber(serialNumber);
             certificateGenerator.SetSubjectDN(certificateName);
             certificateGenerator.SetIssuerDN(certificateName);
@@ -148,9 +148,9 @@ namespace Potato.Config.Core.Models {
                 new ExtendedKeyUsage(KeyPurposeID.IdKPServerAuth)
             );
 
-            X509CertificateEntry certificateEntry = new X509CertificateEntry(certificateGenerator.Generate(asymmetricCipherKeyPair.Private));
+            var certificateEntry = new X509CertificateEntry(certificateGenerator.Generate(asymmetricCipherKeyPair.Private));
 
-            Pkcs12Store store = new Pkcs12Store();
+            var store = new Pkcs12Store();
             store.SetCertificateEntry(certificateName.ToString(), certificateEntry);
             store.SetKeyEntry(certificateName.ToString(), new AsymmetricKeyEntry(asymmetricCipherKeyPair.Private), new[] {
                 certificateEntry
@@ -158,7 +158,7 @@ namespace Potato.Config.Core.Models {
 
             // Save to the file system
             using (var filestream = new FileStream(Defines.CertificatesDirectoryCommandServerPfx.FullName, FileMode.Create, FileAccess.ReadWrite)) {
-                store.Save(filestream, this.Password.ToCharArray(), new SecureRandom());
+                store.Save(filestream, Password.ToCharArray(), new SecureRandom());
             }
         }
 
@@ -167,7 +167,7 @@ namespace Potato.Config.Core.Models {
         /// </summary>
         /// <returns>True if the file no longer exists, false if an error occured</returns>
         public bool Delete() {
-            bool deleted = true;
+            var deleted = true;
             if (Defines.CertificatesDirectoryCommandServerPfx.Exists) {
                 try {
                     Defines.CertificatesDirectoryCommandServerPfx.Delete();
@@ -186,7 +186,7 @@ namespace Potato.Config.Core.Models {
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName) {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            var handler = PropertyChanged;
             if (handler != null) {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }

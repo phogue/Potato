@@ -23,15 +23,15 @@ namespace Potato.Core.Test.Packages.Mocks {
         protected IEnumerable<IPackage> Packages { get; set; }
 
         public MockPackageRepository() {
-            this.Packages = new List<IPackage>();
+            Packages = new List<IPackage>();
         }
 
         public MockPackageRepository(IEnumerable<IPackage> packages) {
-            this.Packages = packages;
+            Packages = packages;
         }
 
         public override IQueryable<IPackage> GetPackages() {
-            return this.Packages.AsQueryable();
+            return Packages.AsQueryable();
         }
 
         public override string Source {

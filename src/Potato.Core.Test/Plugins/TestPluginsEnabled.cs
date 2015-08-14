@@ -46,7 +46,7 @@ namespace Potato.Core.Test.Plugins {
                 }
             }.Execute();
 
-            ICommandResult result = plugins.Tunnel(new Command() {
+            var result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
@@ -80,7 +80,7 @@ namespace Potato.Core.Test.Plugins {
                 }
             });
 
-            ICommandResult result = plugins.Tunnel(new Command() {
+            var result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
@@ -104,7 +104,7 @@ namespace Potato.Core.Test.Plugins {
                 }
             }.Execute();
 
-            ICommandResult result = plugins.Tunnel(new Command() {
+            var result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
@@ -120,7 +120,7 @@ namespace Potato.Core.Test.Plugins {
                 Authentication = {
                     Username = "Phogue"
                 },
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Return Message"
                 })
             });
@@ -143,7 +143,7 @@ namespace Potato.Core.Test.Plugins {
                 }
             }.Execute();
 
-            ICommandResult result = plugins.Tunnel(new Command() {
+            var result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsEnable,
                 Scope = {
@@ -167,7 +167,7 @@ namespace Potato.Core.Test.Plugins {
                 }
             }.Execute();
 
-            ICommandResult result = plugins.Tunnel(new Command() {
+            var result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
                 Authentication = {
                     Username = "Phogue"

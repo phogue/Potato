@@ -25,17 +25,17 @@ namespace Potato.Net.Shared.Models {
         /// <summary>
         /// This game mode's name as it is used via Rcon.
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// This game mode's human-readable name.
         /// </summary>
-        public String FriendlyName { get; set; }
+        public string FriendlyName { get; set; }
 
         /// <summary>
         /// A super short abbreviated name for the game mode. "Squad Deathmatch" -> "SQDM"
         /// </summary>
-        public String AbbreviatedName { get; set; }
+        public string AbbreviatedName { get; set; }
 
         /// <summary>
         /// This game mode's number of teams, not including spectator/neutral.
@@ -51,9 +51,9 @@ namespace Potato.Net.Shared.Models {
         /// Initializes the game mode with the default values.
         /// </summary>
         public GameModeModel() {
-            this.Name = String.Empty;
-            this.FriendlyName = String.Empty;
-            this.TeamCount = 0;
+            Name = string.Empty;
+            FriendlyName = string.Empty;
+            TeamCount = 0;
         }
     }
 }

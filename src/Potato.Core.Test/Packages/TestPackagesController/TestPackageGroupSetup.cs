@@ -60,7 +60,7 @@ namespace Potato.Core.Test.Packages.TestPackagesController {
             variables.Set(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet
-            }, CommonVariableNames.PackagesConfigGroups, new List<String>() {
+            }, CommonVariableNames.PackagesConfigGroups, new List<string>() {
                 @namespace
             });
 
@@ -87,7 +87,7 @@ namespace Potato.Core.Test.Packages.TestPackagesController {
             variables.Set(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet
-            }, CommonVariableNames.PackagesConfigGroups, new List<String>() {
+            }, CommonVariableNames.PackagesConfigGroups, new List<string>() {
                 @namespace
             });
 
@@ -105,7 +105,7 @@ namespace Potato.Core.Test.Packages.TestPackagesController {
         /// </summary>
         [Test]
         public void TestDispose() {
-            PackagesController packages = new PackagesController();
+            var packages = new PackagesController();
 
             packages.Dispose();
 

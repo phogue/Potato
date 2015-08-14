@@ -23,11 +23,11 @@ namespace Potato.Core.Shared.Models {
         /// <summary>
         /// The name of this entry
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
         
         /// <summary>
         /// The text attached to this entry
         /// </summary>
-        public String Text { get; set; }
+        public string Text { get; set; }
     }
 }

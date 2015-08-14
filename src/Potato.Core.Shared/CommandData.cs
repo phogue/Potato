@@ -29,7 +29,7 @@ namespace Potato.Core.Shared {
     /// </summary>
     [Serializable]
     public sealed class CommandData : ICommandData {
-        public List<String> Content { get; set; }
+        public List<string> Content { get; set; }
 
         public List<ConnectionModel> Connections { get; set; }
 
@@ -96,83 +96,83 @@ namespace Potato.Core.Shared {
         /// may reference data that still exists.
         /// </summary>
         public void Dispose() {
-            if (this.Content != null) this.Content.Clear();
-            this.Content = null;
+            if (Content != null) Content.Clear();
+            Content = null;
 
-            if (this.ProtocolTypes != null) this.ProtocolTypes.Clear();
-            this.ProtocolTypes = null;
+            if (ProtocolTypes != null) ProtocolTypes.Clear();
+            ProtocolTypes = null;
 
-            if (this.ProtocolAssemblyMetadatas != null) this.ProtocolAssemblyMetadatas.Clear();
-            this.ProtocolAssemblyMetadatas = null;
+            if (ProtocolAssemblyMetadatas != null) ProtocolAssemblyMetadatas.Clear();
+            ProtocolAssemblyMetadatas = null;
 
-            if (this.Connections != null) this.Connections.Clear();
-            this.Connections = null;
+            if (Connections != null) Connections.Clear();
+            Connections = null;
 
-            if (this.Groups != null) this.Groups.Clear();
-            this.Groups = null;
+            if (Groups != null) Groups.Clear();
+            Groups = null;
 
-            if (this.Accounts != null) this.Accounts.Clear();
-            this.Accounts = null;
+            if (Accounts != null) Accounts.Clear();
+            Accounts = null;
 
-            if (this.AccessTokens != null) this.AccessTokens.Clear();
-            this.AccessTokens = null;
+            if (AccessTokens != null) AccessTokens.Clear();
+            AccessTokens = null;
 
-            if (this.Permissions != null) this.Permissions.Clear();
-            this.Permissions = null;
+            if (Permissions != null) Permissions.Clear();
+            Permissions = null;
 
-            if (this.AccountPlayers != null) this.AccountPlayers.Clear();
-            this.AccountPlayers = null;
+            if (AccountPlayers != null) AccountPlayers.Clear();
+            AccountPlayers = null;
 
-            if (this.Variables != null) this.Variables.Clear();
-            this.Variables = null;
+            if (Variables != null) Variables.Clear();
+            Variables = null;
 
-            if (this.Languages != null) this.Languages.Clear();
-            this.Languages = null;
+            if (Languages != null) Languages.Clear();
+            Languages = null;
 
-            if (this.TextCommands != null) this.TextCommands.Clear();
-            this.TextCommands = null;
+            if (TextCommands != null) TextCommands.Clear();
+            TextCommands = null;
 
-            if (this.TextCommandMatches != null) this.TextCommandMatches.Clear();
-            this.TextCommandMatches = null;
+            if (TextCommandMatches != null) TextCommandMatches.Clear();
+            TextCommandMatches = null;
 
-            if (this.Plugins != null) this.Plugins.Clear();
-            this.Plugins = null;
+            if (Plugins != null) Plugins.Clear();
+            Plugins = null;
 
-            if (this.Chats != null) this.Chats.Clear();
-            this.Chats = null;
+            if (Chats != null) Chats.Clear();
+            Chats = null;
 
-            if (this.Players != null) this.Players.Clear();
-            this.Players = null;
+            if (Players != null) Players.Clear();
+            Players = null;
 
-            if (this.Kills != null) this.Kills.Clear();
-            this.Kills = null;
+            if (Kills != null) Kills.Clear();
+            Kills = null;
 
-            if (this.Moves != null) this.Moves.Clear();
-            this.Moves = null;
+            if (Moves != null) Moves.Clear();
+            Moves = null;
 
-            if (this.Spawns != null) this.Spawns.Clear();
-            this.Spawns = null;
+            if (Spawns != null) Spawns.Clear();
+            Spawns = null;
 
-            if (this.Kicks != null) this.Kicks.Clear();
-            this.Kicks = null;
+            if (Kicks != null) Kicks.Clear();
+            Kicks = null;
 
-            if (this.Bans != null) this.Bans.Clear();
-            this.Bans = null;
+            if (Bans != null) Bans.Clear();
+            Bans = null;
 
-            if (this.Settings != null) this.Settings.Clear();
-            this.Settings = null;
+            if (Settings != null) Settings.Clear();
+            Settings = null;
 
-            if (this.Maps != null) this.Maps.Clear();
-            this.Maps = null;
+            if (Maps != null) Maps.Clear();
+            Maps = null;
 
-            if (this.CommandResults != null) this.CommandResults.Clear();
-            this.CommandResults = null;
+            if (CommandResults != null) CommandResults.Clear();
+            CommandResults = null;
 
-            if (this.Packets != null) this.Packets.Clear();
-            this.Packets = null;
+            if (Packets != null) Packets.Clear();
+            Packets = null;
 
-            if (this.Queries != null) this.Queries.Clear();
-            this.Queries = null;
+            if (Queries != null) Queries.Clear();
+            Queries = null;
         }
     }
 }

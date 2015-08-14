@@ -34,8 +34,8 @@ namespace Potato.Net.Shared {
         /// <param name="gameConfigPath"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static T Load<T>(String gameConfigPath, IProtocolType type) where T : ProtocolConfigModel {
-            return ProtocolConfigLoader.Load<T>(ProtocolConfigLoader.Path(gameConfigPath, type.Provider, type.Type));
+        public static T Load<T>(string gameConfigPath, IProtocolType type) where T : ProtocolConfigModel {
+            return Load<T>(Path(gameConfigPath, type.Provider, type.Type));
         }
 
         /// <summary>
@@ -46,13 +46,13 @@ namespace Potato.Net.Shared {
         /// <returns></returns>
         public static T Populate<T>(T config) where T : ProtocolConfigModel {
             if (config.GameModes != null && config.Groups != null) {
-                foreach (GameModeModel mode in config.GameModes) {
+                foreach (var mode in config.GameModes) {
                     mode.DefaultGroups = config.Groups.Where(known => mode.DefaultGroups.Any(group => group.Uid == known.Uid && group.Type == known.Type)).ToList();
                 }
             }
 
             if (config.MapPool != null && config.GameModes != null) {
-                foreach (MapModel map in config.MapPool) {
+                foreach (var map in config.MapPool) {
                     map.GameMode = config.GameModes.FirstOrDefault(known => known.Name == map.GameMode.Name);
 
                     if (config.Groups != null) {
@@ -71,8 +71,8 @@ namespace Potato.Net.Shared {
         /// <typeparam name="T"></typeparam>
         /// <param name="configPath"></param>
         /// <returns></returns>
-        public static T Load<T>(String configPath) where T : ProtocolConfigModel {
-            T config = default(T);
+        public static T Load<T>(string configPath) where T : ProtocolConfigModel {
+            var config = default(T);
 
             try {
                 if (File.Exists(configPath) == true) {
@@ -82,7 +82,7 @@ namespace Potato.Net.Shared {
                         }
                     }
 
-                    config = ProtocolConfigLoader.Populate(config);
+                    config = Populate(config);
                 }
             }
             catch {
@@ -99,8 +99,8 @@ namespace Potato.Net.Shared {
         /// <param name="protocolProvider">The name of the protocol provider (Myrcon)</param>
         /// <param name="protocolName">The name of the protocol (BF_4, BF_3)</param>
         /// <returns>The combined path of the config file</returns>
-        public static String Path(String gameConfigPath, String protocolProvider, String protocolName) {
-            String configPath = null;
+        public static string Path(string gameConfigPath, string protocolProvider, string protocolName) {
+            string configPath = null;
 
             try {
                 Directory.CreateDirectory(gameConfigPath);

@@ -43,74 +43,74 @@ namespace Potato.Core.Localization {
         /// Initializes the language controller with the default values.
         /// </summary>
         public LanguageController() : base() {
-            this.Shared = new SharedReferences();
-            this.Default = null;
-            this.LoadedLanguageFiles = new List<LanguageConfig>();
+            Shared = new SharedReferences();
+            Default = null;
+            LoadedLanguageFiles = new List<LanguageConfig>();
 
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.LanguageLocalize,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "languageCode",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "namespace",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "name",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "args",
-                            Type = typeof(String),
+                            Type = typeof(string),
                             IsList = true,
                             IsConvertable = true
                         }
                     },
-                    Handler = this.Localize
+                    Handler = Localize
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.LanguageLocalize,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "languageCode",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "namespace",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "name",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "arg",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.SingleParameterLocalize
+                    Handler = SingleParameterLocalize
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.LanguageLocalize,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "languageCode",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "namespace",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "name",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.ParameterlessLocalize
+                    Handler = ParameterlessLocalize
                 }
             });
         }
@@ -145,15 +145,15 @@ namespace Potato.Core.Localization {
                 }
 
                 if (language != null && language.LanguageModel.LanguageCode != null) {
-                    this.LoadedLanguageFiles.Add(language);
+                    LoadedLanguageFiles.Add(language);
                 }
             }
 
-            this.AssignEvents();
+            AssignEvents();
 
-            this.Shared.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).Value = "en-GB";
+            Shared.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).Value = "en-GB";
 
-            this.LoadDefaultLanguage();
+            LoadDefaultLanguage();
 
             return base.Execute();
         }
@@ -162,16 +162,16 @@ namespace Potato.Core.Localization {
         /// Assign all current event handlers for all grouped options.
         /// </summary>
         protected void AssignEvents() {
-            this.UnassignEvents();
+            UnassignEvents();
 
-            this.Shared.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(LanguageController_PropertyChanged);
+            Shared.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(LanguageController_PropertyChanged);
 
         }
         /// <summary>
         /// Removes all current event handlers.
         /// </summary>
         protected void UnassignEvents() {
-            this.Shared.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(LanguageController_PropertyChanged);
+            Shared.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(LanguageController_PropertyChanged);
         }
 
         /// <summary>
@@ -180,16 +180,16 @@ namespace Potato.Core.Localization {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void LanguageController_PropertyChanged(object sender, PropertyChangedEventArgs e) {
-            this.LoadDefaultLanguage();
+            LoadDefaultLanguage();
         }
         
         protected void LoadDefaultLanguage() {
-            String languageCode = this.Shared.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).ToType("en-GB");
+            var languageCode = Shared.Variables.Variable(CommonVariableNames.LocalizationDefaultLanguageCode).ToType("en-GB");
 
-            LanguageConfig language = this.LoadedLanguageFiles.FirstOrDefault(lang => lang.LanguageModel.LanguageCode == languageCode);
+            var language = LoadedLanguageFiles.FirstOrDefault(lang => lang.LanguageModel.LanguageCode == languageCode);
 
             if (language != null) {
-                this.Default = language;
+                Default = language;
             }
             // else - maintain the current default language.
         }
@@ -203,18 +203,18 @@ namespace Potato.Core.Localization {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult Localize(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult Localize(ICommand command, Dictionary<string, ICommandParameter> parameters) {
 
             // <param name="languageCode">The ietf language tag.</param>
             // <param name="namespace">The namespace to limit the search for the name to.</param>
             // <param name="name">The name representing the localized string.</param>
             // <param name="args">Arguments to use in String.Format() for the value obtained by name.</param>
-            String languageCode = parameters["languageCode"].First<String>();
-            String @namespace = parameters["namespace"].First<String>();
-            String name = parameters["name"].First<String>();
-            List<String> args = parameters["args"].All<String>();
+            var languageCode = parameters["languageCode"].First<string>();
+            var @namespace = parameters["namespace"].First<string>();
+            var name = parameters["name"].First<string>();
+            var args = parameters["args"].All<string>();
 
-            return this.Localize(command, languageCode, @namespace, name, args.Select(arg => (Object)arg).ToArray());
+            return Localize(command, languageCode, @namespace, name, args.Select(arg => (object)arg).ToArray());
         }
 
         /// <summary>
@@ -229,18 +229,18 @@ namespace Potato.Core.Localization {
         /// <param name="name">The name representing the localized string.</param>
         /// <param name="args">Arguments to use in String.Format() for the value obtained by name.</param>
         /// <returns></returns>
-        public ICommandResult Localize(ICommand command, String languageCode, String @namespace, String name, Object[] args) {
+        public ICommandResult Localize(ICommand command, string languageCode, string @namespace, string name, object[] args) {
             ICommandResult result = null;
 
-            if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                LanguageConfig language = this.LoadedLanguageFiles.FirstOrDefault(lang => lang.LanguageModel.LanguageCode == languageCode) ?? this.Default;
+            if (command.Origin == CommandOrigin.Local || Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var language = LoadedLanguageFiles.FirstOrDefault(lang => lang.LanguageModel.LanguageCode == languageCode) ?? Default;
 
                 if (language != null) {
                     result = new CommandResult() {
                         Success = true,
                         CommandResultType = CommandResultType.Success,
                         Now = new CommandData() {
-                            Content = new List<String>() {
+                            Content = new List<string>() {
                                 language.Localize(@namespace, name, args)
                             }
                         }
@@ -250,7 +250,7 @@ namespace Potato.Core.Localization {
                     result = new CommandResult() {
                         Success = false,
                         CommandResultType = CommandResultType.DoesNotExists,
-                        Message = String.Format(@"Language with the code ""{0}"" does not exist and no default language specified.", languageCode)
+                        Message = string.Format(@"Language with the code ""{0}"" does not exist and no default language specified.", languageCode)
                     };
                 }
             }
@@ -267,13 +267,13 @@ namespace Potato.Core.Localization {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult SingleParameterLocalize(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            String languageCode = parameters["languageCode"].First<String>();
-            String @namespace = parameters["namespace"].First<String>();
-            String name = parameters["name"].First<String>();
-            String arg = parameters["arg"].First<String>();
+        public ICommandResult SingleParameterLocalize(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var languageCode = parameters["languageCode"].First<string>();
+            var @namespace = parameters["namespace"].First<string>();
+            var name = parameters["name"].First<string>();
+            var arg = parameters["arg"].First<string>();
 
-            return this.Localize(command, languageCode, @namespace, name, new object[] { arg });
+            return Localize(command, languageCode, @namespace, name, new object[] { arg });
         }
 
         /// <summary>
@@ -282,17 +282,17 @@ namespace Potato.Core.Localization {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult ParameterlessLocalize(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult ParameterlessLocalize(ICommand command, Dictionary<string, ICommandParameter> parameters) {
 
             // <param name="languageCode">The ietf language tag.</param>
             // <param name="namespace">The namespace to limit the search for the name to.</param>
             // <param name="name">The name representing the localized string.</param>
             // <param name="args">Arguments to use in String.Format() for the value obtained by name.</param>
-            String languageCode = parameters["languageCode"].First<String>();
-            String @namespace = parameters["namespace"].First<String>();
-            String name = parameters["name"].First<String>();
+            var languageCode = parameters["languageCode"].First<string>();
+            var @namespace = parameters["namespace"].First<string>();
+            var name = parameters["name"].First<string>();
 
-            return this.Localize(command, languageCode, @namespace, name, new object[] { });
+            return Localize(command, languageCode, @namespace, name, new object[] { });
         }
 
         /// <summary>
@@ -300,22 +300,22 @@ namespace Potato.Core.Localization {
         /// </summary>
         /// <param name="languageCode">The language code of the config to find</param>
         /// <returns>The found language config, or default if no match can be found</returns>
-        public LanguageConfig FindOptimalLanguageConfig(String languageCode) {
-            var found = this.LoadedLanguageFiles.Find(config => config.LanguageModel.LanguageCode.ToLowerInvariant() == languageCode.ToLowerInvariant());
+        public LanguageConfig FindOptimalLanguageConfig(string languageCode) {
+            var found = LoadedLanguageFiles.Find(config => config.LanguageModel.LanguageCode.ToLowerInvariant() == languageCode.ToLowerInvariant());
             
             // todo this should be expanded to find "en_us" given "en", "en-us" given "en-gb" and no en-us available.
             // I'd prefer the LanguageModel implemented a method to split the languageCode
             // named them different like "IsoXXLanguageCode" and "IsoXXCountryCode"
 
-            return found ?? this.Default;
+            return found ?? Default;
         }
 
         public override void Dispose() {
 
-            this.UnassignEvents();
+            UnassignEvents();
             
-            this.LoadedLanguageFiles.Clear();
-            this.LoadedLanguageFiles = null;
+            LoadedLanguageFiles.Clear();
+            LoadedLanguageFiles = null;
 
             base.Dispose();
         }

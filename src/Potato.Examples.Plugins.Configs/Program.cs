@@ -27,21 +27,21 @@ namespace Potato.Examples.Plugins.Configs {
         //           Potato uses the GUID to pipe through events/commands.
 
         public Program() : base() {
-            this.CommandDispatchers.Add(
+            CommandDispatchers.Add(
                 new CommandDispatch() {
                     Name = "ThisIsJustACommand",
                     CommandAttributeType = CommandAttributeType.Executed,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "param1",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "param2",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.ThisIsJustACommand
+                    Handler = ThisIsJustACommand
                 }
             );
         }
@@ -52,10 +52,10 @@ namespace Potato.Examples.Plugins.Configs {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected ICommandResult ThisIsJustACommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        protected ICommandResult ThisIsJustACommand(ICommand command, Dictionary<string, ICommandParameter> parameters) {
 // ReSharper disable UnusedVariable
-            String param1 = parameters["param1"].First<String>();
-            String param2 = parameters["param2"].First<String>();
+            var param1 = parameters["param1"].First<string>();
+            var param2 = parameters["param2"].First<string>();
 // ReSharper restore UnusedVariable
 
             return command.Result;
@@ -73,14 +73,14 @@ namespace Potato.Examples.Plugins.Configs {
                 Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
-                            Content = new List<String>() {
+                            Content = new List<string>() {
                                 "Parameter1Value"
                             }
                         }
                     },
                     new CommandParameter() {
                         Data = {
-                            Content = new List<String>() {
+                            Content = new List<string>() {
                                 "Parameter2Value"
                             }
                         }

@@ -43,7 +43,7 @@ namespace Potato.Core.Shared.Serialization {
         public static readonly List<JsonConverter> Converters;
 
         static JsonSerialization() {
-            JsonSerialization.Converters = Net.Shared.Serialization.JsonSerialization.Converters.Union(new List<JsonConverter>() {
+            Converters = Net.Shared.Serialization.JsonSerialization.Converters.Union(new List<JsonConverter>() {
                 new InterfaceJsonConverter<IGenericEvent, GenericEvent>(),
                 new InterfaceJsonConverter<ICommandData, CommandData>(),
                 new InterfaceJsonConverter<ICommandResult, CommandResult>(),
@@ -53,15 +53,15 @@ namespace Potato.Core.Shared.Serialization {
                 new InterfaceJsonConverter<ICommandDispatch, CommandDispatch>()
             }).ToList();
 
-            JsonSerialization.Minimal = Net.Shared.Serialization.JsonSerialization.Minimal;
-            JsonSerialization.Readable = Net.Shared.Serialization.JsonSerialization.Readable;
+            Minimal = Net.Shared.Serialization.JsonSerialization.Minimal;
+            Readable = Net.Shared.Serialization.JsonSerialization.Readable;
 
-            JsonSerialization.Minimal.Converters.Clear();
-            JsonSerialization.Readable.Converters.Clear();
+            Minimal.Converters.Clear();
+            Readable.Converters.Clear();
 
-            JsonSerialization.Converters.ForEach(converter => {
-                JsonSerialization.Minimal.Converters.Add(converter);
-                JsonSerialization.Readable.Converters.Add(converter);
+            Converters.ForEach(converter => {
+                Minimal.Converters.Add(converter);
+                Readable.Converters.Add(converter);
             });
         }
     }

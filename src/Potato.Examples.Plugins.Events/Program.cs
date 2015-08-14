@@ -39,7 +39,7 @@ namespace Potato.Examples.Plugins.Events {
 
             // See Potato.Net.ClientEventType enum for descriptions of each possible event.
             if (e.EventType == ClientEventType.ClientPacketReceived) {
-                IPacket packet = e.Now.Packets.First();
+                var packet = e.Now.Packets.First();
 
                 Console.WriteLine("Program.ClientEvent.ClientPacketReceived: {0} {1} {2} {3}", packet.Origin, packet.Type, packet.RequestId, packet.DebugText);
             }
@@ -53,10 +53,10 @@ namespace Potato.Examples.Plugins.Events {
 
             // See Potato.Net.GameEventType enum for descriptions of each possible event.
             if (e.ProtocolEventType == ProtocolEventType.ProtocolChat) {
-                ChatModel chat = e.Now.Chats.First();
+                var chat = e.Now.Chats.First();
 
-                String text = chat.Now.Content.First();
-                PlayerModel talker = chat.Now.Players.First();
+                var text = chat.Now.Content.First();
+                var talker = chat.Now.Players.First();
 
                 Console.WriteLine("Program.GameEvent.GameChat: {0} said \"{1}\"", talker.Name, text);
             }
@@ -85,7 +85,7 @@ namespace Potato.Examples.Plugins.Events {
 
                 // Log a custom event with Potato whenever this plugin is enabled. You
                 // can log these whenever you want something recorded/transported over the push event
-                this.Bubble(CommandBuilder.EventsLog(new GenericEvent() {
+                Bubble(CommandBuilder.EventsLog(new GenericEvent() {
                     Name = "This is a custom event that will be logged when the plugin is enabled."
                 }));
             }

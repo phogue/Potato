@@ -53,7 +53,7 @@ namespace Potato.Database.Test {
             );
             */
 
-            List<IDatabaseObject> result = driver.Query(new Find().Collection("player").Condition("Name", "Phogue"));
+            var result = driver.Query(new Find().Collection("player").Condition("Name", "Phogue"));
 
             driver.Close();
         }
@@ -81,9 +81,9 @@ namespace Potato.Database.Test {
             );
             */
 
-            CollectionValue result = driver.Query(new Find().Collection("player").Condition("Name", "Phogue").Set("Score", 99)) as CollectionValue;
+            var result = driver.Query(new Find().Collection("player").Condition("Name", "Phogue").Set("Score", 99)) as CollectionValue;
 
-            JArray array = result.ToJArray();
+            var array = result.ToJArray();
 
             foreach (JObject obj in result.ToJArray()) {
                 var x = 0;
@@ -102,11 +102,11 @@ namespace Potato.Database.Test {
 
             driver.Connect();
 
-            CollectionValue result = driver.Query(new Create().Collection("posts").Index("Player", "Name", new Primary())) as CollectionValue;
+            var result = driver.Query(new Create().Collection("posts").Index("Player", "Name", new Primary())) as CollectionValue;
 
-            JArray array = result.ToJArray();
+            var array = result.ToJArray();
 
-            String kkll = array.ToString();
+            var kkll = array.ToString();
 
             foreach (JObject obj in result.ToJArray()) {
                 var x = 0;
@@ -137,9 +137,9 @@ namespace Potato.Database.Test {
             //CollectionValue result = driver.Query(new Create().Collection("Player").Field("Name").Field("Score").Index("player", "Name")) as CollectionValue;
 
 
-            List<IDatabaseObject> result = driver.Query(new Find().Collection("Player").Condition("Score", 100));
+            var result = driver.Query(new Find().Collection("Player").Condition("Score", 100));
 
-            JArray array = ((CollectionValue)result.First()).ToJArray();
+            var array = ((CollectionValue)result.First()).ToJArray();
 
             driver.Close();
         }

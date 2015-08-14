@@ -39,15 +39,15 @@ namespace Potato.Core.Localization {
         /// <summary>
         /// The cached conversions from the JObject to LanguageEntryModel
         /// </summary>
-        public Dictionary<String, List<LanguageEntryModel>> Cached { get; set; }
+        public Dictionary<string, List<LanguageEntryModel>> Cached { get; set; }
 
         /// <summary>
         /// Initializes default values for the language config
         /// </summary>
         public LanguageConfig() {
-            this.LanguageModel = new LanguageModel();
-            this.Config = new Config();
-            this.Cached = new Dictionary<String, List<LanguageEntryModel>>();
+            LanguageModel = new LanguageModel();
+            Config = new Config();
+            Cached = new Dictionary<string, List<LanguageEntryModel>>();
         }
 
         /// <summary>
@@ -55,10 +55,10 @@ namespace Potato.Core.Localization {
         /// Returns a reference back to this config.
         /// </summary>
         public void Load(FileInfo file) {
-            this.Config.Load(file);
+            Config.Load(file);
 
-            if (this.Config.RootOf<LanguageConfig>().First != null) {
-                this.LanguageModel = this.Config.RootOf<LanguageConfig>().First.ToObject<LanguageModel>();
+            if (Config.RootOf<LanguageConfig>().First != null) {
+                LanguageModel = Config.RootOf<LanguageConfig>().First.ToObject<LanguageModel>();
             }
         }
 
@@ -67,10 +67,10 @@ namespace Potato.Core.Localization {
         /// </summary>
         /// <param name="directory"></param>
         public void Load(DirectoryInfo directory) {
-            this.Config.Load(directory);
+            Config.Load(directory);
 
-            if (this.Config.RootOf<LanguageConfig>().First != null) {
-                this.LanguageModel = this.Config.RootOf<LanguageConfig>().First.ToObject<LanguageModel>();
+            if (Config.RootOf<LanguageConfig>().First != null) {
+                LanguageModel = Config.RootOf<LanguageConfig>().First.ToObject<LanguageModel>();
             }
         }
 
@@ -81,26 +81,26 @@ namespace Potato.Core.Localization {
         /// <param name="namespace">The namespace to limit the search for the name to.</param>
         /// <param name="name">The name representing the localized string.</param>
         /// <param name="args">Arguments to use in String.Format() for the value obtained by name.</param>
-        public String Localize(String @namespace, String name, params Object[] args) {
-            String result = String.Empty;
+        public string Localize(string @namespace, string name, params object[] args) {
+            var result = string.Empty;
 
-            if (this.Cached.ContainsKey(@namespace) == false) {
-                this.Cached.Add(@namespace, this.Config.RootOf(@namespace).Select(item => item.ToObject<LanguageEntryModel>()).ToList());
+            if (Cached.ContainsKey(@namespace) == false) {
+                Cached.Add(@namespace, Config.RootOf(@namespace).Select(item => item.ToObject<LanguageEntryModel>()).ToList());
             }
 
-            var loc = this.Cached[@namespace].FirstOrDefault(item => item.Name == name);
+            var loc = Cached[@namespace].FirstOrDefault(item => item.Name == name);
 
 
             // Attempt to format name.
             if (loc != null) {
                 try {
-                    result = String.Format(loc.Text, args);
+                    result = string.Format(loc.Text, args);
                 }
                 catch (Exception) {
                     // We don't want to output general errors to a user, but we need to make a clear
                     // "There isn't something here, but you should probably think there is".
                     // It's a step up from our old Potato 1.X method that would have an error in place.
-                    result = String.Empty;
+                    result = string.Empty;
                 }
             }
 

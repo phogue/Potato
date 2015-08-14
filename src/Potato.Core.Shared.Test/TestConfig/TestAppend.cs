@@ -26,13 +26,13 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestAppendedToRoot() {
-            IConfig config = new Config().Create<MockSimpleConcrete>();
+            var config = new Config().Create<MockSimpleConcrete>();
             config.Append(new MockSimpleConcrete() {
                 Name = "Phogue",
                 Age = 100
             });
 
-            Assert.AreEqual("Phogue", config.Root.First["Name"].Value<String>());
+            Assert.AreEqual("Phogue", config.Root.First["Name"].Value<string>());
             Assert.AreEqual(100, config.Root.First["Age"].Value<int>());
         }
 

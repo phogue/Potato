@@ -23,8 +23,8 @@ namespace Potato.Tools.NetworkConsole.Controls {
     // No flicker ListView.
     public class ListViewNF : System.Windows.Forms.ListView {
         public ListViewNF() {
-            this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
-            this.SetStyle(ControlStyles.EnableNotifyMessage, true);
+            SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
+            SetStyle(ControlStyles.EnableNotifyMessage, true);
         }
 
         protected override void OnNotifyMessage(Message m) {

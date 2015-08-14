@@ -49,16 +49,16 @@ namespace Potato.Net.Shared.Models {
         /// <param name="game">The game to load this config into</param>
         public virtual void Parse(IProtocol game) {
             game.State.MapPool = new ConcurrentDictionary<string, MapModel>();
-            (this.MapPool ?? new List<MapModel>()).ForEach(map => game.State.MapPool.TryAdd(map.GameMode.Name + "/" + map.Name, map));
+            (MapPool ?? new List<MapModel>()).ForEach(map => game.State.MapPool.TryAdd(map.GameMode.Name + "/" + map.Name, map));
 
             game.State.GameModePool = new ConcurrentDictionary<string, GameModeModel>();
-            (this.GameModes ?? new List<GameModeModel>()).ForEach(gameMode => game.State.GameModePool.TryAdd(gameMode.Name, gameMode));
+            (GameModes ?? new List<GameModeModel>()).ForEach(gameMode => game.State.GameModePool.TryAdd(gameMode.Name, gameMode));
 
             game.State.Groups = new ConcurrentDictionary<string, GroupModel>();
-            (this.Groups ?? new List<GroupModel>()).ForEach(group => game.State.Groups.TryAdd(group.Type + "/" + group.Uid, group));
+            (Groups ?? new List<GroupModel>()).ForEach(group => game.State.Groups.TryAdd(group.Type + "/" + group.Uid, group));
 
             game.State.Items = new ConcurrentDictionary<string, ItemModel>();
-            (this.Items ?? new List<ItemModel>()).ForEach(item => game.State.Items.TryAdd(item.Name, item));
+            (Items ?? new List<ItemModel>()).ForEach(item => game.State.Items.TryAdd(item.Name, item));
         }
     }
 }

@@ -38,7 +38,7 @@ namespace Potato.Config {
                 arguments = ArgumentHelper.ScrubAlphaNumericKeys(arguments);
 
                 // Create a service to at least handle output to the console for signals.
-                ServiceController service = new ServiceController {
+                var service = new ServiceController {
                     Settings = {
                         // Force no update checks. We're just here to configure.
                         ServiceUpdateCore = false
@@ -59,7 +59,7 @@ namespace Potato.Config {
                             Console.WriteLine(@"{0}: {1}", item.Key, item.Value);
                         }
                     },
-                    Arguments = new List<String>(args)
+                    Arguments = new List<string>(args)
                 };
 
                 // See if we can process the command without loading up the Potato instance (e.g certificate generaton)

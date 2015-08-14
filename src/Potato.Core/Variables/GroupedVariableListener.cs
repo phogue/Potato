@@ -32,12 +32,12 @@ namespace Potato.Core.Variables {
         /// <summary>
         /// The name of the variable to fetch a list of groups names
         /// </summary>
-        public String GroupsVariableName { get; set; }
+        public string GroupsVariableName { get; set; }
 
         /// <summary>
         /// The variable names within the group to listen to.
         /// </summary>
-        public List<String> ListeningVariablesNames { get; set; }
+        public List<string> ListeningVariablesNames { get; set; }
 
         /// <summary>
         /// List of variables we have assigned event handlers to. Allows us to cleanup properly
@@ -50,18 +50,18 @@ namespace Potato.Core.Variables {
         /// Lock used whenever a property is altered on any listening variable, just to avoid
         /// unassigning events when multiple events are fired simultaneously.
         /// </summary>
-        protected readonly Object ListeningVariablePropertyChangedLock = new Object();
+        protected readonly object ListeningVariablePropertyChangedLock = new object();
 
         /// <summary>
         /// One of the variables has been modified
         /// </summary>
-        public event Action<GroupedVariableListener, List<String>> VariablesModified; 
+        public event Action<GroupedVariableListener, List<string>> VariablesModified; 
 
         /// <summary>
         /// Initializes with default attributes
         /// </summary>
         public GroupedVariableListener() : base() {
-            this.ListeningVariables = new List<VariableModel>();
+            ListeningVariables = new List<VariableModel>();
         }
 
         /// <summary>
@@ -70,18 +70,18 @@ namespace Potato.Core.Variables {
         /// <remarks>This will also setup the empty namespace group.</remarks>
         public void AssignEvents() {
             // Remove all current handlers, also clears the list in this.ListeningVariables
-            this.UnassignEvents();
+            UnassignEvents();
 
             // Populate the list of variables we're listening to events on.
-            this.ListeningVariables.Add(this.Variables.Variable(this.GroupsVariableName));
-            foreach (String groupName in this.GetGroupedNames()) {
-                foreach (String listeningVariable in this.ListeningVariablesNames) {
-                    this.ListeningVariables.Add(this.Variables.Variable(VariableModel.NamespaceVariableName(groupName, listeningVariable)));
+            ListeningVariables.Add(Variables.Variable(GroupsVariableName));
+            foreach (var groupName in GetGroupedNames()) {
+                foreach (var listeningVariable in ListeningVariablesNames) {
+                    ListeningVariables.Add(Variables.Variable(VariableModel.NamespaceVariableName(groupName, listeningVariable)));
                 }
             }
 
             // Now assign all of the event handlers.
-            foreach (VariableModel variable in this.ListeningVariables) {
+            foreach (var variable in ListeningVariables) {
                 variable.PropertyChanged += new PropertyChangedEventHandler(EventsPushConfigGroups_PropertyChanged);
             }
         }
@@ -90,11 +90,11 @@ namespace Potato.Core.Variables {
         /// Removes all current event handlers.
         /// </summary>
         public void UnassignEvents() {
-            foreach (VariableModel variable in this.ListeningVariables) {
+            foreach (var variable in ListeningVariables) {
                 variable.PropertyChanged -= new PropertyChangedEventHandler(EventsPushConfigGroups_PropertyChanged);
             }
 
-            this.ListeningVariables.Clear();
+            ListeningVariables.Clear();
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Potato.Core.Variables {
         /// event to set themselves up.
         /// </summary>
         public void Execute() {
-            this.OnOpenGroupedControllerList(this.GetGroupedNames());
+            OnOpenGroupedControllerList(GetGroupedNames());
         }
 
         /// <summary>
@@ -111,10 +111,10 @@ namespace Potato.Core.Variables {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void EventsPushConfigGroups_PropertyChanged(object sender, PropertyChangedEventArgs e) {
-            lock (this.ListeningVariablePropertyChangedLock) {
-                this.OnOpenGroupedControllerList(this.GetGroupedNames());
+            lock (ListeningVariablePropertyChangedLock) {
+                OnOpenGroupedControllerList(GetGroupedNames());
 
-                this.AssignEvents();
+                AssignEvents();
             }
         }
 
@@ -122,11 +122,11 @@ namespace Potato.Core.Variables {
         /// Fetches a list of group names.
         /// </summary>
         /// <returns></returns>
-        protected virtual List<String> GetGroupedNames() {
-            List<String> groupNames = this.Variables.Variable(this.GroupsVariableName).ToList<String>();
+        protected virtual List<string> GetGroupedNames() {
+            var groupNames = Variables.Variable(GroupsVariableName).ToList<string>();
 
             // Add an empty key so no namespace is used.
-            groupNames.Add(String.Empty);
+            groupNames.Add(string.Empty);
 
             return groupNames;
         }
@@ -135,8 +135,8 @@ namespace Potato.Core.Variables {
         /// Opens all of the groups.
         /// </summary>
         /// <param name="groupNames"></param>
-        protected void OnOpenGroupedControllerList(List<String> groupNames) {
-            var handler = this.VariablesModified;
+        protected void OnOpenGroupedControllerList(List<string> groupNames) {
+            var handler = VariablesModified;
             if (handler != null) {
                 handler(this, groupNames);
             }

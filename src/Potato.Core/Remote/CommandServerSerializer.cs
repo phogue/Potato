@@ -39,7 +39,7 @@ namespace Potato.Core.Remote {
             ICommand command = null;
 
             try {
-                if (String.IsNullOrEmpty(request.Content)) {
+                if (string.IsNullOrEmpty(request.Content)) {
                     command = new Command() {
                         Name = request.Request.LocalPath
                     };
@@ -51,8 +51,8 @@ namespace Potato.Core.Remote {
                 if (command != null) {
                     command.Origin = CommandOrigin.Remote;
 
-                    HttpCommandRequest commandRequest = new HttpCommandRequest() {
-                        Content = new List<String>() {
+                    var commandRequest = new HttpCommandRequest() {
+                        Content = new List<string>() {
                             request.Header,
                             request.Content
                         },
@@ -86,11 +86,11 @@ namespace Potato.Core.Remote {
         /// <param name="command">The command that has been dispatched for execution</param>
         /// <param name="request"></param>
         /// <returns></returns>
-        public static String ResponseContentType(ICommand command, CommandServerPacket request) {
-            String contentType = command.Result != null ? command.Result.ContentType : null;
+        public static string ResponseContentType(ICommand command, CommandServerPacket request) {
+            var contentType = command.Result != null ? command.Result.ContentType : null;
             
             // If no response type was specified elsewhere
-            if (String.IsNullOrEmpty(contentType) == true) {
+            if (string.IsNullOrEmpty(contentType) == true) {
                 // Then assume they want whatever data serialized and returned in whatever the request format was.
                 contentType = command.Request.Tags.ContainsKey(HttpRequestHeader.ContentType.ToString()) == true ? command.Request.Tags[HttpRequestHeader.ContentType.ToString()].ToLower() : Mime.DefaultMimeTypeGivenMethod(request.Method);
             }
@@ -105,7 +105,7 @@ namespace Potato.Core.Remote {
         /// <param name="response">The existing response packet to be modified with additional data/changes</param>
         /// <param name="result">The result of the command issued in the request</param>
         /// <returns>The existing response packet, modified with the result of the command execution.</returns>
-        public static CommandServerPacket CompleteResponsePacket(String contentType, CommandServerPacket response, ICommandResult result) {
+        public static CommandServerPacket CompleteResponsePacket(string contentType, CommandServerPacket response, ICommandResult result) {
             switch (contentType) {
                 case Mime.ApplicationJavascript:
                 case Mime.TextCss:
@@ -117,7 +117,7 @@ namespace Potato.Core.Remote {
                 default:
                     response.Headers.Add(HttpResponseHeader.ContentType, Mime.ApplicationJson);
 
-                    using (StringWriter writer = new StringWriter()) {
+                    using (var writer = new StringWriter()) {
                         Core.Shared.Serialization.JsonSerialization.Minimal.Serialize(writer, result);
 
                         response.Content = writer.ToString();

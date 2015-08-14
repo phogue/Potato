@@ -28,27 +28,27 @@ namespace Potato.Net.Shared.Protocols.PunkBuster.Packets {
         /// <summary>
         /// The players IP
         /// </summary>
-        public String Ip { get; set; }
+        public string Ip { get; set; }
 
         /// <summary>
         /// The players name
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The players PunkBuster Guid
         /// </summary>
-        public String Guid { get; set; }
+        public string Guid { get; set; }
 
         /// <summary>
         /// Deserialize a regular expression match object into the the object.
         /// </summary>
         /// <param name="data"></param>
         public void Deserialize(Match data) {
-            this.SlotId = uint.Parse(data.Groups["SlotId"].Value);
-            this.Ip = data.Groups["Ip"].Value;
-            this.Name = data.Groups["Name"].Value;
-            this.Guid = data.Groups["Guid"].Value;
+            SlotId = uint.Parse(data.Groups["SlotId"].Value);
+            Ip = data.Groups["Ip"].Value;
+            Name = data.Groups["Name"].Value;
+            Guid = data.Groups["Guid"].Value;
         }
     }
 }

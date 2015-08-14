@@ -25,34 +25,34 @@ namespace Potato.Net.Shared {
         /// <summary>
         /// The name of the author or organization that provides this protocol implementation
         /// </summary>
-        public String Provider { get; set; }
+        public string Provider { get; set; }
 
         /// <summary>
         /// The short key for this game type.
         /// </summary>
-        public String Type { get; set; }
+        public string Type { get; set; }
 
         /// <summary>
         /// The friendly name of the game.
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
         
         /// <summary>
         /// Initalizes the protocol type with empty values.
         /// </summary>
         public ProtocolType() {
-            this.Provider = String.Empty;
-            this.Type = String.Empty;
-            this.Name = String.Empty;
+            Provider = string.Empty;
+            Type = string.Empty;
+            Name = string.Empty;
         }
 
         /// <summary>
         /// Initializes the protocol type from another type
         /// </summary>
         public ProtocolType(IProtocolType from) {
-            this.Provider = from.Provider;
-            this.Type = from.Type;
-            this.Name = from.Name;
+            Provider = from.Provider;
+            Type = from.Type;
+            Name = from.Name;
         }
     }
 }

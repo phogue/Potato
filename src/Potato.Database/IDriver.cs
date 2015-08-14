@@ -26,7 +26,7 @@ namespace Potato.Database {
         /// <summary>
         /// The name of this driver.
         /// </summary>
-        String Name { get; }
+        string Name { get; }
 
         /// <summary>
         /// The settings used to connect & authenticate with the database

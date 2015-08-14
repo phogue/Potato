@@ -38,25 +38,25 @@ namespace Potato.Examples.Plugins.Database {
         //           Potato uses the GUID to pipe through events/commands.
 
         public Program() : base() {
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     Name = "SaveOneUser",
                     CommandAttributeType = CommandAttributeType.Handler,
-                    Handler = this.SaveOneUser
+                    Handler = SaveOneUser
                 },
                 new CommandDispatch() {
                     Name = "FindOneUser",
                     CommandAttributeType = CommandAttributeType.Handler,
-                    Handler = this.FindOneUser
+                    Handler = FindOneUser
                 }
             });
         }
 
-        protected ICommandResult SaveOneUser(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        protected ICommandResult SaveOneUser(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             command.Result.CommandResultType = CommandResultType.Success;
             command.Result.Success = true;
 
-            this.Bubble(
+            Bubble(
                 CommandBuilder.DatabaseQuery(
                     new UserModel() {
                         Name = "Phogue",
@@ -76,9 +76,9 @@ namespace Potato.Examples.Plugins.Database {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected ICommandResult FindOneUser(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        protected ICommandResult FindOneUser(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             // Grab the first result from the table.
-            ICommandResult fetchResult = this.Bubble(
+            var fetchResult = Bubble(
                 CommandBuilder.DatabaseQuery(
                     new Find()
                     .Collection("Potato_Example_Database_Users")
@@ -86,7 +86,7 @@ namespace Potato.Examples.Plugins.Database {
                 )
             );
 
-            UserModel model = UserModel.FirstFromQuery(fetchResult.Now.Queries.FirstOrDefault());
+            var model = UserModel.FirstFromQuery(fetchResult.Now.Queries.FirstOrDefault());
 
             if (model != null) {
                 command.Result.CommandResultType = CommandResultType.Success;

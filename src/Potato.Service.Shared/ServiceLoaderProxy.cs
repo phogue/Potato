@@ -36,8 +36,8 @@ namespace Potato.Service.Shared {
         /// Creates the Potato instance in the Potato instance appdomain
         /// </summary>
         public void Create() {
-            this.Service = (IService)Activator.CreateInstanceFrom(
-                Defines.SearchPaths(Defines.PotatoCoreDll, new List<String> {
+            Service = (IService)Activator.CreateInstanceFrom(
+                Defines.SearchPaths(Defines.PotatoCoreDll, new List<string> {
                     Defines.BaseDirectory.FullName,
                     Defines.PackageMyrconPotatoCoreLibNet40.FullName,
                     Defines.PackageMyrconPotatoSharedLibNet40.FullName
@@ -53,26 +53,26 @@ namespace Potato.Service.Shared {
         }
 
         public void Start() {
-            if (this.Service != null) this.Service.Start();
+            if (Service != null) Service.Start();
         }
 
         public void WriteConfig() {
-            if (this.Service != null) this.Service.WriteConfig();
+            if (Service != null) Service.WriteConfig();
         }
 
         public void Dispose() {
-            if (this.Service != null) this.Service.Dispose();
+            if (Service != null) Service.Dispose();
         }
 
         public void ParseCommandLineArguments(List<string> arguments) {
-            if (this.Service != null) this.Service.ParseCommandLineArguments(arguments);
+            if (Service != null) Service.ParseCommandLineArguments(arguments);
         }
 
         public ServiceMessage PollService() {
             ServiceMessage message = null;
 
-            if (this.Service != null) {
-                var polled = this.Service.PollService();
+            if (Service != null) {
+                var polled = Service.PollService();
 
                 // Clone the message so we have no proxy to the other side.
                 message = new ServiceMessage() {
@@ -88,8 +88,8 @@ namespace Potato.Service.Shared {
         public ServiceMessage ExecuteMessage(ServiceMessage message) {
             ServiceMessage result = null;
 
-            if (this.Service != null) {
-                var polled = this.Service.ExecuteMessage(message);
+            if (Service != null) {
+                var polled = Service.ExecuteMessage(message);
 
                 // Clone the message so we have no proxy to the other side.
                 result = new ServiceMessage() {

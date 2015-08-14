@@ -25,7 +25,7 @@ namespace Potato.Net.Shared.Test.TestStatistics {
     public class TestPlayers {
         [Test]
         public void TestSinglePropertyOutlierDataAttachedToPlayer() {
-            ConcurrentDictionary<String, PlayerModel> samples = new ConcurrentDictionary<String, PlayerModel>();
+            var samples = new ConcurrentDictionary<string, PlayerModel>();
             samples.TryAdd("1", new PlayerModel() {
                 Uid = "1",
                 Kills = 2
@@ -70,7 +70,7 @@ namespace Potato.Net.Shared.Test.TestStatistics {
 
         [Test]
         public void TestAllPropertiesOutlierDataAttachedToPlayer() {
-            ConcurrentDictionary<String, PlayerModel> samples = new ConcurrentDictionary<String, PlayerModel>();
+            var samples = new ConcurrentDictionary<string, PlayerModel>();
             samples.TryAdd("1", new PlayerModel() {
                 Uid = "1",
                 Kills = 2

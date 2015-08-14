@@ -25,8 +25,8 @@ namespace Potato.Net.Shared.Serialization {
         /// <summary>
         /// Serializes and returns a string from a JsonSerializer class
         /// </summary>
-        public static String Serialize(this JsonSerializer serializer, Object value) {
-            String data = "";
+        public static string Serialize(this JsonSerializer serializer, object value) {
+            var data = "";
 
             using (var writer = new StringWriter()) {
                 serializer.Serialize(writer, value);
@@ -39,8 +39,8 @@ namespace Potato.Net.Shared.Serialization {
         /// <summary>
         /// Deserializes from a string on a JsonSerializer class and returns the new object.
         /// </summary>
-        public static T Deserialize<T>(this JsonSerializer serializer, String data) {
-            T value = default(T);
+        public static T Deserialize<T>(this JsonSerializer serializer, string data) {
+            var value = default(T);
 
             using (var text = new StringReader(data)) {
                 using (var reader = new JsonTextReader(text)) {

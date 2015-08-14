@@ -30,18 +30,18 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
         /// </summary>
         [SetUp]
         public void CleanPackagesDirectory() {
-            this.TestGetProtocolAssembliesDirectory.Refresh();
+            TestGetProtocolAssembliesDirectory.Refresh();
 
-            if (this.TestGetProtocolAssembliesDirectory.Exists) {
-                this.TestGetProtocolAssembliesDirectory.Delete(true);
+            if (TestGetProtocolAssembliesDirectory.Exists) {
+                TestGetProtocolAssembliesDirectory.Delete(true);
             }
 
-            this.TestGetProtocolAssembliesDirectory.Create();
+            TestGetProtocolAssembliesDirectory.Create();
         }
 
         [TearDown]
         public void TearDownCleanPackagesDirectory() {
-            this.CleanPackagesDirectory();
+            CleanPackagesDirectory();
         }
 
         /// <summary>
@@ -49,13 +49,13 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
         /// </summary>
         [Test]
         public void TestAllProtocolAssembliesFilesFoundInPackageRoot() {
-            var dll = new FileInfo(Path.Combine(this.TestGetProtocolAssembliesDirectory.FullName, "Something.Protocols.Something", "Something.Protocols.Something.dll"));
+            var dll = new FileInfo(Path.Combine(TestGetProtocolAssembliesDirectory.FullName, "Something.Protocols.Something", "Something.Protocols.Something.dll"));
             if (dll.Directory != null) dll.Directory.Create();
 
             File.WriteAllText(dll.FullName, @"binary");
 
             var protocols = new ProtocolController() {
-                PackagesDirectory = this.TestGetProtocolAssembliesDirectory
+                PackagesDirectory = TestGetProtocolAssembliesDirectory
             };
 
             var files = protocols.GetProtocolAssemblies();
@@ -69,15 +69,15 @@ namespace Potato.Core.Test.Protocols.TestProtocolController {
         /// </summary>
         [Test]
         public void TestNonProtocolAssemblyNotDiscovered() {
-            var dll = new FileInfo(Path.Combine(this.TestGetProtocolAssembliesDirectory.FullName, "Something.Protocols.Something", "Something.Protocols.Something.dll"));
-            var json = new FileInfo(Path.Combine(this.TestGetProtocolAssembliesDirectory.FullName, "Something.Protocols.Something", "Something.Protocols.Something.json"));
+            var dll = new FileInfo(Path.Combine(TestGetProtocolAssembliesDirectory.FullName, "Something.Protocols.Something", "Something.Protocols.Something.dll"));
+            var json = new FileInfo(Path.Combine(TestGetProtocolAssembliesDirectory.FullName, "Something.Protocols.Something", "Something.Protocols.Something.json"));
             if (dll.Directory != null) dll.Directory.Create();
 
             File.WriteAllText(dll.FullName, @"binary");
             File.WriteAllText(json.FullName, @"{ }");
 
             var protocols = new ProtocolController() {
-                PackagesDirectory = this.TestGetProtocolAssembliesDirectory
+                PackagesDirectory = TestGetProtocolAssembliesDirectory
             };
 
             var files = protocols.GetProtocolAssemblies();

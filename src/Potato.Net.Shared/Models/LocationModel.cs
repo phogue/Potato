@@ -34,20 +34,20 @@ namespace Potato.Net.Shared.Models {
         /// <summary>
         /// The english country name
         /// </summary>
-        public String CountryName { get; set; }
+        public string CountryName { get; set; }
 
         /// <summary>
         /// ISO 3166-1 Alpha-2 country code
         /// http://en.wikipedia.org/wiki/ISO_3166-1
         /// </summary>
-        public String CountryCode { get; set; }
+        public string CountryCode { get; set; }
 
         /// <summary>
         /// Initializes with the default values
         /// </summary>
         public Location() {
-            this.CountryName = String.Empty;
-            this.CountryCode = String.Empty;
+            CountryName = string.Empty;
+            CountryCode = string.Empty;
         }
     }
 }

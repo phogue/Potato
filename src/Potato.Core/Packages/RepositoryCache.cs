@@ -38,21 +38,21 @@ namespace Potato.Core.Packages {
         /// <summary>
         /// A dictionary of source repositories from the list of repositories. Used as a cache.
         /// </summary>
-        public ConcurrentDictionary<String, IPackageRepository> SourceRepositories { get; set; } 
+        public ConcurrentDictionary<string, IPackageRepository> SourceRepositories { get; set; } 
 
         /// <summary>
         /// Initializes the repository cache with the default values.
         /// </summary>
         public RepositoryCache() {
-            this.PackageOrphanage = new RepositoryModel() {
+            PackageOrphanage = new RepositoryModel() {
                 IsOrphanage = true
             };
 
-            this.Repositories = new ConcurrentBag<RepositoryModel>() {
-                this.PackageOrphanage
+            Repositories = new ConcurrentBag<RepositoryModel>() {
+                PackageOrphanage
             };
 
-            this.SourceRepositories = new ConcurrentDictionary<String, IPackageRepository>();
+            SourceRepositories = new ConcurrentDictionary<string, IPackageRepository>();
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Potato.Core.Packages {
         /// </summary>
         /// <returns>True if we can rebuild the cache, false if we should hold off.</returns>
         public bool IsCacheBuildable() {
-            return this.RebuiltTime.HasValue == false || DateTime.Now.AddSeconds(-20) > this.RebuiltTime;
+            return RebuiltTime.HasValue == false || DateTime.Now.AddSeconds(-20) > RebuiltTime;
         }
 
         /// <summary>
@@ -69,23 +69,23 @@ namespace Potato.Core.Packages {
         /// </summary>
         /// <param name="uri">The uri to search for a cached package repository</param>
         /// <returns>The cached or newly cached repository</returns>
-        public IPackageRepository GetCachedSourceRepository(String uri) {
+        public IPackageRepository GetCachedSourceRepository(string uri) {
             IPackageRepository repository = null;
             
-            if (this.SourceRepositories.TryGetValue(uri, out repository) == false) {
+            if (SourceRepositories.TryGetValue(uri, out repository) == false) {
                 repository = PackageRepositoryFactory.Default.CreateRepository(uri);
 
-                this.SourceRepositories.TryAdd(uri, repository);
+                SourceRepositories.TryAdd(uri, repository);
             }
 
             return repository;
         }
 
-        public void Add(String uri) {
+        public void Add(string uri) {
             var sluggedUri = uri.Slug();
 
-            if (this.Repositories.Any(repository => repository.Slug == sluggedUri) == false) {
-                this.Repositories.Add(new RepositoryModel() {
+            if (Repositories.Any(repository => repository.Slug == sluggedUri) == false) {
+                Repositories.Add(new RepositoryModel() {
                     Name = uri,
                     Uri = uri,
                     Slug = sluggedUri
@@ -94,14 +94,14 @@ namespace Potato.Core.Packages {
         }
 
         public void Build(IPackageRepository localRepository) {
-            if (this.IsCacheBuildable() == true) {
-                foreach (RepositoryModel repository in this.Repositories.Where(repository => String.IsNullOrEmpty(repository.Uri) == false)) {
+            if (IsCacheBuildable() == true) {
+                foreach (var repository in Repositories.Where(repository => string.IsNullOrEmpty(repository.Uri) == false)) {
                     var cache = new List<PackageWrapperModel>();
 
                     repository.CacheStamp = DateTime.Now;
 
                     try {
-                        var query = this.GetCachedSourceRepository(repository.Uri).GetPackages().Where(package => package.IsLatestVersion == true);
+                        var query = GetCachedSourceRepository(repository.Uri).GetPackages().Where(package => package.IsLatestVersion == true);
 
                         Defines.PackageRequiredTags.ForEach(tag => query = query.Where(package => package.Tags != null && package.Tags.Contains(tag)));
 
@@ -133,28 +133,28 @@ namespace Potato.Core.Packages {
                 }
 
                 // A list of package id's that we know the source of
-                IEnumerable<String> availablePackageIds = this.Repositories.SelectMany(repository => repository.Packages).Select(packageWrapper => packageWrapper.Id);
+                var availablePackageIds = Repositories.SelectMany(repository => repository.Packages).Select(packageWrapper => packageWrapper.Id);
 
                 // Now orphan all remaining packages that are installed but do not belong to any repository.
                 new OrphanedCacheBuilder() {
-                    Cache = this.Repositories.First(repository => repository.IsOrphanage == true).Packages,
+                    Cache = Repositories.First(repository => repository.IsOrphanage == true).Packages,
                     Source = localRepository
                         .GetPackages()
                         .Where(package => availablePackageIds.Contains(package.Id) == false)
                         .ToList()
                 }.Build();
 
-                this.RebuiltTime = DateTime.Now;
+                RebuiltTime = DateTime.Now;
             }
         }
 
         public void Clear() {
-            while (this.Repositories.IsEmpty == false) {
+            while (Repositories.IsEmpty == false) {
                 RepositoryModel result;
-                this.Repositories.TryTake(out result);
+                Repositories.TryTake(out result);
             }
 
-            this.Repositories.Add(this.PackageOrphanage);
+            Repositories.Add(PackageOrphanage);
         }
     }
 }

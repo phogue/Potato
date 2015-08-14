@@ -35,7 +35,7 @@ namespace Potato.Net.Protocols.CommandServer {
         /// <summary>
         /// A list of active clients with open connections
         /// </summary>
-        protected ConcurrentDictionary<String, CommandServerClient> Clients { get; set; }
+        protected ConcurrentDictionary<string, CommandServerClient> Clients { get; set; }
 
         /// <summary>
         /// The listener 
@@ -45,7 +45,7 @@ namespace Potato.Net.Protocols.CommandServer {
         /// <summary>
         /// Lock used during shutdown
         /// </summary>
-        protected readonly Object ShutdownLock = new Object();
+        protected readonly object ShutdownLock = new object();
 
         /// <summary>
         /// The loaded CommandServer.pfx certificate to encrypt incoming stream
@@ -71,31 +71,31 @@ namespace Potato.Net.Protocols.CommandServer {
         /// Initializes the command server with the default values
         /// </summary>
         public CommandServerListener() {
-            this.Clients = new ConcurrentDictionary<String, CommandServerClient>();
+            Clients = new ConcurrentDictionary<string, CommandServerClient>();
         }
 
         /// <summary>
         /// Creates and starts listening for tcp clients on the specified port.
         /// </summary>
         public bool BeginListener() {
-            bool started = false;
+            var started = false;
 
             try {
-                if (this.Clients == null) {
-                    this.Clients = new ConcurrentDictionary<String, CommandServerClient>();
+                if (Clients == null) {
+                    Clients = new ConcurrentDictionary<string, CommandServerClient>();
                 }
 
-                this.Listener = new TcpListener(IPAddress.Any, this.Port);
-                this.Listener.Start();
+                Listener = new TcpListener(IPAddress.Any, Port);
+                Listener.Start();
                 
                 // Accept the connection.
-                this.Listener.BeginAcceptTcpClient(new AsyncCallback(CommandServerListener.AcceptTcpClientCallback), this);
+                Listener.BeginAcceptTcpClient(new AsyncCallback(AcceptTcpClientCallback), this);
 
                 started = true;
             }
             catch (Exception e) {
-                this.Shutdown();
-                this.OnBeginException(e);
+                Shutdown();
+                OnBeginException(e);
             }
 
             return started;
@@ -107,12 +107,12 @@ namespace Potato.Net.Protocols.CommandServer {
         private static void AcceptTcpClientCallback(IAsyncResult ar) {
 
             // Get the listener that handles the client request.
-            CommandServerListener commandServerListener = (CommandServerListener)ar.AsyncState;
+            var commandServerListener = (CommandServerListener)ar.AsyncState;
 
             if (commandServerListener.Listener != null) {
                 try {
                     // End the operation and display the received data on the console.
-                    CommandServerClient client = new CommandServerClient(commandServerListener.Listener.EndAcceptTcpClient(ar), commandServerListener.Certificate);
+                    var client = new CommandServerClient(commandServerListener.Listener.EndAcceptTcpClient(ar), commandServerListener.Certificate);
                     
                     commandServerListener.Clients.TryAdd(client.RemoteEndPoint.ToString(), client);
 
@@ -146,7 +146,7 @@ namespace Potato.Net.Protocols.CommandServer {
             response.ProtocolVersion = request.ProtocolVersion;
 
             if (request.Headers[HttpRequestHeader.AcceptEncoding] != null) {
-                String acceptEncoding = request.Headers[HttpRequestHeader.AcceptEncoding].ToLowerInvariant();
+                var acceptEncoding = request.Headers[HttpRequestHeader.AcceptEncoding].ToLowerInvariant();
 
                 if (acceptEncoding.Contains("gzip") == true) {
                     response.Headers[HttpResponseHeader.ContentEncoding] = "gzip";
@@ -163,8 +163,8 @@ namespace Potato.Net.Protocols.CommandServer {
         /// Copy the list of clients, then run through poking them to ensure they are still alive.
         /// </summary>
         public void Poke() {
-            if (this.Clients != null) {
-                List<CommandServerClient> poked = new List<CommandServerClient>(this.Clients.Values);
+            if (Clients != null) {
+                var poked = new List<CommandServerClient>(Clients.Values);
 
                 poked.ForEach(client => client.Poke());
             }
@@ -172,7 +172,7 @@ namespace Potato.Net.Protocols.CommandServer {
 
         private void ClientPacketReceived(IClient sender, IPacketWrapper packet) {
             // Bubble the packet for processing.
-            this.OnPacketReceived(sender, packet as CommandServerPacket);
+            OnPacketReceived(sender, packet as CommandServerPacket);
         }
 
         /// <summary>
@@ -182,11 +182,11 @@ namespace Potato.Net.Protocols.CommandServer {
         /// <param name="newState"></param>
         protected void ClientConnectionStateChanged(IClient sender, ConnectionState newState) {
             if (newState == ConnectionState.ConnectionDisconnected) {
-                sender.PacketReceived -= this.ClientPacketReceived;
-                sender.ConnectionStateChanged -= this.ClientConnectionStateChanged;
+                sender.PacketReceived -= ClientPacketReceived;
+                sender.ConnectionStateChanged -= ClientConnectionStateChanged;
 
                 CommandServerClient removed = null;
-                this.Clients.TryRemove(((CommandServerClient)sender).RemoteEndPoint.ToString(), out removed);
+                Clients.TryRemove(((CommandServerClient)sender).RemoteEndPoint.ToString(), out removed);
             }
         }
 
@@ -218,37 +218,37 @@ namespace Potato.Net.Protocols.CommandServer {
         /// Shuts down the current instance
         /// </summary>
         public void Shutdown() {
-            lock (this.ShutdownLock) {
+            lock (ShutdownLock) {
                 // Stop listening or new connections
-                if (this.Listener != null) {
-                    this.Listener.Stop();
-                    this.Listener = null;
+                if (Listener != null) {
+                    Listener.Stop();
+                    Listener = null;
                 }
 
                 // Disconnect all existing connections
-                if (this.Clients != null) {
-                    foreach (var client in this.Clients) {
+                if (Clients != null) {
+                    foreach (var client in Clients) {
                         client.Value.Shutdown();
-                        client.Value.PacketReceived -= this.ClientPacketReceived;
-                        client.Value.ConnectionStateChanged -= this.ClientConnectionStateChanged;
+                        client.Value.PacketReceived -= ClientPacketReceived;
+                        client.Value.ConnectionStateChanged -= ClientConnectionStateChanged;
                     }
 
-                    this.Clients.Clear();
-                    this.Clients = null;
+                    Clients.Clear();
+                    Clients = null;
                 }
             }
         }
 
         public void Dispose() {
             // No longer calling delegates
-            this.BeginException = null;
-            this.PacketReceived = null;
-            this.ListenerException = null;
+            BeginException = null;
+            PacketReceived = null;
+            ListenerException = null;
 
             // Shutdown the listener and all current clients.
-            this.Shutdown();
+            Shutdown();
 
-            this.Certificate = null;
+            Certificate = null;
         }
     }
 }

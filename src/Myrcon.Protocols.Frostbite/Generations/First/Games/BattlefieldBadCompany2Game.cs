@@ -24,7 +24,7 @@ namespace Myrcon.Protocols.Frostbite.Generations.First.Games {
     public class BattlefieldBadCompany2Game : FirstGame {
 
         public BattlefieldBadCompany2Game() : base() {
-            ServerInfoParameters = new List<String>() {
+            ServerInfoParameters = new List<string>() {
                 "ServerName",       "PlayerCount",   "MaxPlayerCount",   "GameMode",
                 "Map",              "CurrentRound",  "TotalRounds",      "TeamScores",
                 "ConnectionState",  "Ranked",        "PunkBuster",       "Passworded",

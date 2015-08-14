@@ -24,7 +24,7 @@ namespace Potato.Core.Shared.Test.AsynchronousExecutableCommands.Mocks {
             base.ExecuteQueuedCommands();
 
             if (ExecuteQueuedCommandsFinished != null) {
-                this.ExecuteQueuedCommandsFinished();
+                ExecuteQueuedCommandsFinished();
             }
         }
     }

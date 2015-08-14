@@ -29,7 +29,7 @@ namespace Potato.Net.Shared.Test {
         [Test]
         public void TestPacketSendImmediate() {
 
-            PacketQueue queue = new PacketQueue();
+            var queue = new PacketQueue();
             IPacketWrapper packet = new MockPacket() {
                 Packet = {
                     Origin = PacketOrigin.Client,
@@ -38,7 +38,7 @@ namespace Potato.Net.Shared.Test {
                 }
             };
 
-            IPacketWrapper poppedPacket = queue.PacketSend(packet);
+            var poppedPacket = queue.PacketSend(packet);
 
             // Client would send to the server.
 
@@ -54,7 +54,7 @@ namespace Potato.Net.Shared.Test {
         [Test]
         public void TestPacketSendQueued() {
 
-            PacketQueue queue = new PacketQueue();
+            var queue = new PacketQueue();
             IPacketWrapper firstPacket = new MockPacket() {
                 Packet = {
                     Origin = PacketOrigin.Client,
@@ -63,7 +63,7 @@ namespace Potato.Net.Shared.Test {
                 }
             };
 
-            IPacketWrapper poppedPacket = queue.PacketSend(firstPacket);
+            var poppedPacket = queue.PacketSend(firstPacket);
 
             // Client would send to the server.
 
@@ -93,7 +93,7 @@ namespace Potato.Net.Shared.Test {
         [Test]
         public void TestPacketReceivedRemoveFromOutgoing() {
 
-            PacketQueue queue = new PacketQueue();
+            var queue = new PacketQueue();
 
             IPacketWrapper sentPacket = new MockPacket() {
                 Packet = {
@@ -111,7 +111,7 @@ namespace Potato.Net.Shared.Test {
                 }
             };
 
-            IPacketWrapper poppedPacket = queue.PacketSend(sentPacket);
+            var poppedPacket = queue.PacketSend(sentPacket);
 
             // Client would send to the server.
 
@@ -131,7 +131,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestPacketReceivedRemovedAndPopped() {
-            PacketQueue queue = new PacketQueue();
+            var queue = new PacketQueue();
 
             IPacketWrapper firstPacketRequest = new MockPacket() {
                 Packet = {
@@ -162,7 +162,7 @@ namespace Potato.Net.Shared.Test {
             Assert.AreEqual(1, queue.OutgoingPackets.Count);
             Assert.AreEqual(1, queue.QueuedPackets.Count);
 
-            IPacketWrapper poppedPacket = queue.PacketReceived(firstPacketResponse);
+            var poppedPacket = queue.PacketReceived(firstPacketResponse);
             Assert.AreEqual(secondPacketRequest, poppedPacket);
 
             queue.PacketSend(poppedPacket);
@@ -176,7 +176,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestRestartConnectionOnQueueFailureTruey() {
-            PacketQueue queue = new PacketQueue();
+            var queue = new PacketQueue();
             IPacketWrapper packet = new MockPacket() {
                 Packet = {
                     Origin = PacketOrigin.Client,
@@ -186,7 +186,7 @@ namespace Potato.Net.Shared.Test {
                 }
             };
 
-            IPacketWrapper poppedPacket = queue.PacketSend(packet);
+            var poppedPacket = queue.PacketSend(packet);
 
             Assert.AreEqual(packet, poppedPacket);
             Assert.AreEqual(1, queue.OutgoingPackets.Count);
@@ -200,7 +200,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestRestartConnectionOnQueueFailureFalsey() {
-            PacketQueue queue = new PacketQueue();
+            var queue = new PacketQueue();
             IPacketWrapper packet = new MockPacket() {
                 Packet = {
                     Origin = PacketOrigin.Client,
@@ -209,7 +209,7 @@ namespace Potato.Net.Shared.Test {
                 }
             };
 
-            IPacketWrapper poppedPacket = queue.PacketSend(packet);
+            var poppedPacket = queue.PacketSend(packet);
 
             Assert.AreEqual(packet, poppedPacket);
             Assert.AreEqual(1, queue.OutgoingPackets.Count);
@@ -222,7 +222,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestGetRequestPacketExists() {
-            PacketQueue queue = new PacketQueue();
+            var queue = new PacketQueue();
             IPacketWrapper packetRequest = new MockPacket() {
                 Packet = {
                     Origin = PacketOrigin.Client,
@@ -242,7 +242,7 @@ namespace Potato.Net.Shared.Test {
             queue.PacketSend(packetRequest);
             Assert.AreEqual(1, queue.OutgoingPackets.Count);
 
-            IPacketWrapper fetchedRequestPacket = queue.GetRequestPacket(packetResponse);
+            var fetchedRequestPacket = queue.GetRequestPacket(packetResponse);
 
             Assert.AreEqual(packetRequest, fetchedRequestPacket);
         }
@@ -253,7 +253,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestGetRequestPacketDoesNotExists() {
-            PacketQueue queue = new PacketQueue();
+            var queue = new PacketQueue();
             IPacketWrapper packetRequest = new MockPacket() {
                 Packet = {
                     Origin = PacketOrigin.Client,
@@ -273,7 +273,7 @@ namespace Potato.Net.Shared.Test {
             queue.PacketSend(packetRequest);
             Assert.AreEqual(1, queue.OutgoingPackets.Count);
 
-            IPacketWrapper fetchedRequestPacket = queue.GetRequestPacket(packetResponse);
+            var fetchedRequestPacket = queue.GetRequestPacket(packetResponse);
 
             Assert.IsNull(fetchedRequestPacket);
         }

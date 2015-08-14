@@ -35,12 +35,12 @@ namespace Potato.Net.Shared.Models {
         /// <summary>
         /// This map's name as it is used via Rcon.
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// This map's human-readable name.
         /// </summary>
-        public String FriendlyName { get; set; }
+        public string FriendlyName { get; set; }
 
         /// <summary>
         /// This map's game mode.
@@ -56,7 +56,7 @@ namespace Potato.Net.Shared.Models {
         /// Initializes the map model with default values.
         /// </summary>
         public MapModel() {
-            this.Groups = new List<GroupModel>();
+            Groups = new List<GroupModel>();
         }
     }
 }

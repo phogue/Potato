@@ -37,9 +37,9 @@ namespace Potato.Examples.Plugins.Configs.Test {
             // A guid for this connection based on an md5 hash. If none is supplied
             // then the configs directory will have an empty guid directory name in it.
             // I added this here just so you know what's used to name the directory.
-            Guid connectionGuid = MD5.Guid("not a zero guid");
+            var connectionGuid = MD5.Guid("not a zero guid");
 
-            CorePluginController pluginsSaving = new CorePluginController() {
+            var pluginsSaving = new CorePluginController() {
                 Connection = new ConnectionController() {
                     ConnectionModel = {
                         ConnectionGuid = connectionGuid
@@ -47,12 +47,12 @@ namespace Potato.Examples.Plugins.Configs.Test {
                 }
             }.Execute() as CorePluginController;
 
-            Guid pluginGuid = pluginsSaving.LoadedPlugins.First().PluginGuid;
+            var pluginGuid = pluginsSaving.LoadedPlugins.First().PluginGuid;
 
             // Now shut it down..
             pluginsSaving.Dispose();
 
-            String configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs", connectionGuid.ToString(), pluginGuid.ToString(), "Potato.Examples.Plugins.Configs.json");
+            var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs", connectionGuid.ToString(), pluginGuid.ToString(), "Potato.Examples.Plugins.Configs.json");
 
             // See [execution path]/Configs/477b1278-7b48-f5ae-4f91-f9ba12e204e7/bf3b9c62-050a-4d25-bb2e-0bb48a394eb5/Potato.Examples.Configs.xml
             Assert.IsTrue(File.Exists(configPath));
@@ -69,9 +69,9 @@ namespace Potato.Examples.Plugins.Configs.Test {
             // A guid for this connection based on an md5 hash. If none is supplied
             // then the configs directory will have an empty guid directory name in it.
             // I added this here just so you know what's used to name the directory.
-            Guid connectionGuid = MD5.Guid("not a zero guid");
+            var connectionGuid = MD5.Guid("not a zero guid");
 
-            CorePluginController pluginsSaving = new CorePluginController() {
+            var pluginsSaving = new CorePluginController() {
                 Connection = new ConnectionController() {
                     ConnectionModel = {
                         ConnectionGuid = connectionGuid
@@ -79,12 +79,12 @@ namespace Potato.Examples.Plugins.Configs.Test {
                 }
             }.Execute() as CorePluginController;
 
-            Guid pluginGuid = pluginsSaving.LoadedPlugins.First().PluginGuid;
+            var pluginGuid = pluginsSaving.LoadedPlugins.First().PluginGuid;
 
             // Now shut it down..
             pluginsSaving.Dispose();
 
-            String configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs", connectionGuid.ToString(), pluginGuid.ToString(), "Potato.Examples.Plugins.Configs.json");
+            var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs", connectionGuid.ToString(), pluginGuid.ToString(), "Potato.Examples.Plugins.Configs.json");
 
             // See [execution path]/Configs/477b1278-7b48-f5ae-4f91-f9ba12e204e7/bf3b9c62-050a-4d25-bb2e-0bb48a394eb5/Potato.Examples.Configs.xml
             Assert.IsTrue(File.Exists(configPath));

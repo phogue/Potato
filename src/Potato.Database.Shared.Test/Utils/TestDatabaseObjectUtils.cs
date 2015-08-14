@@ -29,7 +29,7 @@ namespace Potato.Database.Shared.Test.Utils {
         /// </summary>
         [Test]
         public void TestDescendantsAndSelfQueryTree() {
-            List<StringValue> values = new List<StringValue>() {
+            var values = new List<StringValue>() {
                 new StringValue() {
                     Data = "0"
                 },
@@ -45,7 +45,7 @@ namespace Potato.Database.Shared.Test.Utils {
             };
 
             // Create a tree of values. We will want to flatten and find each value after.
-            IDatabaseObject query = new Find()
+            var query = new Find()
                 .Method(
                     values[0]
                 )
@@ -65,11 +65,11 @@ namespace Potato.Database.Shared.Test.Utils {
                     )
                 );
 
-            List<StringValue> descendants = query.DescendantsAndSelf<StringValue>().ToList();
+            var descendants = query.DescendantsAndSelf<StringValue>().ToList();
 
             Assert.AreEqual(4, descendants.Count());
             
-            foreach (StringValue item in descendants) {
+            foreach (var item in descendants) {
                 Assert.IsTrue(values.Contains(item));    
             }
         }
@@ -79,11 +79,11 @@ namespace Potato.Database.Shared.Test.Utils {
         /// </summary>
         [Test]
         public void TestDescendantsAndSelfSingleValue() {
-            StringValue value = new StringValue() {
+            var value = new StringValue() {
                 Data = "0"
             };
 
-            List<StringValue> descendants = value.DescendantsAndSelf<StringValue>().ToList();
+            var descendants = value.DescendantsAndSelf<StringValue>().ToList();
 
             Assert.AreEqual(1, descendants.Count());
             Assert.AreEqual(value, descendants.First());

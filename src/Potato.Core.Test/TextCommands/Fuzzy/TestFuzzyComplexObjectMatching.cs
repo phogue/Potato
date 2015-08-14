@@ -38,28 +38,28 @@ namespace Potato.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestComplexKickAllPlayers() {
-            TextCommandController textCommandController = CreateTextCommandController();
+            var textCommandController = CreateTextCommandController();
 
             AssertCommandPlayerListMapList(textCommandController, "kick all players", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Values, new List<MapModel>());
         }
 
         [Test]
         public void TestComplexKickEveryoneExceptMe() {
-            TextCommandController textCommandController = CreateTextCommandController();
+            var textCommandController = CreateTextCommandController();
 
             AssertCommandPlayerListMapList(textCommandController, "kick everyone except me", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Values.Where(player => player != PlayerPhogue).ToList(), new List<MapModel>());
         }
 
         [Test]
         public void TestComplexKickEveryoneExceptPhogue() {
-            TextCommandController textCommandController = CreateTextCommandController();
+            var textCommandController = CreateTextCommandController();
 
             AssertCommandPlayerListMapList(textCommandController, "kick everyone except phogue", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Values.Where(player => player != PlayerPhogue).ToList(), new List<MapModel>());
         }
 
         [Test]
         public void TestComplexKickEveryoneExceptPhogueOnAllMapsButPortValdez() {
-            TextCommandController textCommandController = CreateTextCommandController();
+            var textCommandController = CreateTextCommandController();
 
             AssertCommandPlayerListMapList(textCommandController, "kick everyone except phogue on all maps but port valdez", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Values.Where(player => player != PlayerPhogue).ToList(), new List<MapModel>() {
                 MapValparaiso,
@@ -69,14 +69,14 @@ namespace Potato.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestComplexKickEveryoneNotUsingC4() {
-            TextCommandController textCommandController = CreateTextCommandController();
+            var textCommandController = CreateTextCommandController();
 
             AssertCommandPlayerListMapList(textCommandController, "kick everyone not using C4", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Values.Where(player => player != PlayerImisnew2).ToList(), new List<MapModel>());
         }
 
         [Test]
         public void TestComplexKickEveryoneUsingSniperRifles() {
-            TextCommandController textCommandController = CreateTextCommandController();
+            var textCommandController = CreateTextCommandController();
 
             AssertCommandPlayerListMapList(textCommandController, "kick everyone using sniper rifles", TextCommandKick, new List<PlayerModel>() {
                 PlayerZaeed,
@@ -193,7 +193,7 @@ namespace Potato.Core.Test.TextCommands.Fuzzy {
         /// </summary>
         [Test]
         public void TestComplexKickPlayersNotFromAustralia() {
-            TextCommandController textCommandController = CreateTextCommandController();
+            var textCommandController = CreateTextCommandController();
 
             AssertCommandPlayerListMapList(textCommandController, "kick everyone not from australia", TextCommandKick, textCommandController.Connection.ProtocolState.Players.Values.Except(new List<PlayerModel>() {
                 PlayerPhogue,

@@ -35,7 +35,7 @@ namespace Potato.Examples.Plugins.Commands {
 
         public Program() : base() {
             // Store references to children so commands will tunnel on to them.
-            this.TunnelObjects = new List<ICoreController>() {
+            TunnelObjects = new List<ICoreController>() {
                 new TunneledCommands() {
                     // Make sure child classes have a reference back to our class, so they
                     // can bubble commands back up.
@@ -45,7 +45,7 @@ namespace Potato.Examples.Plugins.Commands {
                 }
             };
 
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     Name = "SingleParameterCommand",
                     CommandAttributeType = CommandAttributeType.Handler,
@@ -55,10 +55,10 @@ namespace Potato.Examples.Plugins.Commands {
                             // Commands must have a type that appears within Potato.Core.CommandParameterData
                             // but "Content" works as a generic, so you can accept integers here for instance
                             // and if it can be converted it will be.
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.SingleParameterCommand
+                    Handler = SingleParameterCommand
                 },
                 new CommandDispatch() {
                     Name = "SingleConvertedParameterCommand",
@@ -69,12 +69,12 @@ namespace Potato.Examples.Plugins.Commands {
                             Type = typeof(int)
                         }
                     },
-                    Handler = this.SingleConvertedParameterCommand
+                    Handler = SingleConvertedParameterCommand
                 },
                 new CommandDispatch() {
                     Name = "NoParameterCommand",
                     CommandAttributeType = CommandAttributeType.Handler,
-                    Handler = this.NoParameterCommand
+                    Handler = NoParameterCommand
                 }
             });
         }
@@ -86,8 +86,8 @@ namespace Potato.Examples.Plugins.Commands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected ICommandResult SingleParameterCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            String text = parameters["text"].First<String>();
+        protected ICommandResult SingleParameterCommand(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var text = parameters["text"].First<string>();
 
             command.Result.Message = text;
 
@@ -100,8 +100,8 @@ namespace Potato.Examples.Plugins.Commands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected ICommandResult SingleConvertedParameterCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            int number = parameters["number"].First<int>();
+        protected ICommandResult SingleConvertedParameterCommand(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var number = parameters["number"].First<int>();
 
             command.Result.Message = (number * 2).ToString(CultureInfo.InvariantCulture);
 
@@ -114,7 +114,7 @@ namespace Potato.Examples.Plugins.Commands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected ICommandResult NoParameterCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        protected ICommandResult NoParameterCommand(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             command.Result.Message = "NoParameterCommandSetResult";
 
             return command.Result;

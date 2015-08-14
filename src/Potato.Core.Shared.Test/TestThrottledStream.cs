@@ -26,7 +26,7 @@ namespace Potato.Core.Shared.Test {
         /// </summary>
         [Test]
         public void TestStart() {
-            ThrottledStream<int> stream = new ThrottledStream<int>();
+            var stream = new ThrottledStream<int>();
 
             stream.Start();
 
@@ -39,7 +39,7 @@ namespace Potato.Core.Shared.Test {
         /// </summary>
         [Test]
         public void TestStop() {
-            ThrottledStream<int> stream = new ThrottledStream<int>();
+            var stream = new ThrottledStream<int>();
 
             stream.Stop();
 
@@ -53,7 +53,7 @@ namespace Potato.Core.Shared.Test {
         /// </summary>
         [Test]
         public void TestStopWhileRunning() {
-            ThrottledStream<int> stream = new ThrottledStream<int>() {
+            var stream = new ThrottledStream<int>() {
                 FlushTo = items => {
                     
                 }
@@ -73,10 +73,10 @@ namespace Potato.Core.Shared.Test {
         /// </summary>
         [Test]
         public void TestFlushToIsCalled() {
-            AutoResetEvent reset = new AutoResetEvent(false);
-            bool isFlushToCalled = false;
+            var reset = new AutoResetEvent(false);
+            var isFlushToCalled = false;
 
-            ThrottledStream<int> stream = new ThrottledStream<int>() {
+            var stream = new ThrottledStream<int>() {
                 Interval = new TimeSpan(0, 0, 0, 0, 10),
                 FlushTo = items => {
                     isFlushToCalled = true;
@@ -98,10 +98,10 @@ namespace Potato.Core.Shared.Test {
         /// </summary>
         [Test]
         public void TestFlushToCorrectOrder() {
-            AutoResetEvent reset = new AutoResetEvent(false);
-            List<int> flushedItems = new List<int>();
+            var reset = new AutoResetEvent(false);
+            var flushedItems = new List<int>();
 
-            ThrottledStream<int> stream = new ThrottledStream<int>() {
+            var stream = new ThrottledStream<int>() {
                 Interval = new TimeSpan(0, 0, 0, 0, 100),
                 FlushTo = items => {
                     flushedItems = items;
@@ -125,7 +125,7 @@ namespace Potato.Core.Shared.Test {
         /// </summary>
         [Test]
         public void TestIgnoredWhenNotRunning() {
-            ThrottledStream<int> stream = new ThrottledStream<int>();
+            var stream = new ThrottledStream<int>();
 
             stream.Call(1);
 
@@ -137,7 +137,7 @@ namespace Potato.Core.Shared.Test {
         /// </summary>
         [Test]
         public void TestPushedWhenRunning() {
-            ThrottledStream<int> stream = new ThrottledStream<int>() {
+            var stream = new ThrottledStream<int>() {
                 Running = true
             };
 

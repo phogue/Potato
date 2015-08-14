@@ -27,9 +27,9 @@ namespace Myrcon.Protocols.Frostbite {
         public IPacketQueue PacketQueue { get; set; }
 
         public FrostbiteClient() : base() {
-            this.PacketQueue = new PacketQueue();
+            PacketQueue = new PacketQueue();
 
-            this.PacketSerializer = new FrostbitePacketSerializer();
+            PacketSerializer = new FrostbitePacketSerializer();
         }
 
         protected override void OnPacketReceived(IPacketWrapper wrapper) {
@@ -42,7 +42,7 @@ namespace Myrcon.Protocols.Frostbite {
                         Origin = PacketOrigin.Server,
                         Type = PacketType.Response,
                         RequestId = wrapper.Packet.RequestId,
-                        Words = new List<String>() {
+                        Words = new List<string>() {
                             FrostbitePacket.StringResponseOkay
                         }
                     }
@@ -51,13 +51,13 @@ namespace Myrcon.Protocols.Frostbite {
 
             // Pop the next packet if a packet is waiting to be sent.
             IPacketWrapper poppedWrapper = null;
-            if ((poppedWrapper = this.PacketQueue.PacketReceived(wrapper)) != null) {
-                this.Send(poppedWrapper);
+            if ((poppedWrapper = PacketQueue.PacketReceived(wrapper)) != null) {
+                Send(poppedWrapper);
             }
             
             // Shutdown if we're just waiting for a response to an old packet.
-            if (this.PacketQueue.RestartConnectionOnQueueFailure() == true) {
-                this.Shutdown(new Exception("Failed to hear response to packet within two minutes, forced shutdown."));
+            if (PacketQueue.RestartConnectionOnQueueFailure() == true) {
+                Shutdown(new Exception("Failed to hear response to packet within two minutes, forced shutdown."));
             }
         }
 
@@ -65,7 +65,7 @@ namespace Myrcon.Protocols.Frostbite {
             IPacket sent = null;
 
             if (wrapper.Packet.RequestId == null) {
-                wrapper.Packet.RequestId = this.AcquireSequenceNumber;
+                wrapper.Packet.RequestId = AcquireSequenceNumber;
             }
 
             // QueueUnqueuePacket
@@ -77,13 +77,13 @@ namespace Myrcon.Protocols.Frostbite {
             else {
                 // Null return because we're not popping a packet, just checking to see if this one needs to be queued.
                 IPacketWrapper poppedWrapper = null;
-                if ((poppedWrapper = this.PacketQueue.PacketSend(wrapper)) != null) {
+                if ((poppedWrapper = PacketQueue.PacketSend(wrapper)) != null) {
                     sent = base.Send(poppedWrapper);
                 }
 
                 // Shutdown if we're just waiting for a response to an old packet.
-                if (this.PacketQueue.RestartConnectionOnQueueFailure() == true) {
-                    this.Shutdown(new Exception("Failed to hear response to packet within two minutes, forced shutdown."));
+                if (PacketQueue.RestartConnectionOnQueueFailure() == true) {
+                    Shutdown(new Exception("Failed to hear response to packet within two minutes, forced shutdown."));
                 }
             }
 
@@ -93,7 +93,7 @@ namespace Myrcon.Protocols.Frostbite {
         protected override void ShutdownConnection() {
             base.ShutdownConnection();
 
-            this.PacketQueue.Clear();
+            PacketQueue.Clear();
         }
     }
 }

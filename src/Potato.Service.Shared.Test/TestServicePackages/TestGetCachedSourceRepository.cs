@@ -32,7 +32,7 @@ namespace Potato.Service.Shared.Test.TestServicePackages {
 
             Assert.IsEmpty(packages.SourceRepositories);
 
-            IPackageRepository repository = packages.GetCachedSourceRepository(Defines.PackagesDirectory.FullName);
+            var repository = packages.GetCachedSourceRepository(Defines.PackagesDirectory.FullName);
 
             Assert.AreEqual(Defines.PackagesDirectory.FullName, repository.Source);
         }
@@ -42,7 +42,7 @@ namespace Potato.Service.Shared.Test.TestServicePackages {
         /// </summary>
         [Test]
         public void TestRepositoryPulledFromCache() {
-            var sources = new ConcurrentDictionary<String, IPackageRepository>();
+            var sources = new ConcurrentDictionary<string, IPackageRepository>();
 
             sources.TryAdd(Defines.PackagesDirectory.FullName, PackageRepositoryFactory.Default.CreateRepository(Defines.PackagesDirectory.FullName));
 
@@ -53,7 +53,7 @@ namespace Potato.Service.Shared.Test.TestServicePackages {
             Assert.IsNotEmpty(packages.SourceRepositories);
             Assert.AreEqual(1, packages.SourceRepositories.Count);
 
-            IPackageRepository repository = packages.GetCachedSourceRepository(Defines.PackagesDirectory.FullName);
+            var repository = packages.GetCachedSourceRepository(Defines.PackagesDirectory.FullName);
 
             Assert.AreEqual(Defines.PackagesDirectory.FullName, repository.Source);
             Assert.AreEqual(1, packages.SourceRepositories.Count);

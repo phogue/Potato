@@ -36,9 +36,9 @@ namespace Potato.Core.Test.Packages.TestPackagesController {
         /// </summary>
         [Test]
         public void TestResultInsufficientPermissions() {
-            PackagesController packages = new PackagesController();
+            var packages = new PackagesController();
 
-            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesAppendRepository("https://teamcity.myrcon.com/nuget").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = packages.Tunnel(CommandBuilder.PackagesAppendRepository("https://teamcity.myrcon.com/nuget").SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -51,9 +51,9 @@ namespace Potato.Core.Test.Packages.TestPackagesController {
         /// </summary>
         [Test]
         public void TestResultSuccess() {
-            PackagesController packages = new PackagesController();
+            var packages = new PackagesController();
 
-            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesAppendRepository("https://teamcity.myrcon.com/nuget").SetOrigin(CommandOrigin.Local));
+            var result = packages.Tunnel(CommandBuilder.PackagesAppendRepository("https://teamcity.myrcon.com/nuget").SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
@@ -66,7 +66,7 @@ namespace Potato.Core.Test.Packages.TestPackagesController {
         public void TestResultSuccessEventListed() {
             var wait = new AutoResetEvent(false);
 
-            PackagesController packages = (PackagesController)new PackagesController().Execute();
+            var packages = (PackagesController)new PackagesController().Execute();
 
             packages.Shared.Events.EventLogged += (sender, @event) => {
                 if (@event.GenericEventType == GenericEventType.PackagesRepositoryAppended && @event.Now.Repositories.First().Uri == "https://teamcity.myrcon.com/nuget") {
@@ -84,7 +84,7 @@ namespace Potato.Core.Test.Packages.TestPackagesController {
         /// </summary>
         [Test]
         public void TestSingleRepositorySetup() {
-            PackagesController packages = (PackagesController)new PackagesController().Execute();
+            var packages = (PackagesController)new PackagesController().Execute();
 
             packages.Tunnel(CommandBuilder.PackagesAppendRepository("https://teamcity.myrcon.com/nuget").SetOrigin(CommandOrigin.Local));
 
@@ -97,7 +97,7 @@ namespace Potato.Core.Test.Packages.TestPackagesController {
         /// </summary>
         [Test]
         public void TestDoubleRepositorySetup() {
-            PackagesController packages = (PackagesController)new PackagesController().Execute();
+            var packages = (PackagesController)new PackagesController().Execute();
 
             packages.Tunnel(CommandBuilder.PackagesAppendRepository("https://teamcity.myrcon.com/nuget").SetOrigin(CommandOrigin.Local));
             packages.Tunnel(CommandBuilder.PackagesAppendRepository("https://teamcity.myrcon.com/nuget").SetOrigin(CommandOrigin.Local));
@@ -110,7 +110,7 @@ namespace Potato.Core.Test.Packages.TestPackagesController {
         /// </summary>
         [Test]
         public void TestSuccessTwoUniqueRepositoriesAdded() {
-            PackagesController packages = (PackagesController)new PackagesController().Execute();
+            var packages = (PackagesController)new PackagesController().Execute();
 
             packages.Tunnel(CommandBuilder.PackagesAppendRepository("https://teamcity.myrcon.com/nuget1").SetOrigin(CommandOrigin.Local));
             packages.Tunnel(CommandBuilder.PackagesAppendRepository("https://teamcity.myrcon.com/nuget2").SetOrigin(CommandOrigin.Local));
@@ -123,14 +123,14 @@ namespace Potato.Core.Test.Packages.TestPackagesController {
         /// </summary>
         [Test]
         public void TestSuccessTwoRepositoriesSaved() {
-            PackagesController packages = (PackagesController)new PackagesController().Execute();
+            var packages = (PackagesController)new PackagesController().Execute();
 
             packages.Tunnel(CommandBuilder.PackagesAppendRepository("https://teamcity.myrcon.com/nuget1").SetOrigin(CommandOrigin.Local));
             packages.Tunnel(CommandBuilder.PackagesAppendRepository("https://teamcity.myrcon.com/nuget2").SetOrigin(CommandOrigin.Local));
 
             Assert.AreEqual(3, packages.Cache.Repositories.Count);
             
-            Assert.AreEqual(2, packages.Shared.Variables.ArchiveVariables.First(archive => archive.Key.ToLower() == CommonVariableNames.PackagesConfigGroups.ToString().ToLower()).Value.ToList<String>().Count);
+            Assert.AreEqual(2, packages.Shared.Variables.ArchiveVariables.First(archive => archive.Key.ToLower() == CommonVariableNames.PackagesConfigGroups.ToString().ToLower()).Value.ToList<string>().Count);
         }
     }
 }

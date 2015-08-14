@@ -42,12 +42,12 @@ namespace Potato.Net.Shared {
         /// How much data should be read when peeking for the full packet size.
         /// </summary>
         protected virtual long ReadPacketPeekShiftSize {
-            get { return this.PacketSerializer != null ? this.PacketSerializer.PacketHeaderSize : 0; }
+            get { return PacketSerializer != null ? PacketSerializer.PacketHeaderSize : 0; }
         }
 
         protected TcpClient() : base() {
-            this.ReceivedBuffer = new byte[this.BufferSize];
-            this.PacketStream = new PacketStream();
+            ReceivedBuffer = new byte[BufferSize];
+            PacketStream = new PacketStream();
         }
 
         /// <summary>
@@ -57,19 +57,19 @@ namespace Potato.Net.Shared {
         /// <param name="ar"></param>
         protected void SendAsynchronousCallback(IAsyncResult ar) {
 
-            IPacketWrapper packet = (IPacketWrapper)ar.AsyncState;
+            var packet = (IPacketWrapper)ar.AsyncState;
 
-            if (this.Stream != null) {
+            if (Stream != null) {
                 try {
-                    this.Stream.EndWrite(ar);
+                    Stream.EndWrite(ar);
 
-                    this.OnPacketSent(packet);
+                    OnPacketSent(packet);
                 }
                 catch (SocketException se) {
-                    this.Shutdown(se);
+                    Shutdown(se);
                 }
                 catch (Exception e) {
-                    this.Shutdown(e);
+                    Shutdown(e);
                 }
             }
         }
@@ -82,18 +82,18 @@ namespace Potato.Net.Shared {
             IPacket sent = null;
 
             if (wrapper != null) {
-                if (this.BeforePacketSend(wrapper) == false && this.Stream != null) {
+                if (BeforePacketSend(wrapper) == false && Stream != null) {
 
-                    byte[] bytePacket = this.PacketSerializer.Serialize(wrapper);
+                    var bytePacket = PacketSerializer.Serialize(wrapper);
 
                     if (bytePacket != null && bytePacket.Length > 0) {
                         try {
-                            this.Stream.BeginWrite(bytePacket, 0, bytePacket.Length, this.SendAsynchronousCallback, wrapper);
+                            Stream.BeginWrite(bytePacket, 0, bytePacket.Length, SendAsynchronousCallback, wrapper);
 
                             sent = wrapper.Packet;
                         }
                         catch (Exception e) {
-                            this.Shutdown(e);
+                            Shutdown(e);
                         }
                     }
                 }
@@ -109,19 +109,19 @@ namespace Potato.Net.Shared {
         protected virtual IPacketWrapper ReadPacket() {
             IPacketWrapper wrapper = null;
 
-            byte[] header = this.PacketStream.PeekShift((uint)this.ReadPacketPeekShiftSize);
+            var header = PacketStream.PeekShift((uint)ReadPacketPeekShiftSize);
 
             if (header != null) {
-                long packetSize = this.PacketSerializer.ReadPacketSize(header);
+                var packetSize = PacketSerializer.ReadPacketSize(header);
 
-                byte[] packetData = this.PacketStream.PeekShift((uint)packetSize);
+                var packetData = PacketStream.PeekShift((uint)packetSize);
 
                 if (packetData != null && packetData.Length > 0) {
-                    wrapper = this.PacketSerializer.Deserialize(packetData);
+                    wrapper = PacketSerializer.Deserialize(packetData);
 
-                    wrapper.Packet.RemoteEndPoint = this.RemoteEndPoint;
+                    wrapper.Packet.RemoteEndPoint = RemoteEndPoint;
 
-                    this.PacketStream.Shift((uint)packetSize);
+                    PacketStream.Shift((uint)packetSize);
                 }
             }
 
@@ -129,48 +129,48 @@ namespace Potato.Net.Shared {
         }
 
         protected virtual void ReadCallback(IAsyncResult ar) {
-            if (this.Stream != null) {
+            if (Stream != null) {
                 try {
-                    int bytesRead = this.Stream.EndRead(ar);
+                    var bytesRead = Stream.EndRead(ar);
 
                     if (bytesRead > 0) {
-                        this.PacketStream.Push(this.ReceivedBuffer, bytesRead);
+                        PacketStream.Push(ReceivedBuffer, bytesRead);
 
                         IPacketWrapper wrapper = null;
 
                         // Keep reading until we no longer have packets to deserialize.
-                        while ((wrapper = this.ReadPacket()) != null) {
+                        while ((wrapper = ReadPacket()) != null) {
                             // Dispatch the completed packet.
                             try {
-                                this.BeforePacketDispatch(wrapper);
+                                BeforePacketDispatch(wrapper);
 
-                                this.OnPacketReceived(wrapper);
+                                OnPacketReceived(wrapper);
                             }
                             catch (Exception e) {
-                                this.Shutdown(e);
+                                Shutdown(e);
                             }
                         }
 
                         // If we've recieved the maxmimum garbage, scrap it all and shutdown the connection.
                         // We went really wrong somewhere..
-                        if (this.ReceivedBuffer != null && this.ReceivedBuffer.Length >= this.MaxGarbageBytes) {
-                            this.ReceivedBuffer = null;
-                            this.Shutdown(new Exception("Exceeded maximum garbage packet"));
+                        if (ReceivedBuffer != null && ReceivedBuffer.Length >= MaxGarbageBytes) {
+                            ReceivedBuffer = null;
+                            Shutdown(new Exception("Exceeded maximum garbage packet"));
                         }
-                        else if (this.Stream != null) {
-                            this.BeginRead();
+                        else if (Stream != null) {
+                            BeginRead();
                         }
                     }
                     else {
-                        this.Shutdown();
+                        Shutdown();
                     }
                 }
                 catch (Exception e) {
-                    this.Shutdown(e);
+                    Shutdown(e);
                 }
             }
             else {
-                this.Shutdown(new Exception("No stream exists during receive"));
+                Shutdown(new Exception("No stream exists during receive"));
             }
         }
 
@@ -179,7 +179,7 @@ namespace Potato.Net.Shared {
         /// </summary>
         /// <returns></returns>
         public override IAsyncResult BeginRead() {
-            return this.Stream != null ? this.Stream.BeginRead(this.ReceivedBuffer, 0, this.ReceivedBuffer.Length, this.ReadCallback, this) : null;
+            return Stream != null ? Stream.BeginRead(ReceivedBuffer, 0, ReceivedBuffer.Length, ReadCallback, this) : null;
         }
 
         /// <summary>
@@ -189,23 +189,23 @@ namespace Potato.Net.Shared {
         private void ConnectedCallback(IAsyncResult ar) {
 
             try {
-                this.Client.EndConnect(ar);
-                this.Client.NoDelay = true;
+                Client.EndConnect(ar);
+                Client.NoDelay = true;
 
-                this.ConnectionState = ConnectionState.ConnectionConnected;
-                this.LocalEndPoint = (IPEndPoint)this.Client.Client.LocalEndPoint;
-                this.RemoteEndPoint = (IPEndPoint)this.Client.Client.RemoteEndPoint;
+                ConnectionState = ConnectionState.ConnectionConnected;
+                LocalEndPoint = (IPEndPoint)Client.Client.LocalEndPoint;
+                RemoteEndPoint = (IPEndPoint)Client.Client.RemoteEndPoint;
 
-                this.Stream = this.Client.GetStream();
-                this.BeginRead();
+                Stream = Client.GetStream();
+                BeginRead();
 
-                this.ConnectionState = ConnectionState.ConnectionReady;
+                ConnectionState = ConnectionState.ConnectionReady;
             }
             catch (SocketException se) {
-                this.Shutdown(se);
+                Shutdown(se);
             }
             catch {
-                this.Shutdown(new Exception("Could not establish connection to endpoint"));
+                Shutdown(new Exception("Could not establish connection to endpoint"));
             }
         }
 
@@ -213,29 +213,29 @@ namespace Potato.Net.Shared {
         /// Attempts a connection to a server, provided we are not currently backing off from an offline server.
         /// </summary>
         public override void Connect() {
-            if (this.MarkManager.RemoveExpiredMarks().IsValidMarkWindow() == true) {
-                this.MarkManager.Mark();
+            if (MarkManager.RemoveExpiredMarks().IsValidMarkWindow() == true) {
+                MarkManager.Mark();
 
-                if (this.Options.Hostname != null && this.Options.Port != 0) {
+                if (Options.Hostname != null && Options.Port != 0) {
                     try {
-                        this.ReceivedBuffer = new byte[this.BufferSize];
-                        this.PacketStream = new PacketStream();
+                        ReceivedBuffer = new byte[BufferSize];
+                        PacketStream = new PacketStream();
 
-                        this.SequenceNumber = 0;
+                        SequenceNumber = 0;
 
-                        this.ConnectionState = ConnectionState.ConnectionConnecting;
+                        ConnectionState = ConnectionState.ConnectionConnecting;
 
-                        this.Client = new System.Net.Sockets.TcpClient {
+                        Client = new System.Net.Sockets.TcpClient {
                             NoDelay = true
                         };
 
-                        this.Client.BeginConnect(this.Options.Hostname, this.Options.Port, this.ConnectedCallback, this);
+                        Client.BeginConnect(Options.Hostname, Options.Port, ConnectedCallback, this);
                     }
                     catch (SocketException se) {
-                        this.Shutdown(se);
+                        Shutdown(se);
                     }
                     catch (Exception e) {
-                        this.Shutdown(e);
+                        Shutdown(e);
                     }
                 }
             }
@@ -246,10 +246,10 @@ namespace Potato.Net.Shared {
         /// </summary>
         /// <param name="e"></param>
         public override void Shutdown(Exception e) {
-            if (this.Client != null) {
-                this.ShutdownConnection();
+            if (Client != null) {
+                ShutdownConnection();
 
-                this.OnConnectionFailure(e);
+                OnConnectionFailure(e);
             }
         }
 
@@ -258,10 +258,10 @@ namespace Potato.Net.Shared {
         /// </summary>
         /// <param name="se"></param>
         public override void Shutdown(SocketException se) {
-            if (this.Client != null) {
-                this.ShutdownConnection();
+            if (Client != null) {
+                ShutdownConnection();
 
-                this.OnSocketException(se);
+                OnSocketException(se);
             }
         }
 
@@ -269,8 +269,8 @@ namespace Potato.Net.Shared {
         /// Shuts down the connection, closing streams etc.
         /// </summary>
         public override void Shutdown() {
-            if (this.Client != null) {
-                this.ShutdownConnection();
+            if (Client != null) {
+                ShutdownConnection();
             }
         }
 
@@ -279,37 +279,37 @@ namespace Potato.Net.Shared {
         /// </summary>
         protected override void ShutdownConnection() {
 
-            lock (this.ShutdownConnectionLock) {
+            lock (ShutdownConnectionLock) {
 
-                this.ConnectionState = ConnectionState.ConnectionDisconnecting;
+                ConnectionState = ConnectionState.ConnectionDisconnecting;
 
-                if (this.Client != null) {
+                if (Client != null) {
 
                     try {
-                        if (this.Stream != null) {
-                            this.Stream.Close();
-                            this.Stream.Dispose();
-                            this.Stream = null;
+                        if (Stream != null) {
+                            Stream.Close();
+                            Stream.Dispose();
+                            Stream = null;
                         }
 
-                        if (this.Client != null) {
-                            this.Client.Close();
-                            this.Client = null;
+                        if (Client != null) {
+                            Client.Close();
+                            Client = null;
                         }
                     }
                     catch (SocketException se) {
-                        this.OnSocketException(se);
+                        OnSocketException(se);
                     }
                     catch (Exception e) {
-                        this.OnConnectionFailure(e);
+                        OnConnectionFailure(e);
                     }
                     finally {
-                        this.ConnectionState = ConnectionState.ConnectionDisconnected;
+                        ConnectionState = ConnectionState.ConnectionDisconnected;
                     }
                 }
                 else {
                     // Nothing open, let's disconnect.
-                    this.ConnectionState = ConnectionState.ConnectionDisconnected;
+                    ConnectionState = ConnectionState.ConnectionDisconnected;
                 }
             }
         }

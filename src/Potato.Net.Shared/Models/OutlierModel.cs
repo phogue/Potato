@@ -24,7 +24,7 @@ namespace Potato.Net.Shared.Models {
         /// <summary>
         /// The name of the field outlier, or describing factor of the data e.g Kills, Ping etc.
         /// </summary>
-        public String Field { get; set; }
+        public string Field { get; set; }
 
         /// <summary>
         /// The value as an outlier
@@ -50,7 +50,7 @@ namespace Potato.Net.Shared.Models {
         /// Initializes default values.
         /// </summary>
         public OutlierModel() {
-            this.Field = String.Empty;
+            Field = string.Empty;
         }
     }
 }

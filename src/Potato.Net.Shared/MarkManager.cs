@@ -34,12 +34,12 @@ namespace Potato.Net.Shared {
         /// <summary>
         /// Lock used to control access to the Attempts list.
         /// </summary>
-        protected readonly Object MarkListLock = new Object();
+        protected readonly object MarkListLock = new object();
 
         public MarkManager() {
-            this.Marks = new List<DateTime>();
+            Marks = new List<DateTime>();
 
-            this.MaximumMarkAge = 600;
+            MaximumMarkAge = 600;
         }
 
         /// <summary>
@@ -48,8 +48,8 @@ namespace Potato.Net.Shared {
         public virtual MarkManager Mark(DateTime? time = null) {
             time = time ?? DateTime.Now;
 
-            lock (this.MarkListLock) {
-                this.Marks.Add(time.Value);
+            lock (MarkListLock) {
+                Marks.Add(time.Value);
             }
 
             return this;
@@ -59,8 +59,8 @@ namespace Potato.Net.Shared {
         /// Removes all connection attempts that have expired.
         /// </summary>
         public virtual MarkManager RemoveExpiredMarks() {
-            lock (this.MarkListLock) {
-                this.Marks.RemoveAll(time => time < DateTime.Now.AddSeconds(this.MaximumMarkAge * -1));
+            lock (MarkListLock) {
+                Marks.RemoveAll(time => time < DateTime.Now.AddSeconds(MaximumMarkAge * -1));
             }
 
             return this;
@@ -72,16 +72,16 @@ namespace Potato.Net.Shared {
         /// </summary>
         /// <returns>True if a connection attempt is valid, false if connection shouldn't be attempted</returns>
         public virtual bool IsValidMarkWindow() {
-            bool valid = true;
+            var valid = true;
 
-            if (this.Marks.Count > 0) {
+            if (Marks.Count > 0) {
                 DateTime recentAttempt;
 
-                lock (this.MarkListLock) {
-                    recentAttempt = this.Marks.OrderByDescending(time => time).First();
+                lock (MarkListLock) {
+                    recentAttempt = Marks.OrderByDescending(time => time).First();
                 }
 
-                valid = recentAttempt < DateTime.Now.AddSeconds(Math.Pow(2, this.Marks.Count) * -1);
+                valid = recentAttempt < DateTime.Now.AddSeconds(Math.Pow(2, Marks.Count) * -1);
 
             }
             // else no connection attempts, allow.

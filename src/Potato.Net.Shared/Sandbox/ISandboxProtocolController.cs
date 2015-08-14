@@ -31,6 +31,6 @@ namespace Potato.Net.Shared.Sandbox {
         /// <param name="assemblyFile"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        bool Create(String assemblyFile, IProtocolType type);
+        bool Create(string assemblyFile, IProtocolType type);
     }
 }

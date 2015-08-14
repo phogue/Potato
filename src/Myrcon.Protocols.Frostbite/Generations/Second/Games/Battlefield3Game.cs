@@ -34,7 +34,7 @@ namespace Myrcon.Protocols.Frostbite.Generations.Second.Games {
         /// </summary>
         public Battlefield3Game() : base() {
 
-            this.ServerInfoParameters = new List<string>() {
+            ServerInfoParameters = new List<string>() {
                 "ServerName",
                 "PlayerCount",
                 "MaxPlayerCount",
@@ -51,13 +51,13 @@ namespace Myrcon.Protocols.Frostbite.Generations.Second.Games {
                 "RoundTime"
             };
 
-            this.PacketDispatcher.Append(new Dictionary<IPacketDispatch, Action<IPacketWrapper, IPacketWrapper>>() {
+            PacketDispatcher.Append(new Dictionary<IPacketDispatch, Action<IPacketWrapper, IPacketWrapper>>() {
                 {
                     new PacketDispatch() {
                         Name = "player.ping", 
                         Origin = PacketOrigin.Client
                     },
-                    new Action<IPacketWrapper, IPacketWrapper>(this.PlayerPingResponseDispatchHandler)
+                    new Action<IPacketWrapper, IPacketWrapper>(PlayerPingResponseDispatchHandler)
                 }
             });
         }
@@ -68,8 +68,8 @@ namespace Myrcon.Protocols.Frostbite.Generations.Second.Games {
         protected override void AuxiliarySynchronize() {
             base.AuxiliarySynchronize();
 
-            foreach (var player in this.State.Players) {
-                this.SendPlayerPingPacket(player.Value.Name);
+            foreach (var player in State.Players) {
+                SendPlayerPingPacket(player.Value.Name);
             }
         }
 
@@ -78,13 +78,13 @@ namespace Myrcon.Protocols.Frostbite.Generations.Second.Games {
         /// </summary>
         /// <param name="players"></param>
         protected override void AdminListPlayersFinalize(List<PlayerModel> players) {
-            var modified = new ConcurrentDictionary<String, PlayerModel>();
+            var modified = new ConcurrentDictionary<string, PlayerModel>();
 
             // We're essentially updating the state here anyway, but we keep the difference
             // so others can remain in sync
-            foreach (PlayerModel player in players) {
+            foreach (var player in players) {
                 PlayerModel statePlayer;
-                this.State.Players.TryGetValue(player.Uid, out statePlayer);
+                State.Players.TryGetValue(player.Uid, out statePlayer);
 
                 if (statePlayer != null) {
                     // Already exists, update with any new information we have.
@@ -107,17 +107,17 @@ namespace Myrcon.Protocols.Frostbite.Generations.Second.Games {
             IProtocolStateDifference difference = new ProtocolStateDifference() {
                 Override = true,
                 Removed = {
-                    Players = new ConcurrentDictionary<String, PlayerModel>(this.State.Players.Where(existing => players.Select(current => current.Uid).Contains(existing.Key) == false).ToDictionary(item => item.Key, item => item.Value))
+                    Players = new ConcurrentDictionary<string, PlayerModel>(State.Players.Where(existing => players.Select(current => current.Uid).Contains(existing.Key) == false).ToDictionary(item => item.Key, item => item.Value))
                 },
                 Modified = {
                     Players = modified
                 }
             };
 
-            this.ApplyProtocolStateDifference(difference);
+            ApplyProtocolStateDifference(difference);
 
-            this.OnProtocolEvent(ProtocolEventType.ProtocolPlayerlistUpdated, difference, new ProtocolEventData() {
-                Players = new List<PlayerModel>(this.State.Players.Values)
+            OnProtocolEvent(ProtocolEventType.ProtocolPlayerlistUpdated, difference, new ProtocolEventData() {
+                Players = new List<PlayerModel>(State.Players.Values)
             });
         }
         
@@ -130,7 +130,7 @@ namespace Myrcon.Protocols.Frostbite.Generations.Second.Games {
         protected void PlayerPingResponseDispatchHandler(IPacketWrapper request, IPacketWrapper response) {
 
             if (request.Packet.Words.Count >= 2 && response != null && response.Packet.Words.Count >= 2) {
-                PlayerModel player = this.State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == request.Packet.Words[1]);
+                var player = State.Players.Select(p => p.Value).FirstOrDefault(p => p.Name == request.Packet.Words[1]);
                 uint ping = 0;
 
                 if (player != null && uint.TryParse(response.Packet.Words[1], out ping) == true) {
@@ -143,8 +143,8 @@ namespace Myrcon.Protocols.Frostbite.Generations.Second.Games {
         /// <summary>
         /// Builds and sends the player ping packet
         /// </summary>
-        protected void SendPlayerPingPacket(String playerName) {
-            this.Send(this.CreatePacket("player.ping {0}", playerName));
+        protected void SendPlayerPingPacket(string playerName) {
+            Send(CreatePacket("player.ping {0}", playerName));
         }
     }
 }

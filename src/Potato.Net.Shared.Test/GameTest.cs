@@ -30,7 +30,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestGameTypeAttributeConversion() {
-            MockGame game = new MockGame();
+            var game = new MockGame();
 
             Assert.AreEqual("MOCK_3", game.ProtocolType.Type);
             Assert.AreEqual("MockGame 3", game.ProtocolType.Name);
@@ -43,9 +43,9 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestGameActionDispatch() {
-            List<IPacket> packets = new List<IPacket>();
+            var packets = new List<IPacket>();
 
-            MockActionDispatchGame game = new MockActionDispatchGame();
+            var game = new MockActionDispatchGame();
 
             packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkTextSay }));
             packets.AddRange(game.Action(new NetworkAction() { ActionType = NetworkActionType.NetworkPlayerKick }));
@@ -69,9 +69,9 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestGameActionDispatchNullsRemoved() {
-            MockActionChatNullResultGame game = new MockActionChatNullResultGame();
+            var game = new MockActionChatNullResultGame();
 
-            List<IPacket> packets = game.Action(new NetworkAction() {
+            var packets = game.Action(new NetworkAction() {
                 ActionType = NetworkActionType.NetworkTextSay
             });
 

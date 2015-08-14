@@ -28,19 +28,19 @@ namespace Potato.Fuzzy {
         /// <summary>
         /// What text was used when comparing this token to other tokens
         /// </summary>
-        public String Text { get; set; }
+        public string Text { get; set; }
 
         /// <summary>
         /// The value of the token, which can range in type depending on the actual token itself.
         /// </summary>
-        public Object Value { get; set; }
+        public object Value { get; set; }
 
         /// <summary>
         /// A name attached from the match to always describe the matching item
         /// </summary>
         /// <remarks>Text or value is what was said to arrive to the match, but this is from the
         /// localization file to describe what was matched.</remarks>
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The matching similarity this token has to the text supplied
@@ -57,12 +57,12 @@ namespace Potato.Fuzzy {
         /// Empty constructor to initialize default attributes
         /// </summary>
         public Token() : base() {
-            this.MinimumWeightedSimilarity = Token.MinimumSimilarity;
+            MinimumWeightedSimilarity = MinimumSimilarity;
         }
 
         public override string ToString() {
             //return this.Text + "," + this.Value;
-            return String.Format("{0},{1}", this.Text, this.Value);
+            return string.Format("{0},{1}", Text, Value);
         }
 
         /// <summary>

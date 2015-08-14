@@ -36,7 +36,7 @@ namespace Potato.Core.Test.Plugins {
         /// <param name="path"></param>
         /// <param name="expectedSuccessFlag"></param>
         /// <param name="resultType"></param>
-        protected void TestPluginsIsolationWriteToDirectory(String path, bool expectedSuccessFlag, CommandResultType resultType) {
+        protected void TestPluginsIsolationWriteToDirectory(string path, bool expectedSuccessFlag, CommandResultType resultType) {
             var plugins = (CorePluginController)new CorePluginController().Execute();
 
             plugins.Tunnel(new Command() {
@@ -47,12 +47,12 @@ namespace Potato.Core.Test.Plugins {
                 }
             });
 
-            ICommandResult result = plugins.Tunnel(new Command() {
+            var result = plugins.Tunnel(new Command() {
                 Name = "TestPluginsIsolationWriteToDirectory",
                 Authentication = {
                     Username = "Phogue"
                 },
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     path
                 })
             });
@@ -86,12 +86,12 @@ namespace Potato.Core.Test.Plugins {
 
             // Send a command to ensure the appdomain actually has a functional copy of the TestPlugin
             // assembly loaded.
-            ICommandResult result = plugins.Tunnel(new Command() {
+            var result = plugins.Tunnel(new Command() {
                 Name = "TestPluginsIsolationCleanCurrentAppDomain",
                 Authentication = {
                     Username = "Phogue"
                 },
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Return Message"
                 })
             });
@@ -103,7 +103,7 @@ namespace Potato.Core.Test.Plugins {
             Assert.AreEqual("Return Message", result.Message);
 
             // Now make sure our current appdomain is clean of the test plugin
-            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies()) {
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
                 Assert.IsFalse(assembly.FullName.Contains("Myrcon.Plugins.Test"));
             }
         }

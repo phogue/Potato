@@ -31,15 +31,15 @@ namespace Potato.Database.Shared.Builders.Values {
         /// </summary>
         /// <returns></returns>
         public JObject ToJObject() {
-            JObject data = new JObject();
+            var data = new JObject();
 
             foreach (Assignment assignment in this.Where(statement => statement is Assignment)) {
-                Field field = assignment.FirstOrDefault(statement => statement is Field) as Field;
-                Value value = assignment.FirstOrDefault(statement => statement is Value) as Value;
+                var field = assignment.FirstOrDefault(statement => statement is Field) as Field;
+                var value = assignment.FirstOrDefault(statement => statement is Value) as Value;
 
                 if (field != null && value != null) {
-                    DocumentValue document = value as DocumentValue;
-                    CollectionValue collection = value as CollectionValue;
+                    var document = value as DocumentValue;
+                    var collection = value as CollectionValue;
 
                     // If it's a sub document..
                     if (document != null) {
@@ -70,21 +70,21 @@ namespace Potato.Database.Shared.Builders.Values {
                 var array = property.Value as JArray;
 
                 if (value != null) {
-                    this.Set(property.Key, value.Value);
+                    Set(property.Key, value.Value);
                 }
                 else if (obj != null) {
-                    DocumentValue document = new DocumentValue();
+                    var document = new DocumentValue();
 
                     document.FromJObject(obj);
 
-                    this.Set(property.Key, document.ToObject());
+                    Set(property.Key, document.ToObject());
                 }
                 else if (array != null) {
-                    CollectionValue collection = new CollectionValue();
+                    var collection = new CollectionValue();
 
                     collection.FromJObject(array);
 
-                    this.Set(property.Key, collection.ToObject());
+                    Set(property.Key, collection.ToObject());
                 }
             }
 
@@ -92,11 +92,11 @@ namespace Potato.Database.Shared.Builders.Values {
         }
 
         public override object ToObject() {
-            Dictionary<String, Object> data = new Dictionary<string, Object>();
+            var data = new Dictionary<string, object>();
 
             foreach (Assignment assignment in this.Where(statement => statement is Assignment)) {
-                Field field = assignment.FirstOrDefault(statement => statement is Field) as Field;
-                Value value = assignment.FirstOrDefault(statement => statement is Value) as Value;
+                var field = assignment.FirstOrDefault(statement => statement is Field) as Field;
+                var value = assignment.FirstOrDefault(statement => statement is Value) as Value;
 
                 if (field != null && value != null && data.ContainsKey(field.Name) == false) {
                     data.Add(field.Name, value.ToObject());

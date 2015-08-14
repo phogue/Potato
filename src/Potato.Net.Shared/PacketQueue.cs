@@ -35,15 +35,15 @@ namespace Potato.Net.Shared {
         public ConcurrentQueue<IPacketWrapper> QueuedPackets;
 
         public PacketQueue() {
-            this.Clear();
+            Clear();
         }
 
         /// <summary>
         /// Clears the current queue
         /// </summary>
         public void Clear() {
-            this.OutgoingPackets = new ConcurrentDictionary<int?, IPacketWrapper>();
-            this.QueuedPackets = new ConcurrentQueue<IPacketWrapper>();
+            OutgoingPackets = new ConcurrentDictionary<int?, IPacketWrapper>();
+            QueuedPackets = new ConcurrentQueue<IPacketWrapper>();
         }
 
         /// <summary>
@@ -53,10 +53,10 @@ namespace Potato.Net.Shared {
         /// If a packet exists in our outgoing "SentPackets"
         /// </summary>
         public bool RestartConnectionOnQueueFailure() {
-            bool failed = false;
+            var failed = false;
 
-            if (this.OutgoingPackets.Any(outgoingPacket => outgoingPacket.Value.Packet.Stamp < DateTime.Now.AddMinutes(-2)) == true) {
-                this.Clear();
+            if (OutgoingPackets.Any(outgoingPacket => outgoingPacket.Value.Packet.Stamp < DateTime.Now.AddMinutes(-2)) == true) {
+                Clear();
 
                 failed = true;
             }
@@ -72,8 +72,8 @@ namespace Potato.Net.Shared {
         public IPacketWrapper GetRequestPacket(IPacketWrapper recievedWrapper) {
             IPacketWrapper requestPacket = null;
 
-            if (recievedWrapper.Packet.RequestId != null && this.OutgoingPackets.ContainsKey(recievedWrapper.Packet.RequestId) == true) {
-                requestPacket = this.OutgoingPackets[recievedWrapper.Packet.RequestId];
+            if (recievedWrapper.Packet.RequestId != null && OutgoingPackets.ContainsKey(recievedWrapper.Packet.RequestId) == true) {
+                requestPacket = OutgoingPackets[recievedWrapper.Packet.RequestId];
             }
 
             return requestPacket;
@@ -89,14 +89,14 @@ namespace Potato.Net.Shared {
 
             // Pop the next packet if a packet is waiting to be sent.
             if (wrapper != null && wrapper.Packet.RequestId != null) {
-                if (this.OutgoingPackets.ContainsKey(wrapper.Packet.RequestId) == true) {
+                if (OutgoingPackets.ContainsKey(wrapper.Packet.RequestId) == true) {
                     IPacketWrapper ignored = null;
-                    this.OutgoingPackets.TryRemove(wrapper.Packet.RequestId, out ignored);
+                    OutgoingPackets.TryRemove(wrapper.Packet.RequestId, out ignored);
                 }
             }
 
-            if (this.QueuedPackets.Count > 0) {
-                this.QueuedPackets.TryDequeue(out poppedWrapper);
+            if (QueuedPackets.Count > 0) {
+                QueuedPackets.TryDequeue(out poppedWrapper);
             }
 
             return poppedWrapper;
@@ -111,15 +111,15 @@ namespace Potato.Net.Shared {
             IPacketWrapper poppedWrapper = null;
 
             // If there is already a packet going out..
-            if (this.OutgoingPackets.Count > 0) {
+            if (OutgoingPackets.Count > 0) {
                 // Add the packet to our queue to be sent at a later time.
-                this.QueuedPackets.Enqueue(wrapper);
+                QueuedPackets.Enqueue(wrapper);
             }
             else {
                 // Add the packet to the list of packets that have been sent.
                 // We're making a request to the game server, keep track of this request.
-                if (wrapper.Packet.RequestId != null && wrapper.Packet.Origin == PacketOrigin.Client && wrapper.Packet.Type == PacketType.Request && this.OutgoingPackets.ContainsKey(wrapper.Packet.RequestId) == false) {
-                    this.OutgoingPackets.TryAdd(wrapper.Packet.RequestId, wrapper);
+                if (wrapper.Packet.RequestId != null && wrapper.Packet.Origin == PacketOrigin.Client && wrapper.Packet.Type == PacketType.Request && OutgoingPackets.ContainsKey(wrapper.Packet.RequestId) == false) {
+                    OutgoingPackets.TryAdd(wrapper.Packet.RequestId, wrapper);
                 }
 
                 // Send this packet now 

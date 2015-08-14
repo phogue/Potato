@@ -36,7 +36,7 @@ namespace Potato.Core.Shared {
         /// <summary>
         /// Lock used when accessing the items list.
         /// </summary>
-        protected readonly Object ItemsLock = new Object();
+        protected readonly object ItemsLock = new object();
 
         /// <summary>
         /// The timer controlling the interval ticking.
@@ -47,29 +47,29 @@ namespace Potato.Core.Shared {
         /// Sets up the default values (1 second interval etc)
         /// </summary>
         public ThrottledStream() {
-            this.Interval = new TimeSpan(0, 0, 0, 1);
-            this.Items = new List<T>();
+            Interval = new TimeSpan(0, 0, 0, 1);
+            Items = new List<T>();
         }
 
         /// <summary>
         /// Flushes any waitign items to the callback method
         /// </summary>
         public void Flush() {
-            lock (this.ItemsLock) {
-                if (this.Running == true && this.Items.Count > 0) {
-                    if (this.FlushTo != null) {
-                        this.FlushTo(new List<T>(this.Items));
+            lock (ItemsLock) {
+                if (Running == true && Items.Count > 0) {
+                    if (FlushTo != null) {
+                        FlushTo(new List<T>(Items));
                     }
                 }
 
-                this.Items.Clear();
+                Items.Clear();
             }
         }
 
         public IThrottledStream<T> Call(T item) {
-            if (this.Running == true) {
-                lock (this.ItemsLock) {
-                    this.Items.Add(item);
+            if (Running == true) {
+                lock (ItemsLock) {
+                    Items.Add(item);
                 }
             }
 
@@ -77,21 +77,21 @@ namespace Potato.Core.Shared {
         }
 
         public IThrottledStream<T> Start() {
-            this.Running = true;
+            Running = true;
 
-            this.IntervalTick = new Timer(state => this.Flush(), null, this.Interval, this.Interval);
+            IntervalTick = new Timer(state => Flush(), null, Interval, Interval);
 
             return this;
         }
 
         public IThrottledStream<T> Stop() {
-            this.Running = false;
+            Running = false;
 
-            this.FlushTo = null;
+            FlushTo = null;
 
-            if (this.IntervalTick != null) {
-                this.IntervalTick.Dispose();
-                this.IntervalTick = null;
+            if (IntervalTick != null) {
+                IntervalTick.Dispose();
+                IntervalTick = null;
             }
 
             return this;

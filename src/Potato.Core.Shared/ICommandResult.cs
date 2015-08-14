@@ -26,12 +26,12 @@ namespace Potato.Core.Shared {
         /// Text based version of CommandResultType, but allows for custom result types from
         /// custom commands within plugins.
         /// </summary>
-        String Name { get; set; }
+        string Name { get; set; }
 
         /// <summary>
         /// A general text message used to describe the event in more detail, if required.
         /// </summary>
-        String Message { get; set; }
+        string Message { get; set; }
 
         /// <summary>
         /// When the event occured. Defaults to the current date/time.
@@ -57,7 +57,7 @@ namespace Potato.Core.Shared {
         /// <summary>
         /// Simple flag determining the success of the command being executed.
         /// </summary>
-        Boolean Success { get; set; }
+        bool Success { get; set; }
 
         /// <summary>
         /// A more detailed status describing the command execution.
@@ -68,7 +68,7 @@ namespace Potato.Core.Shared {
         /// How the output of the command should be handled if it is a remote request.
         /// Defaults to application/xml where the entire result is output
         /// </summary>
-        String ContentType { get; set; }
+        string ContentType { get; set; }
 
         /// <summary>
         /// Called when the object is being disposed.

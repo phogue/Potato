@@ -26,6 +26,6 @@ namespace Potato.Net.Shared.Geolocation {
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        Location Locate(String value);
+        Location Locate(string value);
     }
 }

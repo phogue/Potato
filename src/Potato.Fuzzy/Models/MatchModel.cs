@@ -24,21 +24,21 @@ namespace Potato.Fuzzy.Models {
     /// A matching object from the jobject document
     /// </summary>
     public class MatchModel {
-        public String Name { get; set; }
+        public string Name { get; set; }
 
-        public String Text { get; set; }
+        public string Text { get; set; }
 
         public Regex CompiledRegex { get; set; }
 
-        public String Regex {
-            get { return this._regex; }
+        public string Regex {
+            get { return _regex; }
             set { 
                 _regex = value;
-                this.CompiledRegex = new Regex(this._regex, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+                CompiledRegex = new Regex(_regex, RegexOptions.IgnoreCase | RegexOptions.Compiled);
             }
         }
         private string _regex;
 
-        public String Value { get; set; }
+        public string Value { get; set; }
     }
 }

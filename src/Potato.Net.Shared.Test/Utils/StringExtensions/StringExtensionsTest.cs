@@ -33,7 +33,7 @@ namespace Potato.Net.Shared.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestRandomStringSuccess() {
-            List<string> generated = new List<string>();
+            var generated = new List<string>();
 
             for (var count = 0; count < 20; count++) {
                 generated.Add(Shared.Utils.StringExtensions.RandomString(30));
@@ -47,7 +47,7 @@ namespace Potato.Net.Shared.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestWordWrapSuccess() {
-            List<string> wrapped = "Die Brösel eines Käsekuchen verzücken mich.".WordWrap(30);
+            var wrapped = "Die Brösel eines Käsekuchen verzücken mich.".WordWrap(30);
 
             Assert.AreEqual(2, wrapped.Count);
             Assert.AreEqual("Die Brösel eines Käsekuchen", wrapped.First());
@@ -59,7 +59,7 @@ namespace Potato.Net.Shared.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestRemoveDiacriticsSuccess() {
-            String removed = "Die Brösel eines Käsekuchen verzücken mich.".RemoveDiacritics();
+            var removed = "Die Brösel eines Käsekuchen verzücken mich.".RemoveDiacritics();
 
             Assert.AreEqual("Die Brosel eines Kasekuchen verzucken mich.", removed);
         }
@@ -69,7 +69,7 @@ namespace Potato.Net.Shared.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestRemoveLeetSpeekSuccess() {
-            String removed = "P]-[0gu3".RemoveLeetSpeek();
+            var removed = "P]-[0gu3".RemoveLeetSpeek();
 
             Assert.AreEqual("PHOguE", removed);
         }
@@ -79,7 +79,7 @@ namespace Potato.Net.Shared.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestStripSuccess() {
-            String removed = "P]-[0gu3 Brösel".Strip();
+            var removed = "P]-[0gu3 Brösel".Strip();
 
             Assert.AreEqual("PHOguE Brosel", removed);
         }
@@ -89,7 +89,7 @@ namespace Potato.Net.Shared.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestSanitizeDirectoryForwardSlashes() {
-            String sanitized = @"c:/projects/something/test/".SanitizeDirectory();
+            var sanitized = @"c:/projects/something/test/".SanitizeDirectory();
 
             Assert.AreEqual("c-projects-something-test", sanitized);
         }
@@ -99,7 +99,7 @@ namespace Potato.Net.Shared.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestSanitizeDirectoryBackSlashes() {
-            String sanitized = @"c:\projects\something\test\".SanitizeDirectory();
+            var sanitized = @"c:\projects\something\test\".SanitizeDirectory();
 
             Assert.AreEqual("c-projects-something-test", sanitized);
         }
@@ -110,7 +110,7 @@ namespace Potato.Net.Shared.Test.Utils.StringExtensions {
         /// </summary>
         [Test]
         public void TestUrlSlug() {
-            String slugged = "http://forum.myrcon.com".Slug();
+            var slugged = "http://forum.myrcon.com".Slug();
 
             Assert.AreEqual("forum-myrcon-com", slugged);
         }

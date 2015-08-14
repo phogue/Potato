@@ -22,12 +22,12 @@ namespace Potato.Database.Shared.Test.MySql {
     public class TestSerializerMySqlDropImplicit : TestSerializerDrop {
         [Test]
         public override void TestDropDatabasePotato() {
-            Assert.AreEqual(@"DROP DATABASE `Potato`", new SerializerMySql().Parse(this.TestDropDatabasePotatoImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"DROP DATABASE `Potato`", new SerializerMySql().Parse(TestDropDatabasePotatoImplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestDropTablePlayer() {
-            Assert.AreEqual(@"DROP TABLE `Player`", new SerializerMySql().Parse(this.TestDropTablePlayerImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"DROP TABLE `Player`", new SerializerMySql().Parse(TestDropTablePlayerImplicit).Compile().Compiled.First());
         }
     }
 }

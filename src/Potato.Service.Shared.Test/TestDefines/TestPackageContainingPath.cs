@@ -21,7 +21,7 @@ namespace Potato.Service.Shared.Test.TestDefines {
     [TestFixture]
     public class TestPackageContainingPath {
 
-        public readonly String PackagesExists100Path = Path.Combine(Defines.PackagesDirectory.FullName, "Exists.1.0.0");
+        public readonly string PackagesExists100Path = Path.Combine(Defines.PackagesDirectory.FullName, "Exists.1.0.0");
 
         /// <summary>
         /// Clears out all files in the packages directory and ensures the packages directory is created.

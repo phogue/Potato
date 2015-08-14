@@ -26,9 +26,9 @@ namespace Potato.Core.Test.TextCommands.Route {
     public class TestRoute : TestTextCommandParserBase {
         [Test]
         public void TestSingleCommandMatching() {
-            TextCommandController textCommandController = CreateTextCommandController();
+            var textCommandController = CreateTextCommandController();
 
-            TextCommandModel command = new TextCommandModel() {
+            var command = new TextCommandModel() {
                 Commands = new List<string>() {
                     "Command"
                 },
@@ -44,9 +44,9 @@ namespace Potato.Core.Test.TextCommands.Route {
 
         [Test]
         public void TestCommandNumber() {
-            TextCommandController textCommandController = CreateTextCommandController();
+            var textCommandController = CreateTextCommandController();
 
-            TextCommandModel command = new TextCommandModel() {
+            var command = new TextCommandModel() {
                 Commands = new List<string>() {
                     "Command :number"
                 },
@@ -62,9 +62,9 @@ namespace Potato.Core.Test.TextCommands.Route {
 
         [Test]
         public void TestCommandNumberSentence() {
-            TextCommandController textCommandController = CreateTextCommandController();
+            var textCommandController = CreateTextCommandController();
 
-            TextCommandModel command = new TextCommandModel() {
+            var command = new TextCommandModel() {
                 Commands = new List<string>() {
                     "Command :number :text"
                 },
@@ -75,19 +75,19 @@ namespace Potato.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            ICommandResult result = ExecuteTextCommand(textCommandController, "command 20 for something and something");
+            var result = ExecuteTextCommand(textCommandController, "command 20 for something and something");
 
             AssertExecutedCommandAgainstNumericValue(result, command, 20);
-            AssertExecutedCommandAgainstSentencesList(result, command, new List<String>() {
+            AssertExecutedCommandAgainstSentencesList(result, command, new List<string>() {
                 "for something and something"
             });
         }
 
         [Test]
         public void TestCommandTextSingleWord() {
-            TextCommandController textCommandController = CreateTextCommandController();
+            var textCommandController = CreateTextCommandController();
 
-            TextCommandModel command = new TextCommandModel() {
+            var command = new TextCommandModel() {
                 Commands = new List<string>() {
                     "Command :text"
                 },
@@ -98,16 +98,16 @@ namespace Potato.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            AssertCommandSentencesList(textCommandController, "Command hello", command, new List<String>() {
+            AssertCommandSentencesList(textCommandController, "Command hello", command, new List<string>() {
                 "hello"
             });
         }
 
         [Test]
         public void TestCommandTextSentence() {
-            TextCommandController textCommandController = CreateTextCommandController();
+            var textCommandController = CreateTextCommandController();
 
-            TextCommandModel command = new TextCommandModel() {
+            var command = new TextCommandModel() {
                 Commands = new List<string>() {
                     "Command :text"
                 },
@@ -118,16 +118,16 @@ namespace Potato.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            AssertCommandSentencesList(textCommandController, "Command hello, this is a longer sentence!", command, new List<String>() {
+            AssertCommandSentencesList(textCommandController, "Command hello, this is a longer sentence!", command, new List<string>() {
                 "hello, this is a longer sentence!"
             });
         }
 
         [Test]
         public void TestCommandPlayer() {
-            TextCommandController textCommandController = CreateTextCommandController();
+            var textCommandController = CreateTextCommandController();
 
-            TextCommandModel command = new TextCommandModel() {
+            var command = new TextCommandModel() {
                 Commands = new List<string>() {
                     "Command :player"
                 },
@@ -145,9 +145,9 @@ namespace Potato.Core.Test.TextCommands.Route {
 
         [Test]
         public void TestCommandPlayerPlayer() {
-            TextCommandController textCommandController = CreateTextCommandController();
+            var textCommandController = CreateTextCommandController();
 
-            TextCommandModel command = new TextCommandModel() {
+            var command = new TextCommandModel() {
                 Commands = new List<string>() {
                     "Command :player :player"
                 },
@@ -166,9 +166,9 @@ namespace Potato.Core.Test.TextCommands.Route {
 
         [Test]
         public void TestCommandPlayerMap() {
-            TextCommandController textCommandController = CreateTextCommandController();
+            var textCommandController = CreateTextCommandController();
 
-            TextCommandModel command = new TextCommandModel() {
+            var command = new TextCommandModel() {
                 Commands = new List<string>() {
                     "Command :map"
                 },
@@ -186,9 +186,9 @@ namespace Potato.Core.Test.TextCommands.Route {
 
         [Test]
         public void TestCommandPlayerPlayerText() {
-            TextCommandController textCommandController = CreateTextCommandController();
+            var textCommandController = CreateTextCommandController();
 
-            TextCommandModel command = new TextCommandModel() {
+            var command = new TextCommandModel() {
                 Commands = new List<string>() {
                     "Command :player :player :text"
                 },
@@ -199,9 +199,9 @@ namespace Potato.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            ICommandResult result = ExecuteTextCommand(textCommandController, "command phogue morpheus for something and something");
+            var result = ExecuteTextCommand(textCommandController, "command phogue morpheus for something and something");
 
-            AssertExecutedCommandAgainstSentencesList(result, command, new List<String>() {
+            AssertExecutedCommandAgainstSentencesList(result, command, new List<string>() {
                 "for something and something"
             });
 
@@ -213,9 +213,9 @@ namespace Potato.Core.Test.TextCommands.Route {
 
         [Test]
         public void TestCommandPlayerTextPlayer() {
-            TextCommandController textCommandController = CreateTextCommandController();
+            var textCommandController = CreateTextCommandController();
 
-            TextCommandModel command = new TextCommandModel() {
+            var command = new TextCommandModel() {
                 Commands = new List<string>() {
                     "Command :player :text :player"
                 },
@@ -226,9 +226,9 @@ namespace Potato.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            ICommandResult result = ExecuteTextCommand(textCommandController, "command phogue something, something, something dark side morpheus");
+            var result = ExecuteTextCommand(textCommandController, "command phogue something, something, something dark side morpheus");
 
-            AssertExecutedCommandAgainstSentencesList(result, command, new List<String>() {
+            AssertExecutedCommandAgainstSentencesList(result, command, new List<string>() {
                 "something, something, something dark side"
             });
 
@@ -240,9 +240,9 @@ namespace Potato.Core.Test.TextCommands.Route {
 
         [Test]
         public void TestCommandPlayerTextPlayerNumber() {
-            TextCommandController textCommandController = CreateTextCommandController();
+            var textCommandController = CreateTextCommandController();
 
-            TextCommandModel command = new TextCommandModel() {
+            var command = new TextCommandModel() {
                 Commands = new List<string>() {
                     "Command :player :text :player :number"
                 },
@@ -253,9 +253,9 @@ namespace Potato.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            ICommandResult result = ExecuteTextCommand(textCommandController, "command phogue something, something, something dark side morpheus 25");
+            var result = ExecuteTextCommand(textCommandController, "command phogue something, something, something dark side morpheus 25");
 
-            AssertExecutedCommandAgainstSentencesList(result, command, new List<String>() {
+            AssertExecutedCommandAgainstSentencesList(result, command, new List<string>() {
                 "something, something, something dark side"
             });
 
@@ -269,9 +269,9 @@ namespace Potato.Core.Test.TextCommands.Route {
 
         [Test]
         public void TestCommandPlayerForText() {
-            TextCommandController textCommandController = CreateTextCommandController();
+            var textCommandController = CreateTextCommandController();
 
-            TextCommandModel command = new TextCommandModel() {
+            var command = new TextCommandModel() {
                 Commands = new List<string>() {
                     "Command :player for :text"
                 },
@@ -282,9 +282,9 @@ namespace Potato.Core.Test.TextCommands.Route {
 
             textCommandController.TextCommands.Add(command);
 
-            ICommandResult result = ExecuteTextCommand(textCommandController, "command phogue for some time");
+            var result = ExecuteTextCommand(textCommandController, "command phogue for some time");
 
-            AssertExecutedCommandAgainstSentencesList(result, command, new List<String>() {
+            AssertExecutedCommandAgainstSentencesList(result, command, new List<string>() {
                 "some time"
             });
 

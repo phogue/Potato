@@ -18,9 +18,9 @@ using System;
 namespace Potato.Fuzzy.Utils {
     public class MatchDictionaryKey : IComparable<MatchDictionaryKey> {
         public MatchDictionaryKey(string strMatchedText) {
-            this.MatchedText = strMatchedText;
-            this.MatchedScoreCharacters = 0;
-            this.MatchedScore = int.MaxValue;
+            MatchedText = strMatchedText;
+            MatchedScoreCharacters = 0;
+            MatchedScore = int.MaxValue;
         }
 
         public int CompareTo(MatchDictionaryKey other) {
@@ -30,7 +30,7 @@ namespace Potato.Fuzzy.Utils {
         public string MatchedText { get; private set; }
 
         public string LowerCaseMatchedText {
-            get { return this.MatchedText.ToLower(); }
+            get { return MatchedText.ToLower(); }
         }
 
         public int MatchedScoreCharacters { get; set; }

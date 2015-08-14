@@ -32,7 +32,7 @@ namespace Potato.Core.Shared.Database {
         /// <param name="data"></param>
         /// <returns></returns>
         public static List<T> FromQuery(IDatabaseObject data) {
-            CollectionValue value = data as CollectionValue;
+            var value = data as CollectionValue;
 
             // Wrap the DocumentValue into a CollectionValue.
             if (value == null) {
@@ -53,7 +53,7 @@ namespace Potato.Core.Shared.Database {
         /// <param name="data"></param>
         /// <returns></returns>
         public static T FirstFromQuery(IDatabaseObject data) {
-            return DatabaseModel<T>.FromQuery(data).FirstOrDefault();
+            return FromQuery(data).FirstOrDefault();
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Potato.Core.Shared.Database {
         /// </summary>
         /// <returns>A new save query with property assignments attached</returns>
         public Save ToSaveQuery() {
-            Save save = new Save();
+            var save = new Save();
 
             save.AddRange(new DocumentValue().FromJObject(JObject.FromObject(this)));
 
@@ -73,7 +73,7 @@ namespace Potato.Core.Shared.Database {
         /// </summary>
         /// <returns>A new modify query with property assignments attached</returns>
         public Modify ToModifyQuery() {
-            Modify modify = new Modify();
+            var modify = new Modify();
 
             modify.AddRange(new DocumentValue().FromJObject(JObject.FromObject(this)));
 

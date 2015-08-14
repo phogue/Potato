@@ -47,7 +47,7 @@ namespace Potato.Net.Utils.Tests {
         /// <summary>
         /// Friendly name for this test.
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// List to run.
@@ -67,14 +67,14 @@ namespace Potato.Net.Utils.Tests {
         public event TestEventHandler TestSetup;
 
         protected virtual void OnTestSetup(ProtocolUnitTestEventArgs args) {
-            TestEventHandler handler = TestSetup;
+            var handler = TestSetup;
             if (handler != null) {
                 handler(this, args);
             } 
         }
 
         protected virtual void OnTestEvent(ProtocolUnitTestEventArgs args) {
-            TestEventHandler handler = this.TestEvent;
+            var handler = TestEvent;
             if (handler != null) {
                 handler(this, args);
             } 
@@ -88,10 +88,10 @@ namespace Potato.Net.Utils.Tests {
         /// <param name="game"></param>
         /// <returns></returns>
         protected bool Disconnect(ISandboxProtocolController game) {
-            bool disconnected = true;
+            var disconnected = true;
 
             if (game.State != null && game.State.Settings.Current.ConnectionState != ConnectionState.ConnectionDisconnected) {
-                AutoResetEvent disconnectEvent = new AutoResetEvent(false);
+                var disconnectEvent = new AutoResetEvent(false);
 
                 Action<IClientEventArgs> handler = (args) => {
                     if (args.EventType == ClientEventType.ClientConnectionStateChange) {
@@ -101,7 +101,7 @@ namespace Potato.Net.Utils.Tests {
                     }
                 };
 
-                ISandboxProtocolCallbackProxy originalBubbleProxy = game.Bubble;
+                var originalBubbleProxy = game.Bubble;
 
                 game.Bubble = new SandboxProtocolCallbackProxy() {
                     ClientEvent = new Action<IClientEventArgs>(handler)
@@ -109,8 +109,8 @@ namespace Potato.Net.Utils.Tests {
 
                 game.Shutdown();
                 
-                if ((disconnected = disconnectEvent.WaitOne(this.Timeout * 1000)) == false) {
-                    this.OnTestEvent(new ProtocolUnitTestEventArgs() { Message = "Timeout on client disconnection." });
+                if ((disconnected = disconnectEvent.WaitOne(Timeout * 1000)) == false) {
+                    OnTestEvent(new ProtocolUnitTestEventArgs() { Message = "Timeout on client disconnection." });
                 }
 
                 game.Bubble = originalBubbleProxy;
@@ -125,10 +125,10 @@ namespace Potato.Net.Utils.Tests {
         /// <param name="game"></param>
         /// <returns></returns>
         protected bool LoggedIn(ISandboxProtocolController game) {
-            bool loggedIn = true;
+            var loggedIn = true;
 
             if (game.State == null || game.State.Settings.Current.ConnectionState != ConnectionState.ConnectionLoggedIn) {
-                AutoResetEvent loginEvent = new AutoResetEvent(false);
+                var loginEvent = new AutoResetEvent(false);
 
                 Action<IClientEventArgs> handler = (args) => {
                     if (args.EventType == ClientEventType.ClientConnectionStateChange) {
@@ -138,7 +138,7 @@ namespace Potato.Net.Utils.Tests {
                     }
                 };
 
-                ISandboxProtocolCallbackProxy originalBubbleProxy = game.Bubble;
+                var originalBubbleProxy = game.Bubble;
 
                 game.Bubble = new SandboxProtocolCallbackProxy() {
                     ClientEvent = new Action<IClientEventArgs>(handler)
@@ -146,8 +146,8 @@ namespace Potato.Net.Utils.Tests {
 
                 game.AttemptConnection();
 
-                if ((loggedIn = loginEvent.WaitOne(this.Timeout * 1000)) == false) {
-                    this.OnTestEvent(new ProtocolUnitTestEventArgs() { Message = "Timeout on client connection + login. (check end point & credentials)" });
+                if ((loggedIn = loginEvent.WaitOne(Timeout * 1000)) == false) {
+                    OnTestEvent(new ProtocolUnitTestEventArgs() { Message = "Timeout on client connection + login. (check end point & credentials)" });
                 }
 
                 game.Bubble = originalBubbleProxy;
@@ -157,36 +157,36 @@ namespace Potato.Net.Utils.Tests {
         }
 
         public bool Execute(ISandboxProtocolController game, bool connectionIsolation) {
-            bool success = true;
+            var success = true;
 
             if (connectionIsolation == true) {
                 // 1. Assert the game is disconnected.
-                success = this.Disconnect(game);
+                success = Disconnect(game);
             }
 
             // 2. Assert the game is connected and logged in, ready to go.
-            success = success && this.LoggedIn(game);
+            success = success && LoggedIn(game);
 
-            this.Start = DateTime.Now;
+            Start = DateTime.Now;
 
             if (success == true) {
-                this.OnTestSetup(new ProtocolUnitTestEventArgs() {
+                OnTestSetup(new ProtocolUnitTestEventArgs() {
                     Message = "Test connection reconnected and logged in."
                 });
 
                 // 3. Assert each command is successful in whole from sending a command.
-                foreach (ProtocolUnitTestCommand command in this.TestCommands) {
+                foreach (var command in TestCommands) {
 
-                    AutoResetEvent expectedResults = new AutoResetEvent(false);
+                    var expectedResults = new AutoResetEvent(false);
 
                     // List of packets recieved that were not matched.
-                    List<String> unmatchedReceived = new List<String>();
+                    var unmatchedReceived = new List<string>();
 
-                    ProtocolUnitTestCommand localCommand = command;
+                    var localCommand = command;
 
                     Action<IClientEventArgs> handler = (args) => {
                         if (args.EventType == ClientEventType.ClientPacketReceived) {
-                            ProtocolUnitTestPacket matchedPacket = args.Now.Packets.First().Type == PacketType.Response ? localCommand.Responses.FirstOrDefault(response => response.Matches(args.Now.Packets.First().Text)) : localCommand.Requests.FirstOrDefault(request => request.Matches(args.Now.Packets.First().Text));
+                            var matchedPacket = args.Now.Packets.First().Type == PacketType.Response ? localCommand.Responses.FirstOrDefault(response => response.Matches(args.Now.Packets.First().Text)) : localCommand.Requests.FirstOrDefault(request => request.Matches(args.Now.Packets.First().Text));
 
                             if (matchedPacket != null) {
                                 matchedPacket.Found = true;
@@ -203,7 +203,7 @@ namespace Potato.Net.Utils.Tests {
                         }
                     };
 
-                    ISandboxProtocolCallbackProxy originalBubbleProxy = game.Bubble;
+                    var originalBubbleProxy = game.Bubble;
 
                     game.Bubble = new SandboxProtocolCallbackProxy() {
                         ClientEvent = new Action<IClientEventArgs>(handler)
@@ -213,33 +213,33 @@ namespace Potato.Net.Utils.Tests {
                     game.Action(new NetworkAction() {
                         ActionType = NetworkActionType.NetworkPacketSend,
                         Now = {
-                            Content = new List<String>() {
+                            Content = new List<string>() {
                                 command.Send.Text
                             }
                         }
                     });
 
-                    if ((success = success && expectedResults.WaitOne(this.Timeout * 1000)) == false) {
-                        String[] expecting = command.Responses.Where(response => response.Found == false).Select(response => response.ToString()).Union(command.Requests.Where(request => request.Found == false).Select(request => request.ToString())).ToArray();
+                    if ((success = success && expectedResults.WaitOne(Timeout * 1000)) == false) {
+                        var expecting = command.Responses.Where(response => response.Found == false).Select(response => response.ToString()).Union(command.Requests.Where(request => request.Found == false).Select(request => request.ToString())).ToArray();
 
-                        this.OnTestEvent(new ProtocolUnitTestEventArgs() { Message = String.Format("Expecting: {0}; Received: {1}", String.Join(", ", expecting), String.Join(", ", unmatchedReceived.ToArray())) });
+                        OnTestEvent(new ProtocolUnitTestEventArgs() { Message = string.Format("Expecting: {0}; Received: {1}", string.Join(", ", expecting), string.Join(", ", unmatchedReceived.ToArray())) });
                     }
 
                     game.Bubble = originalBubbleProxy;
                 }
             }
-            this.End = DateTime.Now;
+            End = DateTime.Now;
 
             return success;
         }
 
         public override string ToString() {
-            return this.Name;
+            return Name;
         }
 
         public void Dispose() {
-            this.Name = null;
-            this.TestCommands.ForEach(e => e.Dispose());
+            Name = null;
+            TestCommands.ForEach(e => e.Dispose());
         }
     }
 }

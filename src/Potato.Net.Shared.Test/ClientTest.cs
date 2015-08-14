@@ -32,7 +32,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestAcquireSequenceNumber() {
-            MockTcpClient client = new MockTcpClient();
+            var client = new MockTcpClient();
 
             Assert.AreEqual(1, client.AcquireSequenceNumber);
         }
@@ -43,12 +43,12 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestPokeNulledValues() {
-            MockTcpListener listener = new MockTcpListener() {
+            var listener = new MockTcpListener() {
                 Port = 36000
             };
             listener.BeginListener();
 
-            MockTcpClient client = new MockTcpClient() {
+            var client = new MockTcpClient() {
                 ConnectionState = ConnectionState.ConnectionLoggedIn
             };
 
@@ -57,7 +57,7 @@ namespace Potato.Net.Shared.Test {
                 Port = 36000
             });
 
-            AutoResetEvent connectionWait = new AutoResetEvent(false);
+            var connectionWait = new AutoResetEvent(false);
 
             client.ConnectionStateChanged += (sender, state) => {
                 if (state == ConnectionState.ConnectionReady) {
@@ -81,12 +81,12 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestPokeNewValues() {
-            MockTcpListener listener = new MockTcpListener() {
+            var listener = new MockTcpListener() {
                 Port = 36001
             };
             listener.BeginListener();
 
-            MockTcpClient client = new MockTcpClient() {
+            var client = new MockTcpClient() {
                 LastPacketReceived = new MockPacket() {
                     Packet = {
                         Stamp = DateTime.Now
@@ -104,7 +104,7 @@ namespace Potato.Net.Shared.Test {
                 Port = 36001
             });
 
-            AutoResetEvent connectionWait = new AutoResetEvent(false);
+            var connectionWait = new AutoResetEvent(false);
 
             client.ConnectionStateChanged += (sender, state) => {
                 if (state == ConnectionState.ConnectionReady) {
@@ -128,12 +128,12 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestPokeOldValues() {
-            MockTcpListener listener = new MockTcpListener() {
+            var listener = new MockTcpListener() {
                 Port = 36002
             };
             listener.BeginListener();
 
-            MockTcpClient client = new MockTcpClient() {
+            var client = new MockTcpClient() {
                 LastPacketReceived = new MockPacket() {
                     Packet = {
                         Stamp = DateTime.Now.AddHours(-1)
@@ -151,7 +151,7 @@ namespace Potato.Net.Shared.Test {
                 Port = 36002
             });
 
-            AutoResetEvent connectionWait = new AutoResetEvent(false);
+            var connectionWait = new AutoResetEvent(false);
 
             client.ConnectionStateChanged += (sender, state) => {
                 if (state == ConnectionState.ConnectionReady) {

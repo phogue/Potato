@@ -93,41 +93,41 @@ namespace Potato.Core.Connections {
         /// Initializes the connection controller with default values, setting up command dispatches
         /// </summary>
         public ConnectionController() : base() {
-            this.Shared = new SharedReferences();
+            Shared = new SharedReferences();
 
-            this.ConnectionModel = new ConnectionModel();
+            ConnectionModel = new ConnectionModel();
 
-            this.ProtocolState = new ProtocolState();
+            ProtocolState = new ProtocolState();
 
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.ConnectionQuery,
-                    Handler = this.ConnectionQuery
+                    Handler = ConnectionQuery
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.NetworkProtocolQueryPlayers,
-                    Handler = this.NetworkProtocolQueryPlayers
+                    Handler = NetworkProtocolQueryPlayers
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.NetworkProtocolQuerySettings,
-                    Handler = this.NetworkProtocolQuerySettings
+                    Handler = NetworkProtocolQuerySettings
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.NetworkProtocolQueryBans,
-                    Handler = this.NetworkProtocolQueryBans
+                    Handler = NetworkProtocolQueryBans
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.NetworkProtocolQueryMaps,
-                    Handler = this.NetworkProtocolQueryMaps
+                    Handler = NetworkProtocolQueryMaps
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.NetworkProtocolQueryMapPool,
-                    Handler = this.NetworkProtocolQueryMapPool
+                    Handler = NetworkProtocolQueryMapPool
                 }
             });
 
             // Add all network actions, dispatching them to NetworkProtocolAction
-            this.CommandDispatchers.AddRange(Enum.GetValues(typeof(NetworkActionType)).Cast<NetworkActionType>().Select(actionType => new CommandDispatch() {
+            CommandDispatchers.AddRange(Enum.GetValues(typeof(NetworkActionType)).Cast<NetworkActionType>().Select(actionType => new CommandDispatch() {
                 Name = actionType.ToString(),
                 ParameterTypes = new List<CommandParameterType>() {
                     new CommandParameterType() {
@@ -135,10 +135,10 @@ namespace Potato.Core.Connections {
                         Type = typeof(INetworkAction)
                     }
                 },
-                Handler = this.NetworkProtocolAction
+                Handler = NetworkProtocolAction
             }));
 
-            this.CommandDispatchers.AddRange(Enum.GetValues(typeof(NetworkActionType)).Cast<NetworkActionType>().Select(actionType => new CommandDispatch() {
+            CommandDispatchers.AddRange(Enum.GetValues(typeof(NetworkActionType)).Cast<NetworkActionType>().Select(actionType => new CommandDispatch() {
                 Name = actionType.ToString(),
                 ParameterTypes = new List<CommandParameterType>() {
                     new CommandParameterType() {
@@ -147,13 +147,13 @@ namespace Potato.Core.Connections {
                         IsList = true
                     }
                 },
-                Handler = this.NetworkProtocolActions
+                Handler = NetworkProtocolActions
             }));
         }
 
         public override void WriteConfig(IConfig config, string password = null) {
-            if (this.Plugins != null) {
-                this.Plugins.WriteConfig(config, password);
+            if (Plugins != null) {
+                Plugins.WriteConfig(config, password);
             }
         }
 
@@ -162,10 +162,10 @@ namespace Potato.Core.Connections {
         /// </summary>
         /// <returns></returns>
         public AppDomainSetup CreateAppDomainSetup() {
-            AppDomainSetup setup = new AppDomainSetup {
+            var setup = new AppDomainSetup {
                 LoaderOptimization = LoaderOptimization.MultiDomain,
                 ApplicationBase = AppDomain.CurrentDomain.BaseDirectory,
-                PrivateBinPath = String.Join(";", new[] {
+                PrivateBinPath = string.Join(";", new[] {
                     AppDomain.CurrentDomain.BaseDirectory,
                     Defines.PackageMyrconPotatoCoreLibNet40.FullName,
                     Defines.PackageMyrconPotatoSharedLibNet40.FullName
@@ -180,7 +180,7 @@ namespace Potato.Core.Connections {
         /// </summary>
         /// <returns></returns>
         public PermissionSet CreatePermissionSet(IProtocolAssemblyMetadata meta) {
-            PermissionSet permissions = new PermissionSet(PermissionState.None);
+            var permissions = new PermissionSet(PermissionState.None);
 
             permissions.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution));
 
@@ -191,7 +191,7 @@ namespace Potato.Core.Connections {
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.PathDiscovery, AppDomain.CurrentDomain.BaseDirectory));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, meta.Directory.FullName));
 
-            DirectoryInfo coreSharedPackageDirectory = Defines.PackageContainingPath(Defines.PackageMyrconPotatoSharedLibNet40.FullName);
+            var coreSharedPackageDirectory = Defines.PackageContainingPath(Defines.PackageMyrconPotatoSharedLibNet40.FullName);
 
             if (coreSharedPackageDirectory != null) {
                 permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, coreSharedPackageDirectory.FullName));
@@ -204,26 +204,26 @@ namespace Potato.Core.Connections {
         /// Sets everything up to load the plugins, creating the seperate appdomin and permission requirements
         /// </summary>
         public void SetupProtocolFactory(IProtocolAssemblyMetadata meta) {
-            AppDomainSetup setup = this.CreateAppDomainSetup();
+            var setup = CreateAppDomainSetup();
 
-            PermissionSet permissions = this.CreatePermissionSet(meta);
+            var permissions = CreatePermissionSet(meta);
 
             // Create the app domain and the plugin factory in the new domain.
-            this.AppDomainSandbox = AppDomain.CreateDomain(String.Format("Potato.Protocols.{0}", this.ConnectionModel != null ? this.ConnectionModel.ConnectionGuid.ToString() : String.Empty), null, setup, permissions);
+            AppDomainSandbox = AppDomain.CreateDomain(string.Format("Potato.Protocols.{0}", ConnectionModel != null ? ConnectionModel.ConnectionGuid.ToString() : string.Empty), null, setup, permissions);
 
-            this.ProtocolFactory = (ISandboxProtocolController)this.AppDomainSandbox.CreateInstanceAndUnwrap(typeof(ISandboxProtocolController).Assembly.FullName, typeof(SandboxProtocolController).FullName);
+            ProtocolFactory = (ISandboxProtocolController)AppDomainSandbox.CreateInstanceAndUnwrap(typeof(ISandboxProtocolController).Assembly.FullName, typeof(SandboxProtocolController).FullName);
 
-            this.AssignProtocolEvents();
+            AssignProtocolEvents();
         }
 
         /// <summary>
         /// Assign all current event handlers.
         /// </summary>
         protected void AssignProtocolEvents() {
-            this.UnassignProtocolEvents();
+            UnassignProtocolEvents();
 
-            if (this.ProtocolFactory != null) {
-                this.ProtocolFactory.Bubble = new SandboxProtocolCallbackProxy() {
+            if (ProtocolFactory != null) {
+                ProtocolFactory.Bubble = new SandboxProtocolCallbackProxy() {
                     ProtocolEvent = Protocol_ProtocolEvent,
                     ClientEvent = Protocol_ClientEvent
                 };
@@ -234,8 +234,8 @@ namespace Potato.Core.Connections {
         /// Removes all current event handlers.
         /// </summary>
         protected void UnassignProtocolEvents() {
-            if (this.ProtocolFactory != null) {
-                this.ProtocolFactory.Bubble = null;
+            if (ProtocolFactory != null) {
+                ProtocolFactory.Bubble = null;
             }
         }
 
@@ -243,53 +243,53 @@ namespace Potato.Core.Connections {
         /// Sets up the factory, then attempts to load a specific type into the protocol appdomain.
         /// </summary>
         public bool SetupProtocol(IProtocolAssemblyMetadata meta, IProtocolType type, ProtocolSetup setup) {
-            if (this.ProtocolFactory == null) {
-                this.SetupProtocolFactory(meta);
+            if (ProtocolFactory == null) {
+                SetupProtocolFactory(meta);
             }
 
-            if (this.ProtocolFactory.Create(meta.Assembly.FullName, type) == true) {
-                this.Protocol = this.ProtocolFactory;
+            if (ProtocolFactory.Create(meta.Assembly.FullName, type) == true) {
+                Protocol = ProtocolFactory;
 
-                this.Protocol.Setup(setup);
+                Protocol.Setup(setup);
             }
 
-            return this.Protocol != null;
+            return Protocol != null;
         }
 
         public override ICoreController Execute() {
-            if (this.Protocol != null) {
-                this.ConnectionModel.ProtocolType = this.Protocol.ProtocolType as ProtocolType;
-                this.ConnectionModel.Hostname = this.Protocol.Options.Hostname;
-                this.ConnectionModel.Port = this.Protocol.Options.Port;
-                this.ConnectionModel.Password = this.Protocol.Options.Password;
-                this.ConnectionModel.Arguments = this.Protocol.Options.ArgumentsString();
+            if (Protocol != null) {
+                ConnectionModel.ProtocolType = Protocol.ProtocolType as ProtocolType;
+                ConnectionModel.Hostname = Protocol.Options.Hostname;
+                ConnectionModel.Port = Protocol.Options.Port;
+                ConnectionModel.Password = Protocol.Options.Password;
+                ConnectionModel.Arguments = Protocol.Options.ArgumentsString();
             }
 
-            this.ConnectionModel.ConnectionGuid = MD5.Guid(String.Format("{0}:{1}:{2}", this.ConnectionModel.ProtocolType, this.ConnectionModel.Hostname, this.ConnectionModel.Port));
+            ConnectionModel.ConnectionGuid = MD5.Guid(string.Format("{0}:{1}:{2}", ConnectionModel.ProtocolType, ConnectionModel.Hostname, ConnectionModel.Port));
 
-            this.TextCommands = new TextCommandController() {
+            TextCommands = new TextCommandController() {
                 Connection = this
             };
 
-            this.Plugins = new CorePluginController() {
+            Plugins = new CorePluginController() {
                 Connection = this
             };
 
             // Go up to the the instance that owns this connection
-            this.BubbleObjects.Add(this.Potato);
+            BubbleObjects.Add(Potato);
 
             // Go down to the text commands or plugins owned by this connection.
-            this.TunnelObjects.Add(this.TextCommands);
-            this.TunnelObjects.Add(this.Plugins);
+            TunnelObjects.Add(TextCommands);
+            TunnelObjects.Add(Plugins);
 
             // Registered bubble/tunnel objects, now go.
-            this.TextCommands.Execute();
-            this.Plugins.Execute();
+            TextCommands.Execute();
+            Plugins.Execute();
             
             // Set the default ignore list.
-            this.Shared.Variables.Set(new Command() {
+            Shared.Variables.Set(new Command() {
                 Origin = CommandOrigin.Local
-            }, CommonVariableNames.ProtocolEventsIgnoreList, new List<String>() {
+            }, CommonVariableNames.ProtocolEventsIgnoreList, new List<string>() {
                 ProtocolEventType.ProtocolBanlistUpdated.ToString(), 
                 //GameEventType.GamePlayerlistUpdated.ToString(), 
                 //GameEventType.GameSettingsUpdated.ToString(), 
@@ -302,22 +302,22 @@ namespace Potato.Core.Connections {
         public override void Poke() {
             base.Poke();
 
-            if (this.Protocol != null) {
-                if (this.ProtocolState != null && this.ProtocolState.Settings.Current.ConnectionState == ConnectionState.ConnectionDisconnected) {
-                    this.AttemptConnection();
+            if (Protocol != null) {
+                if (ProtocolState != null && ProtocolState.Settings.Current.ConnectionState == ConnectionState.ConnectionDisconnected) {
+                    AttemptConnection();
                 }
                 else {
-                    this.Protocol.Synchronize();
+                    Protocol.Synchronize();
                 }
             }
 
-            if (this.Plugins != null) {
-                this.Plugins.Poke();
+            if (Plugins != null) {
+                Plugins.Poke();
             }
 
             // Update the lease on the protocol AppDomain
-            if (this.ProtocolFactory != null) {
-                ILease lease = ((MarshalByRefObject)this.ProtocolFactory).GetLifetimeService() as ILease;
+            if (ProtocolFactory != null) {
+                var lease = ((MarshalByRefObject)ProtocolFactory).GetLifetimeService() as ILease;
 
                 if (lease != null) {
                     lease.Renew(lease.InitialLeaseTime);
@@ -326,7 +326,7 @@ namespace Potato.Core.Connections {
         }
 
         public override ICommandResult PropogatePreview(ICommand command, CommandDirection direction) {
-            if (direction == CommandDirection.Bubble && command.Scope != null && command.Scope.ConnectionGuid == this.ConnectionModel.ConnectionGuid) {
+            if (direction == CommandDirection.Bubble && command.Scope != null && command.Scope.ConnectionGuid == ConnectionModel.ConnectionGuid) {
                 // We've bubbled up far enough, time to tunnel down this connection to find our result.
                 return base.PropogatePreview(command, CommandDirection.Tunnel);
             }
@@ -335,7 +335,7 @@ namespace Potato.Core.Connections {
         }
 
         public override ICommandResult PropogateHandler(ICommand command, CommandDirection direction) {
-            if (direction == CommandDirection.Bubble && command.Scope != null && command.Scope.ConnectionGuid == this.ConnectionModel.ConnectionGuid) {
+            if (direction == CommandDirection.Bubble && command.Scope != null && command.Scope.ConnectionGuid == ConnectionModel.ConnectionGuid) {
                 // We've bubbled up far enough, time to tunnel down this connection to find our result.
                 return base.PropogateHandler(command, CommandDirection.Tunnel);
             }
@@ -344,7 +344,7 @@ namespace Potato.Core.Connections {
         }
 
         public override ICommandResult PropogateExecuted(ICommand command, CommandDirection direction) {
-            if (direction == CommandDirection.Bubble && command.Scope != null && command.Scope.ConnectionGuid == this.ConnectionModel.ConnectionGuid) {
+            if (direction == CommandDirection.Bubble && command.Scope != null && command.Scope.ConnectionGuid == ConnectionModel.ConnectionGuid) {
                 // We've bubbled up far enough, time to tunnel down this connection to find our result.
                 return base.PropogateExecuted(command, CommandDirection.Tunnel);
             }
@@ -356,27 +356,27 @@ namespace Potato.Core.Connections {
         /// Attempts communication with the game server.
         /// </summary>
         public void AttemptConnection() {
-            if (this.Protocol != null) {
-                this.Protocol.AttemptConnection();
+            if (Protocol != null) {
+                Protocol.AttemptConnection();
             }
         }
 
         /// <summary>
         /// Queries for information about the current connection
         /// </summary>
-        public ICommandResult ConnectionQuery(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult ConnectionQuery(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                ICommandResult players = this.Tunnel(new Command(command) {
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var players = Tunnel(new Command(command) {
                     CommandType = CommandType.NetworkProtocolQueryPlayers
                 });
 
-                ICommandResult settings = this.Tunnel(new Command(command) {
+                var settings = Tunnel(new Command(command) {
                     CommandType = CommandType.NetworkProtocolQuerySettings
                 });
 
-                ICommandResult maps = this.Tunnel(new Command(command) {
+                var maps = Tunnel(new Command(command) {
                     CommandType = CommandType.NetworkProtocolQueryMaps
                 });
 
@@ -385,12 +385,12 @@ namespace Potato.Core.Connections {
                     CommandResultType = CommandResultType.Success,
                     Scope = new CommandData() {
                         Connections = new List<ConnectionModel>() {
-                            this.ConnectionModel
+                            ConnectionModel
                         }
                     },
                     Now = new CommandData() {
                         // I didn't want plugins to be able to hide themselves.
-                        Plugins = new List<PluginModel>(this.Plugins.LoadedPlugins),
+                        Plugins = new List<PluginModel>(Plugins.LoadedPlugins),
                         Players = players.Now.Players,
                         Settings = settings.Now.Settings,
                         Maps = maps.Now.Maps
@@ -407,20 +407,20 @@ namespace Potato.Core.Connections {
         /// <summary>
         /// Queries this connection for an up to date list of players
         /// </summary>
-        public ICommandResult NetworkProtocolQueryPlayers(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult NetworkProtocolQueryPlayers(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResult() {
                     Success = true,
                     CommandResultType = CommandResultType.Success,
                     Scope = new CommandData() {
                         Connections = new List<ConnectionModel>() {
-                            this.ConnectionModel
+                            ConnectionModel
                         }
                     },
                     Now = new CommandData() {
-                        Players = new List<PlayerModel>(this.ProtocolState.Players.Values)
+                        Players = new List<PlayerModel>(ProtocolState.Players.Values)
                     }
                 };
             }
@@ -434,21 +434,21 @@ namespace Potato.Core.Connections {
         /// <summary>
         /// Queries this connection for the current protocol settings
         /// </summary>
-        public ICommandResult NetworkProtocolQuerySettings(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult NetworkProtocolQuerySettings(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResult() {
                     Success = true,
                     CommandResultType = CommandResultType.Success,
                     Scope = new CommandData() {
                         Connections = new List<ConnectionModel>() {
-                            this.ConnectionModel
+                            ConnectionModel
                         }
                     },
                     Now = new CommandData() {
                         Settings = new List<Settings>() {
-                            this.ProtocolState.Settings
+                            ProtocolState.Settings
                         }
                     }
                 };
@@ -463,20 +463,20 @@ namespace Potato.Core.Connections {
         /// <summary>
         /// Queries this connection for a complete list of active bans
         /// </summary>
-        public ICommandResult NetworkProtocolQueryBans(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult NetworkProtocolQueryBans(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResult() {
                     Success = true,
                     CommandResultType = CommandResultType.Success,
                     Scope = new CommandData() {
                         Connections = new List<ConnectionModel>() {
-                            this.ConnectionModel
+                            ConnectionModel
                         }
                     },
                     Now = new CommandData() {
-                        Bans = new List<BanModel>(this.ProtocolState.Bans.Values)
+                        Bans = new List<BanModel>(ProtocolState.Bans.Values)
                     }
                 };
             }
@@ -490,20 +490,20 @@ namespace Potato.Core.Connections {
         /// <summary>
         /// Queries this connection for a list of maps currently running
         /// </summary>
-        public ICommandResult NetworkProtocolQueryMaps(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult NetworkProtocolQueryMaps(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResult() {
                     Success = true,
                     CommandResultType = CommandResultType.Success,
                     Scope = new CommandData() {
                         Connections = new List<ConnectionModel>() {
-                            this.ConnectionModel
+                            ConnectionModel
                         }
                     },
                     Now = new CommandData() {
-                        Maps = new List<MapModel>(this.ProtocolState.Maps.Values)
+                        Maps = new List<MapModel>(ProtocolState.Maps.Values)
                     }
                 };
             }
@@ -517,20 +517,20 @@ namespace Potato.Core.Connections {
         /// <summary>
         /// Queries this connection for a list of maps available
         /// </summary>
-        public ICommandResult NetworkProtocolQueryMapPool(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult NetworkProtocolQueryMapPool(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResult() {
                     Success = true,
                     CommandResultType = CommandResultType.Success,
                     Scope = new CommandData() {
                         Connections = new List<ConnectionModel>() {
-                            this.ConnectionModel
+                            ConnectionModel
                         }
                     },
                     Now = new CommandData() {
-                        Maps = new List<MapModel>(this.ProtocolState.MapPool.Values)
+                        Maps = new List<MapModel>(ProtocolState.MapPool.Values)
                     }
                 };
             }
@@ -544,19 +544,19 @@ namespace Potato.Core.Connections {
         /// <summary>
         /// Executes a single action on the protocol
         /// </summary>
-        public ICommandResult NetworkProtocolAction(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult NetworkProtocolAction(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            INetworkAction action = parameters["action"].First<INetworkAction>();
+            var action = parameters["action"].First<INetworkAction>();
 
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 action.Name = command.Name;
 
                 result = new CommandResult() {
                     Success = true,
                     CommandResultType = CommandResultType.Success,
                     Now = new CommandData() {
-                        Packets = this.Protocol.Action(action)
+                        Packets = Protocol.Action(action)
                     }
                 };
             }
@@ -573,18 +573,18 @@ namespace Potato.Core.Connections {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult NetworkProtocolActions(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult NetworkProtocolActions(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            List<INetworkAction> actions = parameters["actions"].All<INetworkAction>();
+            var actions = parameters["actions"].All<INetworkAction>();
 
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                List<IPacket> packets = new List<IPacket>();
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var packets = new List<IPacket>();
 
-                foreach (INetworkAction action in actions) {
+                foreach (var action in actions) {
                     action.Name = command.Name;
 
-                    packets.AddRange(this.Protocol.Action(action));
+                    packets.AddRange(Protocol.Action(action));
                 }
 
                 result = new CommandResult() {
@@ -604,46 +604,46 @@ namespace Potato.Core.Connections {
 
         private void Protocol_ClientEvent(IClientEventArgs e) {
             if (e.EventType == ClientEventType.ClientConnectionStateChange) {
-                if (this.Protocol != null) {
-                    var options = this.Protocol.Options;
+                if (Protocol != null) {
+                    var options = Protocol.Options;
 
                     if (options != null) {
-                        this.ConnectionModel.ProtocolType = this.Protocol.ProtocolType as ProtocolType;
-                        this.ConnectionModel.Hostname = options.Hostname;
-                        this.ConnectionModel.Port = options.Port;
+                        ConnectionModel.ProtocolType = Protocol.ProtocolType as ProtocolType;
+                        ConnectionModel.Hostname = options.Hostname;
+                        ConnectionModel.Port = options.Port;
 
                         // Once connected, sync the connection.
                         if (e.ConnectionState == ConnectionState.ConnectionLoggedIn) {
-                            this.Protocol.Synchronize();
+                            Protocol.Synchronize();
                         }
                     }
                 }
 
-                this.Shared.Events.Log(new GenericEvent() {
+                Shared.Events.Log(new GenericEvent() {
                     Name = e.ConnectionState.ToString(),
                     Scope = new CommandData() {
                         Connections = new List<ConnectionModel>() {
-                            this.ConnectionModel
+                            ConnectionModel
                         }
                     },
                     Stamp = e.Stamp
                 });
             }
             else if (e.EventType == ClientEventType.ClientConnectionFailure || e.EventType == ClientEventType.ClientSocketException) {
-                this.Shared.Events.Log(new GenericEvent() {
+                Shared.Events.Log(new GenericEvent() {
                     Name = e.EventType.ToString(),
                     Message = e.Now.Exceptions.FirstOrDefault(),
                     Scope = new CommandData() {
                         Connections = new List<ConnectionModel>() {
-                            this.ConnectionModel
+                            ConnectionModel
                         }
                     },
                     Stamp = e.Stamp
                 });
             }
 
-            if (this.ClientEvent != null) {
-                this.ClientEvent(e);
+            if (ClientEvent != null) {
+                ClientEvent(e);
             }
         }
 
@@ -655,17 +655,17 @@ namespace Potato.Core.Connections {
         /// <param name="e"></param>
         private void Protocol_ProtocolEvent(IProtocolEventArgs e) {
             if (e.StateDifference != null) {
-                this.ProtocolState.Apply(e.StateDifference);
+                ProtocolState.Apply(e.StateDifference);
             }
 
-            if (this.Shared.Variables.Get<List<String>>(CommonVariableNames.ProtocolEventsIgnoreList).Contains(e.ProtocolEventType.ToString()) == false) {
-                this.Shared.Events.Log(new GenericEvent() {
+            if (Shared.Variables.Get<List<string>>(CommonVariableNames.ProtocolEventsIgnoreList).Contains(e.ProtocolEventType.ToString()) == false) {
+                Shared.Events.Log(new GenericEvent() {
                     Name = e.ProtocolEventType.ToString(),
                     Then = GenericEventData.Parse(e.Then),
                     Now = GenericEventData.Parse(e.Now),
                     Scope = new CommandData() {
                         Connections = new List<ConnectionModel>() {
-                            this.ConnectionModel
+                            ConnectionModel
                         }
                     },
                     Stamp = e.Stamp
@@ -673,29 +673,29 @@ namespace Potato.Core.Connections {
             }
 
             if (e.ProtocolEventType == ProtocolEventType.ProtocolChat) {
-                ChatModel chat = e.Now.Chats.First();
+                var chat = e.Now.Chats.First();
 
                 // At least has the first prefix character 
                 // and a little something-something to pass to
                 // the parser.
                 if (chat.Now.Content != null && chat.Now.Content.Count > 0 && chat.Now.Content.First().Length >= 2) {
-                    String prefix = chat.Now.Content.First().First().ToString(CultureInfo.InvariantCulture);
-                    String text = chat.Now.Content.First().Remove(0, 1);
+                    var prefix = chat.Now.Content.First().First().ToString(CultureInfo.InvariantCulture);
+                    var text = chat.Now.Content.First().Remove(0, 1);
 
-                    bool execute = prefix == this.Shared.Variables.Get<String>(CommonVariableNames.TextCommandPublicPrefix) || prefix == this.Shared.Variables.Get<String>(CommonVariableNames.TextCommandProtectedPrefix) || prefix == this.Shared.Variables.Get<String>(CommonVariableNames.TextCommandPrivatePrefix);
+                    var execute = prefix == Shared.Variables.Get<string>(CommonVariableNames.TextCommandPublicPrefix) || prefix == Shared.Variables.Get<string>(CommonVariableNames.TextCommandProtectedPrefix) || prefix == Shared.Variables.Get<string>(CommonVariableNames.TextCommandPrivatePrefix);
 
                     if (execute == true) {
-                        this.Tunnel(new Command() {
+                        Tunnel(new Command() {
                             Origin = CommandOrigin.Plugin,
                             Authentication = {
-                                GameType = this.ConnectionModel.ProtocolType.Type,
+                                GameType = ConnectionModel.ProtocolType.Type,
                                 Uid = chat.Now.Players.First().Uid
                             },
                             CommandType = CommandType.TextCommandsExecute,
                             Parameters = new List<ICommandParameter>() {
                                 new CommandParameter() {
                                     Data = {
-                                        Content = new List<String>() {
+                                        Content = new List<string>() {
                                             text
                                         }
                                     }
@@ -706,42 +706,42 @@ namespace Potato.Core.Connections {
                 }
             }
 
-            if (this.ProtocolEvent != null) {
-                this.ProtocolEvent(e);
+            if (ProtocolEvent != null) {
+                ProtocolEvent(e);
             }
         }
 
         public override void Dispose() {
 
-            this.ConnectionModel.ProtocolType = null;
-            this.ConnectionModel.Hostname = null;
-            this.ConnectionModel.Port = 0;
+            ConnectionModel.ProtocolType = null;
+            ConnectionModel.Hostname = null;
+            ConnectionModel.Port = 0;
 
             // Now shutdown and null out the game. Note that we want to capture and report
             // events during the shutdown, but then we want to unassign events to the game
             // object before we null it out. We only null it so we dont suppress errors.
-            if (this.Protocol != null) {
-                this.Protocol.Shutdown();
+            if (Protocol != null) {
+                Protocol.Shutdown();
             }
 
-            if (this.AppDomainSandbox != null) {
-                AppDomain.Unload(this.AppDomainSandbox);
-                this.AppDomainSandbox = null;
+            if (AppDomainSandbox != null) {
+                AppDomain.Unload(AppDomainSandbox);
+                AppDomainSandbox = null;
             }
 
-            this.ProtocolFactory = null;
+            ProtocolFactory = null;
 
-            this.UnassignProtocolEvents();
+            UnassignProtocolEvents();
 
             // this.Game.Dispose();
-            this.Protocol = null;
+            Protocol = null;
 
-            if (this.TextCommands != null) {
-                this.TextCommands.Dispose();
+            if (TextCommands != null) {
+                TextCommands.Dispose();
             }
 
-            if (this.Plugins != null) {
-                this.Plugins.Dispose();
+            if (Plugins != null) {
+                Plugins.Dispose();
             }
 
             base.Dispose();

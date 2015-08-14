@@ -26,11 +26,11 @@ namespace Potato.Net.Test.Protocols.PunkBuster {
         /// </summary>
         [Test]
         public void TestPunkBusterSerializerPlayer() {
-            IPunkBuster punkBuster = PunkBusterSerializer.Deserialize("PunkBuster Server: 1  b88b60a36365592b1ae94fa04c5763ed(-) 111.222.0.1:3659 OK   1 3.0 0 (V) \"PhogueZero\"");
+            var punkBuster = PunkBusterSerializer.Deserialize("PunkBuster Server: 1  b88b60a36365592b1ae94fa04c5763ed(-) 111.222.0.1:3659 OK   1 3.0 0 (V) \"PhogueZero\"");
 
             Assert.IsInstanceOf<PunkBusterPlayer>(punkBuster);
 
-            PunkBusterPlayer player = punkBuster as PunkBusterPlayer;
+            var player = punkBuster as PunkBusterPlayer;
 
             Assert.AreEqual(1, player.SlotId);
             Assert.AreEqual("b88b60a36365592b1ae94fa04c5763ed", player.Guid);
@@ -43,7 +43,7 @@ namespace Potato.Net.Test.Protocols.PunkBuster {
         /// </summary>
         [Test]
         public void TestPunkBusterSerializerBeginPlayerList() {
-            IPunkBuster punkBuster = PunkBusterSerializer.Deserialize("PunkBuster Server: Player List: [Slot #] [GUID] [Address] [Status] [Power] [Auth Rate] [Recent SS] [O/S] [Name]");
+            var punkBuster = PunkBusterSerializer.Deserialize("PunkBuster Server: Player List: [Slot #] [GUID] [Address] [Status] [Power] [Auth Rate] [Recent SS] [O/S] [Name]");
 
             Assert.IsInstanceOf<PunkBusterBeginPlayerList>(punkBuster);
         }
@@ -53,11 +53,11 @@ namespace Potato.Net.Test.Protocols.PunkBuster {
         /// </summary>
         [Test]
         public void TestPunkBusterSerializerEndPlayerList() {
-            IPunkBuster punkBuster = PunkBusterSerializer.Deserialize("PunkBuster Server: End of Player List (1 Players)");
+            var punkBuster = PunkBusterSerializer.Deserialize("PunkBuster Server: End of Player List (1 Players)");
 
             Assert.IsInstanceOf<PunkBusterEndPlayerList>(punkBuster);
 
-            PunkBusterEndPlayerList endPlayerList = punkBuster as PunkBusterEndPlayerList;
+            var endPlayerList = punkBuster as PunkBusterEndPlayerList;
 
             Assert.AreEqual(1, endPlayerList.PlayerCount);
         }

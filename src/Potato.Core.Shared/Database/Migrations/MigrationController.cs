@@ -42,13 +42,13 @@ namespace Potato.Core.Shared.Database.Migrations {
         /// Sets up a migration controller and initializes the default values.
         /// </summary>
         public MigrationController() {
-            this.Settings = new MigrationSettings();
-            this.Migrations = new List<IMigration>();
+            Settings = new MigrationSettings();
+            Migrations = new List<IMigration>();
         }
 
         public override ICoreController Execute() {
             // Managing migrations 
-            this.Bubble(
+            Bubble(
                 CommandBuilder.DatabaseQuery(
                     new Create()
                     .Collection("Migrations")
@@ -84,24 +84,24 @@ namespace Potato.Core.Shared.Database.Migrations {
         /// <returns>The current version of the migration for this stream</returns>
         public int FindCurrentVersion() {
             // Find the last entry added to the db.
-            ICommandResult result = this.Bubble(
+            var result = Bubble(
                 CommandBuilder.DatabaseQuery(
                     new Find()
-                    .Condition("Origin", this.Settings.Origin.ToString())
-                    .Condition("Name", this.Settings.Name)
+                    .Condition("Origin", Settings.Origin.ToString())
+                    .Condition("Name", Settings.Name)
                     .Sort("_id", new Descending())
                     .Limit(1)
                     .Collection("Migrations")
                 ).SetOrigin(CommandOrigin.Local)
             );
 
-            MigrationModel migration = MigrationModel.FirstFromQuery(result.Now.Queries.FirstOrDefault());
+            var migration = MigrationModel.FirstFromQuery(result.Now.Queries.FirstOrDefault());
 
             if (migration != null) {
-                this.Settings.CurrentVersion = migration.Version;
+                Settings.CurrentVersion = migration.Version;
             }
 
-            return this.Settings.CurrentVersion;
+            return Settings.CurrentVersion;
         }
 
         /// <summary>
@@ -109,11 +109,11 @@ namespace Potato.Core.Shared.Database.Migrations {
         /// </summary>
         /// <param name="version">The version to save to the db</param>
         public void SaveVersion(int version) {
-            this.Bubble(
+            Bubble(
                 CommandBuilder.DatabaseQuery(
                     new MigrationModel() {
-                        Name = this.Settings.Name,
-                        Origin = this.Settings.Origin.ToString(),
+                        Name = Settings.Name,
+                        Origin = Settings.Origin.ToString(),
                         Stamp = DateTime.Now,
                         Version = version
                     }
@@ -128,27 +128,27 @@ namespace Potato.Core.Shared.Database.Migrations {
         /// </summary>
         /// <param name="until">An optional version to migrate to.</param>
         public bool Up(int? until = null) {
-            bool success = true;
+            var success = true;
 
-            int current = this.FindCurrentVersion();
+            var current = FindCurrentVersion();
 
             // Migrate to the latest version OR limit to the latest version.
-            if (until == null || until > this.Migrations.Count) {
-                until = this.Migrations.Count;
+            if (until == null || until > Migrations.Count) {
+                until = Migrations.Count;
             }
 
             // Find out the current version.
             while (current < until && success == true) {
                 // Current is zero indexed, until is one.
-                IMigration migration = this.Migrations.ElementAtOrDefault(current);
+                var migration = Migrations.ElementAtOrDefault(current);
 
                 if (migration != null) {
                     if ((success = migration.Up()) == true) {
-                        this.SaveVersion(current + 1);
+                        SaveVersion(current + 1);
                     }
                 }
 
-                current = this.FindCurrentVersion();
+                current = FindCurrentVersion();
             }
 
             return success;
@@ -159,9 +159,9 @@ namespace Potato.Core.Shared.Database.Migrations {
         /// </summary>
         /// <param name="until">An optional version to migrate to.</param>
         public bool Down(int? until = null) {
-            bool success = true;
+            var success = true;
 
-            int current = this.FindCurrentVersion();
+            var current = FindCurrentVersion();
 
             // Migrate to the latest version OR limit to the latest version.
             if (until == null || until < 0) {
@@ -171,15 +171,15 @@ namespace Potato.Core.Shared.Database.Migrations {
             // Find out the current version.
             while (current > until && success == true) {
                 // Current is zero indexed, until is one.
-                IMigration migration = this.Migrations.ElementAtOrDefault(current - 1);
+                var migration = Migrations.ElementAtOrDefault(current - 1);
 
                 if (migration != null) {
                     if ((success = migration.Down()) == true) {
-                        this.SaveVersion(current - 1);
+                        SaveVersion(current - 1);
                     }
                 }
 
-                current = this.FindCurrentVersion();
+                current = FindCurrentVersion();
             }
 
             return success;

@@ -39,7 +39,7 @@ namespace Potato.Core.Test.Security.Permission {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.VariablesSet, 0).SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, "DoesNotExist")
+            var result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, "DoesNotExist")
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     Username = "Phogue"
@@ -62,7 +62,7 @@ namespace Potato.Core.Test.Security.Permission {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("GroupName", CommandType.VariablesSet, 0).SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, "DoesNotExist")
+            var result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, "DoesNotExist")
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     Username = "PHOGUE"
@@ -86,7 +86,7 @@ namespace Potato.Core.Test.Security.Permission {
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("SecondGroupName", CommandType.VariablesSet, 50).SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Zaeed", CommonProtocolType.DiceBattlefield3, "0123456789").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, "Phogue")
+            var result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, "Phogue")
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     Username = "Zaeed"
@@ -110,7 +110,7 @@ namespace Potato.Core.Test.Security.Permission {
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("SecondGroupName", CommandType.VariablesSet, 50).SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Zaeed", CommonProtocolType.DiceBattlefield3, "0123456789").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, CommonProtocolType.DiceBattlefield3, "ABCDEF")
+            var result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, CommonProtocolType.DiceBattlefield3, "ABCDEF")
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     GameType = CommonProtocolType.DiceBattlefield3,
@@ -135,7 +135,7 @@ namespace Potato.Core.Test.Security.Permission {
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("FirstGroupName", CommandType.VariablesSet, 100).SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, CommonProtocolType.DiceBattlefield3, "ABCDEF")
+            var result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, CommonProtocolType.DiceBattlefield3, "ABCDEF")
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     GameType = CommonProtocolType.DiceBattlefield3,
@@ -162,7 +162,7 @@ namespace Potato.Core.Test.Security.Permission {
 
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("Guest", CommandType.VariablesSet, 50).SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, CommonProtocolType.DiceBattlefield3, "ABCDEF")
+            var result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, CommonProtocolType.DiceBattlefield3, "ABCDEF")
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     GameType = CommonProtocolType.DiceBattlefield3,
@@ -189,7 +189,7 @@ namespace Potato.Core.Test.Security.Permission {
 
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("Guest", CommandType.VariablesSet, 200).SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, CommonProtocolType.DiceBattlefield3, "ABCDEF")
+            var result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, CommonProtocolType.DiceBattlefield3, "ABCDEF")
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     GameType = CommonProtocolType.DiceBattlefield3,
@@ -215,7 +215,7 @@ namespace Potato.Core.Test.Security.Permission {
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("SecondGroupName", CommandType.VariablesSet, 50).SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Zaeed", CommonProtocolType.DiceBattlefield3, "0123456789").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, "Zaeed")
+            var result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, "Zaeed")
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     Username = "Phogue"
@@ -240,7 +240,7 @@ namespace Potato.Core.Test.Security.Permission {
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("SecondGroupName", CommandType.VariablesSet, 50).SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Zaeed", CommonProtocolType.DiceBattlefield3, "0123456789").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, "Zaeed")
+            var result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, "Zaeed")
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     Username = "PHOGUE"
@@ -265,7 +265,7 @@ namespace Potato.Core.Test.Security.Permission {
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("SecondGroupName", CommandType.VariablesSet, 50).SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Zaeed", CommonProtocolType.DiceBattlefield3, "0123456789").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, CommonProtocolType.DiceBattlefield3, "0123456789")
+            var result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, CommonProtocolType.DiceBattlefield3, "0123456789")
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     Username = "Phogue"
@@ -290,7 +290,7 @@ namespace Potato.Core.Test.Security.Permission {
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("SecondGroupName", CommandType.VariablesSet, 50).SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Zaeed", CommonProtocolType.DiceBattlefield3, "0123456789").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, "DoesNotExist")
+            var result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, "DoesNotExist")
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     Username = "Phogue"
@@ -315,7 +315,7 @@ namespace Potato.Core.Test.Security.Permission {
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("SecondGroupName", CommandType.VariablesSet, 50).SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Zaeed", CommonProtocolType.DiceBattlefield3, "0123456789").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, "DoesNotExist")
+            var result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, "DoesNotExist")
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     Username = "PHOGUE"
@@ -340,7 +340,7 @@ namespace Potato.Core.Test.Security.Permission {
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("SecondGroupName", CommandType.VariablesSet, 50).SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Zaeed", CommonProtocolType.DiceBattlefield3, "0123456789").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, CommonProtocolType.DiceBattlefield3, "DoesNotExist")
+            var result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, CommonProtocolType.DiceBattlefield3, "DoesNotExist")
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     Username = "Phogue"
@@ -364,7 +364,7 @@ namespace Potato.Core.Test.Security.Permission {
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("FirstGroupName", CommandType.VariablesSet, 100).SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, "DoesNotExist")
+            var result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, "DoesNotExist")
                 .SetOrigin(CommandOrigin.Plugin)
             );
 
@@ -386,7 +386,7 @@ namespace Potato.Core.Test.Security.Permission {
             security.Tunnel(CommandBuilder.SecurityGroupSetPermission("SecondGroupName", CommandType.VariablesSet, 50).SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Zaeed", CommonProtocolType.DiceBattlefield3, "0123456789").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, CommonProtocolType.DiceBattlefield3, "DoesNotExist")
+            var result = security.Tunnel(CommandBuilder.SecurityQueryPermission(CommandType.VariablesSet, CommonProtocolType.DiceBattlefield3, "DoesNotExist")
                 .SetOrigin(CommandOrigin.None)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     Username = "Phogue"

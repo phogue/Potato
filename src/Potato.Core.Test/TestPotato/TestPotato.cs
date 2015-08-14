@@ -79,7 +79,7 @@ namespace Potato.Core.Test.TestPotato {
             instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PotatoAddConnection,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Myrcon",
                     "MockProtocol",
                     "1.1.1.1",
@@ -92,10 +92,10 @@ namespace Potato.Core.Test.TestPotato {
             // Tests that there is at least one connection.
             Assert.AreEqual(1, instance.Connections.Count);
 
-            ICommandResult result = instance.Tunnel(new Command() {
+            var result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "key",
                     "value"
                 })
@@ -140,7 +140,7 @@ namespace Potato.Core.Test.TestPotato {
             instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PotatoAddConnection,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Myrcon",
                     "MockProtocol",
                     "1.1.1.1",
@@ -153,13 +153,13 @@ namespace Potato.Core.Test.TestPotato {
             // Tests that there is at least one connection.
             Assert.AreEqual(1, instance.Connections.Count);
 
-            ICommandResult result = instance.Tunnel(new Command() {
+            var result = instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
                 Scope = {
                     ConnectionGuid = instance.Connections.First().ConnectionModel.ConnectionGuid
                 },
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "key",
                     "value"
                 })
@@ -213,12 +213,12 @@ namespace Potato.Core.Test.TestPotato {
             configCommand.Decrypt("PotatoConfigurationPassword");
 
             Assert.AreEqual("PotatoAddConnection", configCommand.Command.Name);
-            Assert.AreEqual("Myrcon", configCommand.Command.Parameters[0].First<String>());
-            Assert.AreEqual("MockProtocol", configCommand.Command.Parameters[1].First<String>());
-            Assert.AreEqual("1.1.1.1", configCommand.Command.Parameters[2].First<String>());
-            Assert.AreEqual("27516", configCommand.Command.Parameters[3].First<String>());
-            Assert.AreEqual("password", configCommand.Command.Parameters[4].First<String>());
-            Assert.AreEqual("", configCommand.Command.Parameters[5].First<String>());
+            Assert.AreEqual("Myrcon", configCommand.Command.Parameters[0].First<string>());
+            Assert.AreEqual("MockProtocol", configCommand.Command.Parameters[1].First<string>());
+            Assert.AreEqual("1.1.1.1", configCommand.Command.Parameters[2].First<string>());
+            Assert.AreEqual("27516", configCommand.Command.Parameters[3].First<string>());
+            Assert.AreEqual("password", configCommand.Command.Parameters[4].First<string>());
+            Assert.AreEqual("", configCommand.Command.Parameters[5].First<string>());
 
             instance.Dispose();
         }
@@ -244,7 +244,7 @@ namespace Potato.Core.Test.TestPotato {
             instance.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PotatoAddConnection,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "MockProtocol",
                     "1.1.1.1",
                     27516,

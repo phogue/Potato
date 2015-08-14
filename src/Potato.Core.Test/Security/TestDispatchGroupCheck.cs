@@ -30,7 +30,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now change the language of the account.
-            ICommandResult result = security.DispatchGroupCheck(new Command() {
+            var result = security.DispatchGroupCheck(new Command() {
                 Authentication = {
                     Username = "Phogue"
                 }
@@ -54,7 +54,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Ike").SetOrigin(CommandOrigin.Local));
 
             // Now change the language of the account.
-            ICommandResult result = security.DispatchGroupCheck(new Command() {
+            var result = security.DispatchGroupCheck(new Command() {
                 Authentication = {
                     Username = "Phogue"
                 }
@@ -75,7 +75,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now change the language of the account.
-            ICommandResult result = security.DispatchGroupCheck(new Command() {
+            var result = security.DispatchGroupCheck(new Command() {
                 Authentication = {
                     Username = "Phogue"
                 }
@@ -96,7 +96,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now change the language of the account.
-            ICommandResult result = security.DispatchGroupCheck(new Command() {
+            var result = security.DispatchGroupCheck(new Command() {
                 Authentication = {
                     Username = "AccountDoesNotExist"
                 }

@@ -33,7 +33,7 @@ namespace Potato.Net.Shared.Utils {
         /// <param name="length"></param>
         /// <returns></returns>
         public static string RandomString(int length) {
-            byte[] randBuffer = new byte[length];
+            var randBuffer = new byte[length];
             RandomNumberGenerator.Create().GetBytes(randBuffer);
             return System.Convert.ToBase64String(randBuffer).Remove(length);
         }
@@ -41,19 +41,19 @@ namespace Potato.Net.Shared.Utils {
         /// <summary>
         /// Splits a string into words, preserving words inside quotes
         /// </summary>
-        public static List<String> Wordify(this String data) {
-            List<String> list = new List<String>();
+        public static List<string> Wordify(this string data) {
+            var list = new List<string>();
 
-            String word = String.Empty;
-            int stack = 0;
-            bool escaped = false;
+            var word = string.Empty;
+            var stack = 0;
+            var escaped = false;
 
-            foreach (char input in data) {
+            foreach (var input in data) {
 
                 if (input == ' ') {
                     if (stack == 0) {
                         list.Add(word);
-                        word = String.Empty;
+                        word = string.Empty;
                     }
                     else {
                         word += ' ';
@@ -115,12 +115,12 @@ namespace Potato.Net.Shared.Utils {
         /// <param name="text"></param>
         /// <param name="column"></param>
         /// <returns></returns>
-        public static List<String> WordWrap(this string text, int column) {
-            List<String> result = new List<String>(text.Split(' '));
+        public static List<string> WordWrap(this string text, int column) {
+            var result = new List<string>(text.Split(' '));
 
-            for (int i = 0; i < result.Count - 1; i++) {
+            for (var i = 0; i < result.Count - 1; i++) {
                 if (result[i].Length + result[i + 1].Length + 1 <= column) {
-                    result[i] = String.Format("{0} {1}", result[i], result[i + 1]);
+                    result[i] = string.Format("{0} {1}", result[i], result[i + 1]);
                     result.RemoveAt(i + 1);
                     i--;
                 }
@@ -137,10 +137,10 @@ namespace Potato.Net.Shared.Utils {
         /// <param name="s">String containing diacritics</param>
         /// <returns>Normalized s</returns>
         public static string RemoveDiacritics(this string s) {
-            string normalizedString = s.Normalize(NormalizationForm.FormD);
-            StringBuilder stringBuilder = new StringBuilder();
+            var normalizedString = s.Normalize(NormalizationForm.FormD);
+            var stringBuilder = new StringBuilder();
 
-            foreach (char t in normalizedString.Where(t => CharUnicodeInfo.GetUnicodeCategory(t) != UnicodeCategory.NonSpacingMark)) {
+            foreach (var t in normalizedString.Where(t => CharUnicodeInfo.GetUnicodeCategory(t) != UnicodeCategory.NonSpacingMark)) {
                 stringBuilder.Append(t);
             }
 
@@ -187,7 +187,7 @@ namespace Potato.Net.Shared.Utils {
         /// <param name="s">String containing leet speak</param>
         /// <returns>Normalized s</returns>
         public static string RemoveLeetSpeek(this string s) {
-            return StringExtensions.LeetRules.Aggregate(s, (current, x) => current.Replace(x.Key, x.Value));
+            return LeetRules.Aggregate(s, (current, x) => current.Replace(x.Key, x.Value));
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace Potato.Net.Shared.Utils {
         /// <param name="s">String containing leet speak and diacritics</param>
         /// <returns>Normalized s</returns>
         public static string Strip(this string s) {
-            string stripped = s;
+            var stripped = s;
 
             if (s != null) {
                 stripped = stripped.RemoveLeetSpeek().RemoveDiacritics();
@@ -210,7 +210,7 @@ namespace Potato.Net.Shared.Utils {
         /// <summary>
         /// Sanitizes a directory name (replaces all non-word chars with hyphens)
         /// </summary>
-        public static String SanitizeDirectory(this String s) {
+        public static string SanitizeDirectory(this string s) {
             s = Regex.Replace(s, "[^\\w]+", "-").Trim('-');
 
             return s;
@@ -219,8 +219,8 @@ namespace Potato.Net.Shared.Utils {
         /// <summary>
         /// Strips the query string from a url and sanitizes the remaining text
         /// </summary>
-        public static String Slug(this String s) {
-            String combined = s;
+        public static string Slug(this string s) {
+            var combined = s;
             Uri uri;
 
             if (Uri.TryCreate(s, UriKind.Absolute, out uri) == true) {
@@ -237,8 +237,8 @@ namespace Potato.Net.Shared.Utils {
         /// <param name="search">The string to search for</param>
         /// <param name="replace">The text to replace with</param>
         /// <returns></returns>
-        public static String ReplaceFirst(this String text, String search, String replace) {
-            int pos = text.IndexOf(search, System.StringComparison.Ordinal);
+        public static string ReplaceFirst(this string text, string search, string replace) {
+            var pos = text.IndexOf(search, System.StringComparison.Ordinal);
             if (pos < 0) {
                 return text;
             }

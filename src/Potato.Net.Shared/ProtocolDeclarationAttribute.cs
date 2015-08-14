@@ -23,16 +23,16 @@ namespace Potato.Net.Shared {
         /// <summary>
         /// The name of the author or organization that provides this protocol implementation
         /// </summary>
-        public String Provider { get; set; }
+        public string Provider { get; set; }
 
         /// <summary>
         /// The short key for this game type.
         /// </summary>
-        public String Type { get; set; }
+        public string Type { get; set; }
 
         /// <summary>
         /// The friendly name of the game.
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
     }
 }

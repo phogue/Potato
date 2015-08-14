@@ -26,9 +26,9 @@ namespace Potato.Core.Events {
     /// An end point to push grouped events to via http/https
     /// </summary>
     public class PushEventsEndPoint : IPushEventsEndPoint {
-        public String Id { get; set; }
+        public string Id { get; set; }
 
-        public String StreamKey { get; set; }
+        public string StreamKey { get; set; }
 
         public bool Pushing { get; set; }
 
@@ -36,9 +36,9 @@ namespace Potato.Core.Events {
 
         public int Interval { get; set; }
 
-        public String ContentType { get; set; }
+        public string ContentType { get; set; }
 
-        public List<String> InclusiveNames { get; set; }
+        public List<string> InclusiveNames { get; set; }
 
         public List<IGenericEvent> EventsStream { get; set; }
 
@@ -51,14 +51,14 @@ namespace Potato.Core.Events {
         /// Initializes the end point with the default values.
         /// </summary>
         public PushEventsEndPoint() {
-            this.Id = String.Empty;
-            this.StreamKey = String.Empty;
-            this.EventsStream = new List<IGenericEvent>();
-            this.Pushing = false;
-            this.Interval = 1;
-            this.ContentType = Mime.ApplicationJson;
-            this.Uri = new Uri("http://localhost/");
-            this.InclusiveNames = new List<String>();
+            Id = string.Empty;
+            StreamKey = string.Empty;
+            EventsStream = new List<IGenericEvent>();
+            Pushing = false;
+            Interval = 1;
+            ContentType = Mime.ApplicationJson;
+            Uri = new Uri("http://localhost/");
+            InclusiveNames = new List<string>();
         }
 
         /// <summary>
@@ -66,12 +66,12 @@ namespace Potato.Core.Events {
         /// </summary>
         /// <param name="item">The event to append</param>
         public void Append(IGenericEvent item) {
-            if (this.EventsStream != null) {
-                lock (this.EventsStream) {
-                    if (this.InclusiveNames.Contains(item.Name) == true) {
+            if (EventsStream != null) {
+                lock (EventsStream) {
+                    if (InclusiveNames.Contains(item.Name) == true) {
                         item.Disposed += GenericEventArgs_Disposed;
 
-                        this.EventsStream.Add(item);
+                        EventsStream.Add(item);
                     }
                 }
             }
@@ -85,14 +85,14 @@ namespace Potato.Core.Events {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void GenericEventArgs_Disposed(object sender, EventArgs e) {
-            GenericEvent item = sender as GenericEvent;
+            var item = sender as GenericEvent;
 
             if (item != null) {
                 item.Disposed -= new EventHandler(GenericEventArgs_Disposed);
 
-                lock (this.EventsStream) {
+                lock (EventsStream) {
                     // Remove the item from the outgoing stream if it exists.
-                    this.EventsStream.Remove(item);
+                    EventsStream.Remove(item);
                 }
             }
         }
@@ -103,10 +103,10 @@ namespace Potato.Core.Events {
         /// <param name="writer">The writer to output the serialized data to</param>
         /// <param name="contentType">The type to serialize to</param>
         /// <param name="request">A request payload to send to the push end point</param>
-        public static void WriteSerializedEventsRequest(TextWriter writer, String contentType, PushEventsRequest request) {
+        public static void WriteSerializedEventsRequest(TextWriter writer, string contentType, PushEventsRequest request) {
             switch (contentType) {
                 case Mime.ApplicationJson:
-                    JsonSerializer serializer = new JsonSerializer {
+                    var serializer = new JsonSerializer {
                         NullValueHandling = NullValueHandling.Ignore,
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                     };
@@ -122,55 +122,55 @@ namespace Potato.Core.Events {
         /// </summary>
         public void Push() {
             // Don't block, we'll pick it up next round.
-            if (this.EventsStream != null && this.Pushing == false) {
-                this.Pushing = true;
+            if (EventsStream != null && Pushing == false) {
+                Pushing = true;
 
                 List<IGenericEvent> data;
 
                 // Clone the list of events we're pushing out.
-                lock (this.EventsStream) {
-                    data = new List<IGenericEvent>(this.EventsStream);
+                lock (EventsStream) {
+                    data = new List<IGenericEvent>(EventsStream);
                 }
 
                 // Only transfer if we have something new to report.
                 if (data.Count > 0) {
-                    WebRequest request = WebRequest.Create(this.Uri.ToString());
+                    var request = WebRequest.Create(Uri.ToString());
                     request.Method = WebRequestMethods.Http.Post;
-                    request.ContentType = this.ContentType;
+                    request.ContentType = ContentType;
                     request.Proxy = null;
 
                     request.BeginGetRequestStream(streamAsyncResult => {
                         try {
                             using (TextWriter writer = new StreamWriter(request.EndGetRequestStream(streamAsyncResult))) {
-                                PushEventsEndPoint.WriteSerializedEventsRequest(writer, this.ContentType, new PushEventsRequest() {
-                                    Id = this.Id,
-                                    StreamKey = this.StreamKey,
+                                WriteSerializedEventsRequest(writer, ContentType, new PushEventsRequest() {
+                                    Id = Id,
+                                    StreamKey = StreamKey,
                                     Events = data
                                 });
                             }
 
                             request.BeginGetResponse(responseAsyncResult => {
                                 try {
-                                    WebResponse response = request.EndGetResponse(responseAsyncResult);
+                                    var response = request.EndGetResponse(responseAsyncResult);
 
-                                    this.RequestCompleted(data);
+                                    RequestCompleted(data);
 
                                     response.Close();
                                 }
                                 catch {
                                     // General error, remove our sent data dropping the events. Couldn't communicate with end point.
-                                    this.RequestCompleted(data);
+                                    RequestCompleted(data);
                                 }
                             }, null);
                         }
                         catch {
                             // General error, remove our sent data dropping the events. Couldn't communicate with end point.
-                            this.RequestCompleted(data);
+                            RequestCompleted(data);
                         }
                     }, null);
                 }
                 else {
-                    this.Pushing = false;
+                    Pushing = false;
                 }
             }
         }
@@ -181,37 +181,37 @@ namespace Potato.Core.Events {
         /// left behind. We're just pushing updated data.
         /// </summary>
         private void RequestCompleted(IEnumerable<IGenericEvent> pushedDataList) {
-            if (this.EventsStream != null && pushedDataList != null) {
-                lock (this.EventsStream) {
+            if (EventsStream != null && pushedDataList != null) {
+                lock (EventsStream) {
                     foreach (GenericEvent pushedData in pushedDataList) {
                         pushedData.Disposed -= new EventHandler(GenericEventArgs_Disposed);
 
-                        this.EventsStream.Remove(pushedData);
+                        EventsStream.Remove(pushedData);
                     }
                 }
             }
 
-            this.OnPushCompleted();
+            OnPushCompleted();
 
-            this.Pushing = false;
+            Pushing = false;
         }
 
         protected virtual void OnPushCompleted() {
-            var handler = this.PushCompleted;
+            var handler = PushCompleted;
             if (handler != null) {
                 handler(this);
             }
         }
 
         public void Dispose() {
-            this.Uri = null;
+            Uri = null;
 
-            lock (this.EventsStream) {
-                this.EventsStream.Clear();
-                this.EventsStream = null;
+            lock (EventsStream) {
+                EventsStream.Clear();
+                EventsStream = null;
             }
 
-            this.PushCompleted = null;
+            PushCompleted = null;
         }
     }
 }

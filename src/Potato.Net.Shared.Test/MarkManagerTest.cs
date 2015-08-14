@@ -26,7 +26,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestEmptyMarkListOpenWindow() {
-            MarkManager marks = new MarkManager();
+            var marks = new MarkManager();
 
             Assert.IsTrue(marks.IsValidMarkWindow());
         }
@@ -36,7 +36,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestTwentyMarkListClosedWindow() {
-            MarkManager marks = new MarkManager();
+            var marks = new MarkManager();
 
             for (var count = 0; count < 20; count++) {
                 marks.Mark();
@@ -50,7 +50,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestEmptyMarkListRemoveExpiredNoChange() {
-            MarkManager marks = new MarkManager();
+            var marks = new MarkManager();
 
             marks.RemoveExpiredMarks();
 
@@ -62,7 +62,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestTwoMarkListRemoveExpiredOneOld() {
-            MarkManager marks = new MarkManager();
+            var marks = new MarkManager();
 
             marks.Mark();
             marks.Mark(DateTime.Now.AddHours(-1));

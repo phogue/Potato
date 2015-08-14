@@ -26,14 +26,14 @@ namespace Potato.Net.Shared.Test.TestShared.TestSandboxProtocolController {
 
         [SetUp]
         public void LoadMeta() {
-            this.Meta = new ProtocolAssemblyMetadata() {
+            Meta = new ProtocolAssemblyMetadata() {
                 Directory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory),
                 Assembly = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Myrcon.Protocols.Test.dll")),
                 Meta = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Myrcon.Protocols.Test.json")),
                 Name = "Myrcon.Protocols.Test"
             };
 
-            this.Meta.Load();
+            Meta.Load();
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Potato.Net.Shared.Test.TestShared.TestSandboxProtocolController {
         public void TestSuccess() {
             var controller = new SandboxProtocolController();
 
-            controller.Create(this.Meta.Assembly.FullName, this.Meta.ProtocolTypes.FirstOrDefault(type => type.Type == "MyrconTestProtocol8"));
+            controller.Create(Meta.Assembly.FullName, Meta.ProtocolTypes.FirstOrDefault(type => type.Type == "MyrconTestProtocol8"));
 
             Assert.IsNotNull(controller.SandboxedProtocol);
         }
@@ -56,7 +56,7 @@ namespace Potato.Net.Shared.Test.TestShared.TestSandboxProtocolController {
         public void TestSuccessReturnsTrue() {
             var controller = new SandboxProtocolController();
 
-            var result = controller.Create(this.Meta.Assembly.FullName, this.Meta.ProtocolTypes.FirstOrDefault(type => type.Type == "MyrconTestProtocol8"));
+            var result = controller.Create(Meta.Assembly.FullName, Meta.ProtocolTypes.FirstOrDefault(type => type.Type == "MyrconTestProtocol8"));
 
             Assert.IsTrue(result);
             Assert.IsNotNull(controller.SandboxedProtocol);
@@ -69,7 +69,7 @@ namespace Potato.Net.Shared.Test.TestShared.TestSandboxProtocolController {
         public void TestFailureWhenAssemblyDoesNotExist() {
             var controller = new SandboxProtocolController();
 
-            controller.Create("Protocol.dll", this.Meta.ProtocolTypes.FirstOrDefault(type => type.Type == "MyrconTestProtocol8"));
+            controller.Create("Protocol.dll", Meta.ProtocolTypes.FirstOrDefault(type => type.Type == "MyrconTestProtocol8"));
 
             Assert.IsNull(controller.SandboxedProtocol);
         }
@@ -81,7 +81,7 @@ namespace Potato.Net.Shared.Test.TestShared.TestSandboxProtocolController {
         public void TestFailureReturnsFalse() {
             var controller = new SandboxProtocolController();
 
-            var result = controller.Create("Protocol.dll", this.Meta.ProtocolTypes.FirstOrDefault(type => type.Type == "MyrconTestProtocol8"));
+            var result = controller.Create("Protocol.dll", Meta.ProtocolTypes.FirstOrDefault(type => type.Type == "MyrconTestProtocol8"));
 
             Assert.IsFalse(result);
             Assert.IsNull(controller.SandboxedProtocol);
@@ -94,7 +94,7 @@ namespace Potato.Net.Shared.Test.TestShared.TestSandboxProtocolController {
         public void TestFailureWhenProtocolProviderDoesNotExist() {
             var controller = new SandboxProtocolController();
 
-            controller.Create(this.Meta.Assembly.FullName, new ProtocolType() {
+            controller.Create(Meta.Assembly.FullName, new ProtocolType() {
                 Provider = "Fake",
                 Type = "MyrconTestProtocol8"
             });
@@ -109,7 +109,7 @@ namespace Potato.Net.Shared.Test.TestShared.TestSandboxProtocolController {
         public void TestFailureWhenProtocolTypeDoesNotExist() {
             var controller = new SandboxProtocolController();
 
-            controller.Create(this.Meta.Assembly.FullName, new ProtocolType() {
+            controller.Create(Meta.Assembly.FullName, new ProtocolType() {
                 Provider = "Myrcon",
                 Type = "Fake"
             });

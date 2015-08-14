@@ -37,7 +37,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
 
             // Now add the user.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Make sure the account was successfully created.
             Assert.IsTrue(result.Success);
@@ -54,7 +54,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
 
             // Now add the user.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", String.Empty).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", string.Empty).SetOrigin(CommandOrigin.Local));
 
             // Make sure the account was successfully created.
             Assert.IsFalse(result.Success);
@@ -74,7 +74,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("FirstGroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now move the user to the second group.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityGroupAddAccount("SecondGroupName", "Phogue").SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityGroupAddAccount("SecondGroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Make sure setting the kick permission was successfull.
             Assert.IsTrue(result.Success);
@@ -97,7 +97,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("FirstGroupName", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Now move the user to the second group.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityGroupAddAccount("SecondGroupName", "PHOGUE").SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityGroupAddAccount("SecondGroupName", "PHOGUE").SetOrigin(CommandOrigin.Local));
 
             // Make sure setting the kick permission was successfull.
             Assert.IsTrue(result.Success);
@@ -114,7 +114,7 @@ namespace Potato.Core.Test.Security.Account {
             var security = new SecurityController();
 
             // Add the user.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityGroupAddAccount("NonExistentGroup", "Phogue").SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityGroupAddAccount("NonExistentGroup", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Make sure the command returned nothing
             Assert.IsFalse(result.Success);
@@ -129,7 +129,7 @@ namespace Potato.Core.Test.Security.Account {
             var security = new SecurityController();
 
             // Add the user.
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityGroupAddAccount("Guest", "Phogue").SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityGroupAddAccount("Guest", "Phogue").SetOrigin(CommandOrigin.Local));
 
             // Make sure the command returned nothing
             Assert.IsFalse(result.Success);
@@ -144,7 +144,7 @@ namespace Potato.Core.Test.Security.Account {
             var security = new SecurityController();
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue")
+            var result = security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue")
                 .SetOrigin(CommandOrigin.Remote)
                 .SetAuthentication(new CommandAuthenticationModel() {
                     Username = "Phogue"

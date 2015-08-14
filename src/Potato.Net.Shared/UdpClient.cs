@@ -34,54 +34,54 @@ namespace Potato.Net.Shared {
         public IPEndPoint RemoteIpEndPoint;
 
         protected virtual void ClearConnection() {
-            this.ReceivedBuffer = new byte[this.BufferSize];
+            ReceivedBuffer = new byte[BufferSize];
         }
 
         public override void Connect() {
-            if (this.MarkManager.RemoveExpiredMarks().IsValidMarkWindow() == true) {
-                this.MarkManager.Mark();
+            if (MarkManager.RemoveExpiredMarks().IsValidMarkWindow() == true) {
+                MarkManager.Mark();
 
                 try {
-                    this.ConnectionState = ConnectionState.ConnectionConnecting;
+                    ConnectionState = ConnectionState.ConnectionConnecting;
 
-                    this.Client = new System.Net.Sockets.UdpClient(this.Options.Hostname, this.Options.Port) {
+                    Client = new System.Net.Sockets.UdpClient(Options.Hostname, Options.Port) {
                         DontFragment = true
                     };
 
-                    this.RemoteIpEndPoint = new IPEndPoint(IPAddress.IPv6Any, 0);
-                    this.Client.BeginReceive(this.ReadCallback, null);
+                    RemoteIpEndPoint = new IPEndPoint(IPAddress.IPv6Any, 0);
+                    Client.BeginReceive(ReadCallback, null);
 
-                    this.ConnectionState = ConnectionState.ConnectionReady;
+                    ConnectionState = ConnectionState.ConnectionReady;
                 }
                 catch (SocketException se) {
-                    this.Shutdown(se);
+                    Shutdown(se);
                 }
                 catch (Exception e) {
-                    this.Shutdown(e);
+                    Shutdown(e);
                 }
             }
         }
 
         public override IAsyncResult BeginRead() {
-            return this.Client != null ? this.Client.BeginReceive(this.ReadCallback, null) : null;
+            return Client != null ? Client.BeginReceive(ReadCallback, null) : null;
         }
 
         protected virtual void SendAsynchronousCallback(IAsyncResult ar) {
 
-            IPacketWrapper wrapper = (IPacketWrapper)ar.AsyncState;
+            var wrapper = (IPacketWrapper)ar.AsyncState;
 
             try {
-                if (this.Client != null) {
-                    this.Client.EndSend(ar);
+                if (Client != null) {
+                    Client.EndSend(ar);
 
-                    this.OnPacketSent(wrapper);
+                    OnPacketSent(wrapper);
                 }
             }
             catch (SocketException se) {
-                this.Shutdown(se);
+                Shutdown(se);
             }
             catch (Exception e) {
-                this.Shutdown(e);
+                Shutdown(e);
             }
         }
 
@@ -89,12 +89,12 @@ namespace Potato.Net.Shared {
             IPacket sent = null;
 
             if (wrapper != null) {
-                if (this.BeforePacketSend(wrapper) == false && this.Client != null) {
+                if (BeforePacketSend(wrapper) == false && Client != null) {
 
-                    byte[] bytePacket = this.PacketSerializer.Serialize(wrapper);
+                    var bytePacket = PacketSerializer.Serialize(wrapper);
 
                     if (bytePacket != null && bytePacket.Length > 0) {
-                        this.Client.BeginSend(bytePacket, bytePacket.Length, this.RemoteEndPoint, this.SendAsynchronousCallback, wrapper);
+                        Client.BeginSend(bytePacket, bytePacket.Length, RemoteEndPoint, SendAsynchronousCallback, wrapper);
 
                         sent = wrapper.Packet;
                     }
@@ -107,83 +107,83 @@ namespace Potato.Net.Shared {
         protected virtual void ReadCallback(IAsyncResult ar) {
 
             try {
-                if (this.Client != null) {
+                if (Client != null) {
 
-                    this.ReceivedBuffer = this.Client.EndReceive(ar, ref this.RemoteIpEndPoint);
+                    ReceivedBuffer = Client.EndReceive(ar, ref RemoteIpEndPoint);
 
-                    IPacketWrapper completedPacket = this.PacketSerializer.Deserialize(this.ReceivedBuffer);
+                    var completedPacket = PacketSerializer.Deserialize(ReceivedBuffer);
 
                     if (completedPacket != null) {
-                        this.RemoteEndPoint = completedPacket.Packet.RemoteEndPoint = this.RemoteIpEndPoint;
+                        RemoteEndPoint = completedPacket.Packet.RemoteEndPoint = RemoteIpEndPoint;
 
-                        this.BeforePacketDispatch(completedPacket);
+                        BeforePacketDispatch(completedPacket);
 
-                        this.OnPacketReceived(completedPacket);
+                        OnPacketReceived(completedPacket);
                     }
 
-                    this.BeginRead();
+                    BeginRead();
                 }
                 else {
-                    this.Shutdown(new Exception("No stream exists during receive"));
+                    Shutdown(new Exception("No stream exists during receive"));
                 }
             }
             catch (SocketException se) {
-                this.Shutdown(se);
+                Shutdown(se);
             }
             catch (Exception e) {
-                this.Shutdown(e);
+                Shutdown(e);
             }
         }
 
         public override void Shutdown(Exception e) {
-            if (this.Client != null) {
-                this.ShutdownConnection();
+            if (Client != null) {
+                ShutdownConnection();
 
-                this.OnConnectionFailure(e);
+                OnConnectionFailure(e);
             }
         }
 
         public override void Shutdown(SocketException se) {
-            if (this.Client != null) {
-                this.ShutdownConnection();
+            if (Client != null) {
+                ShutdownConnection();
 
-                this.OnSocketException(se);
+                OnSocketException(se);
             }
         }
 
         public override void Shutdown() {
-            if (this.Client != null) {
-                this.ShutdownConnection();
+            if (Client != null) {
+                ShutdownConnection();
             }
         }
 
         protected override void ShutdownConnection() {
 
-            lock (this.ShutdownConnectionLock) {
+            lock (ShutdownConnectionLock) {
 
-                this.ConnectionState = ConnectionState.ConnectionDisconnecting;
+                ConnectionState = ConnectionState.ConnectionDisconnecting;
 
-                if (this.Client != null) {
+                if (Client != null) {
 
                     try {
-                        if (this.Client != null) {
-                            this.Client.Close();
-                            this.Client = null;
+                        if (Client != null) {
+                            Client.Close();
+                            Client = null;
                         }
                     }
                     catch (SocketException se) {
-                        this.OnSocketException(se);
+                        OnSocketException(se);
                     }
                     catch (Exception) {
 
                     }
                     finally {
-                        this.ConnectionState = ConnectionState.ConnectionDisconnected;
+                        ConnectionState = ConnectionState.ConnectionDisconnected;
                     }
                 }
                 else {
                     // Nothing connected, set to disconnected.
-                    this.ConnectionState = ConnectionState.ConnectionDisconnected;
+                    ConnectionState = ConnectionState.ConnectionDisconnected;
                 }
             }
         }

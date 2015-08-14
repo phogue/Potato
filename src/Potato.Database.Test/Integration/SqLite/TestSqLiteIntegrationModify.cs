@@ -25,13 +25,13 @@ namespace Potato.Database.Test.Integration.SqLite {
     public class TestSqLiteIntegrationModify : TestDatabaseIntegrationModify {
 
         public TestSqLiteIntegrationModify() {
-            this.Integration = new SqLiteDatabaseIntegration();
+            Integration = new SqLiteDatabaseIntegration();
         }
 
         [Test]
         public override void TestModifyPlayerSetName() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
-                this.TestModifyPlayerSetNameImplicit
+            Integration.TestFindQuery(TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
+                TestModifyPlayerSetNameImplicit
             }),
             new Find().Collection("Player"),
             new JArray() {
@@ -64,8 +64,8 @@ namespace Potato.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestModifyPlayerSetNameScore() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
-                this.TestModifyPlayerSetNameScoreImplicit
+            Integration.TestFindQuery(TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
+                TestModifyPlayerSetNameScoreImplicit
             }),
             new Find().Collection("Player"),
             new JArray() {
@@ -98,8 +98,8 @@ namespace Potato.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestModifyPlayerSetScoreWhereNameEqualsPhogue() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
-                this.TestModifyPlayerSetScoreWhereNameEqualsPhogueImplicit
+            Integration.TestFindQuery(TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
+                TestModifyPlayerSetScoreWhereNameEqualsPhogueImplicit
             }),
             new Find().Collection("Player"),
             new JArray() {
@@ -132,8 +132,8 @@ namespace Potato.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestModifyPlayerSetScoreWhereNameEqualsPhogueAndRankAbove10() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
-                this.TestModifyPlayerSetScoreWhereNameEqualsPhogueAndRankAbove10Implicit
+            Integration.TestFindQuery(TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
+                TestModifyPlayerSetScoreWhereNameEqualsPhogueAndRankAbove10Implicit
             }),
             new Find().Collection("Player"),
             new JArray() {

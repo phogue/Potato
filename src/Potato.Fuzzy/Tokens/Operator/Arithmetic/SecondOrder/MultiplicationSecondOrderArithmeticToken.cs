@@ -25,32 +25,32 @@ namespace Potato.Fuzzy.Tokens.Operator.Arithmetic.SecondOrder {
             return TokenReflection.CreateDescendants<MultiplicationSecondOrderArithmeticToken>(state, phrase);
         }
 
-        public static Phrase ReduceMultiplierMultiplyMultiplicand(IFuzzyState state, Dictionary<String, Token> parameters) {
-            FloatNumericPrimitiveToken multiplier = (FloatNumericPrimitiveToken) parameters["multiplier"];
-            MultiplicationSecondOrderArithmeticToken multiply = (MultiplicationSecondOrderArithmeticToken) parameters["multiply"];
-            FloatNumericPrimitiveToken multiplicand = (FloatNumericPrimitiveToken) parameters["multiplicand"];
+        public static Phrase ReduceMultiplierMultiplyMultiplicand(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var multiplier = (FloatNumericPrimitiveToken) parameters["multiplier"];
+            var multiply = (MultiplicationSecondOrderArithmeticToken) parameters["multiply"];
+            var multiplicand = (FloatNumericPrimitiveToken) parameters["multiplicand"];
 
-            AsteriskTypographySyntaxToken asterisk = new AsteriskTypographySyntaxToken() {
+            var asterisk = new AsteriskTypographySyntaxToken() {
                 Text = multiply.Text,
                 Similarity = multiply.Similarity
             };
 
-            return MultiplicationSecondOrderArithmeticToken.ReduceMultiplierAsteriskMultiplicand(state, new Dictionary<String, Token>() {
+            return ReduceMultiplierAsteriskMultiplicand(state, new Dictionary<string, Token>() {
                 {"multiplier", multiplier},
                 {"asterisk", asterisk},
                 {"multiplicand", multiplicand}
             });
         }
 
-        public static Phrase ReduceMultiplierAsteriskMultiplicand(IFuzzyState state, Dictionary<String, Token> parameters) {
-            FloatNumericPrimitiveToken multiplier = (FloatNumericPrimitiveToken) parameters["multiplier"];
-            AsteriskTypographySyntaxToken asterisk = (AsteriskTypographySyntaxToken) parameters["asterisk"];
-            FloatNumericPrimitiveToken multiplicand = (FloatNumericPrimitiveToken) parameters["multiplicand"];
+        public static Phrase ReduceMultiplierAsteriskMultiplicand(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var multiplier = (FloatNumericPrimitiveToken) parameters["multiplier"];
+            var asterisk = (AsteriskTypographySyntaxToken) parameters["asterisk"];
+            var multiplicand = (FloatNumericPrimitiveToken) parameters["multiplicand"];
 
             return new Phrase() {
                 new FloatNumericPrimitiveToken() {
                     Value = multiplier.ToFloat() * multiplicand.ToFloat(),
-                    Text = String.Format("{0} {1} {2}", multiplier.Text, asterisk.Text, multiplicand.Text),
+                    Text = string.Format("{0} {1} {2}", multiplier.Text, asterisk.Text, multiplicand.Text),
                     Similarity = (multiplier.Similarity + asterisk.Similarity + multiplicand.Similarity) / 3.0F
                 }
             };

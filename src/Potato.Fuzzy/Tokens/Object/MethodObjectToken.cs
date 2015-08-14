@@ -24,7 +24,7 @@ namespace Potato.Fuzzy.Tokens.Object {
         }
 
         public override string ToString() {
-            return String.Format("{0},{1}", base.ToString(), this.MethodName);
+            return string.Format("{0},{1}", base.ToString(), MethodName);
         }
     }
 }

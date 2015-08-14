@@ -23,7 +23,7 @@ using System.Collections.Generic;
 namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
     public class ExecutableEnumTester : CoreController {
         public ExecutableEnumTester() : base() {
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     CommandAttributeType = CommandAttributeType.Executed,
@@ -33,7 +33,7 @@ namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
                             Type = typeof (ExecutableFlagsEnum)
                         }
                     },
-                    Handler = this.SetTestFlagsEnum
+                    Handler = SetTestFlagsEnum
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
@@ -44,7 +44,7 @@ namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
                             Type = typeof (ExecutableEnum)
                         }
                     },
-                    Handler = this.SetTestEnum
+                    Handler = SetTestEnum
                 }
             });
         }
@@ -56,10 +56,10 @@ namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
         /// <summary>
         ///     Tests that a flags enumerator will be passed through
         /// </summary>
-        public ICommandResult SetTestFlagsEnum(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            ExecutableFlagsEnum value = parameters["value"].First<ExecutableFlagsEnum>();
+        public ICommandResult SetTestFlagsEnum(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var value = parameters["value"].First<ExecutableFlagsEnum>();
 
-            ICommandResult result = command.Result;
+            var result = command.Result;
 
             TestExecutableFlagsEnum = value;
 
@@ -69,10 +69,10 @@ namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
         /// <summary>
         ///     Tests that a enumerator will be passed through
         /// </summary>
-        public ICommandResult SetTestEnum(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            ExecutableEnum value = parameters["value"].First<ExecutableEnum>();
+        public ICommandResult SetTestEnum(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var value = parameters["value"].First<ExecutableEnum>();
 
-            ICommandResult result = command.Result;
+            var result = command.Result;
 
             TestExecutableEnum = value;
 

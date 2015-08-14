@@ -22,28 +22,28 @@ namespace Potato.Net.Shared.Actions {
     /// </summary>
     [Serializable]
     public class NetworkAction : NetworkModel, INetworkAction {
-        public String Name {
-            get { return this._name; }
+        public string Name {
+            get { return _name; }
             set {
-                if (this._name != value) {
-                    this._name = value;
+                if (_name != value) {
+                    _name = value;
 
-                    NetworkActionType parsed = NetworkActionType.None;
+                    var parsed = NetworkActionType.None;
                     
-                    if (Enum.TryParse(this._name, true, out parsed) == true) {
-                        this.ActionType = parsed;
+                    if (Enum.TryParse(_name, true, out parsed) == true) {
+                        ActionType = parsed;
                     }
                 }
             }
         }
-        private String _name;
+        private string _name;
 
         public NetworkActionType ActionType {
-            get { return this._actionType; }
+            get { return _actionType; }
             set {
-                if (this._actionType != value) {
-                    this._actionType = value;
-                    this.Name = this._actionType.ToString();
+                if (_actionType != value) {
+                    _actionType = value;
+                    Name = _actionType.ToString();
                 }
             }
         }
@@ -55,7 +55,7 @@ namespace Potato.Net.Shared.Actions {
         /// Initializes the network action with a new Guid
         /// </summary>
         public NetworkAction(): base() {
-            this.Uid = Guid.NewGuid();
+            Uid = Guid.NewGuid();
         }
     }
 }

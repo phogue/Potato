@@ -30,12 +30,12 @@ namespace Potato.Net.Shared.Statistics {
         /// <param name="players">The sample</param>
         /// <param name="field">The field within each item to find</param>
         /// <param name="value">How to find the field within each item</param>
-        public static void PropertyOutliers(ConcurrentDictionary<String, PlayerModel> players, String field, Func<PlayerModel, float> value) {
+        public static void PropertyOutliers(ConcurrentDictionary<string, PlayerModel> players, string field, Func<PlayerModel, float> value) {
             var mean = players.Values.Mean(value);
 
             var standardDeviation = players.Values.StdDev(value, mean);
 
-            foreach (PlayerModel player in players.Values) {
+            foreach (var player in players.Values) {
                 var deviations = ((value(player) - mean) / standardDeviation);
 
                 if (deviations >= 2.0f) {
@@ -54,16 +54,16 @@ namespace Potato.Net.Shared.Statistics {
         /// Calculates the outlier information for each field in the collection of players.
         /// </summary>
         /// <param name="players">The list of players to find the outliers for</param>
-        public static void Outliers(ConcurrentDictionary<String, PlayerModel> players) {
-            foreach (PlayerModel player in players.Values) {
+        public static void Outliers(ConcurrentDictionary<string, PlayerModel> players) {
+            foreach (var player in players.Values) {
                 player.Outliers.Clear();
             }
 
-            Players.PropertyOutliers(players, "Kills", model => model.Kills);
-            Players.PropertyOutliers(players, "Deaths", model => model.Deaths);
-            Players.PropertyOutliers(players, "Kdr", model => model.Kdr);
-            Players.PropertyOutliers(players, "Score", model => model.Score);
-            Players.PropertyOutliers(players, "Ping", model => model.Ping);
+            PropertyOutliers(players, "Kills", model => model.Kills);
+            PropertyOutliers(players, "Deaths", model => model.Deaths);
+            PropertyOutliers(players, "Kdr", model => model.Kdr);
+            PropertyOutliers(players, "Score", model => model.Score);
+            PropertyOutliers(players, "Ping", model => model.Ping);
         }
     }
 }

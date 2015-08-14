@@ -24,7 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.lblVersion = new System.Windows.Forms.Label();
             this.pnlConnection = new System.Windows.Forms.Panel();
             this.txtAdditional = new System.Windows.Forms.TextBox();

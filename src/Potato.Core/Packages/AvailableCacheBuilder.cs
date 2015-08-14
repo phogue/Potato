@@ -28,11 +28,11 @@ namespace Potato.Core.Packages {
         public IList<IPackage> Source { get; set; }
 
         public void Build() {
-            foreach (var availablePackage in this.Source) {
-                PackageWrapperModel packageWrapper = this.Cache.FirstOrDefault(pack => pack.Id == availablePackage.Id);
+            foreach (var availablePackage in Source) {
+                var packageWrapper = Cache.FirstOrDefault(pack => pack.Id == availablePackage.Id);
 
                 if (packageWrapper == null) {
-                    this.Cache.Add(new PackageWrapperModel() {
+                    Cache.Add(new PackageWrapperModel() {
                         State = PackageState.NotInstalled,
                         Available = PackageFactory.CreatePackageModelFromNugetPackage(availablePackage)
                     });

@@ -59,7 +59,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestGenerations.TestSecond {
 
             var request = new FrostbitePacket() {
                 Packet = new Packet() {
-                    Words = new List<String>() {
+                    Words = new List<string>() {
                         "a",
                         "b",
                         "c",
@@ -105,7 +105,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestGenerations.TestSecond {
 
             var request = new FrostbitePacket() {
                 Packet = new Packet() {
-                    Words = new List<String>() {
+                    Words = new List<string>() {
                         "player.onKill",
                         "Phogue",
                         "Zaeed",
@@ -160,7 +160,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestGenerations.TestSecond {
 
             var request = new FrostbitePacket() {
                 Packet = new Packet() {
-                    Words = new List<String>() {
+                    Words = new List<string>() {
                         "player.onKill",
                         "Phogue",
                         "Zaeed",
@@ -210,7 +210,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestGenerations.TestSecond {
 
             var request = new FrostbitePacket() {
                 Packet = new Packet() {
-                    Words = new List<String>() {
+                    Words = new List<string>() {
                         "player.onKill",
                         "Phogue",
                         "Zaeed",
@@ -262,7 +262,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestGenerations.TestSecond {
 
             var request = new FrostbitePacket() {
                 Packet = new Packet() {
-                    Words = new List<String>() {
+                    Words = new List<string>() {
                         "player.onKill",
                         "Phogue",
                         "Zaeed",
@@ -301,7 +301,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestGenerations.TestSecond {
 
             var request = new FrostbitePacket() {
                 Packet = new Packet() {
-                    Words = new List<String>() {
+                    Words = new List<string>() {
                         "player.onKill",
                         "Phogue",
                         "Zaeed",
@@ -351,7 +351,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestGenerations.TestSecond {
 
             var request = new FrostbitePacket() {
                 Packet = new Packet() {
-                    Words = new List<String>() {
+                    Words = new List<string>() {
                         "player.onKill",
                         "Phogue",
                         "Zaeed",
@@ -403,7 +403,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestGenerations.TestSecond {
 
             var request = new FrostbitePacket() {
                 Packet = new Packet() {
-                    Words = new List<String>() {
+                    Words = new List<string>() {
                         "player.onKill",
                         "Phogue",
                         "Zaeed",
@@ -442,7 +442,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestGenerations.TestSecond {
 
             var request = new FrostbitePacket() {
                 Packet = new Packet() {
-                    Words = new List<String>() {
+                    Words = new List<string>() {
                         "player.onKill",
                         "Phogue",
                         "Zaeed",
@@ -492,7 +492,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestGenerations.TestSecond {
 
             var request = new FrostbitePacket() {
                 Packet = new Packet() {
-                    Words = new List<String>() {
+                    Words = new List<string>() {
                         "player.onKill",
                         "Phogue",
                         "Zaeed",
@@ -526,7 +526,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestGenerations.TestSecond {
 
             var request = new FrostbitePacket() {
                 Packet = new Packet() {
-                    Words = new List<String>() {
+                    Words = new List<string>() {
                         "player.onKill",
                         "Phogue",
                         "Zaeed",
@@ -553,7 +553,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestGenerations.TestSecond {
 
             var request = new FrostbitePacket() {
                 Packet = new Packet() {
-                    Words = new List<String>() {
+                    Words = new List<string>() {
                         "player.onKill",
                         "Phogue",
                         "Zaeed",

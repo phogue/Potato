@@ -26,18 +26,18 @@ namespace Potato.Core.Shared.Models {
         /// <summary>
         /// The command being executed. This is the only value used to match up a command.
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The command to be executed, will be converted to a string in Name
         /// </summary>
         public CommandType CommandType {
-            get { return this._mCommandType; }
+            get { return _mCommandType; }
             set {
-                this._mCommandType = value;
+                _mCommandType = value;
 
-                if (this._mCommandType != CommandType.None) {
-                    this.Name = value.ToString();
+                if (_mCommandType != CommandType.None) {
+                    Name = value.ToString();
                 }
             }
         }
@@ -46,7 +46,7 @@ namespace Potato.Core.Shared.Models {
         /// <summary>
         /// A short, sweet description about what the permission does.
         /// </summary>
-        public String Description { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// A list of traits describing how this permission should be handled.
@@ -55,7 +55,7 @@ namespace Potato.Core.Shared.Models {
         /// is never used against another account so level of authority is
         /// never a permission to deny access.
         /// </summary>
-        public List<String> Traits { get; set; }
+        public List<string> Traits { get; set; }
 
         /// <summary>
         /// The power/value they have for this permission
@@ -67,17 +67,17 @@ namespace Potato.Core.Shared.Models {
         /// Initializes the permission with default values.
         /// </summary>
         public PermissionModel() {
-            this.Authority = null;
-            this.Traits = new List<String>();
+            Authority = null;
+            Traits = new List<string>();
         }
 
         public void Dispose() {
-            this.CommandType = CommandType.None;
-            this.Name = null;
-            this.Authority = null;
-            this.Traits.Clear();
-            this.Traits = null;
-            this.Description = null;
+            CommandType = CommandType.None;
+            Name = null;
+            Authority = null;
+            Traits.Clear();
+            Traits = null;
+            Description = null;
         }
     }
 }

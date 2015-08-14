@@ -32,14 +32,14 @@ namespace Potato.Service.Shared.Test.TestServiceController.Mocks {
         public Action<object, string, string> PackageUninstalled { get; set; }
 
         public void MergePackage(string uri, string packageId) {
-            if (this.PackageInstalled != null) {
-                this.PackageInstalled(this, packageId, "1.0.0");
+            if (PackageInstalled != null) {
+                PackageInstalled(this, packageId, "1.0.0");
             }
         }
 
         public void UninstallPackage(string packageId) {
-            if (this.PackageUninstalled != null) {
-                this.PackageUninstalled(this, packageId, "1.0.0");
+            if (PackageUninstalled != null) {
+                PackageUninstalled(this, packageId, "1.0.0");
             }
         }
     }

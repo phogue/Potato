@@ -25,7 +25,7 @@ namespace Potato.Net.Shared {
         /// <summary>
         /// List of exceptions attached to this event, if any.
         /// </summary>
-        List<String> Exceptions { get; set; }
+        List<string> Exceptions { get; set; }
 
         /// <summary>
         /// List of packets attached to this event, if any.

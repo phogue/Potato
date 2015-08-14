@@ -33,11 +33,11 @@ namespace Potato.Net.Shared.Protocols.PunkBuster {
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static IPunkBuster Deserialize(String text) {
+        public static IPunkBuster Deserialize(string text) {
             IPunkBuster deserialized = null;
             
-            foreach (KeyValuePair<Regex, Type> command in PunkBusterSerializer.Commands) {
-                Match matchedCommand = command.Key.Match(text);
+            foreach (var command in Commands) {
+                var matchedCommand = command.Key.Match(text);
 
                 if (matchedCommand.Success == true) {
                     deserialized = (IPunkBuster)Activator.CreateInstance(command.Value);

@@ -32,11 +32,11 @@ namespace Potato.Core.Shared.Test.TestConfig {
         public void TestEmptyDocumentCreatesFile() {
             IConfig config = new Config();
 
-            config.Save(this.ConfigFileA);
+            config.Save(ConfigFileA);
 
-            this.ConfigFileA.Refresh();
+            ConfigFileA.Refresh();
 
-            Assert.IsTrue(this.ConfigFileA.Exists);
+            Assert.IsTrue(ConfigFileA.Exists);
         }
 
         /// <summary>
@@ -50,11 +50,11 @@ namespace Potato.Core.Shared.Test.TestConfig {
                 }
             };
 
-            config.Save(this.ConfigFileA);
+            config.Save(ConfigFileA);
 
-            this.ConfigFileA.Refresh();
+            ConfigFileA.Refresh();
 
-            Assert.IsTrue(this.ConfigFileA.Exists);
+            Assert.IsTrue(ConfigFileA.Exists);
         }
 
         /// <summary>
@@ -68,12 +68,12 @@ namespace Potato.Core.Shared.Test.TestConfig {
                 }
             };
 
-            config.Save(this.ConfigFileA);
+            config.Save(ConfigFileA);
 
-            JObject deseralized = JsonConvert.DeserializeObject(File.ReadAllText(this.ConfigFileA.FullName)) as JObject;
+            var deseralized = JsonConvert.DeserializeObject(File.ReadAllText(ConfigFileA.FullName)) as JObject;
 
             Assert.IsNotNull(deseralized);
-            Assert.AreEqual("World!", deseralized["Hello"].Value<String>());
+            Assert.AreEqual("World!", deseralized["Hello"].Value<string>());
         }
 
         /// <summary>

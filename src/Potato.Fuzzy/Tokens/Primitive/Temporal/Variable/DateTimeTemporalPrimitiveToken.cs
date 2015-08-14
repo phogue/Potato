@@ -28,19 +28,19 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable {
     using Potato.Fuzzy.Utils;
 
     public class DateTimeTemporalPrimitiveToken : TemporalToken {
-        public static Phrase ReduceDateTimeDateTime(IFuzzyState state, Dictionary<String, Token> parameters) {
-            DateTimeTemporalPrimitiveToken dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
-            DateTimeTemporalPrimitiveToken dateTimeB = (DateTimeTemporalPrimitiveToken) parameters["dateTimeB"];
+        public static Phrase ReduceDateTimeDateTime(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
+            var dateTimeB = (DateTimeTemporalPrimitiveToken) parameters["dateTimeB"];
 
             Phrase phrase = null;
 
-            FuzzyDateTimePattern combined = dateTimeA.Pattern + dateTimeB.Pattern;
+            var combined = dateTimeA.Pattern + dateTimeB.Pattern;
 
             if (combined != null) {
                 phrase = new Phrase() {
                     new DateTimeTemporalPrimitiveToken() {
                         Pattern = combined,
-                        Text = String.Format("{0} {1}", dateTimeA.Text, dateTimeB.Text),
+                        Text = string.Format("{0} {1}", dateTimeA.Text, dateTimeB.Text),
                         Similarity = (dateTimeA.Similarity + dateTimeB.Similarity) / 2.0F
                     }
                 };
@@ -49,20 +49,20 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable {
             return phrase;
         }
 
-        public static Phrase ReduceDateTimeAndDateTime(IFuzzyState state, Dictionary<String, Token> parameters) {
-            DateTimeTemporalPrimitiveToken dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
-            AndLogicalOperatorToken and = (AndLogicalOperatorToken) parameters["and"];
-            DateTimeTemporalPrimitiveToken dateTimeB = (DateTimeTemporalPrimitiveToken) parameters["dateTimeB"];
+        public static Phrase ReduceDateTimeAndDateTime(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
+            var and = (AndLogicalOperatorToken) parameters["and"];
+            var dateTimeB = (DateTimeTemporalPrimitiveToken) parameters["dateTimeB"];
 
             Phrase phrase = null;
 
-            FuzzyDateTimePattern combined = dateTimeA.Pattern + dateTimeB.Pattern;
+            var combined = dateTimeA.Pattern + dateTimeB.Pattern;
 
             if (combined != null) {
                 phrase = new Phrase() {
                     new DateTimeTemporalPrimitiveToken() {
                         Pattern = combined,
-                        Text = String.Format("{0} {1} {2}", dateTimeA.Text, and.Text, dateTimeB.Text),
+                        Text = string.Format("{0} {1} {2}", dateTimeA.Text, and.Text, dateTimeB.Text),
                         Similarity = (dateTimeA.Similarity + and.Similarity + dateTimeB.Similarity) / 3.0F
                     }
                 };
@@ -71,51 +71,51 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable {
             return phrase;
         }
 
-        public static Phrase ReduceDateTimeAdditionDateTime(IFuzzyState state, Dictionary<String, Token> parameters) {
-            DateTimeTemporalPrimitiveToken dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
-            AdditionThirdOrderArithmeticOperatorToken addition = (AdditionThirdOrderArithmeticOperatorToken) parameters["addition"];
-            DateTimeTemporalPrimitiveToken dateTimeB = (DateTimeTemporalPrimitiveToken) parameters["dateTimeB"];
+        public static Phrase ReduceDateTimeAdditionDateTime(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
+            var addition = (AdditionThirdOrderArithmeticOperatorToken) parameters["addition"];
+            var dateTimeB = (DateTimeTemporalPrimitiveToken) parameters["dateTimeB"];
 
-            AndLogicalOperatorToken and = new AndLogicalOperatorToken() {
+            var and = new AndLogicalOperatorToken() {
                 Text = addition.Text,
                 Similarity = addition.Similarity
             };
 
-            return DateTimeTemporalPrimitiveToken.ReduceDateTimeAndDateTime(state, new Dictionary<String, Token>() {
+            return ReduceDateTimeAndDateTime(state, new Dictionary<string, Token>() {
                 {"dateTimeA", dateTimeA},
                 {"and", and},
                 {"dateTimeB", dateTimeB}
             });
         }
 
-        public static Phrase ReduceDateTimeAtDateTime(IFuzzyState state, Dictionary<String, Token> parameters) {
-            DateTimeTemporalPrimitiveToken dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
-            AtAdpositionsPrepositionsSyntaxToken at = (AtAdpositionsPrepositionsSyntaxToken) parameters["at"];
-            DateTimeTemporalPrimitiveToken dateTimeB = (DateTimeTemporalPrimitiveToken) parameters["dateTimeB"];
+        public static Phrase ReduceDateTimeAtDateTime(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
+            var at = (AtAdpositionsPrepositionsSyntaxToken) parameters["at"];
+            var dateTimeB = (DateTimeTemporalPrimitiveToken) parameters["dateTimeB"];
 
-            AndLogicalOperatorToken and = new AndLogicalOperatorToken() {
+            var and = new AndLogicalOperatorToken() {
                 Text = at.Text,
                 Similarity = at.Similarity
             };
 
-            return DateTimeTemporalPrimitiveToken.ReduceDateTimeAndDateTime(state, new Dictionary<String, Token>() {
+            return ReduceDateTimeAndDateTime(state, new Dictionary<string, Token>() {
                 {"dateTimeA", dateTimeA},
                 {"and", and},
                 {"dateTimeB", dateTimeB}
             });
         }
 
-        public static Phrase ReduceDateTimePlusDateTime(IFuzzyState state, Dictionary<String, Token> parameters) {
-            DateTimeTemporalPrimitiveToken dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
-            PlusTypographySyntaxToken plus = (PlusTypographySyntaxToken) parameters["plus"];
-            DateTimeTemporalPrimitiveToken dateTimeB = (DateTimeTemporalPrimitiveToken) parameters["dateTimeB"];
+        public static Phrase ReduceDateTimePlusDateTime(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
+            var plus = (PlusTypographySyntaxToken) parameters["plus"];
+            var dateTimeB = (DateTimeTemporalPrimitiveToken) parameters["dateTimeB"];
 
-            AndLogicalOperatorToken and = new AndLogicalOperatorToken() {
+            var and = new AndLogicalOperatorToken() {
                 Text = plus.Text,
                 Similarity = plus.Similarity
             };
 
-            return DateTimeTemporalPrimitiveToken.ReduceDateTimeAndDateTime(state, new Dictionary<String, Token>() {
+            return ReduceDateTimeAndDateTime(state, new Dictionary<string, Token>() {
                 {"dateTimeA", dateTimeA},
                 {"and", and},
                 {"dateTimeB", dateTimeB}
@@ -123,43 +123,43 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable {
         }
 
 
-        public static Phrase ReduceDateTimeSubtractionDateTime(IFuzzyState state, Dictionary<String, Token> parameters) {
-            DateTimeTemporalPrimitiveToken dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
-            SubtractionThirdOrderArithmeticOperatorToken subtraction = (SubtractionThirdOrderArithmeticOperatorToken) parameters["subtraction"];
-            DateTimeTemporalPrimitiveToken dateTimeB = (DateTimeTemporalPrimitiveToken) parameters["dateTimeB"];
+        public static Phrase ReduceDateTimeSubtractionDateTime(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
+            var subtraction = (SubtractionThirdOrderArithmeticOperatorToken) parameters["subtraction"];
+            var dateTimeB = (DateTimeTemporalPrimitiveToken) parameters["dateTimeB"];
 
             return new Phrase() {
                 new DateTimeTemporalPrimitiveToken() {
                     Pattern = dateTimeA.Pattern - dateTimeB.Pattern,
-                    Text = String.Format("{0} {1} {2}", dateTimeA.Text, subtraction.Text, dateTimeB.Text),
+                    Text = string.Format("{0} {1} {2}", dateTimeA.Text, subtraction.Text, dateTimeB.Text),
                     Similarity = (dateTimeA.Similarity + subtraction.Similarity + dateTimeB.Similarity) / 3.0F
                 }
             };
         }
 
-        public static Phrase ReduceDateTimeHyphenDateTime(IFuzzyState state, Dictionary<String, Token> parameters) {
-            DateTimeTemporalPrimitiveToken dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
-            HyphenPunctuationSyntaxToken hyphen = (HyphenPunctuationSyntaxToken) parameters["hyphen"];
-            DateTimeTemporalPrimitiveToken dateTimeB = (DateTimeTemporalPrimitiveToken) parameters["dateTimeB"];
+        public static Phrase ReduceDateTimeHyphenDateTime(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
+            var hyphen = (HyphenPunctuationSyntaxToken) parameters["hyphen"];
+            var dateTimeB = (DateTimeTemporalPrimitiveToken) parameters["dateTimeB"];
 
-            SubtractionThirdOrderArithmeticOperatorToken subtraction = new SubtractionThirdOrderArithmeticOperatorToken() {
+            var subtraction = new SubtractionThirdOrderArithmeticOperatorToken() {
                 Text = hyphen.Text,
                 Similarity = hyphen.Similarity
             };
 
-            return DateTimeTemporalPrimitiveToken.ReduceDateTimeSubtractionDateTime(state, new Dictionary<String, Token>() {
+            return ReduceDateTimeSubtractionDateTime(state, new Dictionary<string, Token>() {
                 {"dateTimeA", dateTimeA},
                 {"subtraction", subtraction},
                 {"dateTimeB", dateTimeB}
             });
         }
 
-        public static Phrase ReduceDateTimeAtNumber(IFuzzyState state, Dictionary<String, Token> parameters) {
-            DateTimeTemporalPrimitiveToken dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
-            AtAdpositionsPrepositionsSyntaxToken at = (AtAdpositionsPrepositionsSyntaxToken) parameters["at"];
-            FloatNumericPrimitiveToken number = (FloatNumericPrimitiveToken) parameters["number"];
+        public static Phrase ReduceDateTimeAtNumber(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
+            var at = (AtAdpositionsPrepositionsSyntaxToken) parameters["at"];
+            var number = (FloatNumericPrimitiveToken) parameters["number"];
 
-            int definitiveHour = (int) number.ToFloat().ConvertTo(typeof (int));
+            var definitiveHour = (int) number.ToFloat().ConvertTo(typeof (int));
 
             if (number.ToFloat() < 12) {
                 // If PM
@@ -168,7 +168,7 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable {
                 }
             }
 
-            HourVariableTemporalPrimitiveToken hour = new HourVariableTemporalPrimitiveToken() {
+            var hour = new HourVariableTemporalPrimitiveToken() {
                 Pattern = new FuzzyDateTimePattern() {
                     Rule = TimeType.Definitive,
                     Hour = definitiveHour,
@@ -179,58 +179,58 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable {
                 Similarity = number.Similarity
             };
 
-            AndLogicalOperatorToken and = new AndLogicalOperatorToken() {
+            var and = new AndLogicalOperatorToken() {
                 Text = at.Text,
                 Similarity = at.Similarity
             };
 
-            return DateTimeTemporalPrimitiveToken.ReduceDateTimeAndDateTime(state, new Dictionary<String, Token>() {
+            return ReduceDateTimeAndDateTime(state, new Dictionary<string, Token>() {
                 {"dateTimeA", dateTimeA},
                 {"and", and},
                 {"hour", hour}
             });
         }
 
-        public static Phrase ReduceInDateTime(IFuzzyState state, Dictionary<String, Token> parameters) {
-            InAdpositionsPrepositionsSyntaxToken @in = (InAdpositionsPrepositionsSyntaxToken) parameters["in"];
-            DateTimeTemporalPrimitiveToken dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
+        public static Phrase ReduceInDateTime(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var @in = (InAdpositionsPrepositionsSyntaxToken) parameters["in"];
+            var dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
 
             dateTimeA.Pattern.Modifier = TimeModifier.Delay;
 
             return new Phrase() {
                 new DateTimeTemporalPrimitiveToken() {
                     Pattern = dateTimeA.Pattern,
-                    Text = String.Format("{0} {1}", @in.Text, dateTimeA.Text),
+                    Text = string.Format("{0} {1}", @in.Text, dateTimeA.Text),
                     Similarity = (@in.Similarity + dateTimeA.Similarity) / 2.0F
                 }
             };
         }
 
-        public static Phrase ReduceForDateTime(IFuzzyState state, Dictionary<String, Token> parameters) {
-            ForAdpositionsPrepositionsSyntaxToken @for = (ForAdpositionsPrepositionsSyntaxToken) parameters["for"];
-            DateTimeTemporalPrimitiveToken dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
+        public static Phrase ReduceForDateTime(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var @for = (ForAdpositionsPrepositionsSyntaxToken) parameters["for"];
+            var dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
 
             dateTimeA.Pattern.Modifier = TimeModifier.Period;
 
             return new Phrase() {
                 new DateTimeTemporalPrimitiveToken() {
                     Pattern = dateTimeA.Pattern,
-                    Text = String.Format("{0} {1}", @for.Text, dateTimeA.Text),
+                    Text = string.Format("{0} {1}", @for.Text, dateTimeA.Text),
                     Similarity = (@for.Similarity + dateTimeA.Similarity) / 2.0F
                 }
             };
         }
 
-        public static Phrase ReduceEveryDateTime(IFuzzyState state, Dictionary<String, Token> parameters) {
-            EveryAdjectiveSyntaxToken every = (EveryAdjectiveSyntaxToken) parameters["every"];
-            DateTimeTemporalPrimitiveToken dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
+        public static Phrase ReduceEveryDateTime(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var every = (EveryAdjectiveSyntaxToken) parameters["every"];
+            var dateTimeA = (DateTimeTemporalPrimitiveToken) parameters["dateTimeA"];
 
             dateTimeA.Pattern.Modifier = TimeModifier.Interval;
 
             return new Phrase() {
                 new DateTimeTemporalPrimitiveToken() {
                     Pattern = dateTimeA.Pattern,
-                    Text = String.Format("{0} {1}", every.Text, dateTimeA.Text),
+                    Text = string.Format("{0} {1}", every.Text, dateTimeA.Text),
                     Similarity = (every.Similarity + dateTimeA.Similarity) / 2.0F
                 }
             };

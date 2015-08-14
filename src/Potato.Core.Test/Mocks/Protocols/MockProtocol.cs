@@ -24,10 +24,10 @@ namespace Potato.Core.Test.Mocks.Protocols {
     public class MockProtocol : IProtocol {
 
         public MockProtocol() : base() {
-            this.State = new ProtocolState();
-            this.Client = new MockClient();
-            this.Options = new ProtocolSetup();
-            this.ProtocolType = new ProtocolType() {
+            State = new ProtocolState();
+            Client = new MockClient();
+            Options = new ProtocolSetup();
+            ProtocolType = new ProtocolType() {
                 Name = "Mock Protocol 3",
                 Type = "MockProtocol",
                 Provider = "Myrcon"
@@ -44,8 +44,8 @@ namespace Potato.Core.Test.Mocks.Protocols {
         public event Action<IProtocol, IProtocolEventArgs> ProtocolEvent;
         public event Action<IProtocol, IClientEventArgs> ClientEvent;
         public IProtocolSetupResult Setup(IProtocolSetup setup) {
-            this.Options = setup;
-            this.Client.Setup(ClientSetup.FromProtocolSetup(setup));
+            Options = setup;
+            Client.Setup(ClientSetup.FromProtocolSetup(setup));
 
             return new ProtocolSetupResult();
         }

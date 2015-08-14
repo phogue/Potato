@@ -39,16 +39,16 @@ namespace Potato.Service.Shared {
                 if (_status != value) {
                     _status = value;
 
-                    switch (this._status) {
+                    switch (_status) {
                         case ServiceStatusType.Stopped:
-                            this.StopTime = DateTime.Now;
+                            StopTime = DateTime.Now;
                             break;
                         case ServiceStatusType.Started:
-                            this.StartTime = DateTime.Now;
+                            StartTime = DateTime.Now;
                             break;
                     }
 
-                    this.OnStatusChange(this._status);
+                    OnStatusChange(_status);
                 }
             }
         }
@@ -78,17 +78,17 @@ namespace Potato.Service.Shared {
         /// Initializes the observer with the default values.
         /// </summary>
         public ServiceObserver() {
-            this.Status = ServiceStatusType.Stopped;
+            Status = ServiceStatusType.Stopped;
 
-            this.PanicTask = new Timer(PanicTask_Tick, this, TimeSpan.FromMilliseconds(0), TimeSpan.FromMinutes(20));
+            PanicTask = new Timer(PanicTask_Tick, this, TimeSpan.FromMilliseconds(0), TimeSpan.FromMinutes(20));
         }
 
         /// <summary>
         /// Fired every twenty minutes to ensure Potato has not been down stopped for 15 minutes
         /// </summary>
         public void PanicTask_Tick(object state) {
-            TimeSpan? downtime = this.Downtime();
-            var handler = this.Panic;
+            var downtime = Downtime();
+            var handler = Panic;
 
             if (downtime.HasValue == true && downtime.Value > TimeSpan.FromMinutes(15) && handler != null) {
                 // Time to panic.
@@ -101,10 +101,10 @@ namespace Potato.Service.Shared {
         /// </summary>
         /// <returns>How long the service has been started</returns>
         public TimeSpan? Uptime() {
-            TimeSpan time = new TimeSpan(0);
+            var time = new TimeSpan(0);
 
-            if (this.Status == ServiceStatusType.Started && this.StartTime.HasValue == true) {
-                time = DateTime.Now - this.StartTime.Value;
+            if (Status == ServiceStatusType.Started && StartTime.HasValue == true) {
+                time = DateTime.Now - StartTime.Value;
             }
 
             return time;
@@ -115,12 +115,12 @@ namespace Potato.Service.Shared {
         /// </summary>
         /// <returns>How long the service has been stopped</returns>
         public TimeSpan? Downtime() {
-            TimeSpan time = new TimeSpan(0);
+            var time = new TimeSpan(0);
 
             // We check here for any state that isn't completely started. Everything else
             // is assumed down.
-            if (this.Status != ServiceStatusType.Started && this.StopTime.HasValue == true) {
-                time = DateTime.Now - this.StopTime.Value;
+            if (Status != ServiceStatusType.Started && StopTime.HasValue == true) {
+                time = DateTime.Now - StopTime.Value;
             }
 
             return time;
@@ -131,7 +131,7 @@ namespace Potato.Service.Shared {
         /// </summary>
         /// <param name="status">The new status</param>
         protected void OnStatusChange(ServiceStatusType status) {
-            var handler = this.StatusChange;
+            var handler = StatusChange;
 
             if (handler != null) {
                 handler(this, status);

@@ -37,14 +37,14 @@ namespace Potato.Net.Protocols.CommandServer {
         /// <param name="client"></param>
         /// <param name="certificate"></param>
         public CommandServerClient(System.Net.Sockets.TcpClient client, X509Certificate2 certificate) : base() {
-            this.Client = client;
-            this.RemoteEndPoint = (IPEndPoint) client.Client.RemoteEndPoint;
+            Client = client;
+            RemoteEndPoint = (IPEndPoint) client.Client.RemoteEndPoint;
 
-            this.PacketSerializer = new CommandServerPacketSerializer();
+            PacketSerializer = new CommandServerPacketSerializer();
 
-            this.Certificate = certificate;
+            Certificate = certificate;
 
-            this.Stream = this.Authenticate(new SslStream(client.GetStream(), false));
+            Stream = Authenticate(new SslStream(client.GetStream(), false));
         }
 
         /// <summary>
@@ -54,19 +54,19 @@ namespace Potato.Net.Protocols.CommandServer {
         /// <returns></returns>
         protected SslStream Authenticate(SslStream stream) {
             try {
-                stream.AuthenticateAsServer(this.Certificate);
+                stream.AuthenticateAsServer(Certificate);
 
-                this.ConnectionState = ConnectionState.ConnectionReady;
+                ConnectionState = ConnectionState.ConnectionReady;
             }
             catch (AuthenticationException e) {
-                this.Shutdown(e);
+                Shutdown(e);
             }
 
             return stream;
         }
 
         protected override long ReadPacketPeekShiftSize {
-            get { return this.PacketStream != null ? this.PacketStream.Size() : 0; }
+            get { return PacketStream != null ? PacketStream.Size() : 0; }
         }
     }
 }

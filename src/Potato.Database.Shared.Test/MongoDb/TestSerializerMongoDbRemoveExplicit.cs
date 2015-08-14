@@ -25,7 +25,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestRemoveAllFromPlayer() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestRemoveAllFromPlayerExplicit).Compile();
+            var serialized = serializer.Parse(TestRemoveAllFromPlayerExplicit).Compile();
 
             Assert.AreEqual(@"remove", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -34,7 +34,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestRemoveAllFromPlayerWhereNameEqualsPhogue() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestRemoveAllFromPlayerWhereNameEqualsPhogueExplicit).Compile();
+            var serialized = serializer.Parse(TestRemoveAllFromPlayerWhereNameEqualsPhogueExplicit).Compile();
 
             Assert.AreEqual(@"remove", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -44,7 +44,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestRemoveAllFromPlayerWherePlayerNameEqualsPhogue() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestRemoveAllFromPlayerWherePlayerNameEqualsPhogueExplicit).Compile();
+            var serialized = serializer.Parse(TestRemoveAllFromPlayerWherePlayerNameEqualsPhogueExplicit).Compile();
 
             Assert.AreEqual(@"remove", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -54,7 +54,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTen() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTenExplicit).Compile();
+            var serialized = serializer.Parse(TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTenExplicit).Compile();
 
             Assert.AreEqual(@"remove", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -64,7 +64,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeed() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeedExplicit).Compile();
+            var serialized = serializer.Parse(TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeedExplicit).Compile();
 
             Assert.AreEqual(@"remove", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -74,7 +74,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20Explicit).Compile();
+            var serialized = serializer.Parse(TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20Explicit).Compile();
 
             Assert.AreEqual(@"remove", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -84,7 +84,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50Explicit).Compile();
+            var serialized = serializer.Parse(TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50Explicit).Compile();
 
             Assert.AreEqual(@"remove", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());

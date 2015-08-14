@@ -36,13 +36,13 @@ namespace Potato.Fuzzy {
         /// </summary>
         /// <param name="phrases">The phrases to append</param>
         public Sentence(IEnumerable<Phrase> phrases) {
-            this.AddRange(phrases);
+            AddRange(phrases);
         }
 
         protected Sentence CollectClear(IFuzzyState state) {
-            for (int x = 0; x < this.Count;) {
+            for (var x = 0; x < Count;) {
                 if (this[x].Count == 0) {
-                    this.RemoveAt(x);
+                    RemoveAt(x);
                 }
                 else {
                     x++;
@@ -59,24 +59,24 @@ namespace Potato.Fuzzy {
         /// <param name="sentenceText">The raw text to parse</param>
         /// <returns>this</returns>
         public Sentence Parse(IFuzzyState state, string sentenceText) {
-            this.AddRange(sentenceText.Wordify().Select(phrase => new Phrase() {
+            AddRange(sentenceText.Wordify().Select(phrase => new Phrase() {
                 Text = phrase
             }.Parse(state, "Potato.Fuzzy.Tokens.Primitive")).ToList());
-            this.Refactor(state, "Potato.Fuzzy.Tokens.Primitive");
+            Refactor(state, "Potato.Fuzzy.Tokens.Primitive");
 
             //this.Collect(state);
 
-            this.ReplaceRange(0, this.Count, this.Select(phrase => phrase.Parse(state, "Potato.Fuzzy.Tokens.Syntax")).ToList());
-            this.Refactor(state, "Potato.Fuzzy.Tokens.Syntax");
+            this.ReplaceRange(0, Count, this.Select(phrase => phrase.Parse(state, "Potato.Fuzzy.Tokens.Syntax")).ToList());
+            Refactor(state, "Potato.Fuzzy.Tokens.Syntax");
 
-            this.ReplaceRange(0, this.Count, this.Select(phrase => phrase.Parse(state, "Potato.Fuzzy.Tokens.Operator")).ToList());
-            this.Refactor(state, "Potato.Fuzzy.Tokens.Operator");
+            this.ReplaceRange(0, Count, this.Select(phrase => phrase.Parse(state, "Potato.Fuzzy.Tokens.Operator")).ToList());
+            Refactor(state, "Potato.Fuzzy.Tokens.Operator");
 
-            this.ReplaceRange(0, this.Count, this.Select(phrase => phrase.Parse(state, "Potato.Fuzzy.Tokens.Object")).ToList());
-            this.Refactor(state, "Potato.Fuzzy.Tokens.Object");
+            this.ReplaceRange(0, Count, this.Select(phrase => phrase.Parse(state, "Potato.Fuzzy.Tokens.Object")).ToList());
+            Refactor(state, "Potato.Fuzzy.Tokens.Object");
 
-            this.ReplaceRange(0, this.Count, this.Select(phrase => phrase.Parse(state, "Potato.Fuzzy.Tokens.Reduction")).ToList());
-            this.Refactor(state, "Potato.Fuzzy.Tokens.Reduction");
+            this.ReplaceRange(0, Count, this.Select(phrase => phrase.Parse(state, "Potato.Fuzzy.Tokens.Reduction")).ToList());
+            Refactor(state, "Potato.Fuzzy.Tokens.Reduction");
 
             return this;
         }
@@ -88,29 +88,29 @@ namespace Potato.Fuzzy {
         /// <param name="tokenNamespace">The namespace to search for parse methods</param>
         /// <returns>this</returns>
         public Sentence Refactor(IFuzzyState state, string tokenNamespace) {
-            for (int count = 2; count <= this.Count; count++) {
-                for (int offset = 0; offset <= this.Count - count; offset++) {
-                    Sentence original = new Sentence(this.GetRange(offset, count));
+            for (var count = 2; count <= Count; count++) {
+                for (var offset = 0; offset <= Count - count; offset++) {
+                    var original = new Sentence(GetRange(offset, count));
                     // @todo does combine do any sorting?
                     // Should it?
-                    List<Token> originalTokens = original.Combine();
+                    var originalTokens = original.Combine();
 
-                    Phrase refactoredPhrase = new Phrase(original.Combine()) {
+                    var refactoredPhrase = new Phrase(original.Combine()) {
                         Text = original.ToString(),
                         Refactoring = true
                     }.Parse(state, tokenNamespace);
 
                     // Is our original list empty?
                     // OR is the first token in the refactoredPhrase better?
-                    bool betterPhrase = refactoredPhrase.Count > originalTokens.Count;
+                    var betterPhrase = refactoredPhrase.Count > originalTokens.Count;
                     betterPhrase = betterPhrase && (// We didn't know any better before hand?
                                                        originalTokens.Count == 0 // OR if the refactored token has our first original token, but it's been moved up a rank..
                                                        || refactoredPhrase.IndexOf(originalTokens.FirstOrDefault()) > 0
                                                    );
 
                     if (betterPhrase == true) {
-                        this.RemoveRange(offset, count);
-                        this.Insert(offset, refactoredPhrase);
+                        RemoveRange(offset, count);
+                        Insert(offset, refactoredPhrase);
 
                         count = 2;
                         offset = -1;
@@ -127,12 +127,12 @@ namespace Potato.Fuzzy {
         /// <param name="sentence"></param>
         /// <returns></returns>
         protected static bool IsAllTokensCompatable(Sentence sentence) {
-            bool isAllTokensCompatable = true;
+            var isAllTokensCompatable = true;
 
-            List<Token> tokenList = sentence.Where(phrase => phrase.Count > 0).Select(phrase => phrase[0]).ToList();
+            var tokenList = sentence.Where(phrase => phrase.Count > 0).Select(phrase => phrase[0]).ToList();
 
-            for (int outer = 0; outer < tokenList.Count && isAllTokensCompatable == true; outer++) {
-                for (int inner = 0; inner < tokenList.Count && isAllTokensCompatable == true; inner++) {
+            for (var outer = 0; outer < tokenList.Count && isAllTokensCompatable == true; outer++) {
+                for (var inner = 0; inner < tokenList.Count && isAllTokensCompatable == true; inner++) {
                     if (outer != inner) {
                         isAllTokensCompatable = tokenList[outer].CompatibleWith(tokenList[inner]);
                     }
@@ -148,10 +148,10 @@ namespace Potato.Fuzzy {
         /// <param name="sentence"></param>
         /// <param name="metaData"></param>
         /// <returns></returns>
-        protected static Dictionary<String, Token> GetParametersExactMatchSignature(Sentence sentence, TokenMethodMetadata metaData) {
-            Dictionary<String, Token> parameters = new Dictionary<String, Token>();
+        protected static Dictionary<string, Token> GetParametersExactMatchSignature(Sentence sentence, TokenMethodMetadata metaData) {
+            var parameters = new Dictionary<string, Token>();
 
-            for (int offset = 0; offset < metaData.Parameters.Count && parameters != null; offset++) {
+            for (var offset = 0; offset < metaData.Parameters.Count && parameters != null; offset++) {
                 // This check should always pass, but we're sanity checking anyway.
                 if (sentence[offset].Count > 0) {
                     // If we don't need an exact matching type, but something assignable.
@@ -185,17 +185,17 @@ namespace Potato.Fuzzy {
         /// <param name="sentence"></param>
         /// <param name="metaData"></param>
         /// <returns></returns>
-        protected static Dictionary<String, Token> GetParametersCombinationSignature(Sentence sentence, TokenMethodMetadata metaData) {
-            Dictionary<String, Token> parameters = new Dictionary<String, Token>();
+        protected static Dictionary<string, Token> GetParametersCombinationSignature(Sentence sentence, TokenMethodMetadata metaData) {
+            var parameters = new Dictionary<string, Token>();
 
-            List<TokenParameter> seekList = new List<TokenParameter>(metaData.Parameters);
+            var seekList = new List<TokenParameter>(metaData.Parameters);
 
-            List<Phrase> poolList = new List<Phrase>(sentence);
+            var poolList = new List<Phrase>(sentence);
 
             while (seekList.Count > 0 && poolList.Count > 0 && parameters != null) {
-                TokenParameter seek = seekList.First();
+                var seek = seekList.First();
 
-                for (int offset = 0; offset < poolList.Count && seek != null && parameters != null; offset++) {
+                for (var offset = 0; offset < poolList.Count && seek != null && parameters != null; offset++) {
                     // This check should always pass, but we're sanity checking anyway.
                     if (sentence[offset].Count > 0) {
                         // If we don't need an exact matching type, but something assignable.
@@ -245,11 +245,11 @@ namespace Potato.Fuzzy {
         /// <param name="sentence"></param>
         /// <param name="metaData"></param>
         /// <returns></returns>
-        protected static Dictionary<String, Token> GetParameters(Sentence sentence, TokenMethodMetadata metaData) {
-            Dictionary<String, Token> parameters = null;
+        protected static Dictionary<string, Token> GetParameters(Sentence sentence, TokenMethodMetadata metaData) {
+            Dictionary<string, Token> parameters = null;
 
             if (sentence.Count == metaData.Parameters.Count) {
-                parameters = metaData.ExactMatchSignature == true ? Sentence.GetParametersExactMatchSignature(sentence, metaData) : Sentence.GetParametersCombinationSignature(sentence, metaData);
+                parameters = metaData.ExactMatchSignature == true ? GetParametersExactMatchSignature(sentence, metaData) : GetParametersCombinationSignature(sentence, metaData);
             }
 
             return parameters;
@@ -262,12 +262,12 @@ namespace Potato.Fuzzy {
         /// <param name="handlers"></param>
         /// <returns></returns>
         protected Sentence GetReduction(IFuzzyState state, IEnumerable<KeyValuePair<TokenMethodMetadata, TokenReflection.ReduceDelegateHandler>> handlers) {
-            Sentence sentence = (Sentence) this.Clone();
+            var sentence = (Sentence) Clone();
 
             foreach (var handler in handlers) {
                 // If we don't need compatible tokens or we do and they are all compatible
-                if (handler.Key.DemandTokenCompatability == false || (handler.Key.DemandTokenCompatability == true && Sentence.IsAllTokensCompatable(sentence) == true)) {
-                    Dictionary<String, Token> parameters = Sentence.GetParameters(sentence, handler.Key);
+                if (handler.Key.DemandTokenCompatability == false || (handler.Key.DemandTokenCompatability == true && IsAllTokensCompatable(sentence) == true)) {
+                    var parameters = GetParameters(sentence, handler.Key);
 
                     if (parameters != null) {
                         sentence = new Sentence() {
@@ -281,9 +281,9 @@ namespace Potato.Fuzzy {
         }
 
         protected void Reduce(IFuzzyState state, IList<KeyValuePair<TokenMethodMetadata, TokenReflection.ReduceDelegateHandler>> handlers) {
-            for (int count = 2; count <= this.Count; count++) {
-                for (int offset = 0; offset <= this.Count - count; offset++) {
-                    Sentence reducedSentence = new Sentence(this.GetRange(offset, count)).GetReduction(state, handlers.Where(handler => handler.Key.Parameters.Count == count).ToList());
+            for (var count = 2; count <= Count; count++) {
+                for (var offset = 0; offset <= Count - count; offset++) {
+                    var reducedSentence = new Sentence(GetRange(offset, count)).GetReduction(state, handlers.Where(handler => handler.Key.Parameters.Count == count).ToList());
 
                     if (reducedSentence.Count == 1 && reducedSentence[0] != null) {
                         this.ReplaceRange(offset, count, reducedSentence);
@@ -300,15 +300,15 @@ namespace Potato.Fuzzy {
         /// <param name="state">The persistent state of the parser</param>
         /// <returns>this</returns>
         public Sentence Reduce(IFuzzyState state) {
-            this.CollectClear(state);
+            CollectClear(state);
 
             // Combine methods.
-            this.Reduce(state, TokenReflection.TokenCombineHandlers.ToList());
+            Reduce(state, TokenReflection.TokenCombineHandlers.ToList());
 
-            this.Reduce(state, TokenReflection.TokenReduceHandlers.Where(handler => handler.Key.Namespace.Contains("Potato.Fuzzy.Tokens.Operator.Arithmetic.FirstOrder")).ToList());
-            this.Reduce(state, TokenReflection.TokenReduceHandlers.Where(handler => handler.Key.Namespace.Contains("Potato.Fuzzy.Tokens.Operator.Arithmetic.SecondOrder")).ToList());
-            this.Reduce(state, TokenReflection.TokenReduceHandlers.Where(handler => handler.Key.Namespace.Contains("Potato.Fuzzy.Tokens.Operator.Arithmetic.ThirdOrder")).ToList());
-            this.Reduce(state, TokenReflection.TokenReduceHandlers.Where(handler => handler.Key.Namespace.Contains("Potato.Fuzzy.Tokens")).ToList());
+            Reduce(state, TokenReflection.TokenReduceHandlers.Where(handler => handler.Key.Namespace.Contains("Potato.Fuzzy.Tokens.Operator.Arithmetic.FirstOrder")).ToList());
+            Reduce(state, TokenReflection.TokenReduceHandlers.Where(handler => handler.Key.Namespace.Contains("Potato.Fuzzy.Tokens.Operator.Arithmetic.SecondOrder")).ToList());
+            Reduce(state, TokenReflection.TokenReduceHandlers.Where(handler => handler.Key.Namespace.Contains("Potato.Fuzzy.Tokens.Operator.Arithmetic.ThirdOrder")).ToList());
+            Reduce(state, TokenReflection.TokenReduceHandlers.Where(handler => handler.Key.Namespace.Contains("Potato.Fuzzy.Tokens")).ToList());
 
             return this;
         }
@@ -320,7 +320,7 @@ namespace Potato.Fuzzy {
         /// <typeparam name="T">The type of token to fetch</typeparam>
         /// <returns>The extracted token, or null if nothing is found.</returns>
         public T ExtractFirstOrDefault<T>() where T : Token {
-            return (T) this.Combine().Where(token => token is T).OrderByDescending(token => token.Similarity).ThenByDescending(token => token.Text.Length).FirstOrDefault();
+            return (T) Combine().Where(token => token is T).OrderByDescending(token => token.Similarity).ThenByDescending(token => token.Text.Length).FirstOrDefault();
         }
 
         /// <summary>
@@ -329,7 +329,7 @@ namespace Potato.Fuzzy {
         /// <typeparam name="T">The type of tokens to extract</typeparam>
         /// <returns>The list of matching tokens, ordered by how well they match</returns>
         public List<T> ExtractList<T>() where T : Token {
-            return this.Combine().Where(token => token is T).OrderByDescending(token => token.Similarity).ThenByDescending(token => token.Text.Length).Select(token => token as T).ToList();
+            return Combine().Where(token => token is T).OrderByDescending(token => token.Similarity).ThenByDescending(token => token.Text.Length).Select(token => token as T).ToList();
         }
 
         /// <summary>
@@ -350,11 +350,11 @@ namespace Potato.Fuzzy {
         }
 
         public override string ToString() {
-            return String.Join(" ", this.Select(phrase => phrase.Text).ToArray());
+            return string.Join(" ", this.Select(phrase => phrase.Text).ToArray());
         }
 
         public object Clone() {
-            return this.MemberwiseClone();
+            return MemberwiseClone();
         }
     }
 }

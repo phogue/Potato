@@ -41,14 +41,14 @@ namespace Potato.Net.Utils.Tests {
         public List<ProtocolUnitTestPacket> Requests;
 
         public ProtocolUnitTestCommand() {
-            this.Responses = new List<ProtocolUnitTestPacket>();
-            this.Requests = new List<ProtocolUnitTestPacket>();
+            Responses = new List<ProtocolUnitTestPacket>();
+            Requests = new List<ProtocolUnitTestPacket>();
         }
 
         public void Dispose() {
-            this.Send.Dispose();
-            this.Responses.ForEach(e => e.Dispose());
-            this.Requests.ForEach(e => e.Dispose());
+            Send.Dispose();
+            Responses.ForEach(e => e.Dispose());
+            Requests.ForEach(e => e.Dispose());
         }
     }
 }

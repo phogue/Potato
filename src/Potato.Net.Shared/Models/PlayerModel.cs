@@ -27,7 +27,7 @@ namespace Potato.Net.Shared.Models {
         /// <summary>
         /// A Unique Identifier.
         /// </summary>
-        public String Uid { get; set; }
+        public string Uid { get; set; }
 
         /// <summary>
         /// A Player Number assigned by the server to this player.
@@ -37,26 +37,26 @@ namespace Potato.Net.Shared.Models {
         /// <summary>
         /// A String of characters that prefixes this player's name.
         /// </summary>
-        public String ClanTag { get; set; }
+        public string ClanTag { get; set; }
 
         /// <summary>
         /// This player's Name.
         /// </summary>
-        public String Name {
-            get { return this._name; }
+        public string Name {
+            get { return _name; }
             set {
-                if (this._name != value) {
-                    this._name = value;
-                    this.NameStripped = this._name.Strip();
+                if (_name != value) {
+                    _name = value;
+                    NameStripped = _name.Strip();
                 }
             }
         }
-        private String _name;
+        private string _name;
 
         /// <summary>
         /// This player's Name, with diacritics/l33t/etc replaced with ANSI equivalents.
         /// </summary>
-        public String NameStripped { get; set; }
+        public string NameStripped { get; set; }
 
         /// <summary>
         /// This players grouping on this server
@@ -83,7 +83,7 @@ namespace Potato.Net.Shared.Models {
         /// </summary>
         /// <remarks>This is wrong if the player has no deaths as it should be in infinite k/d r.</remarks>
         public float Kdr {
-            get { return (this.Deaths <= 0) ? this.Kills : this.Kills / (float)this.Deaths; }
+            get { return (Deaths <= 0) ? Kills : Kills / (float)Deaths; }
         }
 
         /// <summary>
@@ -109,24 +109,24 @@ namespace Potato.Net.Shared.Models {
         /// <summary>
         /// This player's IP Address.
         /// </summary>
-        public String Ip {
-            get { return this._ip; }
+        public string Ip {
+            get { return _ip; }
             set {
-                this._ip = value;
+                _ip = value;
 
                 // Validate Ip has colon before trying to split.
                 if (value != null && value.Contains(":")) {
-                    this._ip = value.Split(':').FirstOrDefault();
-                    this.Port = value.Split(':').LastOrDefault();
+                    _ip = value.Split(':').FirstOrDefault();
+                    Port = value.Split(':').LastOrDefault();
                 }
             }
         }
-        private String _ip;
+        private string _ip;
 
         /// <summary>
         /// The player's Port Address.
         /// </summary>
-        public String Port { get; set; }
+        public string Port { get; set; }
 
         /// <summary>
         /// A list of outlier data for this player
@@ -137,13 +137,13 @@ namespace Potato.Net.Shared.Models {
         /// Initializes all defaults values for the player
         /// </summary>
         public PlayerModel() {
-            this.Uid = String.Empty;
-            this.ClanTag = String.Empty;
-            this.Name = String.Empty;
-            this.Groups = new List<GroupModel>();
-            this.Location = new Location();
-            this.Inventory = new InventoryModel();
-            this.Outliers = new List<OutlierModel>();
+            Uid = string.Empty;
+            ClanTag = string.Empty;
+            Name = string.Empty;
+            Groups = new List<GroupModel>();
+            Location = new Location();
+            Inventory = new InventoryModel();
+            Outliers = new List<OutlierModel>();
         }
 
         /// <summary>
@@ -152,10 +152,10 @@ namespace Potato.Net.Shared.Models {
         /// <param name="updateGroup">The group to add or modify the existing group with the same type</param>
         public void ModifyGroup(GroupModel updateGroup) {
             if (updateGroup != null) {
-                GroupModel existingGroup = this.Groups.FirstOrDefault(group => group.Type == updateGroup.Type);
+                var existingGroup = Groups.FirstOrDefault(group => group.Type == updateGroup.Type);
 
                 if (existingGroup == null) {
-                    this.Groups.Add(updateGroup.Clone() as GroupModel);
+                    Groups.Add(updateGroup.Clone() as GroupModel);
                 }
                 else {
                     existingGroup.Uid = updateGroup.Uid;

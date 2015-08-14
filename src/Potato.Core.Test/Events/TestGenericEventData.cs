@@ -40,7 +40,7 @@ namespace Potato.Core.Test.Events {
                 Bans = new List<BanModel>() {
                     new BanModel() {
                         Now = {
-                            Content = new List<String>() {
+                            Content = new List<string>() {
                                 "I should remove this property"
                             }
                         }
@@ -49,7 +49,7 @@ namespace Potato.Core.Test.Events {
                 Chats = new List<ChatModel>() {
                     new ChatModel() {
                         Now = {
-                            Content = new List<String>() {
+                            Content = new List<string>() {
                                 "I should remove this property"
                             }
                         }
@@ -58,7 +58,7 @@ namespace Potato.Core.Test.Events {
                 Kicks = new List<KickModel>() {
                     new KickModel() {
                         Scope = {
-                            Content = new List<String>() {
+                            Content = new List<string>() {
                                 "I should remove this property"
                             }
                         }
@@ -67,7 +67,7 @@ namespace Potato.Core.Test.Events {
                 Kills = new List<KillModel>() {
                     new KillModel() {
                         Scope = {
-                            Content = new List<String>() {
+                            Content = new List<string>() {
                                 "I should remove this property"
                             }
                         }
@@ -89,7 +89,7 @@ namespace Potato.Core.Test.Events {
                 }
             };
 
-            CommandData genericEventData = GenericEventData.Parse(gameEventData);
+            var genericEventData = GenericEventData.Parse(gameEventData);
 
             Assert.AreEqual("I should remove this property", genericEventData.Bans.First().Now.Content.First());
 

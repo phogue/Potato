@@ -26,14 +26,14 @@ namespace Potato.Net.Shared.Test.Utils.CollectionExtensions {
     public class TestStdDev {
         [Test]
         public void TestNoItemsReturnsZero() {
-            ConcurrentDictionary<String, PlayerModel> samples = new ConcurrentDictionary<String, PlayerModel>();
+            var samples = new ConcurrentDictionary<string, PlayerModel>();
 
             Assert.AreEqual(0.0f, samples.Values.StdDev(model => model.Kills, 0));
         }
 
         [Test]
         public void TestIntegerStandardDeviationCalculatedCorrectly() {
-            ConcurrentDictionary<String, PlayerModel> samples = new ConcurrentDictionary<String, PlayerModel>();
+            var samples = new ConcurrentDictionary<string, PlayerModel>();
             samples.TryAdd("1", new PlayerModel() {
                 Uid = "1",
                 Kills = 2
@@ -74,7 +74,7 @@ namespace Potato.Net.Shared.Test.Utils.CollectionExtensions {
 
         [Test]
         public void TestFloatMeanCalculatedCorrectly() {
-            ConcurrentDictionary<String, PlayerModel> samples = new ConcurrentDictionary<String, PlayerModel>();
+            var samples = new ConcurrentDictionary<string, PlayerModel>();
             samples.TryAdd("1", new PlayerModel() {
                 Uid = "1",
                 Kills = 2,

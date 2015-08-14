@@ -21,12 +21,12 @@ namespace Potato.Database.Test.Integration.SqLite {
     public class TestSqLiteIntegrationFind : TestDatabaseIntegrationFind {
 
         public TestSqLiteIntegrationFind() {
-            this.Integration = new SqLiteDatabaseIntegration();
+            Integration = new SqLiteDatabaseIntegration();
         }
 
         [Test]
         public override void TestSelectAllFromPlayer() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerImplicit, new JArray() {
+            Integration.TestFindQuery(TestPlayerTableSetup, TestSelectAllFromPlayerImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Phogue"),
                     new JProperty("Score", 100.0),
@@ -56,7 +56,7 @@ namespace Potato.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectDistinctAllFromPlayer() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectDistinctAllFromPlayerImplicit, new JArray() {
+            Integration.TestFindQuery(TestPlayerTableSetup, TestSelectDistinctAllFromPlayerImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Phogue"),
                     new JProperty("Score", 100.0),
@@ -80,7 +80,7 @@ namespace Potato.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectAllFromPlayerWhereNameEqualsPhogue() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerWhereNameEqualsPhogueImplicit, new JArray() {
+            Integration.TestFindQuery(TestPlayerTableSetup, TestSelectAllFromPlayerWhereNameEqualsPhogueImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Phogue"),
                     new JProperty("Score", 100.0),
@@ -92,7 +92,7 @@ namespace Potato.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31F() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31FImplicit, new JArray() {
+            Integration.TestFindQuery(TestPlayerTableSetup, TestSelectAllFromPlayerWhereKdrGreaterThanEqualTo31FImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Duplicate"),
                     new JProperty("Score", 1000.00),
@@ -110,7 +110,7 @@ namespace Potato.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectAllFromPlayerWhereKdrLessThanEqualTo31F() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerWhereKdrLessThanEqualTo31FImplicit, new JArray() {
+            Integration.TestFindQuery(TestPlayerTableSetup, TestSelectAllFromPlayerWhereKdrLessThanEqualTo31FImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Phogue"),
                     new JProperty("Score", 100.0),
@@ -128,7 +128,7 @@ namespace Potato.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectAllFromPlayerWherePlayerNameEqualsPhogue() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerWherePlayerNameEqualsPhogueImplicit, new JArray() {
+            Integration.TestFindQuery(TestPlayerTableSetup, TestSelectAllFromPlayerWherePlayerNameEqualsPhogueImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Phogue"),
                     new JProperty("Score", 100.0),
@@ -140,7 +140,7 @@ namespace Potato.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectScoreFromPlayerWhereNameEqualsPhogue() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectScoreFromPlayerWhereNameEqualsPhogueImplicit, new JArray() {
+            Integration.TestFindQuery(TestPlayerTableSetup, TestSelectScoreFromPlayerWhereNameEqualsPhogueImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Score", 100.0)
                 }
@@ -149,7 +149,7 @@ namespace Potato.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectScoreRankFromPlayerWhereNameEqualsPhogue() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectScoreRankFromPlayerWhereNameEqualsPhogueImplicit, new JArray() {
+            Integration.TestFindQuery(TestPlayerTableSetup, TestSelectScoreRankFromPlayerWhereNameEqualsPhogueImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Score", 100.0),
                     new JProperty("Rank", 10.0)
@@ -159,12 +159,12 @@ namespace Potato.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTen() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTenImplicit, new JArray());
+            Integration.TestFindQuery(TestPlayerTableSetup, TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTenImplicit, new JArray());
         }
 
         [Test]
         public override void TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeed() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedImplicit, new JArray() {
+            Integration.TestFindQuery(TestPlayerTableSetup, TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Phogue"),
                     new JProperty("Score", 100.0),
@@ -182,7 +182,7 @@ namespace Potato.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20Implicit, new JArray() {
+            Integration.TestFindQuery(TestPlayerTableSetup, TestSelectAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20Implicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Zaeed"),
                     new JProperty("Score", 15.0),
@@ -193,7 +193,7 @@ namespace Potato.Database.Test.Integration.SqLite {
         }
 
         public override void TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50Implicit, new JArray() {
+            Integration.TestFindQuery(TestPlayerTableSetup, TestSelectAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50Implicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Phogue"),
                     new JProperty("Score", 100.0),
@@ -211,7 +211,7 @@ namespace Potato.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectAllFromPlayerSortByScore() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerSortByScoreImplicit, new JArray() {
+            Integration.TestFindQuery(TestPlayerTableSetup, TestSelectAllFromPlayerSortByScoreImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Zaeed"),
                     new JProperty("Score", 15.0),
@@ -241,7 +241,7 @@ namespace Potato.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestSelectAllFromPlayerSortByNameThenScoreDescending() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup, this.TestSelectAllFromPlayerSortByNameThenScoreDescendingImplicit, new JArray() {
+            Integration.TestFindQuery(TestPlayerTableSetup, TestSelectAllFromPlayerSortByNameThenScoreDescendingImplicit, new JArray() {
                 new JObject() {
                     new JProperty("Name", "Duplicate"),
                     new JProperty("Score", 1000.00),

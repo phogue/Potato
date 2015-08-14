@@ -46,16 +46,16 @@ namespace Potato.Net.Shared.Models {
         /// <summary>
         /// Initializes a point from three strings
         /// </summary>
-        public Point3DModel(String x, String y, String z) : base() {
+        public Point3DModel(string x, string y, string z) : base() {
             float iX = 0, iY = 0, iZ = 0;
 
             float.TryParse(x, out iX);
             float.TryParse(y, out iY);
             float.TryParse(z, out iZ);
 
-            this.X = iX;
-            this.Y = iY;
-            this.Z = iZ;
+            X = iX;
+            Y = iY;
+            Z = iZ;
         }
     }
 }

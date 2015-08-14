@@ -34,47 +34,47 @@ namespace Potato.Database.Shared {
         /// <summary>
         /// The method used in the SQL (SELECT, INSERT, UPDATE, DELETE)
         /// </summary>
-        public List<String> Methods { get; set; }
+        public List<string> Methods { get; set; }
 
         /// <summary>
         /// The databases to query against
         /// </summary>
-        public List<String> Databases { get; set; }
+        public List<string> Databases { get; set; }
 
         /// <summary>
         /// The fields to select from the collections
         /// </summary>
-        public List<String> Fields { get; set; }
+        public List<string> Fields { get; set; }
 
         /// <summary>
         /// The values to assign to fields
         /// </summary>
-        public List<String> Values { get; set; }
+        public List<string> Values { get; set; }
 
         /// <summary>
         /// The fields used to when assigning a value to a field (update, insert)
         /// </summary>
-        public List<String> Assignments { get; set; }
+        public List<string> Assignments { get; set; }
 
         /// <summary>
         /// The indices to apply when the alter/create
         /// </summary>
-        public List<String> Indices { get; set; }
+        public List<string> Indices { get; set; }
 
         /// <summary>
         /// The conditions placed on a select, update or delete method
         /// </summary>
-        public List<String> Conditions { get; set; }
+        public List<string> Conditions { get; set; }
 
         /// <summary>
         /// The collections placed on a select, update, delete or insert method
         /// </summary>
-        public List<String> Collections { get; set; }
+        public List<string> Collections { get; set; }
 
         /// <summary>
         /// What fields and direction to sort by.
         /// </summary>
-        public List<String> Sortings { get; set; }
+        public List<string> Sortings { get; set; }
 
         /// <summary>
         /// The base element in the query being serialized.
@@ -82,16 +82,16 @@ namespace Potato.Database.Shared {
         public IDatabaseObject Root { get; set; }
 
         protected QueryData() {
-            this.Methods = new List<String>();
-            this.Databases = new List<String>();
-            this.Fields = new List<String>();
-            this.Values = new List<String>();
-            this.Assignments = new List<String>();
-            this.Indices = new List<String>();
-            this.Conditions = new List<String>();
-            this.Collections = new List<String>();
-            this.Sortings = new List<String>();
-            this.Root = null;
+            Methods = new List<string>();
+            Databases = new List<string>();
+            Fields = new List<string>();
+            Values = new List<string>();
+            Assignments = new List<string>();
+            Indices = new List<string>();
+            Conditions = new List<string>();
+            Collections = new List<string>();
+            Sortings = new List<string>();
+            Root = null;
         }
     }
 }

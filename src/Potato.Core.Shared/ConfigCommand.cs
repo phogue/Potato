@@ -10,8 +10,8 @@ namespace Potato.Core.Shared {
     /// </summary>
     public class ConfigCommand : IConfigCommand {
         public string Salt { get; set; }
-        public String Vector { get; set; }
-        public String Data { get; set; }
+        public string Vector { get; set; }
+        public string Data { get; set; }
         public ICommand Command { get; set; }
 
         /// <summary>
@@ -24,8 +24,8 @@ namespace Potato.Core.Shared {
             byte[] transformed;
 
             try {
-                using (MemoryStream memory = new MemoryStream()) {
-                    using (CryptoStream crypto = new CryptoStream(memory, transform, CryptoStreamMode.Write)) {
+                using (var memory = new MemoryStream()) {
+                    using (var crypto = new CryptoStream(memory, transform, CryptoStreamMode.Write)) {
                         crypto.Write(buffer, 0, buffer.Length);
                     }
 
@@ -45,9 +45,9 @@ namespace Potato.Core.Shared {
         /// </summary>
         /// <returns>Salted random, generated style.</returns>
         protected byte[] GenerateSalt() {
-            byte[] salt = new byte[8];
+            var salt = new byte[8];
 
-            using (RNGCryptoServiceProvider random = new RNGCryptoServiceProvider()) {
+            using (var random = new RNGCryptoServiceProvider()) {
                 random.GetBytes(salt);
             }
 
@@ -60,7 +60,7 @@ namespace Potato.Core.Shared {
         /// <param name="password">The set password for to derive a key from</param>
         /// <param name="salt">A random salt</param>
         /// <returns>The key</returns>
-        protected byte[] DeriveKey(String password, byte[] salt) {
+        protected byte[] DeriveKey(string password, byte[] salt) {
             byte[] key;
 
             using (var derived = new Rfc2898DeriveBytes(password, salt, 26000)) {
@@ -70,61 +70,61 @@ namespace Potato.Core.Shared {
             return key;
         }
 
-        public IConfigCommand Encrypt(String password) {
+        public IConfigCommand Encrypt(string password) {
             // Hard error if no password is passed through, but the data is requested to be encrypted.
             if (password == null || password.Length <= 0) throw new ArgumentNullException("password");
 
-            using (RijndaelManaged managed = new RijndaelManaged()) {
+            using (var managed = new RijndaelManaged()) {
                 // Generate a new salt.
-                byte[] salt = this.GenerateSalt();
-                this.Salt = Convert.ToBase64String(salt);
+                var salt = GenerateSalt();
+                Salt = Convert.ToBase64String(salt);
 
                 // Generate new vector.
                 managed.GenerateIV();
-                this.Vector = Convert.ToBase64String(managed.IV);
+                Vector = Convert.ToBase64String(managed.IV);
 
                 // Derive a key
-                byte[] key = this.DeriveKey(password, salt);
+                var key = DeriveKey(password, salt);
 
-                using (StringWriter writer = new StringWriter()) {
-                    Potato.Core.Shared.Serialization.JsonSerialization.Minimal.Serialize(writer, this.Command);
+                using (var writer = new StringWriter()) {
+                    Potato.Core.Shared.Serialization.JsonSerialization.Minimal.Serialize(writer, Command);
 
-                    byte[] text = Encoding.UTF8.GetBytes(writer.ToString());
+                    var text = Encoding.UTF8.GetBytes(writer.ToString());
 
-                    using (ICryptoTransform transform = managed.CreateEncryptor(key, managed.IV)) {
-                        this.Data = Convert.ToBase64String(this.CryptoTransform(text, transform));
+                    using (var transform = managed.CreateEncryptor(key, managed.IV)) {
+                        Data = Convert.ToBase64String(CryptoTransform(text, transform));
                     }
                 }
             }
 
             // Don't store the unencrypted data.
-            this.Command = null;
+            Command = null;
 
             return this;
         }
 
-        public IConfigCommand Decrypt(String password) {
+        public IConfigCommand Decrypt(string password) {
             // Hard error if no password is passed through, but the data is requested to be encrypted.
             if (password == null || password.Length <= 0) throw new ArgumentNullException("password");
 
-            if (this.Vector != null && this.Data != null) {
+            if (Vector != null && Data != null) {
                 // Decrypt to Command.
-                using (RijndaelManaged managed = new RijndaelManaged()) {
+                using (var managed = new RijndaelManaged()) {
                     // Fetch our salt
-                    byte[] salt = Convert.FromBase64String(this.Salt);
+                    var salt = Convert.FromBase64String(Salt);
 
                     // Fetch out vector
-                    managed.IV = Convert.FromBase64String(this.Vector);
+                    managed.IV = Convert.FromBase64String(Vector);
 
                     // Derive our key
-                    byte[] key = this.DeriveKey(password, salt);
+                    var key = DeriveKey(password, salt);
 
-                    byte[] ciphertext = Convert.FromBase64String(this.Data);
+                    var ciphertext = Convert.FromBase64String(Data);
 
-                    using (ICryptoTransform transform = managed.CreateDecryptor(key, managed.IV)) {
-                        String text = Encoding.UTF8.GetString(this.CryptoTransform(ciphertext, transform));
+                    using (var transform = managed.CreateDecryptor(key, managed.IV)) {
+                        var text = Encoding.UTF8.GetString(CryptoTransform(ciphertext, transform));
 
-                        this.Command = Potato.Core.Shared.Serialization.JsonSerialization.Minimal.Deserialize<ICommand>(text);
+                        Command = Potato.Core.Shared.Serialization.JsonSerialization.Minimal.Deserialize<ICommand>(text);
                     }
                 }
             }

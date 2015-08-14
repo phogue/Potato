@@ -23,16 +23,16 @@ namespace Potato.Core.Shared.Test.AsynchronousExecutableCommands.Mocks {
     public class MockSynchronousCoreController : CoreController {
 
         public MockSynchronousCoreController() : base() {
-            this.CommandDispatchers.Add(
+            CommandDispatchers.Add(
                 new CommandDispatch() {
                     Name = "AppendMessage",
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "value",
-                            Type = typeof (String)
+                            Type = typeof (string)
                         }
                     },
-                    Handler = this.AppendMessage
+                    Handler = AppendMessage
                 }
             );
         }
@@ -40,8 +40,8 @@ namespace Potato.Core.Shared.Test.AsynchronousExecutableCommands.Mocks {
         /// <summary>
         ///     Sets the value of the test flag.
         /// </summary>
-        public ICommandResult AppendMessage(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            String value = parameters["value"].First<String>();
+        public ICommandResult AppendMessage(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var value = parameters["value"].First<string>();
 
             return new CommandResult() {
                 Success = true,

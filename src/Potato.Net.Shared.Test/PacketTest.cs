@@ -27,7 +27,7 @@ namespace Potato.Net.Shared.Test {
 
         [Test]
         public void TestPacketEmptyConstructor() {
-            MockPacket packet = new MockPacket();
+            var packet = new MockPacket();
 
             Assert.AreEqual(PacketOrigin.None, packet.Packet.Origin);
             Assert.AreEqual(PacketType.None, packet.Packet.Type);
@@ -37,7 +37,7 @@ namespace Potato.Net.Shared.Test {
 
         [Test]
         public void TestPacketParameterConstructor() {
-            MockPacket packet = new MockPacket() {
+            var packet = new MockPacket() {
                 Packet = {
                     Origin = PacketOrigin.Server,
                     Type = PacketType.Response

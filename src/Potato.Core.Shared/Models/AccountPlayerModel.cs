@@ -26,14 +26,14 @@ namespace Potato.Core.Shared.Models {
         /// <summary>
         /// The name of the game 
         /// </summary>
-        public String ProtocolType { get; set; }
+        public string ProtocolType { get; set; }
 
         /// <summary>
         /// Unique identifer value for the player.  In Frostbite based
         /// games this will be the players name.  In Call Of Duty games this
         /// will be the players GUID number.
         /// </summary>
-        public String Uid { get; set; }
+        public string Uid { get; set; }
 
         /// <summary>
         /// Backreference to the owner of this assignment.
@@ -45,19 +45,19 @@ namespace Potato.Core.Shared.Models {
         /// Initializes the account player with default values.
         /// </summary>
         public AccountPlayerModel() {
-            this.ProtocolType = CommonProtocolType.None;
+            ProtocolType = CommonProtocolType.None;
 
-            this.Uid = String.Empty;
+            Uid = string.Empty;
         }
 
         public void Dispose() {
-            this.ProtocolType = CommonProtocolType.None;
-            this.Uid = null;
-            this.Account = null;
+            ProtocolType = CommonProtocolType.None;
+            Uid = null;
+            Account = null;
         }
 
         public object Clone() {
-            return this.MemberwiseClone();
+            return MemberwiseClone();
         }
     }
 }

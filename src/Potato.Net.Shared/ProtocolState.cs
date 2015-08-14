@@ -24,19 +24,19 @@ namespace Potato.Net.Shared {
     /// </summary>
     [Serializable]
     public sealed class ProtocolState : IProtocolState {
-        public ConcurrentDictionary<String, PlayerModel> Players { get; set; }
+        public ConcurrentDictionary<string, PlayerModel> Players { get; set; }
 
-        public ConcurrentDictionary<String, MapModel> Maps { get; set; }
+        public ConcurrentDictionary<string, MapModel> Maps { get; set; }
 
-        public ConcurrentDictionary<String, BanModel> Bans { get; set; }
+        public ConcurrentDictionary<string, BanModel> Bans { get; set; }
 
-        public ConcurrentDictionary<String, MapModel> MapPool { get; set; }
+        public ConcurrentDictionary<string, MapModel> MapPool { get; set; }
 
-        public ConcurrentDictionary<String, GameModeModel> GameModePool { get; set; }
+        public ConcurrentDictionary<string, GameModeModel> GameModePool { get; set; }
 
-        public ConcurrentDictionary<String, GroupModel> Groups { get; set; }
+        public ConcurrentDictionary<string, GroupModel> Groups { get; set; }
 
-        public ConcurrentDictionary<String, ItemModel> Items { get; set; } 
+        public ConcurrentDictionary<string, ItemModel> Items { get; set; } 
 
         public Settings Settings { get; set; }
 
@@ -46,24 +46,24 @@ namespace Potato.Net.Shared {
         /// Initializes the gamestate with the default values.
         /// </summary>
         public ProtocolState() {
-            this.Players = new ConcurrentDictionary<String, PlayerModel>();
-            this.Maps = new ConcurrentDictionary<String, MapModel>();
-            this.Bans = new ConcurrentDictionary<String, BanModel>();
+            Players = new ConcurrentDictionary<string, PlayerModel>();
+            Maps = new ConcurrentDictionary<string, MapModel>();
+            Bans = new ConcurrentDictionary<string, BanModel>();
 
-            this.MapPool = new ConcurrentDictionary<String, MapModel>();
-            this.GameModePool = new ConcurrentDictionary<String, GameModeModel>();
-            this.Groups = new ConcurrentDictionary<String, GroupModel>();
-            this.Items = new ConcurrentDictionary<String, ItemModel>();
+            MapPool = new ConcurrentDictionary<string, MapModel>();
+            GameModePool = new ConcurrentDictionary<string, GameModeModel>();
+            Groups = new ConcurrentDictionary<string, GroupModel>();
+            Items = new ConcurrentDictionary<string, ItemModel>();
 
-            this.Settings = new Settings();
+            Settings = new Settings();
 
-            this.Support = new Tree();
+            Support = new Tree();
         }
 
         /// <summary>
         /// Synchronizes a modified list with a comparator method
         /// </summary>
-        public static void ModifiedDictionary<T>(ConcurrentDictionary<String, T> existing, ConcurrentDictionary<String, T> modified) {
+        public static void ModifiedDictionary<T>(ConcurrentDictionary<string, T> existing, ConcurrentDictionary<string, T> modified) {
             if (modified != null) {
                 foreach (var item in modified) {
                     var closuredItem = item;
@@ -78,23 +78,23 @@ namespace Potato.Net.Shared {
         /// <param name="modified">The data to find modified items from</param>
         /// <returns>this</returns>
         public IProtocolState Modified(IProtocolStateData modified) {
-            ModifiedDictionary(this.Players, modified.Players);
+            ModifiedDictionary(Players, modified.Players);
 
-            ModifiedDictionary(this.Maps, modified.Maps);
+            ModifiedDictionary(Maps, modified.Maps);
 
-            ModifiedDictionary(this.Bans, modified.Bans);
+            ModifiedDictionary(Bans, modified.Bans);
 
-            ModifiedDictionary(this.MapPool, modified.MapPool);
+            ModifiedDictionary(MapPool, modified.MapPool);
 
-            ModifiedDictionary(this.GameModePool, modified.GameModePool);
+            ModifiedDictionary(GameModePool, modified.GameModePool);
 
-            ModifiedDictionary(this.Groups, modified.Groups);
+            ModifiedDictionary(Groups, modified.Groups);
 
-            ModifiedDictionary(this.Items, modified.Items);
+            ModifiedDictionary(Items, modified.Items);
 
-            this.Settings = modified.Settings ?? this.Settings;
+            Settings = modified.Settings ?? Settings;
 
-            this.Support = modified.Support ?? this.Support;
+            Support = modified.Support ?? Support;
 
             return this;
         }
@@ -102,10 +102,10 @@ namespace Potato.Net.Shared {
         /// <summary>
         /// Synchronizes a modified list with a comparator method
         /// </summary>
-        public static void RemoveDictionary<T>(ConcurrentDictionary<String, T> existing, ConcurrentDictionary<String, T> removed) {
+        public static void RemoveDictionary<T>(ConcurrentDictionary<string, T> existing, ConcurrentDictionary<string, T> removed) {
             if (removed != null) {
                 foreach (var item in removed) {
-                    T removedItem = default(T);
+                    var removedItem = default(T);
                     existing.TryRemove(item.Key, out removedItem);
                 }
             }
@@ -117,19 +117,19 @@ namespace Potato.Net.Shared {
         /// <param name="removed">The data to find removed items from</param>
         /// <returns>this</returns>
         public IProtocolState Removed(IProtocolStateData removed) {
-            RemoveDictionary(this.Players, removed.Players);
+            RemoveDictionary(Players, removed.Players);
 
-            RemoveDictionary(this.Maps, removed.Maps);
+            RemoveDictionary(Maps, removed.Maps);
 
-            RemoveDictionary(this.Bans, removed.Bans);
+            RemoveDictionary(Bans, removed.Bans);
 
-            RemoveDictionary(this.MapPool, removed.MapPool);
+            RemoveDictionary(MapPool, removed.MapPool);
 
-            RemoveDictionary(this.GameModePool, removed.GameModePool);
+            RemoveDictionary(GameModePool, removed.GameModePool);
 
-            RemoveDictionary(this.Groups, removed.Groups);
+            RemoveDictionary(Groups, removed.Groups);
 
-            RemoveDictionary(this.Items, removed.Items);
+            RemoveDictionary(Items, removed.Items);
 
             return this;
         }
@@ -140,15 +140,15 @@ namespace Potato.Net.Shared {
         /// <param name="set">The data to override</param>
         /// <returns>this</returns>
         public IProtocolState Set(IProtocolStateData set) {
-            if (set.Players != null) this.Players = set.Players;
-            if (set.Maps != null) this.Maps = set.Maps;
-            if (set.Bans != null) this.Bans = set.Bans;
-            if (set.MapPool != null) this.MapPool = set.MapPool;
-            if (set.GameModePool != null) this.GameModePool = set.GameModePool;
-            if (set.Groups != null) this.Groups = set.Groups;
-            if (set.Items != null) this.Items = set.Items;
-            if (set.Settings != null) this.Settings = set.Settings;
-            if (set.Support != null) this.Support = set.Support;
+            if (set.Players != null) Players = set.Players;
+            if (set.Maps != null) Maps = set.Maps;
+            if (set.Bans != null) Bans = set.Bans;
+            if (set.MapPool != null) MapPool = set.MapPool;
+            if (set.GameModePool != null) GameModePool = set.GameModePool;
+            if (set.Groups != null) Groups = set.Groups;
+            if (set.Items != null) Items = set.Items;
+            if (set.Settings != null) Settings = set.Settings;
+            if (set.Support != null) Support = set.Support;
 
             return this;
         }
@@ -158,7 +158,7 @@ namespace Potato.Net.Shared {
         /// </summary>
         /// <returns></returns>
         public IProtocolState Redefine() {
-            Statistics.Players.Outliers(this.Players);
+            Statistics.Players.Outliers(Players);
 
             return this;
         }
@@ -166,18 +166,18 @@ namespace Potato.Net.Shared {
         public IProtocolState Apply(IProtocolStateDifference difference) {
             if (difference.Modified != null) {
                 if (difference.Override == true) {
-                    this.Set(difference.Modified);
+                    Set(difference.Modified);
                 }
                 else {
-                    this.Modified(difference.Modified);
+                    Modified(difference.Modified);
                 }
             }
 
             if (difference.Removed != null) {
-                this.Removed(difference.Removed);
+                Removed(difference.Removed);
             }
 
-            this.Redefine();
+            Redefine();
 
             return this;
         }

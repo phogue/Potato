@@ -21,7 +21,7 @@ namespace Potato.Examples.Plugins.Database {
         /// <summary>
         /// The name of the user
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The users age.

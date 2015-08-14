@@ -27,28 +27,28 @@ namespace Potato.Net.Shared.Utils {
         /// <summary>
         /// Generates the md5 hash of a file
         /// </summary>
-        public static String File(String path) {
+        public static string File(string path) {
             return System.IO.File.Exists(path) ? Data(System.IO.File.ReadAllBytes(path)) : string.Empty;
         }
 
         /// <summary>
         /// Generates the md5 hash of a byte array
         /// </summary>
-        public static String Data(byte[] data) {
-            return MD5.Hasher.ComputeHash(data).Select(x => x.ToString("x2")).Aggregate((a, b) => a + b);
+        public static string Data(byte[] data) {
+            return Hasher.ComputeHash(data).Select(x => x.ToString("x2")).Aggregate((a, b) => a + b);
         }
 
         /// <summary>
         /// Generates the md5 hash of a string
         /// </summary>
-        public static String String(String data) {
-            return MD5.Data(Encoding.ASCII.GetBytes(data));
+        public static string String(string data) {
+            return Data(Encoding.ASCII.GetBytes(data));
         }
 
         /// <summary>
         /// Generates a GUID based on the md5 data of a string
         /// </summary>
-        public static Guid Guid(String data) {
+        public static Guid Guid(string data) {
             return new Guid(Hasher.ComputeHash(Encoding.ASCII.GetBytes(data)));
         }
     }

@@ -28,7 +28,7 @@ namespace Potato.Net.Shared.Test.Truths {
         /// </summary>
         [Test]
         public void TestClassesAreSerializable() {
-            IEnumerable<Type> nonSerializableTypes = typeof(ITruth).Assembly
+            var nonSerializableTypes = typeof(ITruth).Assembly
                 .GetTypes()
                 // Where it's a class
                 .Where(type => type.IsClass == true)

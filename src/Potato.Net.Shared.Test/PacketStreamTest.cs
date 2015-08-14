@@ -26,7 +26,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestEmptyPacketStreamPush() {
-            PacketStream stream = new PacketStream();
+            var stream = new PacketStream();
 
             stream.Push(new byte[] { 0x01 }, 1);
 
@@ -39,7 +39,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestEmptyPacketStreamSizeZero() {
-            PacketStream stream = new PacketStream();
+            var stream = new PacketStream();
 
             Assert.AreEqual(0, stream.Size());
         }
@@ -49,7 +49,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestEmptyPacketStreamSizeOne() {
-            PacketStream stream = new PacketStream();
+            var stream = new PacketStream();
 
             stream.Push(new byte[] { 0x01 }, 1);
 
@@ -61,7 +61,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestEmptyPacketStreamPushEmptyData() {
-            PacketStream stream = new PacketStream();
+            var stream = new PacketStream();
 
             stream.Push(new byte[0], 0);
 
@@ -73,7 +73,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestEmptyPacketStreamPushNullData() {
-            PacketStream stream = new PacketStream();
+            var stream = new PacketStream();
 
             stream.Push(null, 0);
 
@@ -85,7 +85,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestSingleAppendPacketStreamPush() {
-            PacketStream stream = new PacketStream() {
+            var stream = new PacketStream() {
                 Data = new byte[] {0x01}
             };
 
@@ -102,7 +102,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestSingleAppendPacketStreamPushEmptyData() {
-            PacketStream stream = new PacketStream() {
+            var stream = new PacketStream() {
                 Data = new byte[] { 0x01 }
             };
 
@@ -117,7 +117,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestSingleAppendPacketStreamPushNullData() {
-            PacketStream stream = new PacketStream() {
+            var stream = new PacketStream() {
                 Data = new byte[] { 0x01 }
             };
 
@@ -132,7 +132,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestMultipleAppendPacketStreamPush() {
-            PacketStream stream = new PacketStream() {
+            var stream = new PacketStream() {
                 Data = new byte[] { 0x01 }
             };
 
@@ -152,7 +152,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestSinglePacketStreamPeekShift() {
-            PacketStream stream = new PacketStream() {
+            var stream = new PacketStream() {
                 Data = new byte[] {0x01, 0x02, 0x03, 0x04}
             };
 
@@ -169,7 +169,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestMultiplePacketStreamPeekShift() {
-            PacketStream stream = new PacketStream() {
+            var stream = new PacketStream() {
                 Data = new byte[] {0x01, 0x02, 0x03, 0x04}
             };
 
@@ -187,7 +187,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestMultiplePacketStreamPeekShiftZeroBytes() {
-            PacketStream stream = new PacketStream() {
+            var stream = new PacketStream() {
                 Data = new byte[] { 0x01, 0x02, 0x03, 0x04 }
             };
 
@@ -204,7 +204,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestUninitializedPacketStreamPeekShift() {
-            PacketStream stream = new PacketStream();
+            var stream = new PacketStream();
 
             Assert.IsNull(stream.PeekShift(1));
         }
@@ -214,7 +214,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestIndexBoundsPacketStreamPeekShift() {
-            PacketStream stream = new PacketStream() {
+            var stream = new PacketStream() {
                 Data = new byte[] { 0x01, 0x02, 0x03, 0x04 }
             };
 
@@ -226,11 +226,11 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestSinglePacketStreamShift() {
-            PacketStream stream = new PacketStream() {
+            var stream = new PacketStream() {
                 Data = new byte[] { 0x01, 0x02, 0x03, 0x04 }
             };
 
-            byte[] data = stream.Shift(1);
+            var data = stream.Shift(1);
 
             Assert.AreEqual(0x01, data.First());
             Assert.AreEqual(3, stream.Data.Length);
@@ -244,11 +244,11 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestMultiplePacketStreamShift() {
-            PacketStream stream = new PacketStream() {
+            var stream = new PacketStream() {
                 Data = new byte[] { 0x01, 0x02, 0x03, 0x04 }
             };
 
-            byte[] data = stream.Shift(2);
+            var data = stream.Shift(2);
 
             Assert.AreEqual(0x01, data.First());
             Assert.AreEqual(0x02, data.Last());
@@ -262,11 +262,11 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestAllDataPacketStreamShift() {
-            PacketStream stream = new PacketStream() {
+            var stream = new PacketStream() {
                 Data = new byte[] { 0x01, 0x02, 0x03, 0x04 }
             };
 
-            byte[] data = stream.Shift(4);
+            var data = stream.Shift(4);
 
             Assert.AreEqual(0x01, data[0]);
             Assert.AreEqual(0x02, data[1]);
@@ -280,7 +280,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestUninitializedPacketStreamShift() {
-            PacketStream stream = new PacketStream();
+            var stream = new PacketStream();
 
             Assert.IsNull(stream.Shift(1));
         }
@@ -290,7 +290,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestMultiplePacketStreamShiftZeroBytes() {
-            PacketStream stream = new PacketStream() {
+            var stream = new PacketStream() {
                 Data = new byte[] { 0x01, 0x02, 0x03, 0x04 }
             };
 
@@ -307,7 +307,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestIndexBoundsPacketStreamShift() {
-            PacketStream stream = new PacketStream() {
+            var stream = new PacketStream() {
                 Data = new byte[] { 0x01, 0x02, 0x03, 0x04 }
             };
 

@@ -41,7 +41,7 @@ namespace Potato.Net.Protocols.CommandServer {
         /// Initializes the packet header size requirment for this packet type
         /// </summary>
         public CommandServerPacketSerializer() : base() {
-            this.PacketHeaderSize = 14;
+            PacketHeaderSize = 14;
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Potato.Net.Protocols.CommandServer {
         /// <param name="packet">The packe to check for a query string</param>
         /// <returns>The name value collection</returns>
         protected static NameValueCollection ParsePost(CommandServerPacket packet) {
-            NameValueCollection query = new NameValueCollection();
+            var query = new NameValueCollection();
 
             if (packet.Content != null) {
                 query = HttpUtility.ParseQueryString(packet.Content);
@@ -73,10 +73,10 @@ namespace Potato.Net.Protocols.CommandServer {
         /// </summary>
         /// todo move to extension method?
         protected static NameValueCollection CombineNameValueCollections(params NameValueCollection[] collections) {
-            NameValueCollection query = new NameValueCollection();
+            var query = new NameValueCollection();
 
-            foreach (NameValueCollection collection in collections) {
-                foreach (String key in collection.AllKeys) {
+            foreach (var collection in collections) {
+                foreach (var key in collection.AllKeys) {
                     query[key] = collection[key];
                 }
             }
@@ -89,10 +89,10 @@ namespace Potato.Net.Protocols.CommandServer {
         /// </summary>
         /// <param name="raw">The contents of the key</param>
         /// <returns>The authorization credentials or an empty array if none can be found</returns>
-        protected static String[] ParseAuthorizationHeader(String raw) {
-            String[] credentials = new String[0];
+        protected static string[] ParseAuthorizationHeader(string raw) {
+            var credentials = new string[0];
 
-            if (String.IsNullOrEmpty(raw) == false) {
+            if (string.IsNullOrEmpty(raw) == false) {
                 var parts = raw.Split(' ');
 
                 if (parts.Length == 2 && parts.First().Trim().Equals("Basic", StringComparison.InvariantCultureIgnoreCase)) {
@@ -113,7 +113,7 @@ namespace Potato.Net.Protocols.CommandServer {
         /// <param name="packet">The packet to populate</param>
         /// <param name="packetData">The raw data to deseralize</param>
         protected static void Parse(CommandServerPacket packet, byte[] packetData) {
-            String[] packetStringData = Regex.Split(Encoding.UTF8.GetString(packetData), @"\r\n\r\n");
+            var packetStringData = Regex.Split(Encoding.UTF8.GetString(packetData), @"\r\n\r\n");
 
             packet.Header = packetStringData.FirstOrDefault();
 
@@ -121,10 +121,10 @@ namespace Potato.Net.Protocols.CommandServer {
             packet.Content = packetStringData.LastOrDefault();
 
             if (packet.Header != null) {
-                string[] headers = packet.Header.Split(new [] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
+                var headers = packet.Header.Split(new [] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
 
                 if (headers.Length > 0) {
-                    List<String> status = headers.First().Wordify();
+                    var status = headers.First().Wordify();
                     
                     var headerValues = packet.Header.Split(new [] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).Skip(1).ToDictionary(
                         line => (line.Split(new[] { ":" }, 2, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault() ?? "").Trim(),
@@ -149,7 +149,7 @@ namespace Potato.Net.Protocols.CommandServer {
                             packet.Authorization = ParseAuthorizationHeader(packet.Headers[HttpRequestHeader.Authorization]);
                         }
 
-                        if (String.IsNullOrEmpty(packet.Content) && packet.Headers[HttpRequestHeader.ContentLength] == null) {
+                        if (string.IsNullOrEmpty(packet.Content) && packet.Headers[HttpRequestHeader.ContentLength] == null) {
                             packet.Headers.Set(HttpRequestHeader.ContentLength, "");
                         }
                     }
@@ -163,8 +163,8 @@ namespace Potato.Net.Protocols.CommandServer {
         protected static byte[] GzipCompress(byte[] data) {
             byte[] compressedData;
 
-            using (MemoryStream memoryStream = new MemoryStream()) {
-                using (GZipStream compressionStream = new GZipStream(memoryStream, CompressionMode.Compress)) {
+            using (var memoryStream = new MemoryStream()) {
+                using (var compressionStream = new GZipStream(memoryStream, CompressionMode.Compress)) {
                     compressionStream.Write(data, 0, data.Length);
                 }
 
@@ -180,8 +180,8 @@ namespace Potato.Net.Protocols.CommandServer {
         protected static byte[] DeflateCompress(byte[] data) {
             byte[] compressedData;
 
-            using (MemoryStream memoryStream = new MemoryStream()) {
-                using (DeflateStream compressionStream = new DeflateStream(memoryStream, CompressionMode.Compress)) {
+            using (var memoryStream = new MemoryStream()) {
+                using (var compressionStream = new DeflateStream(memoryStream, CompressionMode.Compress)) {
                     compressionStream.Write(data, 0, data.Length);
                 }
 
@@ -198,16 +198,16 @@ namespace Potato.Net.Protocols.CommandServer {
         /// <param name="packet"></param>
         /// <returns></returns>
         protected static byte[] SerializeContent(CommandServerPacket packet) {
-            byte[] data = Encoding.UTF8.GetBytes(packet.Content);
+            var data = Encoding.UTF8.GetBytes(packet.Content);
 
             if (packet.Headers[HttpResponseHeader.ContentEncoding] != null) {
-                String contentEncoding = packet.Headers[HttpResponseHeader.ContentEncoding].ToLowerInvariant();
+                var contentEncoding = packet.Headers[HttpResponseHeader.ContentEncoding].ToLowerInvariant();
 
                 if (contentEncoding.Contains("gzip") == true) {
-                    data = CommandServerPacketSerializer.GzipCompress(data);
+                    data = GzipCompress(data);
                 }
                 else if (contentEncoding.Contains("deflate") == true) {
-                    data = CommandServerPacketSerializer.DeflateCompress(data);
+                    data = DeflateCompress(data);
                 }
             }
 
@@ -221,7 +221,7 @@ namespace Potato.Net.Protocols.CommandServer {
         /// <param name="content"></param>
         /// <returns></returns>
         protected static byte[] SerializeHeader(CommandServerPacket packet, byte[] content) {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
 
             // Ensure a couple of headers are through..
             packet.Headers[HttpResponseHeader.Connection] = "close";
@@ -235,12 +235,12 @@ namespace Potato.Net.Protocols.CommandServer {
         }
 
         public byte[] Serialize(IPacketWrapper wrapper) {
-            CommandServerPacket commandServerWrapper = wrapper as CommandServerPacket;
+            var commandServerWrapper = wrapper as CommandServerPacket;
             byte[] serialized = null;
 
             if (commandServerWrapper != null) {
-                byte[] content = SerializeContent(commandServerWrapper);
-                byte[] header = SerializeHeader(commandServerWrapper, content);
+                var content = SerializeContent(commandServerWrapper);
+                var header = SerializeHeader(commandServerWrapper, content);
                 serialized = new byte[header.Length + content.Length];
 
                 Array.Copy(header, serialized, header.Length);
@@ -251,18 +251,18 @@ namespace Potato.Net.Protocols.CommandServer {
         }
 
         public IPacketWrapper Deserialize(byte[] packetData) {
-            CommandServerPacket packet = new CommandServerPacket();
+            var packet = new CommandServerPacket();
 
-            CommandServerPacketSerializer.Parse(packet, packetData);
-            packet.Query = CommandServerPacketSerializer.CombineNameValueCollections(CommandServerPacketSerializer.ParseGet(packet), CommandServerPacketSerializer.ParsePost(packet));
+            Parse(packet, packetData);
+            packet.Query = CombineNameValueCollections(ParseGet(packet), ParsePost(packet));
 
             return packet;
         }
 
         public long ReadPacketSize(byte[] packetData) {
             // Attempt an initial parse to get the headers.
-            CommandServerPacket packet = new CommandServerPacket();
-            CommandServerPacketSerializer.Parse(packet, packetData);
+            var packet = new CommandServerPacket();
+            Parse(packet, packetData);
 
             long length = 0;
             

@@ -42,7 +42,7 @@ namespace Potato.Net.Shared.Actions.Deferred {
         /// Initializes the controller with the default values.
         /// </summary>
         public WaitingActions() {
-            this.Waiting = new ConcurrentDictionary<Guid, IWaitingAction>();
+            Waiting = new ConcurrentDictionary<Guid, IWaitingAction>();
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Potato.Net.Shared.Actions.Deferred {
         /// <param name="requests">A list of packets sent to the game server to complete this action</param>
         /// <param name="expiration">An optional datetime when this action should expire</param>
         public void Wait(INetworkAction action, List<IPacket> requests, DateTime? expiration = null) {
-            this.Waiting.TryAdd(action.Uid, new WaitingAction() {
+            Waiting.TryAdd(action.Uid, new WaitingAction() {
                 Action = action,
                 Requests = new List<IPacket>(requests),
                 Expiration = expiration ?? DateTime.Now.AddSeconds(10)
@@ -64,7 +64,7 @@ namespace Potato.Net.Shared.Actions.Deferred {
         /// </summary>
         /// <param name="response">A single response to check against pending actions</param>
         public void Mark(IPacket response) {
-            var waiting = this.Waiting.FirstOrDefault(on => on.Value.Requests.Any(packet => packet.RequestId == response.RequestId) == true && on.Value.Responses.Any(packet => packet.RequestId == response.RequestId) == false);
+            var waiting = Waiting.FirstOrDefault(on => on.Value.Requests.Any(packet => packet.RequestId == response.RequestId) == true && on.Value.Responses.Any(packet => packet.RequestId == response.RequestId) == false);
 
             if (waiting.Value != null) {
                 // Add to the list of responses we have 
@@ -74,8 +74,8 @@ namespace Potato.Net.Shared.Actions.Deferred {
                 if (waiting.Value.Requests.Count == waiting.Value.Responses.Count) {
                     IWaitingAction deferredAction;
 
-                    if (this.Waiting.TryRemove(waiting.Key, out deferredAction) == true) {
-                        this.OnDone(deferredAction.Action, deferredAction.Requests, deferredAction.Responses);
+                    if (Waiting.TryRemove(waiting.Key, out deferredAction) == true) {
+                        OnDone(deferredAction.Action, deferredAction.Requests, deferredAction.Responses);
                     }
                 }
             }
@@ -85,24 +85,24 @@ namespace Potato.Net.Shared.Actions.Deferred {
         /// Find and removes all expired actions.
         /// </summary>
         public void Flush() {
-            foreach (var expired in this.Waiting.Where(on => on.Value.Expiration < DateTime.Now)) {
+            foreach (var expired in Waiting.Where(on => on.Value.Expiration < DateTime.Now)) {
                 IWaitingAction deferredAction;
                 
-                if (this.Waiting.TryRemove(expired.Key, out deferredAction) == true) {
-                    this.OnExpired(deferredAction.Action, deferredAction.Requests, deferredAction.Responses);
+                if (Waiting.TryRemove(expired.Key, out deferredAction) == true) {
+                    OnExpired(deferredAction.Action, deferredAction.Requests, deferredAction.Responses);
                 }
             }
         }
 
         protected virtual void OnDone(INetworkAction action, List<IPacket> requests, List<IPacket> responses) {
-            Action<INetworkAction, List<IPacket>, List<IPacket>> handler = Done;
+            var handler = Done;
             if (handler != null) {
                 handler(action, requests, responses);
             }
         }
 
         protected virtual void OnExpired(INetworkAction action, List<IPacket> requests, List<IPacket> responses) {
-            Action<INetworkAction, List<IPacket>, List<IPacket>> handler = Expired;
+            var handler = Expired;
             if (handler != null) {
                 handler(action, requests, responses);
             }

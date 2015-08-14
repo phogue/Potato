@@ -82,7 +82,7 @@ namespace Potato.Core.Shared {
         /// <summary>
         /// Appends config items
         /// </summary>
-        void WriteConfig(IConfig config, String password = null);
+        void WriteConfig(IConfig config, string password = null);
 
         /// <summary>
         /// A set interval Poke

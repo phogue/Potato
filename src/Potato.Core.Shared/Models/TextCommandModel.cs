@@ -33,7 +33,7 @@ namespace Potato.Core.Shared.Models {
         /// <summary>
         /// The command to send within the scope of the registered uid's plugin e.g "KickCommand"
         /// </summary>
-        public String PluginCommand { get; set; }
+        public string PluginCommand { get; set; }
 
         /// <summary>
         /// What type of matching to use on this command.
@@ -55,45 +55,45 @@ namespace Potato.Core.Shared.Models {
         /// <summary>
         /// The name of the command e.g "Kill"
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// A short description of the command explaining what it will do.
         /// </summary>
-        public String Description { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// List of commands to find in the string. "Kick", "Get rid of", "gtfo", "cya"
         /// </summary>
-        public List<String> Commands { get; set; }
+        public List<string> Commands { get; set; }
 
         /// <summary>
         /// sets a default "empty" text command to match against.
         /// </summary>
         public TextCommandModel() {
-            this.PluginGuid = Guid.Empty;
-            this.PluginCommand = String.Empty;
-            this.Description = String.Empty;
+            PluginGuid = Guid.Empty;
+            PluginCommand = string.Empty;
+            Description = string.Empty;
 
-            this.Parser = TextCommandParserType.Fuzzy;
+            Parser = TextCommandParserType.Fuzzy;
 
-            this.Commands = new List<String>();
+            Commands = new List<string>();
 
-            this.Priority = 0;
+            Priority = 0;
         }
 
         /// <summary>
         /// This just makes the command inert
         /// </summary>
         public void Dispose() {
-            this.PluginGuid = Guid.Empty;
-            this.PluginCommand = null;
-            this.Description = null;
+            PluginGuid = Guid.Empty;
+            PluginCommand = null;
+            Description = null;
 
-            this.Parser = TextCommandParserType.Fuzzy;
+            Parser = TextCommandParserType.Fuzzy;
 
-            this.Commands.Clear();
-            this.Commands = null;
+            Commands.Clear();
+            Commands = null;
         }
     }
 }

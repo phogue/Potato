@@ -66,7 +66,7 @@ namespace Potato.Core.Shared.Models {
         /// Initializes with default values
         /// </summary>
         public TextCommandIntervalModel() {
-            this.IntervalType = TextCommandIntervalType.Infinite;
+            IntervalType = TextCommandIntervalType.Infinite;
         }
 
         /// <summary>
@@ -74,11 +74,11 @@ namespace Potato.Core.Shared.Models {
         /// </summary>
         /// <returns></returns>
         public TimeSpan? ToTimeSpan() {
-            return new TimeSpan(this.Day == null ? 0 : (int)this.Day, this.Hour == null ? 0 : (int)this.Hour, this.Minute == null ? 0 : (int)this.Minute, this.Second == null ? 0 : (int)this.Second);
+            return new TimeSpan(Day == null ? 0 : (int)Day, Hour == null ? 0 : (int)Hour, Minute == null ? 0 : (int)Minute, Second == null ? 0 : (int)Second);
         }
 
         public override string ToString() {
-            return "Every " + this.ToTimeSpan();
+            return "Every " + ToTimeSpan();
         }
     }
 }

@@ -59,21 +59,21 @@ namespace Potato.Net.Shared.Models {
         /// <summary>
         /// The version of the server
         /// </summary>
-        public String ServerVersionText { get; set; }
+        public string ServerVersionText { get; set; }
 
         /// <summary>
         /// The visible name of the server
         /// </summary>
-        public String ServerNameText { get; set; }
+        public string ServerNameText { get; set; }
 
         /// <summary>The description of the server
         /// </summary>
-        public String ServerDescriptionText { get; set; }
+        public string ServerDescriptionText { get; set; }
 
         /// <summary>
         /// The url for the banner of the server
         /// </summary>
-        public String ServerBannerUrlText { get; set; }
+        public string ServerBannerUrlText { get; set; }
 
         /// <summary>
         /// The maximum rank a player can be.
@@ -128,7 +128,7 @@ namespace Potato.Net.Shared.Models {
         /// <summary>
         /// The password of the server, if password protected
         /// </summary>
-        public String PasswordText { get; set; }
+        public string PasswordText { get; set; }
 
         /// <summary>
         /// How long the current round has been played
@@ -158,26 +158,26 @@ namespace Potato.Net.Shared.Models {
         /// <summary>
         /// The name of the current map
         /// </summary>
-        public String MapNameText { get; set; }
+        public string MapNameText { get; set; }
 
         /// <summary>
         /// The name of the current map that would output to a user
         /// </summary>
-        public String FriendlyMapNameText { get; set; }
+        public string FriendlyMapNameText { get; set; }
 
         /// <summary>
         /// The name of the current game mode
         /// </summary>
-        public String GameModeNameText { get; set; }
+        public string GameModeNameText { get; set; }
 
         /// <summary>
         /// The name of the current game mode that would output to a user
         /// </summary>
-        public String FriendlyGameModeNameText { get; set; }
+        public string FriendlyGameModeNameText { get; set; }
 
         /// <summary>
         /// The name of any mod being run
         /// </summary>
-        public String ModNameText { get; set; }
+        public string ModNameText { get; set; }
     }
 }

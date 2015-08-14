@@ -42,54 +42,54 @@ namespace Potato.Tools.NetworkConsole.Controls {
         }
 
         public void ConsoleAppendLine(string format, params object[] parameters) {
-            this.rtbProtocolTestOutput.AppendText(String.Format("[{0}] {1}{2}", DateTime.Now.ToShortTimeString(), String.Format(format, parameters), Environment.NewLine));
+            rtbProtocolTestOutput.AppendText(string.Format("[{0}] {1}{2}", DateTime.Now.ToShortTimeString(), string.Format(format, parameters), Environment.NewLine));
 
-            this.rtbProtocolTestOutput.ScrollToCaret();
+            rtbProtocolTestOutput.ScrollToCaret();
         }
 
         protected void OutputLoadedTest() {
 
-            this.ConsoleAppendLine("Loaded {0} tests", this.ProtocolTestRun.Tests.Count);
+            ConsoleAppendLine("Loaded {0} tests", ProtocolTestRun.Tests.Count);
         }
 
         protected void LoadProtocolTest() {
-            this.rtbProtocolTestOutput.Text = String.Empty;
+            rtbProtocolTestOutput.Text = string.Empty;
 
             // Dispose of the old object, we're just about to replace it.
-            if (this.ProtocolTestRun != null) {
-                this.ProtocolTestRun.Dispose();
+            if (ProtocolTestRun != null) {
+                ProtocolTestRun.Dispose();
             }
 
             try {
-                XDocument document = XDocument.Load(this.txtProtocolTestFile.Text);
+                var document = XDocument.Load(txtProtocolTestFile.Text);
 
-                this.ProtocolTestRun = document.Root.FromXElement<ProtocolTestRun>();
+                ProtocolTestRun = document.Root.FromXElement<ProtocolTestRun>();
 
-                this.ProtocolTestRun.ConnecionIsolation = this.chkConnectionIsolation.Checked;
+                ProtocolTestRun.ConnecionIsolation = chkConnectionIsolation.Checked;
 
-                String selectedTestText = String.IsNullOrEmpty(this.cboTests.Text) == true ? "All" : this.cboTests.Text;
+                var selectedTestText = string.IsNullOrEmpty(cboTests.Text) == true ? "All" : cboTests.Text;
 
-                this.cboTests.Items.Clear();
-                this.cboTests.Items.Add("All");
+                cboTests.Items.Clear();
+                cboTests.Items.Add("All");
 
-                for (int offset = 0; offset < this.ProtocolTestRun.Tests.Count; offset++) {
-                    this.ProtocolTestRun.Tests[offset].Name = String.Format("{0} - {1}", offset.ToString("D4"), this.ProtocolTestRun.Tests[offset].Name);
+                for (var offset = 0; offset < ProtocolTestRun.Tests.Count; offset++) {
+                    ProtocolTestRun.Tests[offset].Name = string.Format("{0} - {1}", offset.ToString("D4"), ProtocolTestRun.Tests[offset].Name);
 
-                    this.cboTests.Items.Add(this.ProtocolTestRun.Tests[offset]);
+                    cboTests.Items.Add(ProtocolTestRun.Tests[offset]);
                 }
 
                 // Reselect whatever test was selected.
-                this.cboTests.Text = selectedTestText;
+                cboTests.Text = selectedTestText;
 
-                this.OutputLoadedTest();
+                OutputLoadedTest();
 
-                this.btnRun.Enabled = true;
-                this.btnReload.Enabled = true;
+                btnRun.Enabled = true;
+                btnReload.Enabled = true;
             }
             catch (Exception e) {
-                this.rtbProtocolTestOutput.AppendText(e.Message);
+                rtbProtocolTestOutput.AppendText(e.Message);
 
-                this.btnReload.Enabled = false;
+                btnReload.Enabled = false;
             }
 
         }
@@ -97,39 +97,39 @@ namespace Potato.Tools.NetworkConsole.Controls {
         private void btnBrowse_Click(object sender, EventArgs e) {
             OpenFileDialog fileSearch;
 
-            if (String.IsNullOrEmpty(this.txtProtocolTestFile.Text) == true) {
+            if (string.IsNullOrEmpty(txtProtocolTestFile.Text) == true) {
                 fileSearch = new OpenFileDialog {
                     InitialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tests")
                 };
             }
             else {
                 fileSearch = new OpenFileDialog {
-                    FileName = this.txtProtocolTestFile.Text
+                    FileName = txtProtocolTestFile.Text
                 };
             }
             
             fileSearch.ShowDialog();
 
             if (File.Exists(fileSearch.FileName) == true) {
-                this.txtProtocolTestFile.Text = fileSearch.FileName;
+                txtProtocolTestFile.Text = fileSearch.FileName;
 
-                this.LoadProtocolTest();
+                LoadProtocolTest();
             }
         }
 
         private void btnRun_Click(object sender, EventArgs e) {
 
-            if (this.NetworkConsoleModel.Connection != null && this.ProtocolTestRun != null && this.IsTestRunning == false) {
-                this.rtbProtocolTestOutput.Text = String.Empty;
+            if (NetworkConsoleModel.Connection != null && ProtocolTestRun != null && IsTestRunning == false) {
+                rtbProtocolTestOutput.Text = string.Empty;
 
-                if (this.ProtocolTestRun.ConnecionIsolation == true) {
-                    this.ConsoleAppendLine("Connection Isolation: ^2true^0 (tests will reconnect & login prior to initiating test)");
+                if (ProtocolTestRun.ConnecionIsolation == true) {
+                    ConsoleAppendLine("Connection Isolation: ^2true^0 (tests will reconnect & login prior to initiating test)");
                 }
                 else {
-                    this.ConsoleAppendLine("Connection Isolation: ^1false^0 (tests will run with the same open connection)");
+                    ConsoleAppendLine("Connection Isolation: ^1false^0 (tests will run with the same open connection)");
                 }
 
-                List<ProtocolUnitTest> tests = this.ProtocolTestRun.Tests.Where(test => test.Name == this.cboTests.Text).ToList();
+                var tests = ProtocolTestRun.Tests.Where(test => test.Name == cboTests.Text).ToList();
                 
                 ThreadPool.QueueUserWorkItem(delegate {
                     this.IsTestRunning = true;
@@ -158,90 +158,90 @@ namespace Potato.Tools.NetworkConsole.Controls {
         }
 
         protected void OutputTestResult(ProtocolUnitTest test) {
-            this.ConsoleAppendLine("TIME ELAPSED: {0}", test.End - test.Start);
+            ConsoleAppendLine("TIME ELAPSED: {0}", test.End - test.Start);
 
             test.TestEvent -= new ProtocolUnitTest.TestEventHandler(Test_TestEvent);
             test.TestSetup -= new ProtocolUnitTest.TestEventHandler(Test_TestSetup);
-            this.NetworkConsoleModel.Connection.ClientEvent -= new Action<IClientEventArgs>(Connection_ClientEvent);
+            NetworkConsoleModel.Connection.ClientEvent -= new Action<IClientEventArgs>(Connection_ClientEvent);
         }
 
         protected void ProtocolTestRun_TestFailed(ProtocolTestRun sender, ProtocolUnitTestEventArgs e) {
-            if (this.InvokeRequired == true) {
-                this.Invoke(new Action<ProtocolTestRun, ProtocolUnitTestEventArgs>(this.ProtocolTestRun_TestFailed), sender, e);
+            if (InvokeRequired == true) {
+                Invoke(new Action<ProtocolTestRun, ProtocolUnitTestEventArgs>(ProtocolTestRun_TestFailed), sender, e);
                 return;
             }
 
-            this.OutputTestResult(e.Test);
+            OutputTestResult(e.Test);
 
-            this.ConsoleAppendLine("END: [^1FAILED^0]");
+            ConsoleAppendLine("END: [^1FAILED^0]");
         }
 
         protected void ProtocolTestRun_TestSuccess(ProtocolTestRun sender, ProtocolUnitTestEventArgs e) {
-            if (this.InvokeRequired == true) {
-                this.Invoke(new Action<ProtocolTestRun, ProtocolUnitTestEventArgs>(this.ProtocolTestRun_TestSuccess), sender, e);
+            if (InvokeRequired == true) {
+                Invoke(new Action<ProtocolTestRun, ProtocolUnitTestEventArgs>(ProtocolTestRun_TestSuccess), sender, e);
                 return;
             }
 
-            this.OutputTestResult(e.Test);
+            OutputTestResult(e.Test);
 
-            this.ConsoleAppendLine("END: [^2SUCCESS^0]");
+            ConsoleAppendLine("END: [^2SUCCESS^0]");
         }
 
         protected void ProtocolTestRun_TestBegin(ProtocolTestRun sender, ProtocolUnitTestEventArgs e) {
-            if (this.InvokeRequired == true) {
-                this.Invoke(new Action<ProtocolTestRun, ProtocolUnitTestEventArgs>(this.ProtocolTestRun_TestBegin), sender, e);
+            if (InvokeRequired == true) {
+                Invoke(new Action<ProtocolTestRun, ProtocolUnitTestEventArgs>(ProtocolTestRun_TestBegin), sender, e);
                 return;
             }
 
-            this.ConsoleAppendLine("===========================================================================================");
-            this.ConsoleAppendLine("BEGIN: {0}", e.Test.Name);
+            ConsoleAppendLine("===========================================================================================");
+            ConsoleAppendLine("BEGIN: {0}", e.Test.Name);
 
             e.Test.TestEvent += new ProtocolUnitTest.TestEventHandler(Test_TestEvent);
             e.Test.TestSetup += new ProtocolUnitTest.TestEventHandler(Test_TestSetup);
         }
 
         protected void Test_TestSetup(ProtocolUnitTest sender, ProtocolUnitTestEventArgs args) {
-            this.NetworkConsoleModel.Connection.ClientEvent += new Action<IClientEventArgs>(Connection_ClientEvent);
+            NetworkConsoleModel.Connection.ClientEvent += new Action<IClientEventArgs>(Connection_ClientEvent);
         }
 
         protected void Connection_ClientEvent(IClientEventArgs e) {
-            if (this.InvokeRequired == true) {
-                this.Invoke(new Action<ClientEventArgs>(this.Connection_ClientEvent), e);
+            if (InvokeRequired == true) {
+                Invoke(new Action<ClientEventArgs>(Connection_ClientEvent), e);
                 return;
             }
 
             if (e.EventType == ClientEventType.ClientConnectionStateChange) {
-                this.ConsoleAppendLine("State: ^6{0}", e.ConnectionState.ToString());
+                ConsoleAppendLine("State: ^6{0}", e.ConnectionState.ToString());
             }
             else if (e.EventType == ClientEventType.ClientConnectionFailure || e.EventType == ClientEventType.ClientSocketException) {
-                this.ConsoleAppendLine("^1Error: {0}", e.Now.Exceptions.FirstOrDefault());
+                ConsoleAppendLine("^1Error: {0}", e.Now.Exceptions.FirstOrDefault());
             }
             else if (e.EventType == ClientEventType.ClientPacketSent) {
-                this.ConsoleAppendLine("^2SEND: {0}", e.Now.Packets.First().DebugText);
+                ConsoleAppendLine("^2SEND: {0}", e.Now.Packets.First().DebugText);
             }
             else if (e.EventType == ClientEventType.ClientPacketReceived) {
-                this.ConsoleAppendLine("^5RECV: {0}", e.Now.Packets.First().DebugText);
+                ConsoleAppendLine("^5RECV: {0}", e.Now.Packets.First().DebugText);
             }
         }
 
         protected void Test_TestEvent(ProtocolUnitTest sender, ProtocolUnitTestEventArgs e) {
-            if (this.InvokeRequired == true) {
-                this.Invoke(new Action<ProtocolUnitTest, ProtocolUnitTestEventArgs>(this.Test_TestEvent), sender, e);
+            if (InvokeRequired == true) {
+                Invoke(new Action<ProtocolUnitTest, ProtocolUnitTestEventArgs>(Test_TestEvent), sender, e);
                 return;
             }
 
-            if (String.IsNullOrEmpty(e.Message) == false) {
-                this.ConsoleAppendLine("{0}", e.Message);
+            if (string.IsNullOrEmpty(e.Message) == false) {
+                ConsoleAppendLine("{0}", e.Message);
             }
         }
 
         private void btnReload_Click(object sender, EventArgs e) {
-            this.LoadProtocolTest();
+            LoadProtocolTest();
         }
 
         private void chkConnectionIsolation_CheckedChanged(object sender, EventArgs e) {
-            if (this.ProtocolTestRun != null) {
-                this.ProtocolTestRun.ConnecionIsolation = this.chkConnectionIsolation.Checked;
+            if (ProtocolTestRun != null) {
+                ProtocolTestRun.ConnecionIsolation = chkConnectionIsolation.Checked;
             }
         }
     }

@@ -38,7 +38,7 @@ namespace Potato.Core.Shared.Test.TestConfig {
                 }
             };
 
-            IConfig c = a.Union(b);
+            var c = a.Union(b);
 
             Assert.IsNotNull(c.Document["A"]);
             Assert.IsNotNull(c.Document["B"]);
@@ -70,10 +70,10 @@ namespace Potato.Core.Shared.Test.TestConfig {
                 }
             };
 
-            IConfig c = a.Union(b);
+            var c = a.Union(b);
             
-            Assert.AreEqual("valueA", c.Document["identical"].First["keyA"].Value<String>());
-            Assert.AreEqual("valueB", c.Document["identical"].Last["keyB"].Value<String>());
+            Assert.AreEqual("valueA", c.Document["identical"].First["keyA"].Value<string>());
+            Assert.AreEqual("valueB", c.Document["identical"].Last["keyB"].Value<string>());
         }
 
         /// <summary>

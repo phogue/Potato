@@ -35,30 +35,30 @@ namespace Potato.Net.Utils.Tests {
         /// <summary>
         /// The generated text. This is only generated when required and then saved for this object.
         /// </summary>
-        protected String GeneratedText { get; set; }
+        protected string GeneratedText { get; set; }
 
         public override string ToString() {
-            if (this.GeneratedText == null) {
-                int minimum = this.Minimum, maximum = this.Maximum > 0 ? this.Maximum : 10;
+            if (GeneratedText == null) {
+                int minimum = Minimum, maximum = Maximum > 0 ? Maximum : 10;
 
-                if (this.Type == ProtocolUnitRandomType.String) {
-                    this.GeneratedText = StringExtensions.RandomString(maximum);
+                if (Type == ProtocolUnitRandomType.String) {
+                    GeneratedText = StringExtensions.RandomString(maximum);
                 }
-                else if (this.Type == ProtocolUnitRandomType.Integer) {
-                    Random r = new Random();
-                    this.GeneratedText = r.Next(minimum, maximum).ToString(CultureInfo.InvariantCulture);
+                else if (Type == ProtocolUnitRandomType.Integer) {
+                    var r = new Random();
+                    GeneratedText = r.Next(minimum, maximum).ToString(CultureInfo.InvariantCulture);
                 }
-                else if (this.Type == ProtocolUnitRandomType.Float) {
-                    Random r = new Random();
-                    this.GeneratedText = r.NextDouble().ToString(CultureInfo.InvariantCulture);
+                else if (Type == ProtocolUnitRandomType.Float) {
+                    var r = new Random();
+                    GeneratedText = r.NextDouble().ToString(CultureInfo.InvariantCulture);
                 }
             }
 
-            return this.GeneratedText ?? String.Empty;
+            return GeneratedText ?? string.Empty;
         }
 
         public void Dispose() {
-            this.GeneratedText = null;
+            GeneratedText = null;
         }
     }
 }

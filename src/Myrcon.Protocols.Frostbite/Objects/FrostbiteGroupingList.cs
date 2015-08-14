@@ -22,8 +22,8 @@ namespace Myrcon.Protocols.Frostbite.Objects {
     [Serializable]
     public static class FrostbiteGroupingList {
 
-        private static FrostbitePlayerSubsetContext GetSubsetContext(String context) {
-            FrostbitePlayerSubsetContext result = FrostbitePlayerSubsetContext.All;
+        private static FrostbitePlayerSubsetContext GetSubsetContext(string context) {
+            var result = FrostbitePlayerSubsetContext.All;
 
             try {
                 result = (FrostbitePlayerSubsetContext) Enum.Parse(typeof (FrostbitePlayerSubsetContext), context, true);
@@ -36,15 +36,15 @@ namespace Myrcon.Protocols.Frostbite.Objects {
             return result;
         }
 
-        public static List<GroupModel> Parse(List<String> words) {
-            List<GroupModel> groups = new List<GroupModel>();
+        public static List<GroupModel> Parse(List<string> words) {
+            var groups = new List<GroupModel>();
 
             if (words.Count >= 1) {
 
-                FrostbitePlayerSubsetContext context = FrostbiteGroupingList.GetSubsetContext(words[0]);
+                var context = GetSubsetContext(words[0]);
 
                 if (words.Count >= 2) {
-                    int parsedTeamId = 0;
+                    var parsedTeamId = 0;
 
                     if (context == FrostbitePlayerSubsetContext.Player) {
                         groups.Add(new GroupModel() {
@@ -59,7 +59,7 @@ namespace Myrcon.Protocols.Frostbite.Objects {
                         });
                     }
                     else if (words.Count >= 3) {
-                        int parsedSquadId = 0;
+                        var parsedSquadId = 0;
 
                         if (context == FrostbitePlayerSubsetContext.Squad && int.TryParse(words[1], out parsedTeamId) == true && int.TryParse(words[2], out parsedSquadId) == true) {
                             groups.Add(new GroupModel() {

@@ -26,9 +26,9 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestDocumentNotNull() {
-            File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
+            File.WriteAllText(ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
 
-            IConfig config = new Config().Load(this.ConfigFileA);
+            var config = new Config().Load(ConfigFileA);
 
             Assert.IsNotNull(config.Document);
         }
@@ -38,9 +38,9 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestRootNotNullWithMatchingProperty() {
-            File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
+            File.WriteAllText(ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
 
-            IConfig config = new Config().Load(this.ConfigFileA);
+            var config = new Config().Load(ConfigFileA);
 
             Assert.IsNotNull(config.Root);
         }
@@ -51,9 +51,9 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestRootNotNullWithoutMatchingProperty() {
-            File.WriteAllText(this.ConfigFileA.FullName, @"{ ""This.Type.Does.Not.Exist"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
+            File.WriteAllText(ConfigFileA.FullName, @"{ ""This.Type.Does.Not.Exist"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
 
-            IConfig config = new Config().Load(this.ConfigFileA);
+            var config = new Config().Load(ConfigFileA);
 
             Assert.IsNotNull(config.Root);
         }
@@ -63,9 +63,9 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestRootNotNullEmptyFile() {
-            File.WriteAllText(this.ConfigFileA.FullName, @"{ }");
+            File.WriteAllText(ConfigFileA.FullName, @"{ }");
 
-            IConfig config = new Config().Load(this.ConfigFileA);
+            var config = new Config().Load(ConfigFileA);
 
             Assert.IsNotNull(config.Root);
         }
@@ -75,9 +75,9 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestRootNotNullNotArray() {
-            File.WriteAllText(this.ConfigFileA.FullName, @"{ ""This.Type.Does.Not.Exist"": { ""Name"":""Phogue"", ""Age"": 100  } }");
+            File.WriteAllText(ConfigFileA.FullName, @"{ ""This.Type.Does.Not.Exist"": { ""Name"":""Phogue"", ""Age"": 100  } }");
 
-            IConfig config = new Config().Load(this.ConfigFileA);
+            var config = new Config().Load(ConfigFileA);
 
             Assert.IsNotNull(config.Root);
         }
@@ -87,11 +87,11 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestRootSetToFilePath() {
-            File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
+            File.WriteAllText(ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
 
-            IConfig config = new Config().Load(this.ConfigFileA);
+            var config = new Config().Load(ConfigFileA);
 
-            Assert.AreEqual("Phogue", config.Root.First["Name"].Value<String>());
+            Assert.AreEqual("Phogue", config.Root.First["Name"].Value<string>());
             Assert.AreEqual(100, config.Root.First["Age"].Value<int>());
         }
 
@@ -100,9 +100,9 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestInvalidJsonParsingNotNullRoot() {
-            File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""N 100  } ] }");
+            File.WriteAllText(ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""N 100  } ] }");
 
-            IConfig config = new Config().Load(this.ConfigFileA);
+            var config = new Config().Load(ConfigFileA);
 
             Assert.IsNotNull(config.Root);
         }
@@ -112,9 +112,9 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestInvalidJsonParsingNotNullDocument() {
-            File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""N 100  } ] }");
+            File.WriteAllText(ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""N 100  } ] }");
 
-            IConfig config = new Config().Load(this.ConfigFileA);
+            var config = new Config().Load(ConfigFileA);
 
             Assert.IsNotNull(config.Document);
         }

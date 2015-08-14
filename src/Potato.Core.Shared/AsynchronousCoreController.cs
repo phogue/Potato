@@ -40,12 +40,12 @@ namespace Potato.Core.Shared {
         /// Initializes the controller with the default values
         /// </summary>
         protected AsynchronousCoreController() : base() {
-            this.AsyncStateModel = new AsynchronousCommandStateModel();
+            AsyncStateModel = new AsynchronousCommandStateModel();
         }
 
         public override ICoreController Execute() {
             // Start the long running command dispatcher.
-            Task.Factory.StartNew(ExecuteQueuedCommands, this.AsyncStateModel.TaskQueueWaitCancellationTokenSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+            Task.Factory.StartNew(ExecuteQueuedCommands, AsyncStateModel.TaskQueueWaitCancellationTokenSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
 
             return base.Execute();
         }
@@ -55,17 +55,17 @@ namespace Potato.Core.Shared {
         /// added to the queue.
         /// </summary>
         public virtual void ExecuteQueuedCommands() {
-            while (this.AsyncStateModel.TaskQueueWaitCancellationTokenSource.IsCancellationRequested == false) {
+            while (AsyncStateModel.TaskQueueWaitCancellationTokenSource.IsCancellationRequested == false) {
 
                 // Wait until we are poked that something has been added to the queue.
-                this.AsyncStateModel.TaskQueueWait.WaitOne();
+                AsyncStateModel.TaskQueueWait.WaitOne();
 
                 // Dequeue and process a new command.
                 AsynchronousCommandModel asynchronousCommand = null;
 
-                if (this.AsyncStateModel.PendingCommandsQueue.TryDequeue(out asynchronousCommand) == true) {
+                if (AsyncStateModel.PendingCommandsQueue.TryDequeue(out asynchronousCommand) == true) {
                     // Add it so we can look for a reference when it comes back.
-                    this.AsyncStateModel.ExecutedCommandsPool.TryAdd(asynchronousCommand.Command.CommandGuid, asynchronousCommand);
+                    AsyncStateModel.ExecutedCommandsPool.TryAdd(asynchronousCommand.Command.CommandGuid, asynchronousCommand);
 
                     Task.Factory.StartNew(() => {
                         if (asynchronousCommand.IsTunneling == true) {
@@ -79,12 +79,12 @@ namespace Potato.Core.Shared {
             }
 
             // Cleanup
-            this.AsyncStateModel.TaskQueueWaitCancellationTokenSource.Dispose();
-            this.AsyncStateModel.TaskQueueWait.Dispose();
+            AsyncStateModel.TaskQueueWaitCancellationTokenSource.Dispose();
+            AsyncStateModel.TaskQueueWait.Dispose();
 
-            this.AsyncStateModel.ExecutedCommandsPool.Clear();
+            AsyncStateModel.ExecutedCommandsPool.Clear();
 
-            this.AsyncStateModel = null;
+            AsyncStateModel = null;
         }
 
         /// <summary>
@@ -94,14 +94,14 @@ namespace Potato.Core.Shared {
         /// <param name="command">The command to enqueue</param>
         /// <param name="completed">The optional callback when a result is available.</param>
         public virtual void BeginTunnel(ICommand command, Action<ICommandResult> completed = null) {
-            if (this.AsyncStateModel != null && this.AsyncStateModel.TaskQueueWaitCancellationTokenSource.IsCancellationRequested == false) {
-                this.AsyncStateModel.PendingCommandsQueue.Enqueue(new AsynchronousCommandModel() {
+            if (AsyncStateModel != null && AsyncStateModel.TaskQueueWaitCancellationTokenSource.IsCancellationRequested == false) {
+                AsyncStateModel.PendingCommandsQueue.Enqueue(new AsynchronousCommandModel() {
                     Command = command,
                     IsTunneling = true,
                     Completed = completed
                 });
 
-                this.AsyncStateModel.TaskQueueWait.Set();
+                AsyncStateModel.TaskQueueWait.Set();
             }
         }
 
@@ -112,14 +112,14 @@ namespace Potato.Core.Shared {
         /// <param name="command">The command to enqueue</param>
         /// <param name="completed">The optional callback when a result is available.</param>
         public virtual void BeginBubble(ICommand command, Action<ICommandResult> completed = null) {
-            if (this.AsyncStateModel != null && this.AsyncStateModel.TaskQueueWaitCancellationTokenSource.IsCancellationRequested == false) {
-                this.AsyncStateModel.PendingCommandsQueue.Enqueue(new AsynchronousCommandModel() {
+            if (AsyncStateModel != null && AsyncStateModel.TaskQueueWaitCancellationTokenSource.IsCancellationRequested == false) {
+                AsyncStateModel.PendingCommandsQueue.Enqueue(new AsynchronousCommandModel() {
                     Command = command,
                     IsTunneling = false,
                     Completed = completed
                 });
 
-                this.AsyncStateModel.TaskQueueWait.Set();
+                AsyncStateModel.TaskQueueWait.Set();
             }
         }
 
@@ -129,10 +129,10 @@ namespace Potato.Core.Shared {
         /// <param name="command"></param>
         /// <returns></returns>
         public override ICommandResult Tunnel(ICommand command) {
-            ICommandResult synchronousResult = command.Result;
-            AutoResetEvent resultWait = new AutoResetEvent(false);
+            var synchronousResult = command.Result;
+            var resultWait = new AutoResetEvent(false);
 
-            this.BeginTunnel(command, result => {
+            BeginTunnel(command, result => {
                 synchronousResult = result;
 
                 resultWait.Set();
@@ -149,10 +149,10 @@ namespace Potato.Core.Shared {
         /// <param name="command"></param>
         /// <returns></returns>
         public override ICommandResult Bubble(ICommand command) {
-            ICommandResult synchronousResult = command.Result;
-            AutoResetEvent resultWait = new AutoResetEvent(false);
+            var synchronousResult = command.Result;
+            var resultWait = new AutoResetEvent(false);
 
-            this.BeginBubble(command, result => {
+            BeginBubble(command, result => {
                 synchronousResult = result;
 
                 resultWait.Set();
@@ -168,7 +168,7 @@ namespace Potato.Core.Shared {
             AsynchronousCommandModel asynchronousCommandModel = null;
 
             // If we are waiting for it and we have removed the executed wrapper successfully.
-            if (this.AsyncStateModel.ExecutedCommandsPool.TryRemove(command.CommandGuid, out asynchronousCommandModel) == true) {
+            if (AsyncStateModel.ExecutedCommandsPool.TryRemove(command.CommandGuid, out asynchronousCommandModel) == true) {
                 Task.Factory.StartNew(() => asynchronousCommandModel.OnResult(command.Result));
             }
 
@@ -179,8 +179,8 @@ namespace Potato.Core.Shared {
             base.Dispose();
 
             // This should end the pendingcommandpool -> commandexecutedpool thread
-            this.AsyncStateModel.TaskQueueWaitCancellationTokenSource.Cancel();
-            this.AsyncStateModel.TaskQueueWait.Set();
+            AsyncStateModel.TaskQueueWaitCancellationTokenSource.Cancel();
+            AsyncStateModel.TaskQueueWait.Set();
         }
     }
 }

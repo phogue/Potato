@@ -24,19 +24,19 @@ using Potato.Service.Shared;
 namespace Potato {
     internal class Program {
         
-        public static List<String> Wordify(String data) {
-            List<String> list = new List<String>();
+        public static List<string> Wordify(string data) {
+            var list = new List<string>();
 
-            String word = String.Empty;
-            int stack = 0;
-            bool escaped = false;
+            var word = string.Empty;
+            var stack = 0;
+            var escaped = false;
 
-            foreach (char input in data) {
+            foreach (var input in data) {
 
                 if (input == ' ') {
                     if (stack == 0) {
                         list.Add(word);
-                        word = String.Empty;
+                        word = string.Empty;
                     }
                     else {
                         word += ' ';
@@ -95,12 +95,12 @@ namespace Potato {
             if (args.Length > 0) {
                 // Support for --help command?
 
-                System.Console.WriteLine(@"Starting with arguments: {0}", String.Join(" ", args));
+                System.Console.WriteLine(@"Starting with arguments: {0}", string.Join(" ", args));
             }
 
-            ServiceController service = new ServiceController {
-                Arguments = new List<String>(args),
-                Settings = new ServiceSettings(new List<String>(args)),
+            var service = new ServiceController {
+                Arguments = new List<string>(args),
+                Settings = new ServiceSettings(new List<string>(args)),
                 Packages = {
                     BeforeRepositoryInitialize = () => Console.WriteLine(@"Initializing package repository.."),
                     BeforeSourcePackageFetch = () => Console.WriteLine(@"Checking source repositories.."),
@@ -122,7 +122,7 @@ namespace Potato {
                 },
                 SignalBegin = (controller, message) => Console.WriteLine(@"Signal: {0}", message.Name),
                 SignalEnd = (controller, message, seconds) => Console.WriteLine(@"Signal: {0} completed in {1} seconds", message.Name, seconds),
-                SignalParameterError = (controller, list) => Console.WriteLine(@"Missing or valid parameters: {0}", String.Join(", ", list)),
+                SignalParameterError = (controller, list) => Console.WriteLine(@"Missing or valid parameters: {0}", string.Join(", ", list)),
                 SignalStatistics = (controller, domain) => {
                     Console.WriteLine(@"Service Controller");
                     Console.WriteLine(@"+--------------------------------------------------------+");
@@ -158,16 +158,16 @@ namespace Potato {
                 Name = "start"
             });
 
-            AutoResetEvent exitWait = new AutoResetEvent(false);
+            var exitWait = new AutoResetEvent(false);
 
             Task.Factory.StartNew(() => {
-                var input = String.Empty;
+                var input = string.Empty;
 
                 do {
                     input = Console.ReadLine();
 
                     if (input != null) {
-                        var words = Program.Wordify(input);
+                        var words = Wordify(input);
 
                         service.SignalMessage(new ServiceMessage() {
                             Name = words.FirstOrDefault(),
@@ -175,7 +175,7 @@ namespace Potato {
                         });
                     }
 
-                } while (String.Compare(input, "exit", StringComparison.OrdinalIgnoreCase) != 0);
+                } while (string.Compare(input, "exit", StringComparison.OrdinalIgnoreCase) != 0);
 
                 exitWait.Set();
             });

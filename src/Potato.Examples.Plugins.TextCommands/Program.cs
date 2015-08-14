@@ -33,7 +33,7 @@ namespace Potato.Examples.Plugins.TextCommands {
 
             // 1. Setup a command dispatch to let us know when the command has been executed.
             // Commands can be executed from within game or via the daemon
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     Name = "FuzzyCommand",
                     ParameterTypes = new List<CommandParameterType>() {
@@ -42,7 +42,7 @@ namespace Potato.Examples.Plugins.TextCommands {
                             Type = typeof(ICommandResult)
                         }
                     },
-                    Handler = this.FuzzyCommand
+                    Handler = FuzzyCommand
                 },
                 new CommandDispatch() {
                     Name = "RouteCommand",
@@ -52,7 +52,7 @@ namespace Potato.Examples.Plugins.TextCommands {
                             Type = typeof(ICommandResult)
                         }
                     },
-                    Handler = this.RouteCommand
+                    Handler = RouteCommand
                 }
             });
         }
@@ -66,22 +66,22 @@ namespace Potato.Examples.Plugins.TextCommands {
 
                 // 2. Register a text command (tell it what command to call when it is matched)
                 // If you wanted to follow the execution of this eventually you will find yourself in Potato.Core.Connections.TextCommands.TextCommandController.RegisterTextCommand
-                this.Bubble(new Command() {
+                Bubble(new Command() {
                     CommandType = CommandType.TextCommandsRegister,
                     Scope = new CommandScopeModel() {
-                        ConnectionGuid = this.ConnectionGuid
+                        ConnectionGuid = ConnectionGuid
                     },
                     Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 TextCommands = new List<TextCommandModel>() {
                                     new TextCommandModel() {
-                                        PluginGuid = this.PluginGuid,
+                                        PluginGuid = PluginGuid,
                                         Parser = TextCommandParserType.Fuzzy,
                                         PluginCommand = "FuzzyCommand", // This will be the command name that comes through
                                         Description = "FuzzyCommandDescription",
                                         // When using the fuzzy parser you just need to supply keywords to pickup in a text command
-                                        Commands = new List<String>() {
+                                        Commands = new List<string>() {
                                             "Test",
                                             "Blah",
                                             "Fuzzy"
@@ -94,23 +94,23 @@ namespace Potato.Examples.Plugins.TextCommands {
                 });
 
                 // Register a route command, which is a very specific format of text command
-                this.Bubble(new Command() {
+                Bubble(new Command() {
                     CommandType = CommandType.TextCommandsRegister,
                     Scope = new CommandScopeModel() {
-                        ConnectionGuid = this.ConnectionGuid
+                        ConnectionGuid = ConnectionGuid
                     },
                     Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 TextCommands = new List<TextCommandModel>() {
                                     new TextCommandModel() {
-                                        PluginGuid = this.PluginGuid,
+                                        PluginGuid = PluginGuid,
                                         Parser = TextCommandParserType.Route,
                                         PluginCommand = "RouteCommand", // This will be the command name that comes through
                                         Description = "RouteCommandDescription",
                                         // When using the route parser the structure must be identical
                                         // to one of the command "routes" supplied below.
-                                        Commands = new List<String>() {
+                                        Commands = new List<string>() {
                                             "route",
                                             "route :player",
                                             "route :player :text",
@@ -128,21 +128,21 @@ namespace Potato.Examples.Plugins.TextCommands {
         }
 
         // 3. Handle the test fuzzy command.
-        protected ICommandResult FuzzyCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            ICommandResult e = parameters["e"].First<ICommandResult>();
+        protected ICommandResult FuzzyCommand(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var e = parameters["e"].First<ICommandResult>();
 
-            TextCommandMatchModel match = e.Now.TextCommandMatches.First();
+            var match = e.Now.TextCommandMatches.First();
 
             if (match.Players != null && match.Players.Count > 0) {
-                Console.WriteLine("Players: " + String.Join(", ", match.Players.Select(x => x.Name).ToArray()));
+                Console.WriteLine("Players: " + string.Join(", ", match.Players.Select(x => x.Name).ToArray()));
             }
 
             if (match.Maps != null && match.Maps.Count > 0) {
-                Console.WriteLine("Maps: " + String.Join(", ", match.Maps.Select(x => x.Name).ToArray()));
+                Console.WriteLine("Maps: " + string.Join(", ", match.Maps.Select(x => x.Name).ToArray()));
             }
 
             if (match.Numeric != null && match.Numeric.Count > 0) {
-                Console.WriteLine("Numeric: " + String.Join(", ", match.Numeric.Select(x => String.Format("{0:F2}", x)).ToArray()));
+                Console.WriteLine("Numeric: " + string.Join(", ", match.Numeric.Select(x => string.Format("{0:F2}", x)).ToArray()));
             }
 
             if (match.Delay != null) {
@@ -158,32 +158,32 @@ namespace Potato.Examples.Plugins.TextCommands {
             }
 
             if (e.Now.TextCommands.Count > 1) {
-                Console.WriteLine("Alternate Commands: " + String.Join(" ", e.Now.TextCommands.Skip(1).Select(x => x.PluginCommand).ToArray()));
+                Console.WriteLine("Alternate Commands: " + string.Join(" ", e.Now.TextCommands.Skip(1).Select(x => x.PluginCommand).ToArray()));
             }
 
             if (match.Quotes != null && match.Quotes.Count > 0) {
-                Console.WriteLine("Quotes: " + String.Join(", ", match.Quotes.Select(x => String.Format("--{0}--", x)).ToArray()));
+                Console.WriteLine("Quotes: " + string.Join(", ", match.Quotes.Select(x => string.Format("--{0}--", x)).ToArray()));
             }
 
             return command.Result;
         }
 
         // 3. Handle the test route command.
-        protected ICommandResult RouteCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            ICommandResult e = parameters["e"].First<ICommandResult>();
+        protected ICommandResult RouteCommand(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var e = parameters["e"].First<ICommandResult>();
 
-            TextCommandMatchModel match = e.Now.TextCommandMatches.First();
+            var match = e.Now.TextCommandMatches.First();
 
             if (match.Players != null && match.Players.Count > 0) {
-                Console.WriteLine("Players: " + String.Join(", ", match.Players.Select(x => x.Name).ToArray()));
+                Console.WriteLine("Players: " + string.Join(", ", match.Players.Select(x => x.Name).ToArray()));
             }
 
             if (match.Maps != null && match.Maps.Count > 0) {
-                Console.WriteLine("Maps: " + String.Join(", ", match.Maps.Select(x => x.Name).ToArray()));
+                Console.WriteLine("Maps: " + string.Join(", ", match.Maps.Select(x => x.Name).ToArray()));
             }
 
             if (match.Numeric != null && match.Numeric.Count > 0) {
-                Console.WriteLine("Numeric: " + String.Join(", ", match.Numeric.Select(x => String.Format("{0:F2}", x)).ToArray()));
+                Console.WriteLine("Numeric: " + string.Join(", ", match.Numeric.Select(x => string.Format("{0:F2}", x)).ToArray()));
             }
 
             if (match.Delay != null) {
@@ -199,11 +199,11 @@ namespace Potato.Examples.Plugins.TextCommands {
             }
 
             if (e.Now.TextCommands.Count > 1) {
-                Console.WriteLine("Alternate Commands: " + String.Join(" ", e.Now.TextCommands.Skip(1).Select(x => x.PluginCommand).ToArray()));
+                Console.WriteLine("Alternate Commands: " + string.Join(" ", e.Now.TextCommands.Skip(1).Select(x => x.PluginCommand).ToArray()));
             }
 
             if (match.Quotes != null && match.Quotes.Count > 0) {
-                Console.WriteLine("Quotes: " + String.Join(", ", match.Quotes.Select(x => String.Format("--{0}--", x)).ToArray()));
+                Console.WriteLine("Quotes: " + string.Join(", ", match.Quotes.Select(x => string.Format("--{0}--", x)).ToArray()));
             }
 
             return command.Result;

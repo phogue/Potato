@@ -31,7 +31,7 @@ namespace Myrcon.Protocols.Frostbite.Generations.Second.Games {
         /// </summary>
         public Battlefield4Game() : base() {
 
-            this.ServerInfoParameters = new List<string>() {
+            ServerInfoParameters = new List<string>() {
                 "ServerName",
                 "PlayerCount",
                 "MaxPlayerCount",
@@ -48,13 +48,13 @@ namespace Myrcon.Protocols.Frostbite.Generations.Second.Games {
                 "RoundTime"
             };
 
-            this.PacketDispatcher.Append(new Dictionary<IPacketDispatch, Action<IPacketWrapper, IPacketWrapper>>() {
+            PacketDispatcher.Append(new Dictionary<IPacketDispatch, Action<IPacketWrapper, IPacketWrapper>>() {
                 {
                     new PacketDispatch() {
                         Name = "server.onLevelLoaded",
                         Origin = PacketOrigin.Server
                     },
-                    new Action<IPacketWrapper, IPacketWrapper>(this.ServerOnLevelLoadedDispatchHandler)
+                    new Action<IPacketWrapper, IPacketWrapper>(ServerOnLevelLoadedDispatchHandler)
                 }
             });
         }

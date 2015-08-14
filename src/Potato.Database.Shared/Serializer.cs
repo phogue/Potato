@@ -33,7 +33,7 @@ namespace Potato.Database.Shared {
         private IParsedQuery Parsed { get; set; }
 
         protected Serializer() {
-            this.Parsed = new ParsedQuery();
+            Parsed = new ParsedQuery();
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Potato.Database.Shared {
         /// </summary>
         /// <returns></returns>
         public ICompiledQuery Compile() {
-            return this.Compile(this.Parsed);
+            return Compile(Parsed);
         }
 
         /// <summary>
@@ -57,12 +57,12 @@ namespace Potato.Database.Shared {
         /// <param name="method"></param>
         /// <returns></returns>
         protected List<IParsedQuery> ParseChildren(IMethod method) {
-            List<IParsedQuery> children = new List<IParsedQuery>();
+            var children = new List<IParsedQuery>();
 
             foreach (Method child in method.Where(child => child is Method)) {
                 IParsedQuery parsedChild = new ParsedQuery();
 
-                this.Parse(child, parsedChild);
+                Parse(child, parsedChild);
 
                 children.Add(parsedChild);
             }
@@ -85,7 +85,7 @@ namespace Potato.Database.Shared {
         /// <param name="method">The method object</param>
         /// <returns></returns>
         public ISerializer Parse(IMethod method) {
-            this.Parse(method, this.Parsed);
+            Parse(method, Parsed);
 
             return this;
         }
@@ -96,7 +96,7 @@ namespace Potato.Database.Shared {
         /// <param name="query"></param>
         /// <returns></returns>
         public ISerializer Parse(IDatabaseObject query) {
-            this.Parse(query as Method);
+            Parse(query as Method);
 
             return this;
         }

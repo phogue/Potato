@@ -42,9 +42,9 @@ namespace Potato.Core.Shared {
         public List<ICoreController> BubbleObjects { get; set; }
 
         protected CoreController() : base() {
-            this.CommandDispatchers = new List<ICommandDispatch>();
-            this.TunnelObjects = new List<ICoreController>();
-            this.BubbleObjects = new List<ICoreController>();
+            CommandDispatchers = new List<ICommandDispatch>();
+            TunnelObjects = new List<ICoreController>();
+            BubbleObjects = new List<ICoreController>();
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Potato.Core.Shared {
         public event EventHandler Disposed;
 
         protected virtual void OnDisposed() {
-            EventHandler handler = Disposed;
+            var handler = Disposed;
 
             if (handler != null) {
                 handler(this, EventArgs.Empty);
@@ -65,15 +65,15 @@ namespace Potato.Core.Shared {
         /// Allows for an optional child implementation.
         /// </summary>
         public virtual void Dispose() {
-            this.OnDisposed();
+            OnDisposed();
 
-            if (this.BubbleObjects != null) this.BubbleObjects.Clear();
-            this.BubbleObjects = null;
+            if (BubbleObjects != null) BubbleObjects.Clear();
+            BubbleObjects = null;
 
-            if (this.TunnelObjects != null) this.TunnelObjects.Clear();
-            this.TunnelObjects = null;
+            if (TunnelObjects != null) TunnelObjects.Clear();
+            TunnelObjects = null;
 
-            this.Disposed = null;
+            Disposed = null;
         }
 
         /// <summary>
@@ -93,11 +93,11 @@ namespace Potato.Core.Shared {
         /// <param name="config"></param>
         /// <param name="password">The password to decrypt the config commands with</param>
         /// <returns></returns>
-        public virtual ICoreController Execute(IConfig config, String password = null) {
-            this.TunnelObjects = this.TunnelObjects ?? new List<ICoreController>();
-            this.BubbleObjects = this.BubbleObjects ?? new List<ICoreController>();
+        public virtual ICoreController Execute(IConfig config, string password = null) {
+            TunnelObjects = TunnelObjects ?? new List<ICoreController>();
+            BubbleObjects = BubbleObjects ?? new List<ICoreController>();
 
-            this.Execute(new Command() {
+            Execute(new Command() {
                 Origin = CommandOrigin.Local
             }, config, password);
 
@@ -109,8 +109,8 @@ namespace Potato.Core.Shared {
         /// </summary>
         /// <returns></returns>
         public virtual ICoreController Execute() {
-            this.TunnelObjects = this.TunnelObjects ?? new List<ICoreController>();
-            this.BubbleObjects = this.BubbleObjects ?? new List<ICoreController>();
+            TunnelObjects = TunnelObjects ?? new List<ICoreController>();
+            BubbleObjects = BubbleObjects ?? new List<ICoreController>();
 
             return this;
         }
@@ -121,10 +121,10 @@ namespace Potato.Core.Shared {
         /// <param name="command"></param>
         /// <param name="config"></param>
         /// <param name="password">The password to decrypt encrypted config commands</param>
-        protected void Execute(ICommand command, IConfig config, String password = null) {
+        protected void Execute(ICommand command, IConfig config, string password = null) {
             if (config != null && config.Root != null) {
 
-                foreach (var loadedConfigCommand in config.RootOf(this.GetType()).Children<JObject>().Select(item => item.ToObject<ConfigCommand>(JsonSerialization.Minimal)).Where(item => item != null)) {
+                foreach (var loadedConfigCommand in config.RootOf(GetType()).Children<JObject>().Select(item => item.ToObject<ConfigCommand>(JsonSerialization.Minimal)).Where(item => item != null)) {
                     // only attempt a decrypt if we've been given a password. If we don't have a password, we won't bother
                     // and the command will have a null Command and be skipped anyway.
                     if (password != null) {
@@ -138,7 +138,7 @@ namespace Potato.Core.Shared {
                         command.Parameters = loadedCommand.Parameters;
                         command.Scope = loadedCommand.Scope;
 
-                        this.Tunnel(command);
+                        Tunnel(command);
                     }
                 }
             }
@@ -147,10 +147,10 @@ namespace Potato.Core.Shared {
         private ICommandResult Run(CommandAttributeType attributeType, ICommand command, CommandResultType maintainStatus) {
 
             // Loop through all matching commands with the identical name and type
-            foreach (var dispatch in this.CommandDispatchers.Where(dispatch => dispatch.CanDispatch(attributeType, command))) {
+            foreach (var dispatch in CommandDispatchers.Where(dispatch => dispatch.CanDispatch(attributeType, command))) {
                 
                 // Check if we can build a parameter list.
-                Dictionary<String, ICommandParameter> parameters = dispatch.BuildParameterDictionary(command.Parameters);
+                var parameters = dispatch.BuildParameterDictionary(command.Parameters);
 
                 if (parameters != null) {
                     command.Result = dispatch.Handler(command, parameters);
@@ -166,12 +166,12 @@ namespace Potato.Core.Shared {
         }
 
         public virtual ICommandResult PropogatePreview(ICommand command, CommandDirection direction) {
-            command.Result = this.Run(CommandAttributeType.Preview, command, CommandResultType.Continue);
+            command.Result = Run(CommandAttributeType.Preview, command, CommandResultType.Continue);
 
             if (command.Result.CommandResultType == CommandResultType.Continue) {
-                IList<ICoreController> propogationList = direction == CommandDirection.Tunnel ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
+                var propogationList = direction == CommandDirection.Tunnel ? TunnelExecutableObjects(command) : BubbleExecutableObjects(command);
 
-                for (int offset = 0; propogationList != null && offset < propogationList.Count && command.Result.CommandResultType == CommandResultType.Continue; offset++) {
+                for (var offset = 0; propogationList != null && offset < propogationList.Count && command.Result.CommandResultType == CommandResultType.Continue; offset++) {
                     if (propogationList[offset] != null) {
                         command.Result = propogationList[offset].PropogatePreview(command, direction);
                     }
@@ -182,12 +182,12 @@ namespace Potato.Core.Shared {
         }
 
         public virtual ICommandResult PropogateHandler(ICommand command, CommandDirection direction) {
-            command.Result = this.Run(CommandAttributeType.Handler, command, CommandResultType.Continue);
+            command.Result = Run(CommandAttributeType.Handler, command, CommandResultType.Continue);
 
             if (command.Result.CommandResultType == CommandResultType.Continue) {
-                IList<ICoreController> propogationList = direction == CommandDirection.Tunnel ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
+                var propogationList = direction == CommandDirection.Tunnel ? TunnelExecutableObjects(command) : BubbleExecutableObjects(command);
 
-                for (int offset = 0; propogationList != null && offset < propogationList.Count && command.Result.CommandResultType == CommandResultType.Continue; offset++) {
+                for (var offset = 0; propogationList != null && offset < propogationList.Count && command.Result.CommandResultType == CommandResultType.Continue; offset++) {
                     if (propogationList[offset] != null) {
                         command.Result = propogationList[offset].PropogateHandler(command, direction);
                     }
@@ -198,12 +198,12 @@ namespace Potato.Core.Shared {
         }
 
         public virtual ICommandResult PropogateExecuted(ICommand command, CommandDirection direction) {
-            command.Result = this.Run(CommandAttributeType.Executed, command, command.Result.CommandResultType);
+            command.Result = Run(CommandAttributeType.Executed, command, command.Result.CommandResultType);
 
-            IList<ICoreController> propogationList = direction == CommandDirection.Tunnel ? this.TunnelExecutableObjects(command) : this.BubbleExecutableObjects(command);
+            var propogationList = direction == CommandDirection.Tunnel ? TunnelExecutableObjects(command) : BubbleExecutableObjects(command);
 
             if (propogationList != null) {
-                foreach (ICoreController executable in propogationList) {
+                foreach (var executable in propogationList) {
                     if (executable != null) {
                         command.Result = executable.PropogateExecuted(command, direction);
                     }
@@ -225,16 +225,16 @@ namespace Potato.Core.Shared {
                 CommandResultType = CommandResultType.Continue
             };
 
-            command.Result = this.PropogatePreview(command, CommandDirection.Tunnel);
+            command.Result = PropogatePreview(command, CommandDirection.Tunnel);
 
             if (command.Result.CommandResultType == CommandResultType.Continue) {
-                command.Result = this.PropogateHandler(command, CommandDirection.Tunnel);
+                command.Result = PropogateHandler(command, CommandDirection.Tunnel);
 
-                command.Result = this.PropogateExecuted(command, CommandDirection.Tunnel);
+                command.Result = PropogateExecuted(command, CommandDirection.Tunnel);
             }
             // If the preview stole the command and executed it, let everyone know it has been executed.
             else if (command.Result.CommandResultType == CommandResultType.Success) {
-                command.Result = this.PropogateExecuted(command, CommandDirection.Tunnel);
+                command.Result = PropogateExecuted(command, CommandDirection.Tunnel);
             }
 
             return command.Result;
@@ -252,31 +252,31 @@ namespace Potato.Core.Shared {
                 CommandResultType = CommandResultType.Continue
             };
 
-            command.Result = this.PropogatePreview(command, CommandDirection.Bubble);
+            command.Result = PropogatePreview(command, CommandDirection.Bubble);
 
             if (command.Result.CommandResultType == CommandResultType.Continue) {
-                command.Result = this.PropogateHandler(command, CommandDirection.Bubble);
+                command.Result = PropogateHandler(command, CommandDirection.Bubble);
 
-                command.Result = this.PropogateExecuted(command, CommandDirection.Bubble);
+                command.Result = PropogateExecuted(command, CommandDirection.Bubble);
             }
             // If the preview stole the command and executed it, let everyone know it has been executed.
             else if (command.Result.CommandResultType == CommandResultType.Success) {
-                command.Result = this.PropogateExecuted(command, CommandDirection.Bubble);
+                command.Result = PropogateExecuted(command, CommandDirection.Bubble);
             }
 
             return command.Result;
         }
 
         protected virtual IList<ICoreController> TunnelExecutableObjects(ICommand command) {
-            return this.TunnelObjects;
+            return TunnelObjects;
         }
 
         protected virtual IList<ICoreController> BubbleExecutableObjects(ICommand command) {
-            return this.BubbleObjects;
+            return BubbleObjects;
         } 
 
         public object Clone() {
-            return this.MemberwiseClone();
+            return MemberwiseClone();
         }
 
         /// <summary>
@@ -291,8 +291,8 @@ namespace Potato.Core.Shared {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="property"></param>
-        protected void OnPropertyChanged(Object sender, String property) {
-            var handler = this.PropertyChanged;
+        protected void OnPropertyChanged(object sender, string property) {
+            var handler = PropertyChanged;
             if (handler != null) {
                 handler(sender, new PropertyChangedEventArgs(property));
             }

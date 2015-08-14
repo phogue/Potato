@@ -44,7 +44,7 @@ namespace Potato.Core.Test.Events {
         [Test]
         public void TestPushEventsAppendSuccess() {
             var pushEndPoint = new PushEventsEndPoint() {
-                InclusiveNames = new List<String>() {
+                InclusiveNames = new List<string>() {
                     "EventName"
                 }
             };
@@ -63,7 +63,7 @@ namespace Potato.Core.Test.Events {
         [Test]
         public void TestPushEventsAppendNonInclusiveEventNotPushed() {
             var pushEndPoint = new PushEventsEndPoint() {
-                InclusiveNames = new List<String>() {
+                InclusiveNames = new List<string>() {
                     "EventName"
                 }
             };
@@ -105,7 +105,7 @@ namespace Potato.Core.Test.Events {
         public void TestPushEventsRequestFailCleanupOccurs() {
             var requestWait = new AutoResetEvent(false);
             var pushEndPoint = new PushEventsEndPoint() {
-                InclusiveNames = new List<String>() {
+                InclusiveNames = new List<string>() {
                     "EventName"
                 }
             };

@@ -44,7 +44,7 @@ namespace Potato.Database.Shared {
         /// </summary>
         /// <param name="name">The name of the database</param>
         /// <returns>this</returns>
-        IDatabaseObject Database(String name);
+        IDatabaseObject Database(string name);
 
         /// <summary>
         /// Append a Index type to the list of objects on this
@@ -59,7 +59,7 @@ namespace Potato.Database.Shared {
         /// <param name="collection">The name of the collectionthe field with name exists in</param>
         /// <param name="name">The name of the field to index on</param>
         /// <returns>this</returns>
-        IDatabaseObject Index(String collection, String name);
+        IDatabaseObject Index(string collection, string name);
 
         /// <summary>
         /// Creates a new ascending or descending index on a field with name
@@ -69,7 +69,7 @@ namespace Potato.Database.Shared {
         /// <param name="sortByModifier">The direction to sort by</param>
         /// <returns>this</returns>
         /// <remarks>Passing Ascending through is as good as using Index(name)</remarks>
-        IDatabaseObject Index(String collection, String name, ISortByModifier sortByModifier);
+        IDatabaseObject Index(string collection, string name, ISortByModifier sortByModifier);
 
         /// <summary>
         /// Creates a new ascending index on a field with name, potentially a unique or primary key
@@ -78,7 +78,7 @@ namespace Potato.Database.Shared {
         /// <param name="name">The name of the field to index on</param>
         /// <param name="indexModifier">The type of index (primary, unique etc.)</param>
         /// <returns>this</returns>
-        IDatabaseObject Index(String collection, String name, IIndexModifier indexModifier);
+        IDatabaseObject Index(string collection, string name, IIndexModifier indexModifier);
 
         /// <summary>
         /// Creates a new ascending or descenting index on a field with name, potentially a unique or primary key
@@ -88,7 +88,7 @@ namespace Potato.Database.Shared {
         /// <param name="indexModifier">The type of index (primary, unique etc.)</param>
         /// <param name="sortByModifier">The direction to sort by</param>
         /// <returns>this</returns>
-        IDatabaseObject Index(String collection, String name, IIndexModifier indexModifier, ISortByModifier sortByModifier);
+        IDatabaseObject Index(string collection, string name, IIndexModifier indexModifier, ISortByModifier sortByModifier);
 
         /// <summary>
         /// Appends a modifier
@@ -116,7 +116,7 @@ namespace Potato.Database.Shared {
         /// </summary>
         /// <param name="name">The name of the field</param>
         /// <returns>this</returns>
-        IDatabaseObject Field(String name);
+        IDatabaseObject Field(string name);
 
         /// <summary>
         /// Creates and appends a new field object with name of `name`, a specified type and if the field is nullable or not
@@ -125,7 +125,7 @@ namespace Potato.Database.Shared {
         /// <param name="type">The type of field to use</param>
         /// <param name="nullable">true if the field allows null</param>
         /// <returns>this</returns>
-        IDatabaseObject Field(String name, IFieldType type, bool nullable = true);
+        IDatabaseObject Field(string name, IFieldType type, bool nullable = true);
 
         /// <summary>
         /// Creates and appends a new field object with name of `name`, a string type with a specified length and if the field is nullable or not
@@ -134,7 +134,7 @@ namespace Potato.Database.Shared {
         /// <param name="length">The maximum length of the field data</param>
         /// <param name="nullable">true if the field allows null</param>
         /// <returns>this</returns>
-        IDatabaseObject Field(String name, int length, bool nullable = true);
+        IDatabaseObject Field(string name, int length, bool nullable = true);
 
         /// <summary>
         /// Appends an equality object
@@ -149,7 +149,7 @@ namespace Potato.Database.Shared {
         /// <param name="name">The name of the field to compare against</param>
         /// <param name="data">The data to compare against</param>
         /// <returns>this</returns>
-        IDatabaseObject Condition(String name, Object data);
+        IDatabaseObject Condition(string name, object data);
 
         /// <summary>
         /// Create a new condition object, field with name, a comparison of equality
@@ -159,7 +159,7 @@ namespace Potato.Database.Shared {
         /// <param name="equality">The equality to compare the field against the data</param>
         /// <param name="data">The data to compare against</param>
         /// <returns>this</returns>
-        IDatabaseObject Condition(String name, IEquality equality, Object data);
+        IDatabaseObject Condition(string name, IEquality equality, object data);
 
         /// <summary>
         /// Creates a new condition object, a field with name equaling data
@@ -168,7 +168,7 @@ namespace Potato.Database.Shared {
         /// <param name="name">The name of the field to compare against</param>
         /// <param name="data">The data to compare against</param>
         /// <returns>this</returns>
-        IDatabaseObject Condition(String collection, String name, Object data);
+        IDatabaseObject Condition(string collection, string name, object data);
 
         /// <summary>
         /// Create a new condition object, field with name, a comparison of equality
@@ -179,7 +179,7 @@ namespace Potato.Database.Shared {
         /// <param name="equality">The equality to compare the field against the data</param>
         /// <param name="data">The data to compare against</param>
         /// <returns>this</returns>
-        IDatabaseObject Condition(String collection, String name, IEquality equality, Object data);
+        IDatabaseObject Condition(string collection, string name, IEquality equality, object data);
 
         /// <summary>
         /// Appends an assignment object to the chain
@@ -194,7 +194,7 @@ namespace Potato.Database.Shared {
         /// <param name="name">The field to set</param>
         /// <param name="data">The data to set the field as</param>
         /// <returns>this</returns>
-        IDatabaseObject Set(String name, Object data);
+        IDatabaseObject Set(string name, object data);
         
         /// <summary>
         /// Appends a collection object to the chain
@@ -208,7 +208,7 @@ namespace Potato.Database.Shared {
         /// </summary>
         /// <param name="name">The name of the table or collection</param>
         /// <returns>this</returns>
-        IDatabaseObject Collection(String name);
+        IDatabaseObject Collection(string name);
 
         /// <summary>
         /// Appends a sort object to the chain
@@ -223,7 +223,7 @@ namespace Potato.Database.Shared {
         /// <param name="name">The name of the field to sort</param>
         /// <param name="modifier">Ascending or descending, which appends a Ascending order modifier if null (default) </param>
         /// <returns>this</returns>
-        IDatabaseObject Sort(String name, ISortByModifier modifier = null);
+        IDatabaseObject Sort(string name, ISortByModifier modifier = null);
 
         /// <summary>
         /// Creates a new sort object, then appends to the list
@@ -232,7 +232,7 @@ namespace Potato.Database.Shared {
         /// <param name="name">The name of the field to sort</param>
         /// <param name="modifier">Ascending or descending, which appends a Ascending order modifier if null (default) </param>
         /// <returns>this</returns>
-        IDatabaseObject Sort(String collection, String name, ISortByModifier modifier = null);
+        IDatabaseObject Sort(string collection, string name, ISortByModifier modifier = null);
 
         /// <summary>
         /// Appends a limit modifer to the chain

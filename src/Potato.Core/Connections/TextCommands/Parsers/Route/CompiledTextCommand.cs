@@ -24,18 +24,18 @@ namespace Potato.Core.Connections.TextCommands.Parsers.Route {
     /// A volatile compiled text command.
     /// </summary>
     public class CompiledTextCommand {
-        private String _text;
+        private string _text;
 
         /// <summary>
         /// The basic text of the text command, what was supplied to
         /// build the compilation.
         /// </summary>
-        public String Text {
+        public string Text {
             get { return _text; }
             set {
                 if (_text != value) {
                     _text = value;
-                    this.Words = value.Wordify();
+                    Words = value.Wordify();
                 }
             }
         }
@@ -43,7 +43,7 @@ namespace Potato.Core.Connections.TextCommands.Parsers.Route {
         /// <summary>
         /// The wordified version of the text
         /// </summary>
-        public List<String> Words { get; set; }
+        public List<string> Words { get; set; }
 
         /// <summary>
         /// The related text command
@@ -54,10 +54,10 @@ namespace Potato.Core.Connections.TextCommands.Parsers.Route {
         /// Compiles the regex to match some text against
         /// </summary>
         /// <returns>The regular expression to use for matching</returns>
-        public String CompileRegex() {
-            String text = String.Format("^{0}$", this.Text);
+        public string CompileRegex() {
+            var text = string.Format("^{0}$", Text);
 
-            Dictionary<String, String> replacements = new Dictionary<String, String>() {
+            var replacements = new Dictionary<string, string>() {
                 { ":number", @"(?<number{0}>[-+]?[0-9]*\.[0-9]+|[0-9]+)" },
                 { ":text", @"(?<text{0}>.+)" },
                 { ":player", @"(?<player{0}>.+?)" },
@@ -66,7 +66,7 @@ namespace Potato.Core.Connections.TextCommands.Parsers.Route {
 
             foreach (var replacement in replacements) {
                 for (var offset = 0; text.Contains(replacement.Key) == true; offset++) {
-                    text = text.ReplaceFirst(replacement.Key, String.Format(replacement.Value, offset));
+                    text = text.ReplaceFirst(replacement.Key, string.Format(replacement.Value, offset));
                 }
             }
 
@@ -77,8 +77,8 @@ namespace Potato.Core.Connections.TextCommands.Parsers.Route {
         /// Fetches a regular expression match against the compiled regex
         /// </summary>
         /// <returns></returns>
-        public Match Match(String text) {
-            return Regex.Match(text, this.CompileRegex(), RegexOptions.IgnoreCase);
+        public Match Match(string text) {
+            return Regex.Match(text, CompileRegex(), RegexOptions.IgnoreCase);
         }
     }
 }

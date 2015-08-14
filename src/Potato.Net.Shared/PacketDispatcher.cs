@@ -33,7 +33,7 @@ namespace Potato.Net.Shared {
         public Action<IPacketDispatch, IPacketWrapper, IPacketWrapper> MissingDispatchHandler { get; set; }
 
         public PacketDispatcher() {
-            this.Handlers = new Dictionary<IPacketDispatch, Action<IPacketWrapper, IPacketWrapper>>();
+            Handlers = new Dictionary<IPacketDispatch, Action<IPacketWrapper, IPacketWrapper>>();
         }
 
         /// <summary>
@@ -43,11 +43,11 @@ namespace Potato.Net.Shared {
         /// <param name="handlers">A dictionary of handlers to append to the dispatch handlers.</param>
         public void Append(Dictionary<IPacketDispatch, Action<IPacketWrapper, IPacketWrapper>> handlers) {
             foreach (var handler in handlers) {
-                if (this.Handlers.ContainsKey(handler.Key) == false) {
-                    this.Handlers.Add(handler.Key, handler.Value);
+                if (Handlers.ContainsKey(handler.Key) == false) {
+                    Handlers.Add(handler.Key, handler.Value);
                 }
                 else {
-                    this.Handlers[handler.Key] = handler.Value;
+                    Handlers[handler.Key] = handler.Value;
                 }
             }
         }
@@ -66,18 +66,18 @@ namespace Potato.Net.Shared {
         /// <param name="response"></param>
         public virtual void Dispatch(IPacketDispatch identifer, IPacketWrapper request, IPacketWrapper response) {
 
-            var dispatchMethods = this.Handlers.Where(dispatcher => dispatcher.Key.Name == identifer.Name)
+            var dispatchMethods = Handlers.Where(dispatcher => dispatcher.Key.Name == identifer.Name)
                 .Where(dispatcher => dispatcher.Key.Origin == PacketOrigin.None || dispatcher.Key.Origin == identifer.Origin)
                 .Select(dispatcher => dispatcher.Value)
                 .ToList();
 
             if (dispatchMethods.Any()) {
-                foreach (Action<IPacketWrapper, IPacketWrapper> handler in dispatchMethods) {
+                foreach (var handler in dispatchMethods) {
                     handler(request, response);
                 }
             }
             else {
-                this.MissingDispatch(identifer, request, response);
+                MissingDispatch(identifer, request, response);
             }
         }
 
@@ -88,8 +88,8 @@ namespace Potato.Net.Shared {
         /// <param name="request"></param>
         /// <param name="response"></param>
         public virtual void MissingDispatch(IPacketDispatch identifier, IPacketWrapper request, IPacketWrapper response) {
-            if (this.MissingDispatchHandler != null) {
-                this.MissingDispatchHandler(identifier, request, response);
+            if (MissingDispatchHandler != null) {
+                MissingDispatchHandler(identifier, request, response);
             }
         }
     }

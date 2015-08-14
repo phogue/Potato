@@ -26,11 +26,11 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestPacketDispatchEquality() {
-            PacketDispatch dispatchA = new PacketDispatch() {
+            var dispatchA = new PacketDispatch() {
                 Name = "equal"
             };
 
-            PacketDispatch dispatchB = new PacketDispatch() {
+            var dispatchB = new PacketDispatch() {
                 Name = "equal"
             };
 
@@ -42,7 +42,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestPacketDispatchEqualityAgainstNull() {
-            PacketDispatch dispatch = new PacketDispatch() {
+            var dispatch = new PacketDispatch() {
                 Name = "equal"
             };
 
@@ -54,7 +54,7 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestPacketDispatchEqualityCastToObjectAgainstNull() {
-            Object dispatch = new PacketDispatch() {
+            object dispatch = new PacketDispatch() {
                 Name = "equal"
             };
 
@@ -66,11 +66,11 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestPacketDispatchEqualityAgainstReferenceToSameObject() {
-            PacketDispatch dispatchA = new PacketDispatch() {
+            var dispatchA = new PacketDispatch() {
                 Name = "equal"
             };
 
-            PacketDispatch dispatchB = dispatchA;
+            var dispatchB = dispatchA;
 
             Assert.IsTrue(dispatchA.Equals(dispatchB));
         }
@@ -80,11 +80,11 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestPacketDispatchEqualityAgainstReferenceToSameObjectCastToObject() {
-            PacketDispatch dispatchA = new PacketDispatch() {
+            var dispatchA = new PacketDispatch() {
                 Name = "equal"
             };
 
-            Object dispatchB = dispatchA;
+            object dispatchB = dispatchA;
 
             Assert.IsTrue(dispatchA.Equals(dispatchB));
         }
@@ -94,11 +94,11 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestPacketDispatchEqualityAgainstDifferenceType() {
-            PacketDispatch dispatchA = new PacketDispatch() {
+            var dispatchA = new PacketDispatch() {
                 Name = "equal"
             };
 
-            String dispatchB = "equal";
+            var dispatchB = "equal";
 
             Assert.IsFalse(dispatchA.Equals(dispatchB));
         }
@@ -108,11 +108,11 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestPacketDispatchEqualityHashCode() {
-            PacketDispatch dispatchA = new PacketDispatch() {
+            var dispatchA = new PacketDispatch() {
                 Name = "equal"
             };
 
-            PacketDispatch dispatchB = new PacketDispatch() {
+            var dispatchB = new PacketDispatch() {
                 Name = "equal"
             };
 
@@ -124,11 +124,11 @@ namespace Potato.Net.Shared.Test {
         /// </summary>
         [Test]
         public void TestPacketDispatchNotEqualHashCode() {
-            PacketDispatch dispatchA = new PacketDispatch() {
+            var dispatchA = new PacketDispatch() {
                 Name = "equalA"
             };
 
-            PacketDispatch dispatchB = new PacketDispatch() {
+            var dispatchB = new PacketDispatch() {
                 Name = "equalB"
             };
 

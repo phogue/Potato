@@ -32,7 +32,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
@@ -40,14 +40,14 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     "Phogue"
                 })
             });
 
             // Now change the language of the account.
-            ICommandResult result = security.DispatchIdentityCheck(new Command() {
+            var result = security.DispatchIdentityCheck(new Command() {
                 Authentication = {
                     Username = "Phogue"
                 }
@@ -67,14 +67,14 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     "Phogue"
                 })
@@ -82,14 +82,14 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     "Ike"
                 })
             });
 
             // Now change the language of the account.
-            ICommandResult result = security.DispatchIdentityCheck(new Command() {
+            var result = security.DispatchIdentityCheck(new Command() {
                 Authentication = {
                     Username = "Phogue"
                 }
@@ -109,7 +109,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
@@ -117,14 +117,14 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     "Phogue"
                 })
             });
 
             // Now change the language of the account.
-            ICommandResult result = security.DispatchIdentityCheck(new Command() {
+            var result = security.DispatchIdentityCheck(new Command() {
                 Authentication = {
                     Username = "Phogue"
                 }
@@ -144,7 +144,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
@@ -152,14 +152,14 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     "Phogue"
                 })
             });
 
             // Now change the language of the account.
-            ICommandResult result = security.DispatchIdentityCheck(new Command() {
+            var result = security.DispatchIdentityCheck(new Command() {
                 Authentication = {
                     Username = "AccountDoesNotExist"
                 }
@@ -179,7 +179,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
@@ -187,7 +187,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     "Phogue"
                 })
@@ -195,7 +195,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountAddPlayer,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Phogue",
                     CommonProtocolType.DiceBattlefield3,
                     "ABCDEF"
@@ -203,7 +203,7 @@ namespace Potato.Core.Test.Security {
             });
 
             // Now change the language of the account.
-            ICommandResult result = security.DispatchIdentityCheck(new Command() {
+            var result = security.DispatchIdentityCheck(new Command() {
                 Authentication = {
                     GameType = CommonProtocolType.DiceBattlefield3,
                     Uid = "ABCDEF"
@@ -224,14 +224,14 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     "Phogue"
                 })
@@ -239,7 +239,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountAddPlayer,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Phogue",
                     CommonProtocolType.DiceBattlefield3,
                     "ABCDEF"
@@ -248,7 +248,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     "Ike"
                 })
@@ -256,7 +256,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountAddPlayer,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Ike",
                     CommonProtocolType.DiceBattlefield3,
                     "ZYXWVUT"
@@ -264,7 +264,7 @@ namespace Potato.Core.Test.Security {
             });
 
             // Now change the language of the account.
-            ICommandResult result = security.DispatchIdentityCheck(new Command() {
+            var result = security.DispatchIdentityCheck(new Command() {
                 Authentication = {
                     GameType = CommonProtocolType.DiceBattlefield3,
                     Uid = "ABCDEF"
@@ -285,7 +285,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
@@ -293,7 +293,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     "Phogue"
                 })
@@ -301,14 +301,14 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountAddPlayer,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Phogue",
                     CommonProtocolType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
 
-            ICommandResult result = security.DispatchIdentityCheck(new Command() {
+            var result = security.DispatchIdentityCheck(new Command() {
                 Authentication = {
                     GameType = CommonProtocolType.DiceBattlefield3,
                     Uid = "ABCDEF"
@@ -329,7 +329,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAddGroup,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName"
                 })
             });
@@ -337,7 +337,7 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityGroupAddAccount,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "GroupName",
                     "Phogue"
                 })
@@ -345,14 +345,14 @@ namespace Potato.Core.Test.Security {
             security.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.SecurityAccountAddPlayer,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Phogue",
                     CommonProtocolType.DiceBattlefield3,
                     "ABCDEF"
                 })
             });
 
-            ICommandResult result = security.DispatchIdentityCheck(new Command() {
+            var result = security.DispatchIdentityCheck(new Command() {
                 Authentication = {
                     GameType = CommonProtocolType.DiceBattlefield3,
                     Uid = "DoesNotExist"

@@ -24,7 +24,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController.Mocks {
         public Action<ICommand> PropogateHandlerCallback { get; set; }
 
         public override ICommandResult PropogateHandler(ICommand command, CommandDirection direction) {
-            if (this.PropogateHandlerCallback != null) this.PropogateHandlerCallback(command);
+            if (PropogateHandlerCallback != null) PropogateHandlerCallback(command);
 
             return base.PropogateHandler(command, direction);
         }

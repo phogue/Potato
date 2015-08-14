@@ -48,10 +48,10 @@ namespace Potato.Core.Shared.Models {
         /// Initalizes with the default values.
         /// </summary>
         public AsynchronousCommandStateModel() : base() {
-            this.PendingCommandsQueue = new ConcurrentQueue<AsynchronousCommandModel>();
-            this.ExecutedCommandsPool = new ConcurrentDictionary<Guid, AsynchronousCommandModel>();
-            this.TaskQueueWaitCancellationTokenSource = new CancellationTokenSource();
-            this.TaskQueueWait = new AutoResetEvent(false);
+            PendingCommandsQueue = new ConcurrentQueue<AsynchronousCommandModel>();
+            ExecutedCommandsPool = new ConcurrentDictionary<Guid, AsynchronousCommandModel>();
+            TaskQueueWaitCancellationTokenSource = new CancellationTokenSource();
+            TaskQueueWait = new AutoResetEvent(false);
         }
         
         /// <summary>
@@ -60,7 +60,7 @@ namespace Potato.Core.Shared.Models {
         /// <param name="commandGuid">The guid to lookup</param>
         /// <returns>True if the controller currently knows about the command in some context, false otherwise.</returns>
         public bool IsKnown(Guid commandGuid) {
-            return this.PendingCommandsQueue.Any(command => command.Command.CommandGuid == commandGuid) || this.ExecutedCommandsPool.ContainsKey(commandGuid);
+            return PendingCommandsQueue.Any(command => command.Command.CommandGuid == commandGuid) || ExecutedCommandsPool.ContainsKey(commandGuid);
         }
     }
 }

@@ -23,13 +23,13 @@ namespace Myrcon.Protocols.Frostbite.Objects {
     public static class FrostbiteBanList {
 
         public static List<BanModel> Parse(List<string> words) {
-            List<BanModel> bans = new List<BanModel>();
+            var bans = new List<BanModel>();
 
-            int count = 0;
+            var count = 0;
 
             if (words.Count >= 1 && int.TryParse(words[0], out count) == true) {
                 words.RemoveAt(0);
-                for (int i = 0; i < count; i++) {
+                for (var i = 0; i < count; i++) {
                     bans.Add(FrostbiteBan.ParseBanListItem(words.GetRange(i * 5, 5)));
                 }
             }

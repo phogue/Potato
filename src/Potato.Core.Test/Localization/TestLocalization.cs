@@ -41,10 +41,10 @@ namespace Potato.Core.Test.Localization {
         public void TestDeutschLocalizationControllerGetFirstDepthSearch() {
             var language = (LanguageController)new LanguageController().Execute();
 
-            ICommandResult result = language.Tunnel(new Command() {
+            var result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.LanguageLocalize,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "de-DE",
                     "Potato.Core.Test",
                     "TestName"
@@ -63,10 +63,10 @@ namespace Potato.Core.Test.Localization {
         public void TestEnglishLocalizationControllerGet() {
             var language = (LanguageController)new LanguageController().Execute();
 
-            ICommandResult result = language.Tunnel(new Command() {
+            var result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.LanguageLocalize,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "en-GB",
                     "Potato.Core.Test.Localization",
                     "TestName"
@@ -85,34 +85,34 @@ namespace Potato.Core.Test.Localization {
         public void TestEnglishLocalizationControllerGetCorrectFormat() {
             var language = (LanguageController)new LanguageController().Execute();
 
-            ICommandResult result = language.Tunnel(new Command() {
+            var result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.LanguageLocalize,
                 Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
                         Data = {
-                            Content = new List<String>() {
+                            Content = new List<string>() {
                                 "en-GB"
                             }
                         }
                     },
                     new CommandParameter() {
                         Data = {
-                            Content = new List<String>() {
+                            Content = new List<string>() {
                                 "Potato.Core.Test.Localization"
                             }
                         }
                     },
                     new CommandParameter() {
                         Data = {
-                            Content = new List<String>() {
+                            Content = new List<string>() {
                                 "TestFormat"
                             }
                         }
                     },
                     new CommandParameter() {
                         Data = {
-                            Content = new List<String>() {
+                            Content = new List<string>() {
                                 "World"
                             }
                         }
@@ -135,10 +135,10 @@ namespace Potato.Core.Test.Localization {
             var language = (LanguageController)new LanguageController().Execute();
             language.Default = null;
 
-            ICommandResult result = language.Tunnel(new Command() {
+            var result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.LanguageLocalize,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "zu-ZU",
                     "Potato.Core.Test.Localization",
                     "TestKey"
@@ -156,10 +156,10 @@ namespace Potato.Core.Test.Localization {
         public void TestEnglishLocalizationControllerGetDoesNotExist() {
             var language = (LanguageController)new LanguageController().Execute();
 
-            ICommandResult result = language.Tunnel(new Command() {
+            var result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.LanguageLocalize,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "zu-ZU",
                     "Potato.Core.Test.Localization",
                     "TestName"
@@ -178,10 +178,10 @@ namespace Potato.Core.Test.Localization {
         public void TestEnglishLocalizationControllerGetFirstDepthSearch() {
             var language = (LanguageController)new LanguageController().Execute();
 
-            ICommandResult result = language.Tunnel(new Command() {
+            var result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.LanguageLocalize,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "en-GB",
                     "Potato.Core.Test",
                     "TestName"
@@ -200,10 +200,10 @@ namespace Potato.Core.Test.Localization {
         public void TestEnglishLocalizationControllerGetIncorrectFormat() {
             var language = (LanguageController)new LanguageController().Execute();
 
-            ICommandResult result = language.Tunnel(new Command() {
+            var result = language.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.LanguageLocalize,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "en-GB",
                     "Potato.Core.Test.Localization",
                     "TestFormat"
@@ -226,13 +226,13 @@ namespace Potato.Core.Test.Localization {
                 }
             }.Execute();
 
-            ICommandResult result = language.Tunnel(new Command() {
+            var result = language.Tunnel(new Command() {
                 CommandType = CommandType.LanguageLocalize,
                 Authentication = {
                     Username = "Phogue"
                 },
                 Origin = CommandOrigin.Remote,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "en-GB",
                     "Potato.Core.Test.Localization",
                     "TestKey"

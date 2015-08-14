@@ -12,7 +12,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestAllGuidConversionFailure() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "9D2B0228-4D0D-4C23-8B49-01A698857709",
                         "f380eb1e-1438-48c0-8c3d-ad55f2d40538",
                         "Invalid"
@@ -20,7 +20,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
                 }
             };
 
-            var items = parameter.All(typeof(Guid)) as List<Object>;
+            var items = parameter.All(typeof(Guid)) as List<object>;
 
             Assert.IsNull(items);
         }
@@ -29,7 +29,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestAllGuidConversionSuccess() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "9D2B0228-4D0D-4C23-8B49-01A698857709",
                         "f380eb1e-1438-48c0-8c3d-ad55f2d40538",
                         "76268850-2029-4b5f-b421-5b5ee4f17b6b"
@@ -37,7 +37,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
                 }
             };
             
-            var list = (List<Object>)parameter.All(typeof(Guid));
+            var list = (List<object>)parameter.All(typeof(Guid));
 
             Assert.AreEqual(new Guid("9D2B0228-4D0D-4C23-8B49-01A698857709"), list[0]);
             Assert.AreEqual(new Guid("f380eb1e-1438-48c0-8c3d-ad55f2d40538"), list[1]);
@@ -51,7 +51,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestFirstGuidConversionFailed() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "Invalid"
                     }
                 }
@@ -68,7 +68,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestFirstGuidConversionSuccess() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "9D2B0228-4D0D-4C23-8B49-01A698857709"
                     }
                 }
@@ -85,7 +85,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasManyGuidConversionFailed() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "9D2B0228-4D0D-4C23-8B49-01A698857709",
                         "f380eb1e-1438-48c0-8c3d-ad55f2d40538",
                         "Invalid"
@@ -104,7 +104,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasManyGuidConversionSuccess() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "9D2B0228-4D0D-4C23-8B49-01A698857709",
                         "f380eb1e-1438-48c0-8c3d-ad55f2d40538"
                     }
@@ -122,7 +122,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasOneIntegerConversionFailure() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "one"
                     }
                 }
@@ -139,7 +139,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasOneGuidConversionSuccess() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "9D2B0228-4D0D-4C23-8B49-01A698857709"
                     }
                 }
@@ -156,7 +156,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasOneGuidConversionSuccessWithMultiple() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "9D2B0228-4D0D-4C23-8B49-01A698857709",
                         "f380eb1e-1438-48c0-8c3d-ad55f2d40538"
                     }
@@ -175,7 +175,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHasOneGuidConversionSuccessWithMultipleAndInvalid() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "9D2B0228-4D0D-4C23-8B49-01A698857709",
                         "Invalid"
                     }

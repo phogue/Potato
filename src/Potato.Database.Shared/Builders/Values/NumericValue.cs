@@ -37,7 +37,7 @@ namespace Potato.Database.Shared.Builders.Values {
         /// </summary>
         /// <returns></returns>
         public override object ToObject() {
-            return this.Long ?? this.Double;
+            return Long ?? Double;
         }
     }
 }

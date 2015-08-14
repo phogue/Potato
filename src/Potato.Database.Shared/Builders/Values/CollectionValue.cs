@@ -30,10 +30,10 @@ namespace Potato.Database.Shared.Builders.Values {
         /// </summary>
         /// <returns>An array of the sub documents converted to JObject</returns>
         public JArray ToJArray() {
-            JArray array = new JArray();
+            var array = new JArray();
 
             foreach (Value value in this.Where(statement => statement is Value)) {
-                DocumentValue document = value as DocumentValue;
+                var document = value as DocumentValue;
 
                 array.Add(document != null ? new JObject(document.ToJObject()) : new JObject(value.ToObject()));
             }
@@ -48,7 +48,7 @@ namespace Potato.Database.Shared.Builders.Values {
         /// <returns>this</returns>
         public IDatabaseObject FromJObject(JArray data) {
             foreach (var item in data) {
-                this.Add(new DocumentValue().FromJObject(item as JObject));
+                Add(new DocumentValue().FromJObject(item as JObject));
             }
 
             return this;

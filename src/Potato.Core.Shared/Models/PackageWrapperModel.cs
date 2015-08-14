@@ -24,9 +24,9 @@ namespace Potato.Core.Shared.Models {
         /// <summary>
         /// The id found in this models Installed or Available properties.
         /// </summary>
-        public String Id {
+        public string Id {
             get {
-                return this.Available.Id ?? this.Installed.Id;
+                return Available.Id ?? Installed.Id;
             }
         }
 
@@ -50,8 +50,8 @@ namespace Potato.Core.Shared.Models {
         /// Initializes the wrapper with the default values.
         /// </summary>
         public PackageWrapperModel() {
-            this.Installed = new PackageModel();
-            this.Available = new PackageModel();
+            Installed = new PackageModel();
+            Available = new PackageModel();
         }
     }
 }

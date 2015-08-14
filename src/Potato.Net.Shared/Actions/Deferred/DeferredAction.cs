@@ -63,7 +63,7 @@ namespace Potato.Net.Shared.Actions.Deferred {
         /// </summary>
         /// <returns>The action attached to this object</returns>
         public INetworkAction GetAction() {
-            return this.Action;
+            return Action;
         }
 
         /// <summary>
@@ -73,13 +73,13 @@ namespace Potato.Net.Shared.Actions.Deferred {
         /// <param name="requests">The packets that were sent to complete this action</param>
         /// <returns>True if data was successfully inserted, false otherwise.</returns>
         public bool TryInsertSent(INetworkAction action, List<IPacket> requests) {
-            bool inserted = false;
+            var inserted = false;
 
-            if (Equals(this.Action, default(INetworkAction)) == false && this.Action.Uid == action.Uid) {
-                var sent = this.Sent;
+            if (Equals(Action, default(INetworkAction)) == false && Action.Uid == action.Uid) {
+                var sent = Sent;
 
                 if (sent != null) {
-                    sent(this.Action, requests);
+                    sent(Action, requests);
                 }
 
                 inserted = true;
@@ -96,21 +96,21 @@ namespace Potato.Net.Shared.Actions.Deferred {
         /// <param name="responses">The response packets received for each packet sent</param>
         /// <returns>True if data was successfully inserted, false otherwise.</returns>
         public bool TryInsertDone(INetworkAction action, List<IPacket> requests, List<IPacket> responses) {
-            bool inserted = false;
+            var inserted = false;
 
-            if (Equals(this.Action, default(INetworkAction)) == false && this.Action.Uid == action.Uid) {
-                var each = this.Each;
+            if (Equals(Action, default(INetworkAction)) == false && Action.Uid == action.Uid) {
+                var each = Each;
 
                 if (each != null) {
-                    foreach (IPacket request in requests) {
-                        each(this.Action, request, responses.FirstOrDefault(packet => packet.RequestId == request.RequestId));
+                    foreach (var request in requests) {
+                        each(Action, request, responses.FirstOrDefault(packet => packet.RequestId == request.RequestId));
                     }
                 }
 
-                var done = this.Done;
+                var done = Done;
 
                 if (done != null) {
-                    done(this.Action, requests, responses);
+                    done(Action, requests, responses);
                 }
 
                 inserted = true;
@@ -127,13 +127,13 @@ namespace Potato.Net.Shared.Actions.Deferred {
         /// <param name="responses">Any of the responses that were received before expiring</param>
         /// <returns>True if data was successfully inserted, false otherwise.</returns>
         public bool TryInsertExpired(INetworkAction action, List<IPacket> requests, List<IPacket> responses) {
-            bool inserted = false;
+            var inserted = false;
 
-            if (Equals(this.Action, default(INetworkAction)) == false && this.Action.Uid == action.Uid) {
-                var expired = this.Expired;
+            if (Equals(Action, default(INetworkAction)) == false && Action.Uid == action.Uid) {
+                var expired = Expired;
 
                 if (expired != null) {
-                    expired(this.Action, requests, responses);
+                    expired(Action, requests, responses);
                 }
 
                 inserted = true;
@@ -148,13 +148,13 @@ namespace Potato.Net.Shared.Actions.Deferred {
         /// <param name="action">The action that has expired</param>
         /// <returns>True if data was successfully inserted, false otherwise.</returns>
         public bool TryInsertAlways(INetworkAction action) {
-            bool inserted = false;
+            var inserted = false;
 
-            if (Equals(this.Action, default(INetworkAction)) == false && this.Action.Uid == action.Uid) {
-                var always = this.Always;
+            if (Equals(Action, default(INetworkAction)) == false && Action.Uid == action.Uid) {
+                var always = Always;
 
                 if (always != null) {
-                    always(this.Action);
+                    always(Action);
                 }
 
                 inserted = true;
@@ -167,11 +167,11 @@ namespace Potato.Net.Shared.Actions.Deferred {
         /// Releases all handles on callbacks
         /// </summary>
         public void Release() {
-            this.Sent = null;
-            this.Each = null;
-            this.Done = null;
-            this.Expired = null;
-            this.Always = null;
+            Sent = null;
+            Each = null;
+            Done = null;
+            Expired = null;
+            Always = null;
         }
     }
 }

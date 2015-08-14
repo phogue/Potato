@@ -23,7 +23,7 @@ using System.Collections.Generic;
 namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
     public class ExecutableExecutedTester : ExecutableBasicTester {
         public ExecutableExecutedTester() : base() {
-            this.CommandDispatchers.Add(
+            CommandDispatchers.Add(
                 new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     CommandAttributeType = CommandAttributeType.Executed,
@@ -33,7 +33,7 @@ namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
                             Type = typeof (int)
                         }
                     },
-                    Handler = this.SetTestFlagPreview
+                    Handler = SetTestFlagPreview
                 }
             );
         }
@@ -43,10 +43,10 @@ namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
         /// <summary>
         ///     Sets the value of the test flag.
         /// </summary>
-        public ICommandResult SetTestFlagPreview(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            int value = parameters["value"].First<int>();
+        public ICommandResult SetTestFlagPreview(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var value = parameters["value"].First<int>();
 
-            ICommandResult result = command.Result;
+            var result = command.Result;
 
             ExecutedTestValue = TestNumber * 2;
 

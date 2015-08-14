@@ -24,19 +24,19 @@ namespace Potato.Net.Shared {
     /// </summary>
     [Serializable]
     public sealed class ProtocolStateSegment : IProtocolStateData {
-        public ConcurrentDictionary<String, PlayerModel> Players { get; set; }
+        public ConcurrentDictionary<string, PlayerModel> Players { get; set; }
 
-        public ConcurrentDictionary<String, MapModel> Maps { get; set; }
+        public ConcurrentDictionary<string, MapModel> Maps { get; set; }
 
-        public ConcurrentDictionary<String, BanModel> Bans { get; set; }
+        public ConcurrentDictionary<string, BanModel> Bans { get; set; }
 
-        public ConcurrentDictionary<String, MapModel> MapPool { get; set; }
+        public ConcurrentDictionary<string, MapModel> MapPool { get; set; }
 
-        public ConcurrentDictionary<String, GameModeModel> GameModePool { get; set; }
+        public ConcurrentDictionary<string, GameModeModel> GameModePool { get; set; }
 
-        public ConcurrentDictionary<String, GroupModel> Groups { get; set; }
+        public ConcurrentDictionary<string, GroupModel> Groups { get; set; }
 
-        public ConcurrentDictionary<String, ItemModel> Items { get; set; } 
+        public ConcurrentDictionary<string, ItemModel> Items { get; set; } 
 
         public Settings Settings { get; set; }
 

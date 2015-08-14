@@ -29,22 +29,22 @@ namespace Potato.Core.Interface {
         /// <summary>
         /// Loads all the files from the static interface path
         /// </summary>
-        public ConcurrentDictionary<String, byte[]> StaticCache { get; set; } 
+        public ConcurrentDictionary<string, byte[]> StaticCache { get; set; } 
 
         /// <summary>
         /// Initializes the controller with the default values and routes
         /// </summary>
         public InterfaceController() : base() {
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     NamePattern = new Regex("/.*"),
-                    Handler = this.ServeFile
+                    Handler = ServeFile
                 }
             });
 
-            this.StaticCache = new ConcurrentDictionary<String, byte[]>();
+            StaticCache = new ConcurrentDictionary<string, byte[]>();
 
-            this.StaticInterfacePath = this.BuildStaticInterfacePath();
+            StaticInterfacePath = BuildStaticInterfacePath();
         }
 
         /// <summary>
@@ -52,9 +52,9 @@ namespace Potato.Core.Interface {
         /// </summary>
         /// <returns></returns>
         public override ICoreController Execute() {
-            this.Shared = new SharedReferences();
+            Shared = new SharedReferences();
 
-            this.BuildStaticCache();
+            BuildStaticCache();
 
             return base.Execute();
         }
@@ -64,14 +64,14 @@ namespace Potato.Core.Interface {
         /// </summary>
         /// <returns></returns>
         public DirectoryInfo BuildStaticInterfacePath() {
-            DirectoryInfo path = new DirectoryInfo(Defines.PackageMyrconPotatoCoreLibNet40.FullName);
+            var path = new DirectoryInfo(Defines.PackageMyrconPotatoCoreLibNet40.FullName);
             
-            var index = Defines.SearchPaths("index.html", new List<String>() {
+            var index = Defines.SearchPaths("index.html", new List<string>() {
                 Path.Combine(Defines.PackageMyrconPotatoCoreContent.FullName, Defines.InterfaceDirectoryName),
                 Path.Combine(Defines.PackageMyrconPotatoCoreLibNet40.FullName, Defines.InterfaceDirectoryName)
             }).FirstOrDefault();
 
-            if (String.IsNullOrEmpty(index) == false) {
+            if (string.IsNullOrEmpty(index) == false) {
                 path = new FileInfo(index).Directory;
             }
 
@@ -83,10 +83,10 @@ namespace Potato.Core.Interface {
         /// </summary>
         public void BuildStaticCache() {
             if (Directory.Exists(StaticInterfacePath.FullName)) {
-                foreach (String path in Directory.GetFiles(this.StaticInterfacePath.FullName, "*", SearchOption.AllDirectories)) {
+                foreach (var path in Directory.GetFiles(StaticInterfacePath.FullName, "*", SearchOption.AllDirectories)) {
                     var contents = File.ReadAllBytes(path);
 
-                    this.StaticCache.AddOrUpdate(path.ReplaceFirst(this.StaticInterfacePath.FullName, "").Slug(), key => contents, (key, value) => contents);
+                    StaticCache.AddOrUpdate(path.ReplaceFirst(StaticInterfacePath.FullName, "").Slug(), key => contents, (key, value) => contents);
                 }
             }
         }
@@ -96,16 +96,16 @@ namespace Potato.Core.Interface {
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public byte[] FetchFileContents(String path) {
+        public byte[] FetchFileContents(string path) {
             byte[] contents;
 
-            if (this.Shared.Variables.Get(CommonVariableNames.InterfaceServeFromFile, false) == true) {
-                var file = Path.Combine(this.StaticInterfacePath.FullName, path.Replace("..", ".").Replace("/", @"\").Trim('/', '\\'));
+            if (Shared.Variables.Get(CommonVariableNames.InterfaceServeFromFile, false) == true) {
+                var file = Path.Combine(StaticInterfacePath.FullName, path.Replace("..", ".").Replace("/", @"\").Trim('/', '\\'));
 
                 contents = File.Exists(file) == true ? File.ReadAllBytes(file) : new byte[0];
             }
             else {
-                this.StaticCache.TryGetValue(path.Slug(), out contents);
+                StaticCache.TryGetValue(path.Slug(), out contents);
             }
 
             return contents;
@@ -117,16 +117,16 @@ namespace Potato.Core.Interface {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected ICommandResult ServeFile(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        protected ICommandResult ServeFile(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             var file = command.Name.Equals("/") ? "/index.html" : command.Name;
 
-            byte[] contents = this.FetchFileContents(file);
+            var contents = FetchFileContents(file);
             
             result = new CommandResult() {
                 Now = new CommandData() {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         // todo check utf8 in request
                         Encoding.UTF8.GetString(contents)
                     }

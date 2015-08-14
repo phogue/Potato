@@ -5,17 +5,17 @@ namespace Potato.Core.Shared.Test.TestConfigCommand {
     [TestFixture]
     public class TestDecrypted {
 
-        protected const String Password = "password";
+        protected const string Password = "password";
 
         protected IConfigCommand Encrypted { get; set; }
 
         [SetUp]
         public void EncryptConfigCommand() {
-            this.Encrypted = new ConfigCommand() {
+            Encrypted = new ConfigCommand() {
                 Command = new Command() {
                     CommandType = CommandType.ConnectionQuery
                 }
-            }.Encrypt(TestDecrypted.Password);
+            }.Encrypt(Password);
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace Potato.Core.Shared.Test.TestConfigCommand {
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestNullPasswordParameterException() {
-            this.Encrypted.Decrypt(null);
+            Encrypted.Decrypt(null);
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace Potato.Core.Shared.Test.TestConfigCommand {
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestEmptyPasswordParameterException() {
-            this.Encrypted.Encrypt("");
+            Encrypted.Encrypt("");
         }
 
         /// <summary>
@@ -41,9 +41,9 @@ namespace Potato.Core.Shared.Test.TestConfigCommand {
         /// </summary>
         [Test]
         public void TestDecryptionFailsWithIncorrectPassword() {
-            this.Encrypted.Decrypt("password1");
+            Encrypted.Decrypt("password1");
 
-            Assert.IsNull(this.Encrypted.Command);
+            Assert.IsNull(Encrypted.Command);
         }
     }
 }

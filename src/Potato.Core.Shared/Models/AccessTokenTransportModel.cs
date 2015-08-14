@@ -18,11 +18,11 @@ namespace Potato.Core.Shared.Models {
         /// <summary>
         /// The token which can be used to authenticate
         /// </summary>
-        public String Token { get; set; }
+        public string Token { get; set; }
 
         public void Dispose() {
-            this.Id = Guid.Empty;
-            this.Token = null;
+            Id = Guid.Empty;
+            Token = null;
         }
     }
 }

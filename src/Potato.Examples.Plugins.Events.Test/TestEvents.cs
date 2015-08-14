@@ -38,7 +38,7 @@ namespace Potato.Examples.Plugins.Events.Test {
         [Test]
         public void TestClientEventClientPacketReceived() {
             // Create a new plugin controller to load up the test plugin
-            CorePluginController plugins = (CorePluginController)new CorePluginController().Execute();
+            var plugins = (CorePluginController)new CorePluginController().Execute();
 
             // Enable the single plugin that was loaded, otherwise it won't recieve any tunneled
             // commands or events.
@@ -62,7 +62,7 @@ namespace Potato.Examples.Plugins.Events.Test {
                                 Type = PacketType.Response,
                                 Text = "hello world!",
                                 DebugText = "[0-hello] [1-world!]",
-                                Words = new List<String>() {
+                                Words = new List<string>() {
                                     "hello",
                                     "world!"
                                 }
@@ -80,7 +80,7 @@ namespace Potato.Examples.Plugins.Events.Test {
         [Test]
         public void TestGameEventGameChat() {
             // Create a new plugin controller to load up the test plugin
-            CorePluginController plugins = (CorePluginController)new CorePluginController().Execute();
+            var plugins = (CorePluginController)new CorePluginController().Execute();
 
             // Enable the single plugin that was loaded, otherwise it won't recieve any tunneled
             // commands or events.
@@ -108,7 +108,7 @@ namespace Potato.Examples.Plugins.Events.Test {
                                     }
                                 },
                                 Now = {
-                                    Content = new List<String>() {
+                                    Content = new List<string>() {
                                         "Hello!"
                                     },
                                     Players = new List<PlayerModel>() {
@@ -133,7 +133,7 @@ namespace Potato.Examples.Plugins.Events.Test {
         [Test]
         public void TestGenericEventPluginsPluginEnabled() {
             // Create a new plugin controller to load up the test plugin
-            CorePluginController plugins = (CorePluginController)new CorePluginController().Execute();
+            var plugins = (CorePluginController)new CorePluginController().Execute();
 
             // Enable the single plugin that was loaded, otherwise it won't recieve any tunneled
             // commands or events.
@@ -155,10 +155,10 @@ namespace Potato.Examples.Plugins.Events.Test {
         [Test]
         public void TestCustomEventLoggedFromPlugin() {
             // Create an events controller to bubble up commands from the plugins controller
-            EventsController events = (EventsController)new EventsController().Execute();
+            var events = (EventsController)new EventsController().Execute();
 
             // Create a new plugin controller to load up the test plugin
-            CorePluginController plugins = (CorePluginController)new CorePluginController().Execute();
+            var plugins = (CorePluginController)new CorePluginController().Execute();
 
             plugins.BubbleObjects = new List<ICoreController>() {
                 events

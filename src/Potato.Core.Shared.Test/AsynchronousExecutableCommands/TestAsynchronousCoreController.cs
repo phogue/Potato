@@ -28,10 +28,10 @@ namespace Potato.Core.Shared.Test.AsynchronousExecutableCommands {
         /// </summary>
         [Test]
         public void TestAsyncBubbleCommand() {
-            String message = "";
-            AutoResetEvent resultWait = new AutoResetEvent(false);
+            var message = "";
+            var resultWait = new AutoResetEvent(false);
 
-            MockAsynchronousCoreController mockController = (MockAsynchronousCoreController)new MockAsynchronousCoreController() {
+            var mockController = (MockAsynchronousCoreController)new MockAsynchronousCoreController() {
                 BubbleObjects = new List<ICoreController>() {
                     new MockSynchronousCoreController().Execute()
                 }
@@ -44,7 +44,7 @@ namespace Potato.Core.Shared.Test.AsynchronousExecutableCommands {
                     Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
-                                Content = new List<String>() {
+                                Content = new List<string>() {
                                     "TestAsyncBubbleCommand"
                                 }
                             }
@@ -67,10 +67,10 @@ namespace Potato.Core.Shared.Test.AsynchronousExecutableCommands {
         /// </summary>
         [Test]
         public void TestAsyncTunnelCommand() {
-            String message = "";
-            AutoResetEvent resultWait = new AutoResetEvent(false);
+            var message = "";
+            var resultWait = new AutoResetEvent(false);
 
-            MockAsynchronousCoreController mockController = (MockAsynchronousCoreController)new MockAsynchronousCoreController() {
+            var mockController = (MockAsynchronousCoreController)new MockAsynchronousCoreController() {
                 TunnelObjects = new List<ICoreController>() {
                     new MockSynchronousCoreController().Execute()
                 }
@@ -83,7 +83,7 @@ namespace Potato.Core.Shared.Test.AsynchronousExecutableCommands {
                     Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
-                                Content = new List<String>() {
+                                Content = new List<string>() {
                                     "TestAsyncTunnelCommand"
                                 }
                             }
@@ -106,20 +106,20 @@ namespace Potato.Core.Shared.Test.AsynchronousExecutableCommands {
         /// </summary>
         [Test]
         public void TestSynchronousBubbleCommand() {
-            MockAsynchronousCoreController mockController = (MockAsynchronousCoreController)new MockAsynchronousCoreController() {
+            var mockController = (MockAsynchronousCoreController)new MockAsynchronousCoreController() {
                 BubbleObjects = new List<ICoreController>() {
                     new MockSynchronousCoreController().Execute()
                 }
             }.Execute();
 
-            ICommandResult result = mockController.Bubble(
+            var result = mockController.Bubble(
                 new Command() {
                     Name = "AppendMessage",
                     Origin = CommandOrigin.Local,
                     Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
-                                Content = new List<String>() {
+                                Content = new List<string>() {
                                     "TestAsyncBubbleCommand"
                                 }
                             }
@@ -136,20 +136,20 @@ namespace Potato.Core.Shared.Test.AsynchronousExecutableCommands {
         /// </summary>
         [Test]
         public void TestSynchronousTunnelCommand() {
-            MockAsynchronousCoreController mockController = (MockAsynchronousCoreController)new MockAsynchronousCoreController() {
+            var mockController = (MockAsynchronousCoreController)new MockAsynchronousCoreController() {
                 TunnelObjects = new List<ICoreController>() {
                     new MockSynchronousCoreController().Execute()
                 }
             }.Execute();
 
-            ICommandResult result = mockController.Tunnel(
+            var result = mockController.Tunnel(
                 new Command() {
                     Name = "AppendMessage",
                     Origin = CommandOrigin.Local,
                     Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
-                                Content = new List<String>() {
+                                Content = new List<string>() {
                                     "TestAsyncTunnelCommand"
                                 }
                             }
@@ -167,10 +167,10 @@ namespace Potato.Core.Shared.Test.AsynchronousExecutableCommands {
         /// </summary>
         [Test]
         public void TestChainedAsyncBubbleCommand() {
-            String message = "";
-            AutoResetEvent resultWait = new AutoResetEvent(false);
+            var message = "";
+            var resultWait = new AutoResetEvent(false);
 
-            MockAsynchronousCoreController mockController = (MockAsynchronousCoreController)new MockAsynchronousCoreController() {
+            var mockController = (MockAsynchronousCoreController)new MockAsynchronousCoreController() {
                 BubbleObjects = new List<ICoreController>() {
                     new MockAsynchronousCoreController() {
                         BubbleObjects = new List<ICoreController>() {
@@ -187,7 +187,7 @@ namespace Potato.Core.Shared.Test.AsynchronousExecutableCommands {
                     Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
-                                Content = new List<String>() {
+                                Content = new List<string>() {
                                     "TestAsyncBubbleCommand"
                                 }
                             }
@@ -211,10 +211,10 @@ namespace Potato.Core.Shared.Test.AsynchronousExecutableCommands {
         /// </summary>
         [Test]
         public void TestChainedAsyncTunnelCommand() {
-            String message = "";
-            AutoResetEvent resultWait = new AutoResetEvent(false);
+            var message = "";
+            var resultWait = new AutoResetEvent(false);
 
-            MockAsynchronousCoreController mockController = (MockAsynchronousCoreController)new MockAsynchronousCoreController() {
+            var mockController = (MockAsynchronousCoreController)new MockAsynchronousCoreController() {
                 TunnelObjects = new List<ICoreController>() {
                     new MockAsynchronousCoreController() {
                         TunnelObjects = new List<ICoreController>() {
@@ -231,7 +231,7 @@ namespace Potato.Core.Shared.Test.AsynchronousExecutableCommands {
                     Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
-                                Content = new List<String>() {
+                                Content = new List<string>() {
                                     "TestAsyncTunnelCommand"
                                 }
                             }
@@ -255,7 +255,7 @@ namespace Potato.Core.Shared.Test.AsynchronousExecutableCommands {
         /// </summary>
         [Test]
         public void TestChainedSynchronousBubbleCommand() {
-            MockAsynchronousCoreController mockController = (MockAsynchronousCoreController)new MockAsynchronousCoreController() {
+            var mockController = (MockAsynchronousCoreController)new MockAsynchronousCoreController() {
                 BubbleObjects = new List<ICoreController>() {
                     new MockAsynchronousCoreController() {
                         BubbleObjects = new List<ICoreController>() {
@@ -265,14 +265,14 @@ namespace Potato.Core.Shared.Test.AsynchronousExecutableCommands {
                 }
             }.Execute();
 
-            ICommandResult result = mockController.Bubble(
+            var result = mockController.Bubble(
                 new Command() {
                     Name = "AppendMessage",
                     Origin = CommandOrigin.Local,
                     Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
-                                Content = new List<String>() {
+                                Content = new List<string>() {
                                     "TestAsyncBubbleCommand"
                                 }
                             }
@@ -290,7 +290,7 @@ namespace Potato.Core.Shared.Test.AsynchronousExecutableCommands {
         /// </summary>
         [Test]
         public void TestChainedSynchronousTunnelCommand() {
-            MockAsynchronousCoreController mockController = (MockAsynchronousCoreController)new MockAsynchronousCoreController() {
+            var mockController = (MockAsynchronousCoreController)new MockAsynchronousCoreController() {
                 TunnelObjects = new List<ICoreController>() {
                     new MockAsynchronousCoreController() {
                         TunnelObjects = new List<ICoreController>() {
@@ -300,14 +300,14 @@ namespace Potato.Core.Shared.Test.AsynchronousExecutableCommands {
                 }
             }.Execute();
 
-            ICommandResult result = mockController.Tunnel(
+            var result = mockController.Tunnel(
                 new Command() {
                     Name = "AppendMessage",
                     Origin = CommandOrigin.Local,
                     Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
-                                Content = new List<String>() {
+                                Content = new List<string>() {
                                     "TestAsyncTunnelCommand"
                                 }
                             }
@@ -324,9 +324,9 @@ namespace Potato.Core.Shared.Test.AsynchronousExecutableCommands {
         /// </summary>
         [Test]
         public void TestAsyncDispose() {
-            AutoResetEvent disposeWait = new AutoResetEvent(false);
+            var disposeWait = new AutoResetEvent(false);
 
-            MockAsynchronousCoreController mockController = (MockAsynchronousCoreController)new MockAsynchronousCoreController() {
+            var mockController = (MockAsynchronousCoreController)new MockAsynchronousCoreController() {
                 TunnelObjects = new List<ICoreController>() {
                     new MockSynchronousCoreController().Execute()
                 },

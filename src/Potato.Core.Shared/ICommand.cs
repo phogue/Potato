@@ -26,7 +26,7 @@ namespace Potato.Core.Shared {
         /// <summary>
         /// The command being executed. This is the only value used to match up a command.
         /// </summary>
-        String Name { get; set; }
+        string Name { get; set; }
 
         /// <summary>
         /// The command to be executed, will be converted to a string in Name
@@ -101,6 +101,6 @@ namespace Potato.Core.Shared {
         /// Parses a command type from an enum if it is valid.
         /// </summary>
         /// <param name="commandName"></param>
-        ICommand ParseCommandType(String commandName);
+        ICommand ParseCommandType(string commandName);
     }
 }

@@ -37,7 +37,7 @@ namespace Potato.Core.Packages {
         /// Add a new repository, provided we don't already know about it.
         /// </summary>
         /// <param name="uri">The uri of the repository</param>
-        void Add(String uri);
+        void Add(string uri);
 
         /// <summary>
         /// Builds/Rebuilds the entire cache.

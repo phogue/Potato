@@ -29,7 +29,7 @@ namespace Potato.Net.Shared.Protocols.PunkBuster.Packets {
         /// </summary>
         /// <param name="data"></param>
         public void Deserialize(Match data) {
-            this.PlayerCount = int.Parse(data.Groups["PlayerCount"].Value);
+            PlayerCount = int.Parse(data.Groups["PlayerCount"].Value);
         }
     }
 }

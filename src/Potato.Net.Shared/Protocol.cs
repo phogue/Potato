@@ -48,11 +48,11 @@ namespace Potato.Net.Shared {
         /// </summary>
         public virtual IProtocolType ProtocolType {
             get {
-                if (this._gameType == null) {
-                    IProtocolType attribute = this.GetType().GetCustomAttributes(typeof(IProtocolType), false).Cast<IProtocolType>().FirstOrDefault();
+                if (_gameType == null) {
+                    var attribute = GetType().GetCustomAttributes(typeof(IProtocolType), false).Cast<IProtocolType>().FirstOrDefault();
 
                     if (attribute != null) {
-                        this._gameType = new ProtocolType(attribute);
+                        _gameType = new ProtocolType(attribute);
                     }
                 }
 
@@ -67,12 +67,12 @@ namespace Potato.Net.Shared {
         public IPacketDispatcher PacketDispatcher { get; set; }
 
         protected Protocol() {
-            this.Options = new ProtocolSetup();
-            this.State = new ProtocolState();
-            this.PacketDispatcher = new PacketDispatcher();
+            Options = new ProtocolSetup();
+            State = new ProtocolState();
+            PacketDispatcher = new PacketDispatcher();
 
-            this.WaitingActions = new WaitingActions() {
-                Done = (action, requests, responses) => this.OnClientEvent(
+            WaitingActions = new WaitingActions() {
+                Done = (action, requests, responses) => OnClientEvent(
                     ClientEventType.ClientActionDone,
                     new ClientEventData() {
                         Packets = responses
@@ -84,7 +84,7 @@ namespace Potato.Net.Shared {
                         Packets = requests
                     }
                 ),
-                Expired = (action, requests, responses) => this.OnClientEvent(
+                Expired = (action, requests, responses) => OnClientEvent(
                     ClientEventType.ClientActionExpired,
                     new ClientEventData() {
                         Packets = responses
@@ -104,9 +104,9 @@ namespace Potato.Net.Shared {
         /// </summary>
         /// <param name="difference">The difference object to apply to the protocols state</param>
         protected void ApplyProtocolStateDifference(IProtocolStateDifference difference) {
-            if (this.State != null) {
+            if (State != null) {
                 // Apply any differences to our state object.
-                this.State.Apply(difference);
+                State.Apply(difference);
             }
         }
 
@@ -116,14 +116,14 @@ namespace Potato.Net.Shared {
         public virtual event Action<IProtocol, IProtocolEventArgs> ProtocolEvent;
 
         protected void OnProtocolEvent(ProtocolEventType eventType, IProtocolStateDifference difference, IProtocolEventData now = null, IProtocolEventData then = null) {
-            var handler = this.ProtocolEvent;
+            var handler = ProtocolEvent;
 
             if (handler != null) {
                 handler(
                     this,
                     new ProtocolEventArgs() {
                         ProtocolEventType = eventType,
-                        ProtocolType = this.ProtocolType as ProtocolType, // Required for serialization. How to get around?
+                        ProtocolType = ProtocolType as ProtocolType, // Required for serialization. How to get around?
                         StateDifference = difference ?? new ProtocolStateDifference(),
                         Now = now ?? new ProtocolEventData(),
                         Then = then ?? new ProtocolEventData()
@@ -139,11 +139,11 @@ namespace Potato.Net.Shared {
         public virtual event Action<IProtocol, IClientEventArgs> ClientEvent;
 
         protected void OnClientEvent(ClientEventType eventType, IClientEventData now = null, IClientEventData then = null) {
-            var handler = this.ClientEvent;
+            var handler = ClientEvent;
             if (handler != null) {
                 handler(this, new ClientEventArgs() {
                     EventType = eventType,
-                    ConnectionState = this.Client.ConnectionState,
+                    ConnectionState = Client.ConnectionState,
                     Now = now ?? new ClientEventData(),
                     Then = then ?? new ClientEventData()
                 });
@@ -162,18 +162,18 @@ namespace Potato.Net.Shared {
         /// <param name="action"></param>
         public virtual List<IPacket> Action(INetworkAction action) {
             List<IPacket> packets = null;
-            List<IPacketWrapper> wrappers = this.DispatchAction(action);
+            var wrappers = DispatchAction(action);
 
             if (wrappers != null) {
                 // Fetch all of the packets that are not null
                 packets = wrappers.Where(wrapper => wrapper != null).Select(wrapper => wrapper.Packet).ToList();
 
                 // Defer this completed action for now.
-                this.WaitingActions.Wait(action, packets);
+                WaitingActions.Wait(action, packets);
 
                 // Now send the packets
-                foreach (IPacketWrapper wrapper in wrappers) {
-                    this.Send(wrapper);
+                foreach (var wrapper in wrappers) {
+                    Send(wrapper);
                 }
             }
 
@@ -181,26 +181,26 @@ namespace Potato.Net.Shared {
         }
 
         protected virtual List<IPacketWrapper> DispatchAction(INetworkAction action) {
-            List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
+            var wrappers = new List<IPacketWrapper>();
 
             switch (action.ActionType) {
                 case NetworkActionType.NetworkTextSay:
                 case NetworkActionType.NetworkTextYell:
                 case NetworkActionType.NetworkTextYellOnly:
-                    wrappers = this.ActionChat(action);
+                    wrappers = ActionChat(action);
                     break;
 
                 case NetworkActionType.NetworkPlayerKill:
-                    wrappers = this.ActionKill(action);
+                    wrappers = ActionKill(action);
                     break;
 
                 case NetworkActionType.NetworkPlayerKick:
-                    wrappers = this.ActionKick(action);
+                    wrappers = ActionKick(action);
                     break;
 
                 case NetworkActionType.NetworkPlayerBan:
                 case NetworkActionType.NetworkPlayerUnban:
-                    wrappers = this.ActionBan(action);
+                    wrappers = ActionBan(action);
                     break;
 
                 case NetworkActionType.NetworkMapAppend:
@@ -214,22 +214,22 @@ namespace Potato.Net.Shared {
                 case NetworkActionType.NetworkMapRestart:
                 case NetworkActionType.NetworkMapRoundNext:
                 case NetworkActionType.NetworkMapRoundRestart:
-                    wrappers = this.ActionMap(action);
+                    wrappers = ActionMap(action);
                     break;
 
                 case NetworkActionType.NetworkPlayerMoveRotate:
                 case NetworkActionType.NetworkPlayerMoveRotateForce:
                 case NetworkActionType.NetworkPlayerMove:
                 case NetworkActionType.NetworkPlayerMoveForce:
-                    wrappers = this.ActionMove(action);
+                    wrappers = ActionMove(action);
                     break;
                 case NetworkActionType.NetworkPacketSend:
                     if (action.Now.Content != null) {
-                        wrappers.AddRange(action.Now.Content.Select(text => this.CreatePacket(text)));
+                        wrappers.AddRange(action.Now.Content.Select(text => CreatePacket(text)));
                     }
 
                     if (action.Now.Packets != null) {
-                        wrappers.AddRange(action.Now.Packets.Select(this.WrapPacket));
+                        wrappers.AddRange(action.Now.Packets.Select(WrapPacket));
                     }
                     break;
             }
@@ -250,11 +250,11 @@ namespace Potato.Net.Shared {
         protected abstract List<IPacketWrapper> ActionMap(INetworkAction action);
 
         protected virtual List<IPacketWrapper> ActionRaw(INetworkAction action) {
-            List<IPacketWrapper> wrappers = new List<IPacketWrapper>();
+            var wrappers = new List<IPacketWrapper>();
 
-            wrappers.AddRange(action.Now.Content.Select(text => this.CreatePacket(text)));
+            wrappers.AddRange(action.Now.Content.Select(text => CreatePacket(text)));
 
-            wrappers.AddRange(action.Now.Packets.Select(this.WrapPacket));
+            wrappers.AddRange(action.Now.Packets.Select(WrapPacket));
 
             return wrappers;
         }
@@ -268,8 +268,8 @@ namespace Potato.Net.Shared {
             IPacket sent = null;
 
             if (wrapper != null) {
-                if (this.Client != null && (this.Client.ConnectionState == ConnectionState.ConnectionReady || this.Client.ConnectionState == ConnectionState.ConnectionLoggedIn)) {
-                    sent = this.Client.Send(wrapper);
+                if (Client != null && (Client.ConnectionState == ConnectionState.ConnectionReady || Client.ConnectionState == ConnectionState.ConnectionLoggedIn)) {
+                    sent = Client.Send(wrapper);
                 }
             }
 
@@ -277,57 +277,57 @@ namespace Potato.Net.Shared {
         }
 
         public virtual IProtocolSetupResult Setup(IProtocolSetup setup) {
-            this.Options = setup;
-            this.Client.Setup(ClientSetup.FromProtocolSetup(setup));
+            Options = setup;
+            Client.Setup(ClientSetup.FromProtocolSetup(setup));
 
             // Handle client events, most of which are proxies to events we fire.
-            this.Client.PacketReceived += (sender, wrapper) => {
-                this.PacketDispatcher.Dispatch(wrapper);
+            Client.PacketReceived += (sender, wrapper) => {
+                PacketDispatcher.Dispatch(wrapper);
 
                 // Alert the deferrer that we have a new packet that's been dispatched
-                this.WaitingActions.Mark(wrapper.Packet);
+                WaitingActions.Mark(wrapper.Packet);
 
-                this.OnClientEvent(ClientEventType.ClientPacketReceived, new ClientEventData() {
+                OnClientEvent(ClientEventType.ClientPacketReceived, new ClientEventData() {
                     Packets = new List<IPacket>() {
                         wrapper.Packet
                     }
                 });
             };
 
-            this.Client.ConnectionStateChanged += (sender, state) => {
-                this.OnClientEvent(ClientEventType.ClientConnectionStateChange);
+            Client.ConnectionStateChanged += (sender, state) => {
+                OnClientEvent(ClientEventType.ClientConnectionStateChange);
 
-                this.State.Settings.Current.ConnectionState = state;
+                State.Settings.Current.ConnectionState = state;
 
                 IProtocolStateDifference difference = new ProtocolStateDifference() {
                     Modified = {
-                        Settings = this.State.Settings
+                        Settings = State.Settings
                     }
                 };
 
-                this.ApplyProtocolStateDifference(difference);
+                ApplyProtocolStateDifference(difference);
 
-                this.OnProtocolEvent(ProtocolEventType.ProtocolSettingsUpdated, difference);
+                OnProtocolEvent(ProtocolEventType.ProtocolSettingsUpdated, difference);
 
                 if (state == ConnectionState.ConnectionReady) {
-                    this.Login(this.Options.Password);
+                    Login(Options.Password);
                 }
             };
 
-            this.Client.PacketSent += (sender, wrapper) => this.OnClientEvent(ClientEventType.ClientPacketSent, new ClientEventData() {
+            Client.PacketSent += (sender, wrapper) => OnClientEvent(ClientEventType.ClientPacketSent, new ClientEventData() {
                 Packets = new List<IPacket>() {
                     wrapper.Packet
                 }
             });
 
-            this.Client.SocketException += (sender, se) => this.OnClientEvent(ClientEventType.ClientSocketException, new ClientEventData() {
-                Exceptions = new List<String>() {
+            Client.SocketException += (sender, se) => OnClientEvent(ClientEventType.ClientSocketException, new ClientEventData() {
+                Exceptions = new List<string>() {
                     se.ToString()
                 }
             });
 
-            this.Client.ConnectionFailure += (sender, exception) => this.OnClientEvent(ClientEventType.ClientConnectionFailure, new ClientEventData() {
-                Exceptions = new List<String>() {
+            Client.ConnectionFailure += (sender, exception) => OnClientEvent(ClientEventType.ClientConnectionFailure, new ClientEventData() {
+                Exceptions = new List<string>() {
                     exception.ToString()
                 }
             });
@@ -339,8 +339,8 @@ namespace Potato.Net.Shared {
         /// Attempts a connection to the server.
         /// </summary>
         public void AttemptConnection() {
-            if (this.Client != null && this.Client.ConnectionState == ConnectionState.ConnectionDisconnected) {
-                this.Client.Connect();
+            if (Client != null && Client.ConnectionState == ConnectionState.ConnectionDisconnected) {
+                Client.Connect();
             }
         }
 
@@ -348,8 +348,8 @@ namespace Potato.Net.Shared {
         /// Shutsdown this connection
         /// </summary>
         public virtual void Shutdown() {
-            if (this.Client != null) {
-                this.Client.Shutdown();
+            if (Client != null) {
+                Client.Shutdown();
             }
         }
 
@@ -357,8 +357,8 @@ namespace Potato.Net.Shared {
         /// General timed event to synch everything on the server with what is known locally.
         /// </summary>
         public virtual void Synchronize() {
-            if (this.Client != null && this.Client.ConnectionState != ConnectionState.ConnectionLoggedIn) {
-                this.Client.Poke();
+            if (Client != null && Client.ConnectionState != ConnectionState.ConnectionLoggedIn) {
+                Client.Poke();
             }
         }
 
@@ -368,7 +368,7 @@ namespace Potato.Net.Shared {
         /// <param name="format"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        protected abstract IPacketWrapper CreatePacket(String format, params object[] args);
+        protected abstract IPacketWrapper CreatePacket(string format, params object[] args);
 
         /// <summary>
         /// Wraps a completed packet in a packet wrapper, allowing it to be sent to the server.

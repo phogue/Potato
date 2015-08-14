@@ -54,7 +54,7 @@ namespace Potato.Core.Test.Plugins {
                 }
             });
 
-            ICommandResult result = plugins.Tunnel(new Command() {
+            var result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsDisable,
                 Scope = {
@@ -78,7 +78,7 @@ namespace Potato.Core.Test.Plugins {
                 }
             }.Execute();
 
-            ICommandResult result = plugins.Tunnel(new Command() {
+            var result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsDisable,
                 Scope = {
@@ -103,12 +103,12 @@ namespace Potato.Core.Test.Plugins {
             }.Execute();
 
             // The plugin will be disabled right now.
-            ICommandResult result = plugins.Tunnel(new Command() {
+            var result = plugins.Tunnel(new Command() {
                 Name = "TestPluginsDisabledCommandResult",
                 Authentication = {
                     Username = "Phogue"
                 },
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "Return Message"
                 })
             });
@@ -131,7 +131,7 @@ namespace Potato.Core.Test.Plugins {
                 }
             }.Execute();
 
-            ICommandResult result = plugins.Tunnel(new Command() {
+            var result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.PluginsDisable,
                 Scope = {
@@ -155,7 +155,7 @@ namespace Potato.Core.Test.Plugins {
                 }
             }.Execute();
 
-            ICommandResult result = plugins.Tunnel(new Command() {
+            var result = plugins.Tunnel(new Command() {
                 Origin = CommandOrigin.Remote,
                 Authentication = {
                     Username = "Phogue"

@@ -76,23 +76,23 @@ namespace Potato.Core.Connections.Plugins {
         /// Default Initialization
         /// </summary>
         public CorePluginController() : base() {
-            this.Shared = new SharedReferences();
-            this.LoadedPlugins = new List<PluginModel>();
+            Shared = new SharedReferences();
+            LoadedPlugins = new List<PluginModel>();
 
-            this.CorePluginControllerCallbackProxy = new CorePluginControllerCallbackProxy() {
+            CorePluginControllerCallbackProxy = new CorePluginControllerCallbackProxy() {
                 BubbleObjects = {
                     this
                 }
             };
 
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.PluginsEnable,
-                    Handler = this.EnablePlugin
+                    Handler = EnablePlugin
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.PluginsDisable,
-                    Handler = this.DisablePlugin
+                    Handler = DisablePlugin
                 }
             });
         }
@@ -103,25 +103,25 @@ namespace Potato.Core.Connections.Plugins {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult EnablePlugin(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult EnablePlugin(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                Guid pluginGuid = command.Scope.PluginGuid;
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var pluginGuid = command.Scope.PluginGuid;
 
-                if (this.LoadedPlugins.Count(plugin => plugin.PluginGuid == pluginGuid) > 0) {
-                    if (this.PluginFactory.TryEnablePlugin(pluginGuid) == true) {
-                        PluginModel plugin = this.LoadedPlugins.First(p => p.PluginGuid == pluginGuid);
+                if (LoadedPlugins.Count(plugin => plugin.PluginGuid == pluginGuid) > 0) {
+                    if (PluginFactory.TryEnablePlugin(pluginGuid) == true) {
+                        var plugin = LoadedPlugins.First(p => p.PluginGuid == pluginGuid);
 
                         plugin.IsEnabled = true;
 
                         result = new CommandResult() {
                             CommandResultType = CommandResultType.Success,
                             Success = true,
-                            Message = String.Format("Plugin {0} has been enabled", pluginGuid),
+                            Message = string.Format("Plugin {0} has been enabled", pluginGuid),
                             Scope = {
                                 Connections = new List<ConnectionModel>() {
-                                    this.Connection != null ? this.Connection.ConnectionModel : null
+                                    Connection != null ? Connection.ConnectionModel : null
                                 },
                                 Plugins = new List<PluginModel>() {
                                     plugin
@@ -129,8 +129,8 @@ namespace Potato.Core.Connections.Plugins {
                             }
                         };
 
-                        if (this.Shared.Events != null) {
-                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PluginsEnabled));
+                        if (Shared.Events != null) {
+                            Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PluginsEnabled));
                         }
                     }
                     else {
@@ -160,25 +160,25 @@ namespace Potato.Core.Connections.Plugins {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult DisablePlugin(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult DisablePlugin(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                Guid pluginGuid = command.Scope.PluginGuid;
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var pluginGuid = command.Scope.PluginGuid;
 
-                if (this.LoadedPlugins.Count(plugin => plugin.PluginGuid == pluginGuid) > 0) {
-                    if (this.PluginFactory.TryDisablePlugin(pluginGuid) == true) {
-                        PluginModel plugin = this.LoadedPlugins.First(p => p.PluginGuid == pluginGuid);
+                if (LoadedPlugins.Count(plugin => plugin.PluginGuid == pluginGuid) > 0) {
+                    if (PluginFactory.TryDisablePlugin(pluginGuid) == true) {
+                        var plugin = LoadedPlugins.First(p => p.PluginGuid == pluginGuid);
 
                         plugin.IsEnabled = false;
 
                         result = new CommandResult() {
                             CommandResultType = CommandResultType.Success,
                             Success = true,
-                            Message = String.Format("Plugin {0} has been disabled", pluginGuid),
+                            Message = string.Format("Plugin {0} has been disabled", pluginGuid),
                             Scope = {
                                 Connections = new List<ConnectionModel>() {
-                                    this.Connection != null ? this.Connection.ConnectionModel : null
+                                    Connection != null ? Connection.ConnectionModel : null
                                 },
                                 Plugins = new List<PluginModel>() {
                                     plugin
@@ -186,8 +186,8 @@ namespace Potato.Core.Connections.Plugins {
                             }
                         };
 
-                        if (this.Shared.Events != null) {
-                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PluginsDisabled));
+                        if (Shared.Events != null) {
+                            Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PluginsDisabled));
                         }
                     }
                     else {
@@ -216,10 +216,10 @@ namespace Potato.Core.Connections.Plugins {
         /// </summary>
         /// <returns></returns>
         protected AppDomainSetup CreateAppDomainSetup() {
-            AppDomainSetup setup = new AppDomainSetup {
+            var setup = new AppDomainSetup {
                 LoaderOptimization = LoaderOptimization.MultiDomain,
                 ApplicationBase = AppDomain.CurrentDomain.BaseDirectory,
-                PrivateBinPath = String.Join(";", new[] {
+                PrivateBinPath = string.Join(";", new[] {
                     AppDomain.CurrentDomain.BaseDirectory,
                     Defines.PackageMyrconPotatoCoreLibNet40.FullName,
                     Defines.PackageMyrconPotatoSharedLibNet40.FullName
@@ -241,17 +241,17 @@ namespace Potato.Core.Connections.Plugins {
         /// </summary>
         /// <returns></returns>
         protected PermissionSet CreatePermissionSet() {
-            PermissionSet permissions = new PermissionSet(PermissionState.None);
+            var permissions = new PermissionSet(PermissionState.None);
             
             permissions.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution));
 
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.PathDiscovery, AppDomain.CurrentDomain.BaseDirectory));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Defines.LogsDirectory.FullName));
-            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Path.Combine(Defines.ConfigsDirectory.FullName, this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid.ToString() : Guid.Empty.ToString())));
+            permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.AllAccess, Path.Combine(Defines.ConfigsDirectory.FullName, Connection != null ? Connection.ConnectionModel.ConnectionGuid.ToString() : Guid.Empty.ToString())));
             permissions.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, Defines.ConfigsDirectory.FullName));
 
-            foreach (var file in this.GetPluginAssemblies()) {
-                DirectoryInfo directory = Defines.PackageContainingPath(file.Directory != null ? file.Directory.FullName : "");
+            foreach (var file in GetPluginAssemblies()) {
+                var directory = Defines.PackageContainingPath(file.Directory != null ? file.Directory.FullName : "");
 
                 // If we didn't just go up to the root directory.
                 if (directory != null) {
@@ -266,15 +266,15 @@ namespace Potato.Core.Connections.Plugins {
         /// Creates all of the directories required by plugins
         /// </summary>
         protected void CreateDirectories() {
-            Directory.CreateDirectory(Path.Combine(Defines.ConfigsDirectory.FullName, this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid.ToString() : Guid.Empty.ToString()));
+            Directory.CreateDirectory(Path.Combine(Defines.ConfigsDirectory.FullName, Connection != null ? Connection.ConnectionModel.ConnectionGuid.ToString() : Guid.Empty.ToString()));
         }
 
         public override void WriteConfig(IConfig config, string password = null) {
-            foreach (PluginModel plugin in this.LoadedPlugins.Where(plugin => plugin.IsEnabled == true)) {
+            foreach (var plugin in LoadedPlugins.Where(plugin => plugin.IsEnabled == true)) {
                 config.Append(new Command() {
                     CommandType = CommandType.PluginsEnable,
                     Scope = {
-                        ConnectionGuid = this.Connection.ConnectionModel.ConnectionGuid,
+                        ConnectionGuid = Connection.ConnectionModel.ConnectionGuid,
                         PluginGuid = plugin.PluginGuid
                     }
                 }.ToConfigCommand());
@@ -285,17 +285,17 @@ namespace Potato.Core.Connections.Plugins {
         /// Executes the commands specified in the config file and returns a reference itself.
         /// </summary>
         public override ICoreController Execute() {
-            this.SetupPluginFactory();
+            SetupPluginFactory();
 
-            this.TunnelObjects.Add(this.PluginFactory);
-            this.BubbleObjects.Add(this.Connection);
+            TunnelObjects.Add(PluginFactory);
+            BubbleObjects.Add(Connection);
 
             // Load all the plugins.
-            this.LoadPlugins();
+            LoadPlugins();
 
-            if (this.Connection != null) {
-                this.Connection.ClientEvent += Connection_ClientEvent;
-                this.Connection.ProtocolEvent += Connection_GameEvent;
+            if (Connection != null) {
+                Connection.ClientEvent += Connection_ClientEvent;
+                Connection.ProtocolEvent += Connection_GameEvent;
             }
 
             // Return the base execution.
@@ -303,14 +303,14 @@ namespace Potato.Core.Connections.Plugins {
         }
 
         private void Connection_ClientEvent(IClientEventArgs e) {
-            if (this.ClientEventStream != null) {
-                this.ClientEventStream.Call(e);
+            if (ClientEventStream != null) {
+                ClientEventStream.Call(e);
             }
         }
 
         private void Connection_GameEvent(IProtocolEventArgs e) {
-            if (this.ProtocolEventStream != null) {
-                this.ProtocolEventStream.Call(e);
+            if (ProtocolEventStream != null) {
+                ProtocolEventStream.Call(e);
             }
         }
 
@@ -318,27 +318,27 @@ namespace Potato.Core.Connections.Plugins {
         /// Sets everything up to load the plugins, creating the seperate appdomin and permission requirements
         /// </summary>
         protected void SetupPluginFactory() {
-            AppDomainSetup setup = this.CreateAppDomainSetup();
+            var setup = CreateAppDomainSetup();
 
-            PermissionSet permissions = this.CreatePermissionSet();
+            var permissions = CreatePermissionSet();
 
-            this.CreateDirectories();
+            CreateDirectories();
 
             // Create the app domain and the plugin factory in the new domain.
-            this.AppDomainSandbox = AppDomain.CreateDomain(String.Format("Potato.Plugins.{0}", this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid.ToString() : String.Empty), null, setup, permissions);
+            AppDomainSandbox = AppDomain.CreateDomain(string.Format("Potato.Plugins.{0}", Connection != null ? Connection.ConnectionModel.ConnectionGuid.ToString() : string.Empty), null, setup, permissions);
 
-            this.PluginFactory = (ISandboxPluginController)this.AppDomainSandbox.CreateInstanceAndUnwrap(typeof(SandboxPluginController).Assembly.FullName, typeof(SandboxPluginController).FullName);
+            PluginFactory = (ISandboxPluginController)AppDomainSandbox.CreateInstanceAndUnwrap(typeof(SandboxPluginController).Assembly.FullName, typeof(SandboxPluginController).FullName);
 
-            this.PluginFactory.BubbleObjects = new List<ICoreController>() {
-                this.CorePluginControllerCallbackProxy
+            PluginFactory.BubbleObjects = new List<ICoreController>() {
+                CorePluginControllerCallbackProxy
             };
 
-            this.ClientEventStream = new ThrottledStream<IClientEventArgs>() {
-                FlushTo = this.PluginFactory.ClientEvent
+            ClientEventStream = new ThrottledStream<IClientEventArgs>() {
+                FlushTo = PluginFactory.ClientEvent
             }.Start();
             
-            this.ProtocolEventStream = new ThrottledStream<IProtocolEventArgs>() {
-                FlushTo = this.PluginFactory.ProtocolEvent
+            ProtocolEventStream = new ThrottledStream<IProtocolEventArgs>() {
+                FlushTo = PluginFactory.ProtocolEvent
             }.Start();
         }
 
@@ -357,7 +357,7 @@ namespace Potato.Core.Connections.Plugins {
                     file.Name != Defines.PotatoCoreSharedDll &&
                     file.Name != Defines.PotatoDatabaseSharedDll &&
                     file.Name != Defines.PotatoNetSharedDll)
-                .Where(file => Regex.Matches(file.FullName, file.Name.Replace(file.Extension, String.Empty)).Cast<Match>().Count() >= 2)
+                .Where(file => Regex.Matches(file.FullName, file.Name.Replace(file.Extension, string.Empty)).Cast<Match>().Count() >= 2)
                 .ToList();
         } 
 
@@ -366,19 +366,19 @@ namespace Potato.Core.Connections.Plugins {
         /// </summary>
         protected void LoadPlugins() {
             // If there are dll files in this directory, setup the plugins.
-            foreach (String path in this.GetPluginAssemblies().Select(file => file.FullName)) {
-                PluginModel plugin = new PluginModel() {
+            foreach (var path in GetPluginAssemblies().Select(file => file.FullName)) {
+                var plugin = new PluginModel() {
                     Name = new FileInfo(path).Name.Replace(".dll", "")
                 };
 
-                IPluginController proxy = this.PluginFactory.Create(path, plugin.Name + ".Program");
+                var proxy = PluginFactory.Create(path, plugin.Name + ".Program");
 
                 if (proxy != null) {
                     plugin.PluginGuid = proxy.PluginGuid;
 
-                    Guid connectionGuid = this.Connection != null ? this.Connection.ConnectionModel.ConnectionGuid : Guid.Empty;
+                    var connectionGuid = Connection != null ? Connection.ConnectionModel.ConnectionGuid : Guid.Empty;
 
-                    IPluginSetupResult result = proxy.Setup(new PluginSetup() {
+                    var result = proxy.Setup(new PluginSetup() {
                         ConnectionGuid = connectionGuid.ToString(),
                         ConfigDirectoryPath = Path.Combine(Defines.ConfigsDirectory.FullName, connectionGuid.ToString(), plugin.PluginGuid.ToString()),
                         LogDirectoryPath = Path.Combine(Defines.LogsDirectory.FullName, connectionGuid.ToString(), plugin.PluginGuid.ToString())
@@ -394,7 +394,7 @@ namespace Potato.Core.Connections.Plugins {
                     });
                 }
 
-                this.LoadedPlugins.Add(plugin);
+                LoadedPlugins.Add(plugin);
             }
         }
 
@@ -402,7 +402,7 @@ namespace Potato.Core.Connections.Plugins {
         /// Renews the lease on the plugin factory as well as each loaded plugin proxy
         /// </summary>
         public override void Poke() {
-            ILease lease = ((MarshalByRefObject)this.PluginFactory).GetLifetimeService() as ILease;
+            var lease = ((MarshalByRefObject)PluginFactory).GetLifetimeService() as ILease;
 
             if (lease != null) {
                 lease.Renew(lease.InitialLeaseTime);
@@ -413,10 +413,10 @@ namespace Potato.Core.Connections.Plugins {
             ICommandResult synchronousResult = null;
 
             // If we're bubbling and we have not seen this command yet
-            if (direction == CommandDirection.Bubble && this.AsyncStateModel.IsKnown(command.CommandGuid) == false) {
-                AutoResetEvent resultWait = new AutoResetEvent(false);
+            if (direction == CommandDirection.Bubble && AsyncStateModel.IsKnown(command.CommandGuid) == false) {
+                var resultWait = new AutoResetEvent(false);
 
-                this.BeginBubble(command, result => {
+                BeginBubble(command, result => {
                     synchronousResult = result;
 
                     resultWait.Set();
@@ -436,17 +436,17 @@ namespace Potato.Core.Connections.Plugins {
         /// Disposes of all the plugins before calling the base dispose.
         /// </summary>
         public override void Dispose() {
-            this.ClientEventStream.Stop();
-            this.ProtocolEventStream.Stop();
+            ClientEventStream.Stop();
+            ProtocolEventStream.Stop();
             
-            this.PluginFactory.Shutdown();
+            PluginFactory.Shutdown();
 
-            this.LoadedPlugins.Clear();
-            this.LoadedPlugins = null;
+            LoadedPlugins.Clear();
+            LoadedPlugins = null;
 
-            AppDomain.Unload(this.AppDomainSandbox);
-            this.AppDomainSandbox = null;
-            this.PluginFactory = null;
+            AppDomain.Unload(AppDomainSandbox);
+            AppDomainSandbox = null;
+            PluginFactory = null;
 
             base.Dispose();
         }

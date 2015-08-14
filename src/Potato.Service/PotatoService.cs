@@ -37,24 +37,24 @@ namespace Potato.Service {
         }
 
         protected override void OnStart(string[] args) {
-            this.Instance = new ServiceController() {
-                Arguments = new List<String>(args),
-                Settings = new ServiceSettings(new List<String>(args))
+            Instance = new ServiceController() {
+                Arguments = new List<string>(args),
+                Settings = new ServiceSettings(new List<string>(args))
             };
 
-            this.Instance.SignalMessage(new ServiceMessage() {
+            Instance.SignalMessage(new ServiceMessage() {
                 Name = "start"
             });
         }
 
         protected override void OnStop() {
-            this.Instance.SignalMessage(new ServiceMessage() {
+            Instance.SignalMessage(new ServiceMessage() {
                 Name = "stop"
             });
         }
 
         protected override void OnShutdown() {
-            this.Instance.SignalMessage(new ServiceMessage() {
+            Instance.SignalMessage(new ServiceMessage() {
                 Name = "stop"
             });
         }

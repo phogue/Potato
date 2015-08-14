@@ -22,17 +22,17 @@ namespace Potato.Database.Shared.Test.MySql {
     public class TestSerializerMySqlSaveImplicit : TestSerializerSave {
         [Test]
         public override void TestSaveIntoPlayerSetName() {
-            Assert.AreEqual(@"INSERT INTO `Player` SET `Name` = ""Phogue""", new SerializerMySql().Parse(this.TestSaveIntoPlayerSetNameImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"INSERT INTO `Player` SET `Name` = ""Phogue""", new SerializerMySql().Parse(TestSaveIntoPlayerSetNameImplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestSaveIntoPlayerSetNameScore() {
-            Assert.AreEqual(@"INSERT INTO `Player` SET `Name` = ""Phogue"", `Score` = 50", new SerializerMySql().Parse(this.TestSaveIntoPlayerSetNameScoreImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"INSERT INTO `Player` SET `Name` = ""Phogue"", `Score` = 50", new SerializerMySql().Parse(TestSaveIntoPlayerSetNameScoreImplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestSaveIntoPlayerSetNameAndStamp() {
-            Assert.AreEqual(@"INSERT INTO `Player` SET `Name` = ""Phogue"", `Stamp` = ""2013-12-19 01:08:00""", new SerializerMySql().Parse(this.TestSaveIntoPlayerSetNameAndStampImplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"INSERT INTO `Player` SET `Name` = ""Phogue"", `Stamp` = ""2013-12-19 01:08:00""", new SerializerMySql().Parse(TestSaveIntoPlayerSetNameAndStampImplicit).Compile().Compiled.First());
         }
     }
 }

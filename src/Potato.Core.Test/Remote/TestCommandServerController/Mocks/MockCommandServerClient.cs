@@ -39,21 +39,21 @@ namespace Potato.Core.Test.Remote.TestCommandServerController.Mocks {
         }
 
         public void Poke() {
-            if (this.PokeCallback != null) this.PokeCallback();
+            if (PokeCallback != null) PokeCallback();
         }
 
         public IPacket Send(IPacketWrapper wrapper) {
-            if (this.SentCallback != null) this.SentCallback(wrapper);
+            if (SentCallback != null) SentCallback(wrapper);
 
             return new Packet();
         }
 
         public void Connect() {
-            if (this.ConnectCallback != null) this.ConnectCallback();
+            if (ConnectCallback != null) ConnectCallback();
         }
 
         public void Shutdown() {
-            if (this.ShutdownCallback != null) this.ShutdownCallback();
+            if (ShutdownCallback != null) ShutdownCallback();
         }
     }
 }

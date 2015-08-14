@@ -22,10 +22,10 @@ namespace Potato.Net.Shared {
     /// </summary>
     [Serializable]
     public class ProtocolSetup : IProtocolSetup {
-        public String Hostname { get; set; }
+        public string Hostname { get; set; }
         public ushort Port { get; set; }
-        public String Password { get; set; }
-        public IDictionary<String, String> Arguments { get; set; }
+        public string Password { get; set; }
+        public IDictionary<string, string> Arguments { get; set; }
 
         public string ConfigDirectory { get; set; }
 
@@ -33,18 +33,18 @@ namespace Potato.Net.Shared {
         /// Initializes the setup with default values.
         /// </summary>
         public ProtocolSetup() {
-            this.Arguments = new Dictionary<String, String>();
+            Arguments = new Dictionary<string, string>();
         }
 
-        public String ArgumentsString() {
-            var list = new List<String>();
+        public string ArgumentsString() {
+            var list = new List<string>();
 
-            foreach (var variable in this.Arguments) {
-                list.Add(String.Format("--{0}", variable.Key));
-                list.Add(String.Format(@"""{0}""", variable.Value));
+            foreach (var variable in Arguments) {
+                list.Add(string.Format("--{0}", variable.Key));
+                list.Add(string.Format(@"""{0}""", variable.Value));
             }
 
-            return String.Join(" ", list);
+            return string.Join(" ", list);
         }
     }
 }

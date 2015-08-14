@@ -50,7 +50,7 @@ namespace Potato.Net.Shared.Test.Mocks {
         public delegate void ExceptionHandler(Exception exception);
 
         public MockTcpListener() {
-            this.Clients = new List<MockTcpClient>();
+            Clients = new List<MockTcpClient>();
         }
 
         /// <summary>
@@ -58,14 +58,14 @@ namespace Potato.Net.Shared.Test.Mocks {
         /// </summary>
         public void BeginListener() {
             try {
-                this.Listener = new TcpListener(IPAddress.Any, this.Port);
-                this.Listener.Start();
+                Listener = new TcpListener(IPAddress.Any, Port);
+                Listener.Start();
 
                 // Accept the connection.
-                this.Listener.BeginAcceptTcpClient(new AsyncCallback(MockTcpListener.AcceptTcpClientCallback), this);
+                Listener.BeginAcceptTcpClient(new AsyncCallback(AcceptTcpClientCallback), this);
             }
             catch (Exception e) {
-                this.OnException(e);
+                OnException(e);
             }
         }
 
@@ -73,12 +73,12 @@ namespace Potato.Net.Shared.Test.Mocks {
         protected static void AcceptTcpClientCallback(IAsyncResult ar) {
 
             // Get the listener that handles the client request.
-            MockTcpListener listener = (MockTcpListener)ar.AsyncState;
+            var listener = (MockTcpListener)ar.AsyncState;
 
             if (listener.Listener != null) {
                 try {
                     // End the operation and display the received data on the console.
-                    MockTcpClient client = new MockTcpClient(listener.Listener.EndAcceptTcpClient(ar));
+                    var client = new MockTcpClient(listener.Listener.EndAcceptTcpClient(ar));
 
                     // Listen for events on our new client
                     client.PacketReceived += listener.client_PacketReceived;
@@ -100,18 +100,18 @@ namespace Potato.Net.Shared.Test.Mocks {
 
         protected void client_PacketReceived(IClient sender, IPacketWrapper packet) {
             // Bubble the packet for processing.
-            this.OnPacketReceived(sender, packet as MockPacket);
+            OnPacketReceived(sender, packet as MockPacket);
         }
 
         protected void client_ConnectionStateChanged(IClient sender, ConnectionState newState) {
             if (newState == ConnectionState.ConnectionDisconnected) {
-                sender.PacketReceived -= this.client_PacketReceived;
-                sender.ConnectionStateChanged -= this.client_ConnectionStateChanged;
+                sender.PacketReceived -= client_PacketReceived;
+                sender.ConnectionStateChanged -= client_ConnectionStateChanged;
             }
         }
 
         protected virtual void OnPacketReceived(IClient client, MockPacket request) {
-            PacketReceivedHandler handler = PacketReceived;
+            var handler = PacketReceived;
 
             if (handler != null) {
                 handler(client, request);
@@ -119,7 +119,7 @@ namespace Potato.Net.Shared.Test.Mocks {
         }
 
         protected virtual void OnException(Exception exception) {
-            ExceptionHandler handler = Exception;
+            var handler = Exception;
 
             if (handler != null) {
                 handler(exception);
@@ -127,18 +127,18 @@ namespace Potato.Net.Shared.Test.Mocks {
         }
 
         public void Shutdown() {
-            if (this.Listener != null) {
-                this.Listener.Stop();
-                this.Listener = null;
+            if (Listener != null) {
+                Listener.Stop();
+                Listener = null;
 
-                foreach (MockTcpClient client in this.Clients) {
+                foreach (var client in Clients) {
                     client.Shutdown();
-                    client.PacketReceived -= this.client_PacketReceived;
-                    client.ConnectionStateChanged -= this.client_ConnectionStateChanged;
+                    client.PacketReceived -= client_PacketReceived;
+                    client.ConnectionStateChanged -= client_ConnectionStateChanged;
                 }
 
-                this.Clients.Clear();
-                this.Clients = null;
+                Clients.Clear();
+                Clients = null;
             }
         }
     }

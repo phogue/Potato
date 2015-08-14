@@ -54,7 +54,7 @@ namespace Potato.Core.Shared {
         /// Finds the root of a specific type.
         /// </summary>
         /// <returns>this</returns>
-        JArray RootOf(String @namespace);
+        JArray RootOf(string @namespace);
 
         /// <summary>
         /// Combines this configuration file with another configuration file.

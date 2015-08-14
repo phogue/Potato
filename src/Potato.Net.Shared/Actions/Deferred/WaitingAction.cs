@@ -45,8 +45,8 @@ namespace Potato.Net.Shared.Actions.Deferred {
         /// Initializes the waiting action with the default values.
         /// </summary>
         public WaitingAction() {
-            this.Expiration = DateTime.Now.AddSeconds(10);
-            this.Responses = new List<IPacket>();
+            Expiration = DateTime.Now.AddSeconds(10);
+            Responses = new List<IPacket>();
         }
     }
 }

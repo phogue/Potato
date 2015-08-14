@@ -23,7 +23,7 @@ namespace Potato.Examples.Plugins.UserInterface.Pages {
         /// <summary>
         /// Just a string to output in the template. Shows how to use variables within the template.
         /// </summary>
-        public String MyStringyVariable { get; set; }
+        public string MyStringyVariable { get; set; }
 
         /// <summary>
         /// A list of players to output, showing how to loop within a template (therefore how to use conditions and what not as well)
@@ -31,9 +31,9 @@ namespace Potato.Examples.Plugins.UserInterface.Pages {
         public IList<PlayerModel> MyListOfPlayers { get; set; }
 
         public SettingsPageView() : base() {
-            this.MyStringyVariable = "Empty";
+            MyStringyVariable = "Empty";
 
-            this.MyListOfPlayers = new List<PlayerModel>();
+            MyListOfPlayers = new List<PlayerModel>();
         }
     }
 }

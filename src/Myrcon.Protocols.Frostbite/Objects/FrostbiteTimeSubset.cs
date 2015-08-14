@@ -22,19 +22,19 @@ namespace Myrcon.Protocols.Frostbite.Objects {
     public static class FrostbiteTimeSubset {
 
         public static TimeSubsetModel Parse(List<string> words) {
-            TimeSubsetModel timeSubset = new TimeSubsetModel {
+            var timeSubset = new TimeSubsetModel {
                 Context = TimeSubsetContext.None
             };
 
-            int seconds = 0;
+            var seconds = 0;
 
-            if (String.CompareOrdinal(words[0], "perm") == 0) {
+            if (string.CompareOrdinal(words[0], "perm") == 0) {
                 timeSubset.Context = TimeSubsetContext.Permanent;
             }
-            else if (String.CompareOrdinal(words[0], "round") == 0) {
+            else if (string.CompareOrdinal(words[0], "round") == 0) {
                 timeSubset.Context = TimeSubsetContext.Round;
             }
-            else if (words.Count == 2 && String.CompareOrdinal(words[0], "seconds") == 0 && int.TryParse(words[1], out seconds) == true) {
+            else if (words.Count == 2 && string.CompareOrdinal(words[0], "seconds") == 0 && int.TryParse(words[1], out seconds) == true) {
                 timeSubset.Context = TimeSubsetContext.Time;
 
                 timeSubset.Length = TimeSpan.FromSeconds(seconds);

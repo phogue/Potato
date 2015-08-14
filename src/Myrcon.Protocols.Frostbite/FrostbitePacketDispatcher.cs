@@ -28,20 +28,20 @@ namespace Myrcon.Protocols.Frostbite {
         public override void Dispatch(IPacketWrapper wrapper) {
 
             if (wrapper.Packet.Origin == PacketOrigin.Client && wrapper.Packet.Type == PacketType.Response) {
-                FrostbitePacket requestPacket = this.PacketQueue.GetRequestPacket(wrapper) as FrostbitePacket;
+                var requestPacket = PacketQueue.GetRequestPacket(wrapper) as FrostbitePacket;
 
                 // If the request packet is valid and has at least one word.
                 if (requestPacket != null && requestPacket.Packet.Words.Count >= 1) {
 
                     // If the sent command was successful
-                    if (wrapper.Packet.Words.Count >= 1 && String.CompareOrdinal(wrapper.Packet.Words[0], FrostbitePacket.StringResponseOkay) == 0) {
-                        this.Dispatch(new PacketDispatch() {
+                    if (wrapper.Packet.Words.Count >= 1 && string.CompareOrdinal(wrapper.Packet.Words[0], FrostbitePacket.StringResponseOkay) == 0) {
+                        Dispatch(new PacketDispatch() {
                             Name = requestPacket.Packet.Words[0],
                             Origin = requestPacket.Packet.Origin
                         }, requestPacket, wrapper);
                     }
                     else { // The command sent failed for some reason.
-                        this.Dispatch(new PacketDispatch() {
+                        Dispatch(new PacketDispatch() {
                             Name = wrapper.Packet.Words[0],
                             Origin = wrapper.Packet.Origin
                         }, requestPacket, wrapper);
@@ -50,7 +50,7 @@ namespace Myrcon.Protocols.Frostbite {
 
             }
             else if (wrapper.Packet.Words.Count >= 1 && wrapper.Packet.Origin == PacketOrigin.Server && wrapper.Packet.Type == PacketType.Request) {
-                this.Dispatch(new PacketDispatch() {
+                Dispatch(new PacketDispatch() {
                     Name = wrapper.Packet.Words[0],
                     Origin = wrapper.Packet.Origin
                 }, wrapper, null);

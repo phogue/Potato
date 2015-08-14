@@ -25,16 +25,16 @@ using Potato.Net.Shared.Models;
 namespace Potato.Examples.Plugins.Actions {
     public class Program : PluginController {
         public Program() : base() {
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     Name = "KickPlayer",
                     CommandAttributeType = CommandAttributeType.Handler,
-                    Handler = this.KickPlayer
+                    Handler = KickPlayer
                 },
                 new CommandDispatch() {
                     Name = "DeferredKickPlayer",
                     CommandAttributeType = CommandAttributeType.Handler,
-                    Handler = this.DeferredKickPlayer
+                    Handler = DeferredKickPlayer
                 }
             });
         }
@@ -45,9 +45,9 @@ namespace Potato.Examples.Plugins.Actions {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected ICommandResult KickPlayer(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        protected ICommandResult KickPlayer(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             // You would usually pull the player object from this.GameState but we mock together a player here.
-            ICommandResult result = this.Action(new NetworkAction() {
+            var result = Action(new NetworkAction() {
                 ActionType = NetworkActionType.NetworkPlayerKick,
                 Scope = {
                     Players = new List<PlayerModel>() {
@@ -56,7 +56,7 @@ namespace Potato.Examples.Plugins.Actions {
                             Name = "Phogue"
                         }
                     },
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "This is a reason to kick this person"
                     }
                 }
@@ -65,10 +65,10 @@ namespace Potato.Examples.Plugins.Actions {
             // That's it. You can see the queued packets (which might have debugtext in them, might not just yet)
             // If you do need to know everything that was sent/recv for a packet you should look at deferred actions.
 
-            command.Result.Now.Content = new List<String>();
+            command.Result.Now.Content = new List<string>();
 
-            foreach (IPacket packet in result.Now.Packets) {
-                command.Result.Now.Content.Add(String.Format("KickPlayer.Result.packet: {0} {1} {2} {3}", packet.Origin, packet.Type, packet.RequestId, packet.DebugText));
+            foreach (var packet in result.Now.Packets) {
+                command.Result.Now.Content.Add(string.Format("KickPlayer.Result.packet: {0} {1} {2} {3}", packet.Origin, packet.Type, packet.RequestId, packet.DebugText));
             }
 
             return command.Result;
@@ -80,14 +80,14 @@ namespace Potato.Examples.Plugins.Actions {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        protected ICommandResult DeferredKickPlayer(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        protected ICommandResult DeferredKickPlayer(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             command.Result = new CommandResult {
                 Now = {
-                    Content = new List<String>()
+                    Content = new List<string>()
                 }
             };
 
-            this.Action(new DeferredAction<INetworkAction>() {
+            Action(new DeferredAction<INetworkAction>() {
 
                 // The action to send to the networking layer. 
                 // Ideal execution order: [ "Sent", "Each", "Done", "Always" ]
@@ -101,7 +101,7 @@ namespace Potato.Examples.Plugins.Actions {
                                 Name = "Phogue"
                             }
                         },
-                            Content = new List<String>() {
+                            Content = new List<string>() {
                             "This is a reason to kick this person"
                         }
                     }
@@ -118,11 +118,11 @@ namespace Potato.Examples.Plugins.Actions {
                     Console.WriteLine("DeferredKickPlayer: {0}", action.Uid);
 
                     // Add to our return. This callback is synchronous
-                    foreach (IPacket packet in requests) {
-                        command.Result.Now.Content.Add(String.Format("KickPlayer.Result.packet: {0} {1} {2} {3}", packet.Origin, packet.Type, packet.RequestId, packet.DebugText));
+                    foreach (var packet in requests) {
+                        command.Result.Now.Content.Add(string.Format("KickPlayer.Result.packet: {0} {1} {2} {3}", packet.Origin, packet.Type, packet.RequestId, packet.DebugText));
                     }
 
-                    foreach (IPacket packet in requests) {
+                    foreach (var packet in requests) {
                         Console.WriteLine("DeferredKickPlayer.Sent.packet: {0} {1} {2} {3}", packet.Origin, packet.Type, packet.RequestId, packet.DebugText);
                     }
                 },

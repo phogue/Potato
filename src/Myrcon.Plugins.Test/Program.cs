@@ -34,11 +34,11 @@ namespace Myrcon.Plugins.Test {
         private List<TextCommandModel> Commands { get; set; }
 
         public Program() : base() {
-            this.Title = "Myrcon Test Plugin";
+            Title = "Myrcon Test Plugin";
 
-            this.Commands = new List<TextCommandModel>();
+            Commands = new List<TextCommandModel>();
 
-            this.TunnelObjects = new List<ICoreController>() {
+            TunnelObjects = new List<ICoreController>() {
                 new TestPluginsSerialization(),
                 new TestPluginsEnabled(),
                 new TestPluginsIsolation(),
@@ -46,7 +46,7 @@ namespace Myrcon.Plugins.Test {
                 new TestPluginsCommands()
             };
 
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     Name = "HelpCommand",
                     ParameterTypes = new List<CommandParameterType>() {
@@ -55,7 +55,7 @@ namespace Myrcon.Plugins.Test {
                             Type = typeof(ICommandResult)
                         }
                     },
-                    Handler = this.HelpCommand
+                    Handler = HelpCommand
                 },
                 new CommandDispatch() {
                     Name = "KillCommand",
@@ -65,7 +65,7 @@ namespace Myrcon.Plugins.Test {
                             Type = typeof(ICommandResult)
                         }
                     },
-                    Handler = this.KillCommand
+                    Handler = KillCommand
                 },
                 new CommandDispatch() {
                     Name = "TestCommand",
@@ -75,7 +75,7 @@ namespace Myrcon.Plugins.Test {
                             Type = typeof(ICommandResult)
                         }
                     },
-                    Handler = this.TestCommand
+                    Handler = TestCommand
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.TextCommandsRegister,
@@ -86,7 +86,7 @@ namespace Myrcon.Plugins.Test {
                             Type = typeof(TextCommandModel)
                         }
                     },
-                    Handler = this.RegisterTextCommandPreview
+                    Handler = RegisterTextCommandPreview
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.TextCommandsRegister,
@@ -97,19 +97,19 @@ namespace Myrcon.Plugins.Test {
                             Type = typeof(TextCommandModel)
                         }
                     },
-                    Handler = this.RegisterTextCommandExecuted
+                    Handler = RegisterTextCommandExecuted
                 }
             });
         }
 
         protected List<string> ShortCommandList(ICommandResult e) {
-            return this.Commands.Select(x => x.Commands.FirstOrDefault()).ToList();
+            return Commands.Select(x => x.Commands.FirstOrDefault()).ToList();
         }
 
-        protected ICommandResult HelpCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            ICommandResult e = parameters["e"].First<ICommandResult>();
+        protected ICommandResult HelpCommand(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var e = parameters["e"].First<ICommandResult>();
 
-            NetworkAction output = new NetworkAction() {
+            var output = new NetworkAction() {
                 ActionType = NetworkActionType.NetworkTextSay
             };
 
@@ -124,42 +124,42 @@ namespace Myrcon.Plugins.Test {
                 });
                 */
 
-                if (this.ProtocolState.Settings.Maximum.ChatLinesCount.HasValue == true) {
-                    foreach (string line in String.Join(", ", this.ShortCommandList(e).ToArray()).WordWrap(this.ProtocolState.Settings.Maximum.ChatLinesCount.Value)) {
+                if (ProtocolState.Settings.Maximum.ChatLinesCount.HasValue == true) {
+                    foreach (var line in string.Join(", ", ShortCommandList(e).ToArray()).WordWrap(ProtocolState.Settings.Maximum.ChatLinesCount.Value)) {
                         output.Now.Content.Add(line);
                     }
                 }
             }
             else {
-                foreach (TextCommandModel alternate in e.Now.TextCommands.Skip(1)) {
+                foreach (var alternate in e.Now.TextCommands.Skip(1)) {
                     //string description = String.Format("> {0}: {1}", alternate.Commands.FirstOrDefault(), this.NamespacePlayerLoc(e.Now.Players.First(), this.GetType().Namespace + "." + alternate.PluginUid, alternate.PluginCommand));
-                    string description = String.Format("> {0}", alternate.Commands.FirstOrDefault());
+                    var description = string.Format("> {0}", alternate.Commands.FirstOrDefault());
 
-                    if (this.ProtocolState.Settings.Maximum.ChatLinesCount.HasValue == true) {
-                        foreach (string line in description.WordWrap(this.ProtocolState.Settings.Maximum.ChatLinesCount.Value)) {
+                    if (ProtocolState.Settings.Maximum.ChatLinesCount.HasValue == true) {
+                        foreach (var line in description.WordWrap(ProtocolState.Settings.Maximum.ChatLinesCount.Value)) {
                             output.Now.Content.Add(line);
                         }
                     }
                 }
             }
 
-            this.Action(output);
+            Action(output);
 
             return command.Result;
         }
 
-        protected ICommandResult KillCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            ICommandResult e = parameters["e"].First<ICommandResult>();
+        protected ICommandResult KillCommand(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var e = parameters["e"].First<ICommandResult>();
 
-            TextCommandMatchModel match = e.Now.TextCommandMatches.First();
+            var match = e.Now.TextCommandMatches.First();
 
             if (match.Players != null && match.Players.Count > 0) {
-                this.Action(new DeferredAction<NetworkAction>() {
+                Action(new DeferredAction<NetworkAction>() {
                     Action = new NetworkAction() {
                         ActionType = NetworkActionType.NetworkPlayerKill,
                         Scope = {
                             Players = new List<PlayerModel>(match.Players),
-                                Content = new List<String>() {
+                                Content = new List<string>() {
                                 "Testing"
                             }
                         }
@@ -167,7 +167,7 @@ namespace Myrcon.Plugins.Test {
                     Sent = (action, requests) => {
                         Console.WriteLine("KillCommand: {0}", action.Uid);
 
-                        foreach (IPacket packet in requests) {
+                        foreach (var packet in requests) {
                             Console.WriteLine("KillCommand.Sent.packet: {0} {1} {2} {3}", packet.Origin, packet.Type, packet.RequestId, packet.DebugText);
                         }
                     },
@@ -189,95 +189,95 @@ namespace Myrcon.Plugins.Test {
             return command.Result;
         }
 
-        protected ICommandResult TestCommand(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            ICommandResult e = parameters["e"].First<ICommandResult>();
+        protected ICommandResult TestCommand(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var e = parameters["e"].First<ICommandResult>();
 
-            NetworkAction output = new NetworkAction() {
+            var output = new NetworkAction() {
                 ActionType = NetworkActionType.NetworkTextSay,
                 Now = {
-                    Content = new List<String>()
+                    Content = new List<string>()
                 }
             };
 
             Console.WriteLine(e.Now.TextCommands.First().Description);
 
-            TextCommandMatchModel match = e.Now.TextCommandMatches.First();
+            var match = e.Now.TextCommandMatches.First();
 
             if (match.Players != null && match.Players.Count > 0) {
-                output.Now.Content.Add("Players: " + String.Join(", ", match.Players.Select(x => x.Name).ToArray()));
+                output.Now.Content.Add("Players: " + string.Join(", ", match.Players.Select(x => x.Name).ToArray()));
             }
 
             if (match.Maps != null && match.Maps.Count > 0) {
-                output.Now.Content.Add("Maps: " + String.Join(", ", match.Maps.Select(x => x.Name).ToArray()));
+                output.Now.Content.Add("Maps: " + string.Join(", ", match.Maps.Select(x => x.Name).ToArray()));
             }
 
             if (match.Numeric != null && match.Numeric.Count > 0) {
-                output.Now.Content.Add("Numeric: " + String.Join(", ", match.Numeric.Select(x => String.Format("{0:F2}", x)).ToArray()));
+                output.Now.Content.Add("Numeric: " + string.Join(", ", match.Numeric.Select(x => string.Format("{0:F2}", x)).ToArray()));
             }
 
             if (match.Delay != null) {
-                output.Now.Content.Add(String.Format("Delay: {0} (UTC+9:30 Adelaide)", match.Delay));
+                output.Now.Content.Add(string.Format("Delay: {0} (UTC+9:30 Adelaide)", match.Delay));
             }
 
             if (match.Interval != null) {
-                output.Now.Content.Add(String.Format("Interval: {0}", match.Interval));
+                output.Now.Content.Add(string.Format("Interval: {0}", match.Interval));
             }
 
             if (match.Period != null) {
-                output.Now.Content.Add(String.Format("Duration: {0}", match.Period));
+                output.Now.Content.Add(string.Format("Duration: {0}", match.Period));
             }
 
             if (e.Now.TextCommands.Count > 1) {
-                output.Now.Content.Add("Alternate Commands: " + String.Join(" ", e.Now.TextCommands.Skip(1).Select(x => x.PluginCommand).ToArray()));
+                output.Now.Content.Add("Alternate Commands: " + string.Join(" ", e.Now.TextCommands.Skip(1).Select(x => x.PluginCommand).ToArray()));
             }
 
             if (match.Quotes != null && match.Quotes.Count > 0) {
-                output.Now.Content.Add("Quotes: " + String.Join(", ", match.Quotes.Select(x => String.Format("--{0}--", x)).ToArray()));
+                output.Now.Content.Add("Quotes: " + string.Join(", ", match.Quotes.Select(x => string.Format("--{0}--", x)).ToArray()));
             }
 
-            this.Action(output);
+            Action(output);
 
             return command.Result;
         }
 
-        public ICommandResult RegisterTextCommandPreview(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult RegisterTextCommandPreview(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             //TextCommand textCommand = parameters["textCommand"].First<TextCommand>();
 
             return command.Result;
         }
 
-        public ICommandResult RegisterTextCommandExecuted(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult RegisterTextCommandExecuted(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             //TextCommand textCommand = parameters["textCommand"].First<TextCommand>();
 
             return command.Result;
         }
 
         public override void GenericEvent(GenericEvent e) {
-            Console.WriteLine("Test Plugin ({0}) Event: {1}", this.PluginGuid, e.Name);
+            Console.WriteLine("Test Plugin ({0}) Event: {1}", PluginGuid, e.Name);
 
             if (e.GenericEventType == GenericEventType.TextCommandRegistered) {
-                this.Commands.Add(e.Now.TextCommands.First());
+                Commands.Add(e.Now.TextCommands.First());
             }
             else if (e.GenericEventType == GenericEventType.TextCommandUnregistered) {
-                this.Commands.Remove(e.Now.TextCommands.First());
+                Commands.Remove(e.Now.TextCommands.First());
             }
             else if (e.GenericEventType == GenericEventType.PluginsEnabled) {
                 
-                this.Bubble(new Command() {
+                Bubble(new Command() {
                     CommandType = CommandType.TextCommandsRegister,
                     Scope = new CommandScopeModel() {
-                        ConnectionGuid = this.ConnectionGuid
+                        ConnectionGuid = ConnectionGuid
                     },
                     Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 TextCommands = new List<TextCommandModel>() {
                                     new TextCommandModel() {
-                                        PluginGuid = this.PluginGuid,
+                                        PluginGuid = PluginGuid,
                                         PluginCommand = "TestCommand",
                                         Name = "Test",
                                         Description = "Tests a command, outputting the results to player chat.",
-                                        Commands = new List<String>() {
+                                        Commands = new List<string>() {
                                             "Test"
                                         }
                                     }
@@ -287,21 +287,21 @@ namespace Myrcon.Plugins.Test {
                     }
                 });
 
-                this.Bubble(new Command() {
+                Bubble(new Command() {
                     CommandType = CommandType.TextCommandsRegister,
                     Scope = new CommandScopeModel() {
-                        ConnectionGuid = this.ConnectionGuid
+                        ConnectionGuid = ConnectionGuid
                     },
                     Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 TextCommands = new List<TextCommandModel>() {
                                     new TextCommandModel() {
-                                        PluginGuid = this.PluginGuid,
+                                        PluginGuid = PluginGuid,
                                         PluginCommand = "KillCommand",
                                         Name = "Kill",
                                         Description = "Kills any matching players, sending a message to them that the action was for tesing.",
-                                        Commands = new List<String>() {
+                                        Commands = new List<string>() {
                                             "Kill"
                                         }
                                     }
@@ -311,22 +311,22 @@ namespace Myrcon.Plugins.Test {
                     }
                 });
 
-                this.Bubble(new Command() {
+                Bubble(new Command() {
                     CommandType = CommandType.TextCommandsRegister,
                     Scope = new CommandScopeModel() {
-                        ConnectionGuid = this.ConnectionGuid
+                        ConnectionGuid = ConnectionGuid
                     },
                     Parameters = new List<ICommandParameter>() {
                         new CommandParameter() {
                             Data = {
                                 TextCommands = new List<TextCommandModel>() {
                                     new TextCommandModel() {
-                                        PluginGuid = this.PluginGuid,
+                                        PluginGuid = PluginGuid,
                                         PluginCommand = "HelpCommand",
                                         Priority = 100,
                                         Name = "Help",
                                         Description = "Provides help about another command.",
-                                        Commands = new List<String>() {
+                                        Commands = new List<string>() {
                                             "Help"
                                         }
                                     }

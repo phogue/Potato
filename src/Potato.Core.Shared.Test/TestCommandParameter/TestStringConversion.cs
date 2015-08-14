@@ -29,7 +29,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestAllKnownTypeSuccess() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "1",
                         "Anything",
                         "Nothing"
@@ -37,7 +37,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
                 }
             };
 
-            List<String> items = ((List<Object>) parameter.All(typeof (String), false)).Cast<String>().ToList();
+            var items = ((List<object>) parameter.All(typeof (string), false)).Cast<string>().ToList();
 
             Assert.AreEqual("1", items[0]);
             Assert.AreEqual("Anything", items[1]);
@@ -51,7 +51,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestFirstKnownTypeSuccess() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "1",
                         "Anything",
                         "Nothing"
@@ -59,7 +59,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
                 }
             };
 
-            Assert.AreEqual("1", parameter.First<String>(false));
+            Assert.AreEqual("1", parameter.First<string>(false));
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHashManyKnownTypeSuccess() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "1",
                         "Anything",
                         "Nothing"
@@ -77,7 +77,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
                 }
             };
 
-            Assert.IsTrue(parameter.HasMany<String>(false));
+            Assert.IsTrue(parameter.HasMany<string>(false));
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
         public void TestHashOneKnownTypeSuccess() {
             var parameter = new CommandParameter() {
                 Data = {
-                    Content = new List<String>() {
+                    Content = new List<string>() {
                         "1",
                         "Anything",
                         "Nothing"
@@ -95,7 +95,7 @@ namespace Potato.Core.Shared.Test.TestCommandParameter {
                 }
             };
 
-            Assert.IsTrue(parameter.HasOne<String>(false));
+            Assert.IsTrue(parameter.HasOne<string>(false));
         }
     }
 }

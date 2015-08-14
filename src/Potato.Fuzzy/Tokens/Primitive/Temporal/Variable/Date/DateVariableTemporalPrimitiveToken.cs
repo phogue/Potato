@@ -29,7 +29,7 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Date {
         protected static readonly Regex RegexMatch = new Regex(@"^([0-9]+)[ ]?[-/.][ ]?([0-9]+)[ ]?[- /.][ ]?([0-9]{2,4})$", RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
         public static Phrase Parse(IFuzzyState state, Phrase phrase) {
-            Match regexMatch = DateVariableTemporalPrimitiveToken.RegexMatch.Match(phrase.Text);
+            var regexMatch = RegexMatch.Match(phrase.Text);
 
             if (regexMatch.Success == true) {
                 DateTime dt;
@@ -50,110 +50,110 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Date {
             return phrase;
         }
 
-        public static Phrase ReduceDateDate(IFuzzyState state, Dictionary<String, Token> parameters) {
-            DateVariableTemporalPrimitiveToken dateA = (DateVariableTemporalPrimitiveToken) parameters["dateA"];
-            DateVariableTemporalPrimitiveToken dateB = (DateVariableTemporalPrimitiveToken) parameters["dateB"];
+        public static Phrase ReduceDateDate(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var dateA = (DateVariableTemporalPrimitiveToken) parameters["dateA"];
+            var dateB = (DateVariableTemporalPrimitiveToken) parameters["dateB"];
 
             return new Phrase() {
                 new DateVariableTemporalPrimitiveToken() {
                     Pattern = dateA.Pattern + dateB.Pattern,
-                    Text = String.Format("{0} {1}", dateA.Text, dateB.Text),
+                    Text = string.Format("{0} {1}", dateA.Text, dateB.Text),
                     Similarity = (dateA.Similarity + dateB.Similarity) / 2.0F
                 }
             };
         }
 
-        public static Phrase ReduceOnTheDate(IFuzzyState state, Dictionary<String, Token> parameters) {
-            OnPrepositionsSyntaxToken on = (OnPrepositionsSyntaxToken) parameters["on"];
-            DefiniteArticlesSyntaxToken the = (DefiniteArticlesSyntaxToken) parameters["the"];
-            DateVariableTemporalPrimitiveToken date = (DateVariableTemporalPrimitiveToken) parameters["date"];
+        public static Phrase ReduceOnTheDate(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var on = (OnPrepositionsSyntaxToken) parameters["on"];
+            var the = (DefiniteArticlesSyntaxToken) parameters["the"];
+            var date = (DateVariableTemporalPrimitiveToken) parameters["date"];
 
-            FuzzyDateTimePattern pattern = date.Pattern;
+            var pattern = date.Pattern;
             pattern.Modifier = TimeModifier.Delay;
 
             return new Phrase() {
                 new DateVariableTemporalPrimitiveToken() {
                     Pattern = pattern,
-                    Text = String.Format("{0} {1} {2}", on.Text, the.Text, date.Text),
+                    Text = string.Format("{0} {1} {2}", on.Text, the.Text, date.Text),
                     Similarity = (on.Similarity + the.Similarity + date.Similarity) / 3.0F
                 }
             };
         }
 
-        public static Phrase ReduceOnDate(IFuzzyState state, Dictionary<String, Token> parameters) {
-            OnPrepositionsSyntaxToken on = (OnPrepositionsSyntaxToken) parameters["on"];
-            DateVariableTemporalPrimitiveToken date = (DateVariableTemporalPrimitiveToken) parameters["date"];
+        public static Phrase ReduceOnDate(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var on = (OnPrepositionsSyntaxToken) parameters["on"];
+            var date = (DateVariableTemporalPrimitiveToken) parameters["date"];
 
-            FuzzyDateTimePattern pattern = date.Pattern;
+            var pattern = date.Pattern;
             pattern.Modifier = TimeModifier.Delay;
 
             return new Phrase() {
                 new DateVariableTemporalPrimitiveToken() {
                     Pattern = pattern,
-                    Text = String.Format("{0} {1}", on.Text, date.Text),
+                    Text = string.Format("{0} {1}", on.Text, date.Text),
                     Similarity = (on.Similarity + date.Similarity) / 2.0F
                 }
             };
         }
 
-        public static Phrase ReduceUntilTheDate(IFuzzyState state, Dictionary<String, Token> parameters) {
-            UntilPrepositionsSyntaxToken until = (UntilPrepositionsSyntaxToken) parameters["until"];
-            DefiniteArticlesSyntaxToken the = (DefiniteArticlesSyntaxToken) parameters["the"];
-            DateVariableTemporalPrimitiveToken date = (DateVariableTemporalPrimitiveToken) parameters["date"];
+        public static Phrase ReduceUntilTheDate(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var until = (UntilPrepositionsSyntaxToken) parameters["until"];
+            var the = (DefiniteArticlesSyntaxToken) parameters["the"];
+            var date = (DateVariableTemporalPrimitiveToken) parameters["date"];
 
-            FuzzyDateTimePattern pattern = date.Pattern;
+            var pattern = date.Pattern;
             pattern.Modifier = TimeModifier.Period;
 
             return new Phrase() {
                 new DateVariableTemporalPrimitiveToken() {
                     Pattern = pattern,
-                    Text = String.Format("{0} {1} {2}", until.Text, the.Text, date.Text),
+                    Text = string.Format("{0} {1} {2}", until.Text, the.Text, date.Text),
                     Similarity = (until.Similarity + the.Similarity + date.Similarity) / 3.0F
                 }
             };
         }
 
-        public static Phrase ReduceUntilDate(IFuzzyState state, Dictionary<String, Token> parameters) {
-            UntilPrepositionsSyntaxToken until = (UntilPrepositionsSyntaxToken) parameters["until"];
-            DateVariableTemporalPrimitiveToken date = (DateVariableTemporalPrimitiveToken) parameters["date"];
+        public static Phrase ReduceUntilDate(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var until = (UntilPrepositionsSyntaxToken) parameters["until"];
+            var date = (DateVariableTemporalPrimitiveToken) parameters["date"];
 
-            FuzzyDateTimePattern pattern = date.Pattern;
+            var pattern = date.Pattern;
             pattern.Modifier = TimeModifier.Period;
 
             return new Phrase() {
                 new DateVariableTemporalPrimitiveToken() {
                     Pattern = pattern,
-                    Text = String.Format("{0} {1}", until.Text, date.Text),
+                    Text = string.Format("{0} {1}", until.Text, date.Text),
                     Similarity = (until.Similarity + date.Similarity) / 2.0F
                 }
             };
         }
 
-        public static Phrase ReduceDateNumberExactSignatureMatch(IFuzzyState state, Dictionary<String, Token> parameters) {
-            DateVariableTemporalPrimitiveToken date = (DateVariableTemporalPrimitiveToken) parameters["date"];
-            FloatNumericPrimitiveToken number = (FloatNumericPrimitiveToken) parameters["number"];
+        public static Phrase ReduceDateNumberExactSignatureMatch(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var date = (DateVariableTemporalPrimitiveToken) parameters["date"];
+            var number = (FloatNumericPrimitiveToken) parameters["number"];
 
-            FuzzyDateTimePattern pattern = date.Pattern;
+            var pattern = date.Pattern;
             pattern.Year = number.ToInteger();
 
             return new Phrase() {
                 new DateVariableTemporalPrimitiveToken() {
                     Pattern = pattern,
-                    Text = String.Format("{0} {1}", date.Text, number.Text),
+                    Text = string.Format("{0} {1}", date.Text, number.Text),
                     Similarity = (date.Similarity + number.Similarity) / 2.0F
                 }
             };
         }
 
-        public static Phrase ReduceDateAndDate(IFuzzyState state, Dictionary<String, Token> parameters) {
-            DateVariableTemporalPrimitiveToken dateA = (DateVariableTemporalPrimitiveToken) parameters["dateA"];
-            AndLogicalOperatorToken and = (AndLogicalOperatorToken) parameters["and"];
-            DateVariableTemporalPrimitiveToken dateB = (DateVariableTemporalPrimitiveToken) parameters["dateB"];
+        public static Phrase ReduceDateAndDate(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var dateA = (DateVariableTemporalPrimitiveToken) parameters["dateA"];
+            var and = (AndLogicalOperatorToken) parameters["and"];
+            var dateB = (DateVariableTemporalPrimitiveToken) parameters["dateB"];
 
             return new Phrase() {
                 new DateVariableTemporalPrimitiveToken() {
                     Pattern = dateA.Pattern + dateB.Pattern,
-                    Text = String.Format("{0} {1} {2}", dateA.Text, and.Text, dateB.Text),
+                    Text = string.Format("{0} {1} {2}", dateA.Text, and.Text, dateB.Text),
                     Similarity = (dateA.Similarity + and.Similarity + dateB.Similarity) / 2.0F
                 }
             };

@@ -24,7 +24,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestCreateDatabasePotato() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestCreateDatabasePotatoExplicit).Compile();
+            var serialized = serializer.Parse(TestCreateDatabasePotatoExplicit).Compile();
 
             Assert.AreEqual(@"create", serialized.Methods.First());
             Assert.AreEqual(@"Potato", serialized.Databases.First());
@@ -57,7 +57,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithIndexOnName() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameExplicit).Compile();
+            var serialized = serializer.Parse(TestCreatePlayerWithFieldStringNameWithIndexOnNameExplicit).Compile();
 
             Assert.AreEqual(@"create", serialized.Methods.First());
             Assert.AreEqual(@"[{""Name"":1}]", serialized.Children.First().Indices.First());
@@ -66,7 +66,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithIndexOnNameDescending() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameDescendingExplicit).Compile();
+            var serialized = serializer.Parse(TestCreatePlayerWithFieldStringNameWithIndexOnNameDescendingExplicit).Compile();
 
             Assert.AreEqual(@"create", serialized.Methods.First());
             Assert.AreEqual(@"[{""Name"":-1}]", serialized.Children.First().Indices.First());
@@ -75,7 +75,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithIndexOnNameScore() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreExplicit).Compile();
+            var serialized = serializer.Parse(TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreExplicit).Compile();
 
             Assert.AreEqual(@"create", serialized.Methods.First());
             Assert.AreEqual(@"[{""Name"":1}]", serialized.Children.First().Indices.First());
@@ -85,7 +85,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreCompound() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreCompoundExplicit).Compile();
+            var serialized = serializer.Parse(TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreCompoundExplicit).Compile();
 
             Assert.AreEqual(@"create", serialized.Methods.First());
             Assert.AreEqual(@"[{""Name"":1,""Score"":1}]", serialized.Children.First().Indices.First());
@@ -94,7 +94,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreDescendingCompound() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreDescendingCompoundExplicit).Compile();
+            var serialized = serializer.Parse(TestCreatePlayerWithFieldStringNameWithIndexOnNameScoreDescendingCompoundExplicit).Compile();
 
             Assert.AreEqual(@"create", serialized.Methods.First());
             Assert.AreEqual(@"[{""Name"":1,""Score"":-1}]", serialized.Children.First().Indices.First());
@@ -103,7 +103,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnName() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnNameExplicit).Compile();
+            var serialized = serializer.Parse(TestCreatePlayerWithFieldStringNameWithPrimaryIndexOnNameExplicit).Compile();
 
             Assert.AreEqual(@"create", serialized.Methods.First());
             Assert.AreEqual(@"[{""Name"":1},{""unique"":true}]", serialized.Children.First().Indices.First());
@@ -112,7 +112,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithUniqueIndexOnName() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithUniqueIndexOnNameExplicit).Compile();
+            var serialized = serializer.Parse(TestCreatePlayerWithFieldStringNameWithUniqueIndexOnNameExplicit).Compile();
 
             Assert.AreEqual(@"create", serialized.Methods.First());
             Assert.AreEqual(@"[{""Name"":1},{""unique"":true}]", serialized.Children.First().Indices.First());
@@ -129,7 +129,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestCreatePlayerWithFieldStringNameWithIndexIfNotExistsOnName() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestCreatePlayerWithFieldStringNameWithIndexIfNotExistsOnNameExplicit).Compile();
+            var serialized = serializer.Parse(TestCreatePlayerWithFieldStringNameWithIndexIfNotExistsOnNameExplicit).Compile();
 
             Assert.AreEqual(@"create", serialized.Methods.First());
             Assert.AreEqual(@"[{""Name"":1}]", serialized.Children.First().Indices.First());

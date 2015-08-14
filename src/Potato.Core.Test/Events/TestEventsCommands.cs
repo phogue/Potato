@@ -67,10 +67,10 @@ namespace Potato.Core.Test.Events {
                 Stamp = DateTime.Now.AddHours(-1)
             });
 
-            ICommandResult result = events.Tunnel(new Command() {
+            var result = events.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.EventsFetchAfterEventId,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     0
                 })
             });
@@ -101,13 +101,13 @@ namespace Potato.Core.Test.Events {
                 }
             });
 
-            ICommandResult result = events.Tunnel(new Command() {
+            var result = events.Tunnel(new Command() {
                 Authentication = {
                     Username = "Phogue"
                 },
                 Origin = CommandOrigin.Remote,
                 CommandType = CommandType.EventsFetchAfterEventId,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     0
                 })
             });
@@ -135,10 +135,10 @@ namespace Potato.Core.Test.Events {
                 }
             });
 
-            ICommandResult result = events.Tunnel(new Command() {
+            var result = events.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.EventsFetchAfterEventId,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     0
                 })
             });

@@ -22,12 +22,12 @@ namespace Potato.Database.Shared.Test.SqLite {
     public class TestSerializerSqLiteDropExplicit : TestSerializerDrop {
         [Test]
         public override void TestDropDatabasePotato() {
-            Assert.AreEqual(@"DETACH DATABASE `Potato`", new SerializerSqLite().Parse(this.TestDropDatabasePotatoExplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"DETACH DATABASE `Potato`", new SerializerSqLite().Parse(TestDropDatabasePotatoExplicit).Compile().Compiled.First());
         }
 
         [Test]
         public override void TestDropTablePlayer() {
-            Assert.AreEqual(@"DROP TABLE `Player`", new SerializerSqLite().Parse(this.TestDropTablePlayerExplicit).Compile().Compiled.First());
+            Assert.AreEqual(@"DROP TABLE `Player`", new SerializerSqLite().Parse(TestDropTablePlayerExplicit).Compile().Compiled.First());
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Potato.Net.Shared.Test.Mocks {
     public class MockGame : Protocol {
 
         public MockGame() : base() {
-            this.Client = new MockTcpClient();
+            Client = new MockTcpClient();
         }
 
         protected override void Login(string password) {

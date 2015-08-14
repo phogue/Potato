@@ -59,7 +59,7 @@ namespace Potato.Net.Shared {
         /// <summary>
         /// Lock for shutting down the connection.
         /// </summary>
-        protected readonly Object ShutdownConnectionLock = new Object();
+        protected readonly object ShutdownConnectionLock = new object();
 
         /// <summary>
         /// The last packet that was receieved by this connection.
@@ -76,13 +76,13 @@ namespace Potato.Net.Shared {
         /// </summary>
         public ConnectionState ConnectionState {
             get {
-                return this._connectionState;
+                return _connectionState;
             }
             set {
-                if (this.ConnectionState != value) {
-                    this._connectionState = value;
+                if (ConnectionState != value) {
+                    _connectionState = value;
 
-                    this.OnConnectionStateChange(this._connectionState);
+                    OnConnectionStateChange(_connectionState);
                 }
             }
         }
@@ -91,15 +91,15 @@ namespace Potato.Net.Shared {
         /// <summary>
         /// Lock when incrementing the sequence number
         /// </summary>
-        protected readonly Object AcquireSequenceNumberLock = new Object();
+        protected readonly object AcquireSequenceNumberLock = new object();
 
         /// <summary>
         /// Aquires a new sequence number, safely incrementing.
         /// </summary>
         public int? AcquireSequenceNumber {
             get {
-                lock (this.AcquireSequenceNumberLock) {
-                    return ++this.SequenceNumber;
+                lock (AcquireSequenceNumberLock) {
+                    return ++SequenceNumber;
                 }
             }
         }
@@ -137,13 +137,13 @@ namespace Potato.Net.Shared {
         public event Action<IClient, ConnectionState> ConnectionStateChanged;
 
         protected Client() {
-            this.MarkManager = new MarkManager();
-            this.SequenceNumber = 0;
-            this.Options = new ClientSetup();
+            MarkManager = new MarkManager();
+            SequenceNumber = 0;
+            Options = new ClientSetup();
         }
 
         public void Setup(IClientSetup setup) {
-            this.Options = setup;
+            Options = setup;
         }
 
         /// <summary>
@@ -159,11 +159,11 @@ namespace Potato.Net.Shared {
         /// </para>
         /// </remarks>
         public virtual void Poke() {
-            bool downstreamDead = this.LastPacketReceived == null || this.LastPacketReceived.Packet.Stamp < DateTime.Now.AddMinutes(-5);
-            bool upstreamDead = this.LastPacketSent == null || this.LastPacketSent.Packet.Stamp < DateTime.Now.AddMinutes(-5);
+            var downstreamDead = LastPacketReceived == null || LastPacketReceived.Packet.Stamp < DateTime.Now.AddMinutes(-5);
+            var upstreamDead = LastPacketSent == null || LastPacketSent.Packet.Stamp < DateTime.Now.AddMinutes(-5);
 
             if (downstreamDead && upstreamDead) {
-                this.Shutdown();
+                Shutdown();
             }
         }
 
@@ -225,39 +225,39 @@ namespace Potato.Net.Shared {
         }
 
         protected virtual void OnConnectionStateChange(ConnectionState state) {
-            var handler = this.ConnectionStateChanged;
+            var handler = ConnectionStateChanged;
             if (handler != null) {
                 handler(this, state);
             }
         }
 
         protected virtual void OnConnectionFailure(Exception e) {
-            var handler = this.ConnectionFailure;
+            var handler = ConnectionFailure;
             if (handler != null) {
                 handler(this, e);
             }
         }
 
         protected virtual void OnSocketException(SocketException se) {
-            var handler = this.SocketException;
+            var handler = SocketException;
             if (handler != null) {
                 handler(this, se);
             }
         }
 
         protected virtual void OnPacketSent(IPacketWrapper wrapper) {
-            this.LastPacketSent = wrapper;
+            LastPacketSent = wrapper;
 
-            var handler = this.PacketSent;
+            var handler = PacketSent;
             if (handler != null) {
                 handler(this, wrapper);
             }
         }
 
         protected virtual void OnPacketReceived(IPacketWrapper wrapper) {
-            this.LastPacketReceived = wrapper;
+            LastPacketReceived = wrapper;
 
-            var handler = this.PacketReceived;
+            var handler = PacketReceived;
             if (handler != null) {
                 handler(this, wrapper);
             }

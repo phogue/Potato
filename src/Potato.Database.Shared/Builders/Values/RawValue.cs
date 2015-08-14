@@ -25,10 +25,10 @@ namespace Potato.Database.Shared.Builders.Values {
         /// <summary>
         /// The string data to insert inot the built query
         /// </summary>
-        public String Data { get; set; }
+        public string Data { get; set; }
 
         public override object ToObject() {
-            return this.Data;
+            return Data;
         }
     }
 }

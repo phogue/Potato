@@ -27,16 +27,16 @@ namespace Potato.Net.Shared.Test.Mocks {
         /// <summary>
         /// Basic text to pass bac kand forth
         /// </summary>
-        public String Text {
-            get { return this.Packet.Text; }
+        public string Text {
+            get { return Packet.Text; }
             set {
-                this.Packet.Text = value;
-                this.Packet.Words = value.Wordify();
+                Packet.Text = value;
+                Packet.Words = value.Wordify();
             }
         }
 
         public MockPacket() : base() {
-            this.Packet = new Packet();
+            Packet = new Packet();
         }
     }
 }

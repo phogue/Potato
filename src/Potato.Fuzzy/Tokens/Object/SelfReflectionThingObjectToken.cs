@@ -22,7 +22,7 @@ namespace Potato.Fuzzy.Tokens.Object {
             TokenReflection.CreateDescendants(state, phrase, out createdTokens);
 
             if (createdTokens != null && createdTokens.Count > 0) {
-                foreach (SelfReflectionThingObjectToken self in createdTokens) {
+                foreach (var self in createdTokens) {
                     state.ParseSelfReflectionThing(state, self);
                 }
             }

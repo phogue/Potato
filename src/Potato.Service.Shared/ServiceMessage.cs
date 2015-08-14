@@ -25,12 +25,12 @@ namespace Potato.Service.Shared {
         /// <summary>
         /// A simple name for this message.
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// A list of arguments for this message
         /// </summary>
-        public IDictionary<String, String> Arguments { get; set; }
+        public IDictionary<string, string> Arguments { get; set; }
 
         /// <summary>
         /// When this message was created.
@@ -41,15 +41,15 @@ namespace Potato.Service.Shared {
         /// Initializes the service message with the default values.
         /// </summary>
         public ServiceMessage() {
-            this.Arguments = new Dictionary<String, String>();
-            this.Stamp = DateTime.Now;
+            Arguments = new Dictionary<string, string>();
+            Stamp = DateTime.Now;
         }
 
         public void Dispose() {
-            this.Name = null;
+            Name = null;
 
-            if (this.Arguments != null) this.Arguments.Clear();
-            this.Arguments = null;
+            if (Arguments != null) Arguments.Clear();
+            Arguments = null;
         }
     }
 }

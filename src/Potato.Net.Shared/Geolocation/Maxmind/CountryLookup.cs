@@ -79,8 +79,8 @@ namespace Potato.Net.Shared.Geolocation.Maxmind {
         private long addrToNum(IPAddress addr) 
         {
             long ipnum = 0;
-            byte[] b = addr.GetAddressBytes();
-            for (int i = 0; i < 4; ++i) 
+            var b = addr.GetAddressBytes();
+            for (var i = 0; i < 4; ++i) 
             {
                 long y = b[i];
                 if (y < 0) 
@@ -95,7 +95,7 @@ namespace Potato.Net.Shared.Geolocation.Maxmind {
 
         public string lookupCountryCode(IPAddress addr) 
         {
-            string lookupCountryCode = "";
+            var lookupCountryCode = "";
 
             lock (this) {
                 lookupCountryCode = "" + (countryCode[(int)seekCountry(0, addrToNum(addr), 31)]);
@@ -125,8 +125,8 @@ namespace Potato.Net.Shared.Geolocation.Maxmind {
 
         private long seekCountry(long offset, long ipnum, int depth) 
         {
-            byte [] buf = new byte[6];
-            long [] x = new long[2];
+            var buf = new byte[6];
+            var x = new long[2];
             if (depth < 0) 
             {
                 Console.WriteLine("Error seeking country.");
@@ -141,10 +141,10 @@ namespace Potato.Net.Shared.Geolocation.Maxmind {
             {
                 Console.WriteLine("IO Exception");
             }
-            for (int i = 0; i<2; i++) 
+            for (var i = 0; i<2; i++) 
             {
                 x[i] = 0;
-                for (int j = 0; j<3; j++) 
+                for (var j = 0; j<3; j++) 
                 {
                     int y = buf[i*3+j];
                     if (y < 0) 

@@ -24,6 +24,6 @@ namespace Potato.Database.Shared.Builders.Methods.Schema {
         /// <summary>
         /// The name of the index
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
     }
 }

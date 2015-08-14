@@ -51,17 +51,17 @@ namespace Potato.Net.Shared {
         /// <summary>
         /// Textual representation of this packet
         /// </summary>
-        String Text { get; set; }
+        string Text { get; set; }
 
         /// <summary>
         /// Textual representation of the packet
         /// </summary>
-        String DebugText { get; set; }
+        string DebugText { get; set; }
 
         /// <summary>
         /// The wordified version of the text string version of the packet.
         /// </summary>
-        List<String> Words { get; set; }
+        List<string> Words { get; set; }
 
         /// <summary>
         /// The remote end point for the packet.

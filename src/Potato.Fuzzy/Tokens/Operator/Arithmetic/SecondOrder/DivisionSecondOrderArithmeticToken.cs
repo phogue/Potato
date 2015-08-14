@@ -25,27 +25,27 @@ namespace Potato.Fuzzy.Tokens.Operator.Arithmetic.SecondOrder {
             return TokenReflection.CreateDescendants<DivisionSecondOrderArithmeticToken>(state, phrase);
         }
 
-        public static Phrase ReduceDividendDivideDivisor(IFuzzyState state, Dictionary<String, Token> parameters) {
-            FloatNumericPrimitiveToken dividend = (FloatNumericPrimitiveToken) parameters["dividend"];
-            DivisionSecondOrderArithmeticToken divide = (DivisionSecondOrderArithmeticToken) parameters["divide"];
-            FloatNumericPrimitiveToken divisor = (FloatNumericPrimitiveToken) parameters["divisor"];
+        public static Phrase ReduceDividendDivideDivisor(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var dividend = (FloatNumericPrimitiveToken) parameters["dividend"];
+            var divide = (DivisionSecondOrderArithmeticToken) parameters["divide"];
+            var divisor = (FloatNumericPrimitiveToken) parameters["divisor"];
 
-            ForwardSlashPunctuationSyntaxToken forwardSlash = new ForwardSlashPunctuationSyntaxToken() {
+            var forwardSlash = new ForwardSlashPunctuationSyntaxToken() {
                 Text = divide.Text,
                 Similarity = divide.Similarity
             };
 
-            return DivisionSecondOrderArithmeticToken.ReduceDividendForwardSlashDivisor(state, new Dictionary<String, Token>() {
+            return ReduceDividendForwardSlashDivisor(state, new Dictionary<string, Token>() {
                 {"dividend", dividend},
                 {"forwardSlash", forwardSlash},
                 {"divisor", divisor}
             });
         }
 
-        public static Phrase ReduceDividendForwardSlashDivisor(IFuzzyState state, Dictionary<String, Token> parameters) {
-            FloatNumericPrimitiveToken dividend = (FloatNumericPrimitiveToken) parameters["dividend"];
-            ForwardSlashPunctuationSyntaxToken forwardSlash = (ForwardSlashPunctuationSyntaxToken) parameters["forwardSlash"];
-            FloatNumericPrimitiveToken divisor = (FloatNumericPrimitiveToken) parameters["divisor"];
+        public static Phrase ReduceDividendForwardSlashDivisor(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var dividend = (FloatNumericPrimitiveToken) parameters["dividend"];
+            var forwardSlash = (ForwardSlashPunctuationSyntaxToken) parameters["forwardSlash"];
+            var divisor = (FloatNumericPrimitiveToken) parameters["divisor"];
 
             Phrase phrase = null;
 
@@ -53,7 +53,7 @@ namespace Potato.Fuzzy.Tokens.Operator.Arithmetic.SecondOrder {
                 phrase = new Phrase() {
                     new FloatNumericPrimitiveToken() {
                         Value = dividend.ToFloat() / divisor.ToFloat(),
-                        Text = String.Format("{0} {1} {2}", dividend.Text, forwardSlash.Text, divisor.Text),
+                        Text = string.Format("{0} {1} {2}", dividend.Text, forwardSlash.Text, divisor.Text),
                         Similarity = (dividend.Similarity + forwardSlash.Similarity + divisor.Similarity) / 3.0F
                     }
                 };
@@ -63,7 +63,7 @@ namespace Potato.Fuzzy.Tokens.Operator.Arithmetic.SecondOrder {
                 phrase = new Phrase() {
                     new FloatNumericPrimitiveToken() {
                         Value = 0.0F,
-                        Text = String.Format("{0} {1} {2}", dividend.Text, forwardSlash.Text, divisor.Text),
+                        Text = string.Format("{0} {1} {2}", dividend.Text, forwardSlash.Text, divisor.Text),
                         Similarity = (dividend.Similarity + forwardSlash.Similarity + divisor.Similarity) / 3.0F
                     }
                 };

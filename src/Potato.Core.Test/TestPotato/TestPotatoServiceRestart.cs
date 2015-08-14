@@ -34,9 +34,9 @@ namespace Potato.Core.Test.TestPotato {
         /// </summary>
         [Test]
         public void TestResultInsufficientPermissions() {
-            PotatoController instance = new PotatoController();
+            var instance = new PotatoController();
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoServiceRestart().SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = instance.Tunnel(CommandBuilder.PotatoServiceRestart().SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -51,9 +51,9 @@ namespace Potato.Core.Test.TestPotato {
         /// </summary>
         [Test]
         public void TestResultSuccess() {
-            PotatoController instance = new PotatoController();
+            var instance = new PotatoController();
 
-            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoServiceRestart().SetOrigin(CommandOrigin.Local));
+            var result = instance.Tunnel(CommandBuilder.PotatoServiceRestart().SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
@@ -66,7 +66,7 @@ namespace Potato.Core.Test.TestPotato {
         /// </summary>
         [Test]
         public void TestMessageLogged() {
-            PotatoController instance = new PotatoController();
+            var instance = new PotatoController();
 
             instance.Tunnel(CommandBuilder.PotatoServiceRestart().SetOrigin(CommandOrigin.Local));
 
@@ -81,8 +81,8 @@ namespace Potato.Core.Test.TestPotato {
         /// </summary>
         [Test]
         public void TestEventLogged() {
-            EventsController events = new EventsController();
-            PotatoController instance = new PotatoController {
+            var events = new EventsController();
+            var instance = new PotatoController {
                 Shared = {
                     Events = events
                 }

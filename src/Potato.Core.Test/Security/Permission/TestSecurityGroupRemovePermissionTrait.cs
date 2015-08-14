@@ -33,7 +33,7 @@ namespace Potato.Core.Test.Security.Permission {
 
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityGroupRemovePermissionTrait("GroupName", CommandType.VariablesSet.ToString(), PermissionTraitsType.Boolean).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = security.Tunnel(CommandBuilder.SecurityGroupRemovePermissionTrait("GroupName", CommandType.VariablesSet.ToString(), PermissionTraitsType.Boolean).SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -50,7 +50,7 @@ namespace Potato.Core.Test.Security.Permission {
             var security = new SecurityController();
             security.Tunnel(CommandBuilder.SecurityAddGroup("ThisIsValid").SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityGroupRemovePermissionTrait("ThisIsNotValid", CommandType.VariablesSet.ToString(), PermissionTraitsType.Boolean).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityGroupRemovePermissionTrait("ThisIsNotValid", CommandType.VariablesSet.ToString(), PermissionTraitsType.Boolean).SetOrigin(CommandOrigin.Local));
 
             Assert.IsFalse(result.Success);
             Assert.AreEqual(CommandResultType.DoesNotExists, result.CommandResultType);
@@ -66,7 +66,7 @@ namespace Potato.Core.Test.Security.Permission {
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityGroupAppendPermissionTrait("GroupName", CommandType.VariablesSet.ToString(), PermissionTraitsType.Boolean).SetOrigin(CommandOrigin.Local));
 
-            ICommandResult result = security.Tunnel(CommandBuilder.SecurityGroupRemovePermissionTrait("GroupName", CommandType.VariablesSet.ToString(), PermissionTraitsType.Boolean).SetOrigin(CommandOrigin.Local));
+            var result = security.Tunnel(CommandBuilder.SecurityGroupRemovePermissionTrait("GroupName", CommandType.VariablesSet.ToString(), PermissionTraitsType.Boolean).SetOrigin(CommandOrigin.Local));
 
             // Make sure it was not successful.
             Assert.IsTrue(result.Success);
@@ -87,7 +87,7 @@ namespace Potato.Core.Test.Security.Permission {
             
             var group = security.Groups.First(item => item.Name == "GroupName");
 
-            Assert.AreEqual(new List<String>(), group.Permissions.First(permission => permission.CommandType == CommandType.VariablesSet).Traits);
+            Assert.AreEqual(new List<string>(), group.Permissions.First(permission => permission.CommandType == CommandType.VariablesSet).Traits);
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace Potato.Core.Test.Security.Permission {
 
             var group = security.Groups.First(item => item.Name == "GroupName");
 
-            Assert.AreEqual(new List<String>(), group.Permissions.First(permission => permission.CommandType == CommandType.VariablesSet).Traits);
+            Assert.AreEqual(new List<string>(), group.Permissions.First(permission => permission.CommandType == CommandType.VariablesSet).Traits);
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace Potato.Core.Test.Security.Permission {
 
             var group = security.Groups.First(item => item.Name == "GroupName");
 
-            Assert.AreEqual(new List<String>() { PermissionTraitsType.Boolean }, group.Permissions.First(permission => permission.CommandType == CommandType.VariablesSet).Traits);
+            Assert.AreEqual(new List<string>() { PermissionTraitsType.Boolean }, group.Permissions.First(permission => permission.CommandType == CommandType.VariablesSet).Traits);
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace Potato.Core.Test.Security.Permission {
 
             var group = security.Groups.First(item => item.Name == "GroupName");
 
-            Assert.AreEqual(new List<String>(), group.Permissions.First(permission => permission.Name == "Custom Permission").Traits);
+            Assert.AreEqual(new List<string>(), group.Permissions.First(permission => permission.Name == "Custom Permission").Traits);
         }
     }
 }

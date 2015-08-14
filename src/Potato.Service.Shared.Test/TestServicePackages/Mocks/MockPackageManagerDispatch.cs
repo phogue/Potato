@@ -23,21 +23,21 @@ namespace Potato.Service.Shared.Test.TestServicePackages.Mocks {
         public bool DispatchedUninstallPackage { get; set; }
 
         public MockPackageManagerDispatch() {
-            this.DispatchedInstallPackage = false;
-            this.DispatchedUpdatePackage = false;
-            this.DispatchedUninstallPackage = false;
+            DispatchedInstallPackage = false;
+            DispatchedUpdatePackage = false;
+            DispatchedUninstallPackage = false;
         }
 
         public void InstallPackage(IPackageManager manager, IPackage package) {
-            this.DispatchedInstallPackage = true;
+            DispatchedInstallPackage = true;
         }
 
         public void UpdatePackage(IPackageManager manager, IPackage package) {
-            this.DispatchedUpdatePackage = true;
+            DispatchedUpdatePackage = true;
         }
 
         public void UninstallPackage(IPackageManager manager, IPackage package) {
-            this.DispatchedUninstallPackage = true;
+            DispatchedUninstallPackage = true;
         }
     }
 }

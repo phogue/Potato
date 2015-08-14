@@ -24,7 +24,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestSaveIntoPlayerSetName() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestSaveIntoPlayerSetNameExplicit).Compile();
+            var serialized = serializer.Parse(TestSaveIntoPlayerSetNameExplicit).Compile();
 
             Assert.AreEqual(@"save", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -34,7 +34,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestSaveIntoPlayerSetNameScore() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestSaveIntoPlayerSetNameScoreExplicit).Compile();
+            var serialized = serializer.Parse(TestSaveIntoPlayerSetNameScoreExplicit).Compile();
 
             Assert.AreEqual(@"save", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());
@@ -44,7 +44,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestSaveIntoPlayerSetNameAndStamp() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestSaveIntoPlayerSetNameAndStampExplicit).Compile();
+            var serialized = serializer.Parse(TestSaveIntoPlayerSetNameAndStampExplicit).Compile();
 
             Assert.AreEqual(@"save", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());

@@ -37,7 +37,7 @@ namespace Potato.Core.Test.Variables {
 
         internal class VariableComplexValue {
             public int PropertyOne { get; set; }
-            public String PropertyTwo { get; set; }
+            public string PropertyTwo { get; set; }
         }
 
         /// <summary>
@@ -68,17 +68,17 @@ namespace Potato.Core.Test.Variables {
                 Value = "value"
             });
 
-            ICommandResult result = variables.Tunnel(new Command() {
+            var result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesGet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "key"
                 })
             });
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
-            Assert.AreEqual("value", result.Now.Variables.First().ToType(String.Empty));
+            Assert.AreEqual("value", result.Now.Variables.First().ToType(string.Empty));
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Potato.Core.Test.Variables {
                 Value = "value"
             });
 
-            var value = variables.Tunnel(CommandBuilder.VariablesGet(CommonVariableNames.MaximumProtocolConnections).SetOrigin(CommandOrigin.Local)).Now.Variables.First().ToType<String>();
+            var value = variables.Tunnel(CommandBuilder.VariablesGet(CommonVariableNames.MaximumProtocolConnections).SetOrigin(CommandOrigin.Local)).Now.Variables.First().ToType<string>();
 
             Assert.AreEqual("value", value);
         }
@@ -113,7 +113,7 @@ namespace Potato.Core.Test.Variables {
                 }
             });
 
-            VariableComplexValue value = variables.Get(new Command() {
+            var value = variables.Get(new Command() {
                 Origin = CommandOrigin.Local
             }, "key").Now.Variables.First().ToType<VariableComplexValue>();
 
@@ -136,11 +136,11 @@ namespace Potato.Core.Test.Variables {
                 }
             });
 
-            ICommandResult result = variables.Tunnel(new Command() {
+            var result = variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesGet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
-                    String.Empty
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
+                    string.Empty
                 })
             });
 
@@ -167,13 +167,13 @@ namespace Potato.Core.Test.Variables {
                 }
             });
 
-            ICommandResult result = variables.Tunnel(new Command() {
+            var result = variables.Tunnel(new Command() {
                 CommandType = CommandType.VariablesGet,
                 Authentication = {
                     Username = "Phogue"
                 },
                 Origin = CommandOrigin.Remote,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     "key"
                 })
             });

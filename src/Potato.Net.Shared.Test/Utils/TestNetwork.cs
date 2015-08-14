@@ -22,7 +22,7 @@ namespace Potato.Net.Shared.Test.Utils {
     public class NetworkTest {
         [Test]
         public void TestGetExternalIpAddressPingLocalhost() {
-            IPAddress ip = Network.GetExternalIpAddress("localhost");
+            var ip = Network.GetExternalIpAddress("localhost");
 
             Assert.IsTrue(ip.ToString().Equals("127.0.0.1") || ip.ToString().Equals("::1"));
         }

@@ -40,7 +40,7 @@ namespace Potato.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestCommandAttributeParseInvalidCommandType() {
-            ICommandDispatch command = new CommandDispatch().ParseCommandType("CustomCommand");
+            var command = new CommandDispatch().ParseCommandType("CustomCommand");
 
             Assert.AreEqual("CustomCommand", command.Name);
             Assert.AreEqual(CommandType.None, command.CommandType);
@@ -51,7 +51,7 @@ namespace Potato.Core.Shared.Test.ExecutableCommands {
         /// </summary>
         [Test]
         public void TestCommandAttributeParseValidCommandType() {
-            ICommandDispatch command = new CommandDispatch().ParseCommandType("PotatoAddConnection");
+            var command = new CommandDispatch().ParseCommandType("PotatoAddConnection");
 
             Assert.AreEqual("PotatoAddConnection", command.Name);
             Assert.AreEqual(CommandType.PotatoAddConnection, command.CommandType);

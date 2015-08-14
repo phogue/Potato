@@ -22,14 +22,14 @@ namespace Myrcon.Protocols.Frostbite.Objects {
 
     public static class FrostbitePlayer {
         
-        public static PlayerModel Parse(IList<String> parameters, IList<String> variables) {
-            PlayerModel player = new PlayerModel();
+        public static PlayerModel Parse(IList<string> parameters, IList<string> variables) {
+            var player = new PlayerModel();
 
             // Make sure the parameter's passed in are correct.
             if (parameters.Count == variables.Count) {
                 // Parse and normalize the parameters.
-                for (int i = 0; i < parameters.Count; i++) {
-                    int intValue = 0;
+                for (var i = 0; i < parameters.Count; i++) {
+                    var intValue = 0;
                     switch (parameters[i].ToLower()) {
                         case "guid":
                             player.Uid = variables[i];

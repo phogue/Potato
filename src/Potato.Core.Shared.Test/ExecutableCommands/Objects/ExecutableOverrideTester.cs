@@ -24,7 +24,7 @@ using Potato.Core.Shared.Models;
 namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
     public class ExecutableOverrideTester : CoreController {
         public ExecutableOverrideTester() : base() {
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     CommandAttributeType = CommandAttributeType.Executed,
@@ -34,7 +34,7 @@ namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
                             Type = typeof (int)
                         }
                     },
-                    Handler = this.SetTestFlagInteger
+                    Handler = SetTestFlagInteger
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
@@ -45,7 +45,7 @@ namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
                             Type = typeof (float)
                         }
                     },
-                    Handler = this.SetTestFlagFloat
+                    Handler = SetTestFlagFloat
                 }
             });
         }
@@ -55,8 +55,8 @@ namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
         /// <summary>
         ///     Sets the value of the test flag.
         /// </summary>
-        public ICommandResult SetTestFlagInteger(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            int value = parameters["value"].First<int>();
+        public ICommandResult SetTestFlagInteger(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var value = parameters["value"].First<int>();
 
             TestNumber = value;
 
@@ -78,8 +78,8 @@ namespace Potato.Core.Shared.Test.ExecutableCommands.Objects {
         /// <summary>
         ///     Sets the value of the test flag.
         /// </summary>
-        public ICommandResult SetTestFlagFloat(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            float value = parameters["value"].First<float>();
+        public ICommandResult SetTestFlagFloat(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var value = parameters["value"].First<float>();
 
             TestNumber = (int) value;
 

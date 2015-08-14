@@ -23,7 +23,7 @@ namespace Potato.Net.Shared {
     /// </summary>
     [Serializable]
     public class ClientEventData : IClientEventData {
-        public List<String> Exceptions { get; set; }
+        public List<string> Exceptions { get; set; }
 
         public List<IPacket> Packets { get; set; }
 

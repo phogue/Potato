@@ -40,9 +40,9 @@ namespace Potato.Net.Shared.Models {
         /// Initializes the various groups of settings
         /// </summary>
         public Settings() {
-            this.Current = new SettingsData();
-            this.Minimum = new SettingsData();
-            this.Maximum = new SettingsData();
+            Current = new SettingsData();
+            Minimum = new SettingsData();
+            Maximum = new SettingsData();
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Potato.Database {
         /// <summary>
         /// The hostname to connect to.
         /// </summary>
-        String Hostname { get; set; }
+        string Hostname { get; set; }
 
         /// <summary>
         /// The port to connect over.
@@ -33,17 +33,17 @@ namespace Potato.Database {
         /// <summary>
         /// The username for authentication.
         /// </summary>
-        String Username { get; set; }
+        string Username { get; set; }
 
         /// <summary>
         /// The password for authentication.
         /// </summary>
-        String Password { get; set; }
+        string Password { get; set; }
 
         /// <summary>
         /// The name of the database to select.
         /// </summary>
-        String Database { get; set; }
+        string Database { get; set; }
         
         /// <summary>
         /// If the database should exists in memory only, not on a file system.

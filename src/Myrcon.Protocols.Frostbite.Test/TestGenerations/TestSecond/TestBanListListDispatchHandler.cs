@@ -52,7 +52,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestGenerations.TestSecond {
 
             var request = new FrostbitePacket() {
                 Packet = new Packet() {
-                    Words = new List<String>() {
+                    Words = new List<string>() {
                         "banList.list"
                     }
                 }
@@ -60,7 +60,7 @@ namespace Myrcon.Protocols.Frostbite.Test.TestGenerations.TestSecond {
 
             var response = new FrostbitePacket() {
                 Packet = new Packet() {
-                    Words = new List<String>() {
+                    Words = new List<string>() {
                         "OK",
                         "name",
                         "Phil_k",

@@ -23,19 +23,19 @@ using Potato.Net.Shared.Models;
 namespace Myrcon.Protocols.Frostbite.Objects {
     public static class FrostbiteChat {
 
-        internal static List<string> PlayerChatParameters = new List<String>() {
+        internal static List<string> PlayerChatParameters = new List<string>() {
             "Author",
             "Text",
             "Subset"
         };
 
-        internal static List<string> AdminSayParameters = new List<String>() {
+        internal static List<string> AdminSayParameters = new List<string>() {
             "Text",
             "Subset"
         };
 
-        private static ChatModel Parse(List<String> words, IList<String> parameters) {
-            ChatModel chat = new ChatModel();
+        private static ChatModel Parse(List<string> words, IList<string> parameters) {
+            var chat = new ChatModel();
 
             for (int paramCount = 0, varCount = 0; paramCount < parameters.Count && varCount < words.Count; paramCount++, varCount++) {
 
@@ -49,7 +49,7 @@ namespace Myrcon.Protocols.Frostbite.Objects {
 
                         //this.Author = new FrostbitePlayer() { Name = words[varCount] };
 
-                        chat.Origin = String.CompareOrdinal(words[varCount], "Server") == 0 ? NetworkOrigin.Server : NetworkOrigin.Player;
+                        chat.Origin = string.CompareOrdinal(words[varCount], "Server") == 0 ? NetworkOrigin.Server : NetworkOrigin.Player;
 
                         break;
                     case "Subset":
@@ -61,7 +61,7 @@ namespace Myrcon.Protocols.Frostbite.Objects {
                         break;
                     case "Text":
 
-                        chat.Now.Content = new List<String>() {
+                        chat.Now.Content = new List<string>() {
                             words[varCount]
                         };
 
@@ -73,7 +73,7 @@ namespace Myrcon.Protocols.Frostbite.Objects {
                         if ((property = chat.GetType().GetProperty(parameters[paramCount])) != null) {
 
                             try {
-                                object value = TypeDescriptor.GetConverter(property.PropertyType).ConvertFrom(words[varCount]);
+                                var value = TypeDescriptor.GetConverter(property.PropertyType).ConvertFrom(words[varCount]);
 
                                 if (value != null) {
                                     property.SetValue(chat, value, null);
@@ -90,7 +90,7 @@ namespace Myrcon.Protocols.Frostbite.Objects {
         }
 
         public static ChatModel ParsePlayerChat(List<string> words) {
-            ChatModel chat = FrostbiteChat.Parse(words, FrostbiteChat.PlayerChatParameters);
+            var chat = Parse(words, PlayerChatParameters);
 
             chat.Origin = NetworkOrigin.Player;
 
@@ -98,7 +98,7 @@ namespace Myrcon.Protocols.Frostbite.Objects {
         }
 
         public static ChatModel ParseAdminSay(List<string> words) {
-            ChatModel chat = FrostbiteChat.Parse(words, FrostbiteChat.AdminSayParameters);
+            var chat = Parse(words, AdminSayParameters);
 
             chat.Origin = NetworkOrigin.Reflected;
             chat.Now.Players = new List<PlayerModel>() {

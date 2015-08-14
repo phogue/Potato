@@ -20,11 +20,11 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Months {
     using Syntax.Adjectives;
 
     public class MonthMonthsVariableTemporalPrimitiveToken : DateTimeTemporalPrimitiveToken {
-        public static Phrase ReduceAdjectiveMonths(IFuzzyState state, Dictionary<String, Token> parameters) {
-            AdjectiveSyntaxToken adjective = (AdjectiveSyntaxToken) parameters["adjective"];
-            MonthMonthsVariableTemporalPrimitiveToken months = (MonthMonthsVariableTemporalPrimitiveToken) parameters["months"];
+        public static Phrase ReduceAdjectiveMonths(IFuzzyState state, Dictionary<string, Token> parameters) {
+            var adjective = (AdjectiveSyntaxToken) parameters["adjective"];
+            var months = (MonthMonthsVariableTemporalPrimitiveToken) parameters["months"];
 
-            DateTime newDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            var newDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
 
             if (adjective is LastAdjectiveSyntaxToken) {
                 // Today - Maximum of 7
@@ -51,7 +51,7 @@ namespace Potato.Fuzzy.Tokens.Primitive.Temporal.Variable.Months {
                         Year = newDateTime.Year,
                         Month = newDateTime.Month
                     },
-                    Text = String.Format("{0} {1}", adjective.Text, months.Text),
+                    Text = string.Format("{0} {1}", adjective.Text, months.Text),
                     Similarity = (months.Similarity + adjective.Similarity) / 2.0F
                 }
             };

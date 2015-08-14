@@ -29,7 +29,7 @@ namespace Myrcon.Protocols.Frostbite {
 
         public FrostbitePacketSerializer()
             : base() {
-                this.PacketHeaderSize = 12;
+                PacketHeaderSize = 12;
         }
 
         /// <summary>
@@ -38,12 +38,12 @@ namespace Myrcon.Protocols.Frostbite {
         /// <param name="wrapper">The packe to serialize</param>
         /// <returns>An array of bytes to send to the server.</returns>
         public byte[] Serialize(IPacketWrapper wrapper) {
-            FrostbitePacket frostbiteWrapper = wrapper as FrostbitePacket;
+            var frostbiteWrapper = wrapper as FrostbitePacket;
             byte[] serialized = null;
 
             if (frostbiteWrapper != null) {
                 // Construct the header uint32
-                UInt32 header = frostbiteWrapper.Packet.RequestId != null ? (UInt32)frostbiteWrapper.Packet.RequestId & 0x3fffffff : 0x3fffffff;
+                var header = frostbiteWrapper.Packet.RequestId != null ? (uint)frostbiteWrapper.Packet.RequestId & 0x3fffffff : 0x3fffffff;
 
                 if (frostbiteWrapper.Packet.Origin == PacketOrigin.Server) {
                     header |= 0x80000000;
@@ -54,21 +54,21 @@ namespace Myrcon.Protocols.Frostbite {
                 }
 
                 // Construct the remaining packet headers
-                UInt32 packetSize = this.PacketHeaderSize;
-                UInt32 wordCount = Convert.ToUInt32(frostbiteWrapper.Packet.Words.Count);
+                var packetSize = PacketHeaderSize;
+                var wordCount = Convert.ToUInt32(frostbiteWrapper.Packet.Words.Count);
 
                 // Encode each word (WordLength, Word Bytes, Null Byte)
-                byte[] encodedWords = new byte[] { };
-                foreach (string word in frostbiteWrapper.Packet.Words) {
+                var encodedWords = new byte[] { };
+                foreach (var word in frostbiteWrapper.Packet.Words) {
 
-                    string convertedWord = word;
+                    var convertedWord = word;
 
                     // Truncate words over 64 kbs (though the string is Unicode it gets converted below so this does make sense)
-                    if (convertedWord.Length > UInt16.MaxValue - 1) {
-                        convertedWord = convertedWord.Substring(0, UInt16.MaxValue - 1);
+                    if (convertedWord.Length > ushort.MaxValue - 1) {
+                        convertedWord = convertedWord.Substring(0, ushort.MaxValue - 1);
                     }
 
-                    byte[] appendEncodedWords = new byte[encodedWords.Length + convertedWord.Length + 5];
+                    var appendEncodedWords = new byte[encodedWords.Length + convertedWord.Length + 5];
 
                     encodedWords.CopyTo(appendEncodedWords, 0);
 
@@ -87,11 +87,11 @@ namespace Myrcon.Protocols.Frostbite {
                 BitConverter.GetBytes(header).CopyTo(serialized, 0);
                 BitConverter.GetBytes(packetSize).CopyTo(serialized, 4);
                 BitConverter.GetBytes(wordCount).CopyTo(serialized, 8);
-                encodedWords.CopyTo(serialized, this.PacketHeaderSize);
+                encodedWords.CopyTo(serialized, PacketHeaderSize);
 
                 wrapper.Packet.Data = serialized;
-                wrapper.Packet.Text = String.Join(" ", wrapper.Packet.Words);
-                wrapper.Packet.DebugText = String.Join(" ", wrapper.Packet.Words.Select((word, index) => String.Format("[{0}-{1}]", index, word)));
+                wrapper.Packet.Text = string.Join(" ", wrapper.Packet.Words);
+                wrapper.Packet.DebugText = string.Join(" ", wrapper.Packet.Words.Select((word, index) => string.Format("[{0}-{1}]", index, word)));
             }
 
             return serialized;
@@ -104,30 +104,30 @@ namespace Myrcon.Protocols.Frostbite {
         /// <returns>A new packet with data extracted from packetDate</returns>
         public IPacketWrapper Deserialize(byte[] packetData) {
 
-            FrostbitePacket wrapper = new FrostbitePacket();
+            var wrapper = new FrostbitePacket();
 
-            int header = BitConverter.ToInt32(packetData, 0);
+            var header = BitConverter.ToInt32(packetData, 0);
             //this.PacketSize = BitConverter.ToInt32(packet, 4);
-            int wordsTotal = BitConverter.ToInt32(packetData, 8);
+            var wordsTotal = BitConverter.ToInt32(packetData, 8);
 
             wrapper.Packet.Origin = Convert.ToBoolean(header & 0x80000000) == true ? PacketOrigin.Server : PacketOrigin.Client;
 
             wrapper.Packet.Type = Convert.ToBoolean(header & 0x40000000) == false ? PacketType.Request : PacketType.Response;
             wrapper.Packet.RequestId = header & 0x3fffffff;
 
-            int wordOffset = 0;
+            var wordOffset = 0;
 
-            for (UInt32 wordCount = 0; wordCount < wordsTotal; wordCount++) {
-                UInt32 wordLength = BitConverter.ToUInt32(packetData, (int)this.PacketHeaderSize + wordOffset);
+            for (uint wordCount = 0; wordCount < wordsTotal; wordCount++) {
+                var wordLength = BitConverter.ToUInt32(packetData, (int)PacketHeaderSize + wordOffset);
 
-                wrapper.Packet.Words.Add(Encoding.GetEncoding(1252).GetString(packetData, (int)this.PacketHeaderSize + wordOffset + 4, (int)wordLength));
+                wrapper.Packet.Words.Add(Encoding.GetEncoding(1252).GetString(packetData, (int)PacketHeaderSize + wordOffset + 4, (int)wordLength));
 
                 wordOffset += Convert.ToInt32(wordLength) + 5; // WordLength + WordSize + NullByte
             }
 
             wrapper.Packet.Data = packetData;
-            wrapper.Packet.Text = String.Join(" ", wrapper.Packet.Words);
-            wrapper.Packet.DebugText = String.Join(" ", wrapper.Packet.Words.Select((word, index) => String.Format("[{0}-{1}]", index, word)));
+            wrapper.Packet.Text = string.Join(" ", wrapper.Packet.Words);
+            wrapper.Packet.DebugText = string.Join(" ", wrapper.Packet.Words.Select((word, index) => string.Format("[{0}-{1}]", index, word)));
 
             return wrapper;
         }
@@ -140,7 +140,7 @@ namespace Myrcon.Protocols.Frostbite {
         public long ReadPacketSize(byte[] packetData) {
             long length = 0;
 
-            if (packetData.Length >= this.PacketHeaderSize) {
+            if (packetData.Length >= PacketHeaderSize) {
                 length = BitConverter.ToUInt32(packetData, 4);
             }
 

@@ -23,12 +23,12 @@ namespace Myrcon.Protocols.Frostbite.Objects {
     public static class FrostbiteMapList {
 
         public static List<MapModel> Parse(List<string> words) {
-            List<MapModel> maps = new List<MapModel>();
+            var maps = new List<MapModel>();
 
             maps.Clear();
 
-            for (int i = 0; i + 1 < words.Count; i = i + 2) {
-                int rounds = 0;
+            for (var i = 0; i + 1 < words.Count; i = i + 2) {
+                var rounds = 0;
                 if (int.TryParse(words[i + 1], out rounds) == true) {
                     maps.Add(
                         new MapModel() {

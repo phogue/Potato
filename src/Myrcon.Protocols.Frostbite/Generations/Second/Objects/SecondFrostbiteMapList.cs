@@ -23,7 +23,7 @@ namespace Myrcon.Protocols.Frostbite.Generations.Second.Objects {
     public class SecondFrostbiteMapList {
 
         public static List<MapModel> Parse(List<string> words) {
-            List<MapModel> maps = new List<MapModel>();
+            var maps = new List<MapModel>();
 
             if (words.Count >= 2) {
                 int mapsCount = 0, wordsPerMap = 0;
@@ -31,7 +31,7 @@ namespace Myrcon.Protocols.Frostbite.Generations.Second.Objects {
                 if (int.TryParse(words[0], out mapsCount) == true && int.TryParse(words[1], out wordsPerMap) == true) {
 
                     for (int mapOffset = 0, wordIndex = 2; mapOffset < mapsCount && wordIndex < words.Count; mapOffset++, wordIndex += wordsPerMap) {
-                        int rounds = 0;
+                        var rounds = 0;
                         if (int.TryParse(words[wordIndex + 2], out rounds) == true) {
                             maps.Add(
                                 new MapModel() {

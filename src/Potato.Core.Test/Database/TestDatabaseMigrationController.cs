@@ -122,7 +122,7 @@ namespace Potato.Core.Test.Database {
 
         [Test]
         public void TestMigrationUpFromNothingButCanceled() {
-            int counter = 0;
+            var counter = 0;
 
             var migrations = new MigrationController() {
                 // Bubble all commands to the database controller

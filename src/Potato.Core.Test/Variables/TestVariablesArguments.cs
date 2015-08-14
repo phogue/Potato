@@ -40,7 +40,7 @@ namespace Potato.Core.Test.Variables {
         [Test]
         public void TestBlank() {
             var variables = new VariableController();
-            variables.ParseArguments(new List<String>());
+            variables.ParseArguments(new List<string>());
 
             Assert.AreEqual(0, variables.VolatileVariables.Count);
         }
@@ -56,17 +56,17 @@ namespace Potato.Core.Test.Variables {
             var variables = new VariableController();
             variables.ParseArguments(@"-key1 ""value1"" -key2 -key3 2".Wordify());
 
-            VariableModel variableOne = variables.Get(new Command() {
+            var variableOne = variables.Get(new Command() {
                 Origin = CommandOrigin.Local
             }, "key1").Now.Variables.First();
-            VariableModel variableTwo = variables.Get(new Command() {
+            var variableTwo = variables.Get(new Command() {
                 Origin = CommandOrigin.Local
             }, "key2").Now.Variables.First();
-            VariableModel variableThree = variables.Get(new Command() {
+            var variableThree = variables.Get(new Command() {
                 Origin = CommandOrigin.Local
             }, "key3").Now.Variables.First();
 
-            Assert.AreEqual("value1", variableOne.ToType(String.Empty));
+            Assert.AreEqual("value1", variableOne.ToType(string.Empty));
             Assert.IsTrue(variableOne.Readonly);
 
             Assert.AreEqual(true, variableTwo.ToType(false));
@@ -86,14 +86,14 @@ namespace Potato.Core.Test.Variables {
             var variables = new VariableController();
             variables.ParseArguments(@"-key1 ""value1"" -key2 2".Wordify());
 
-            VariableModel variableOne = variables.Get(new Command() {
+            var variableOne = variables.Get(new Command() {
                 Origin = CommandOrigin.Local
             }, "key1").Now.Variables.First();
-            VariableModel variableTwo = variables.Get(new Command() {
+            var variableTwo = variables.Get(new Command() {
                 Origin = CommandOrigin.Local
             }, "key2").Now.Variables.First();
 
-            Assert.AreEqual("value1", variableOne.ToType(String.Empty));
+            Assert.AreEqual("value1", variableOne.ToType(string.Empty));
             Assert.IsTrue(variableOne.Readonly);
 
             Assert.AreEqual(2, variableTwo.ToType(0));
@@ -109,11 +109,11 @@ namespace Potato.Core.Test.Variables {
             var variables = new VariableController();
             variables.ParseArguments(@"-key ""value""".Wordify());
 
-            VariableModel variableModel = variables.Get(new Command() {
+            var variableModel = variables.Get(new Command() {
                 Origin = CommandOrigin.Local
             }, "key").Now.Variables.First();
 
-            Assert.AreEqual("value", variableModel.ToType(String.Empty));
+            Assert.AreEqual("value", variableModel.ToType(string.Empty));
             Assert.IsTrue(variableModel.Readonly);
         }
 
@@ -126,7 +126,7 @@ namespace Potato.Core.Test.Variables {
             var variables = new VariableController();
             variables.ParseArguments(@"-key".Wordify());
 
-            VariableModel variableModel = variables.Get(new Command() {
+            var variableModel = variables.Get(new Command() {
                 Origin = CommandOrigin.Local
             }, "key").Now.Variables.First();
 

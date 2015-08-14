@@ -33,42 +33,42 @@ namespace Potato.Core.Shared {
         /// Initializes the serializer
         /// </summary>
         public Config() {
-            this.Document = new JObject();
+            Document = new JObject();
         }
 
         public IConfig Append<T>(T data) {
             if (Equals(data, default(T))) throw new ArgumentNullException("data");
 
-            this.Root.Add(JObject.FromObject(data, JsonSerialization.Readable));
+            Root.Add(JObject.FromObject(data, JsonSerialization.Readable));
 
             return this;
         }
 
         public JArray RootOf<T>() {
-            return this.RootOf(typeof(T));
+            return RootOf(typeof(T));
         }
 
         public JArray RootOf(Type type) {
             if (type == null) throw new ArgumentNullException("type");
 
-            return this.RootOf(String.Format("{0}.{1}", type.Namespace, type.Name));
+            return RootOf(string.Format("{0}.{1}", type.Namespace, type.Name));
         }
 
         public JArray RootOf(string @namespace) {
             if (@namespace == null) throw new ArgumentNullException("namespace");
 
-            return this.Document[@namespace] != null ? this.Document[@namespace].Value<JArray>() : new JArray();
+            return Document[@namespace] != null ? Document[@namespace].Value<JArray>() : new JArray();
         }
 
         public IConfig Union(IConfig config) {
             if (config == null) throw new ArgumentNullException("config");
 
             foreach (var property in config.Document.Children<JProperty>()) {
-                if (this.Document[property.Name] == null) {
-                    this.Document.Add(property);
+                if (Document[property.Name] == null) {
+                    Document.Add(property);
                 }
                 else {
-                    this.Document[property.Name].Value<JArray>().Add(property.Values());
+                    Document[property.Name].Value<JArray>().Add(property.Values());
                 }
             }
 
@@ -81,12 +81,12 @@ namespace Potato.Core.Shared {
             directory.Refresh();
 
             if (directory.Exists == true) {
-                foreach (FileInfo file in directory.GetFiles("*.json").OrderBy(file => file.Name)) {
-                    if (this.Root == null) {
-                        this.Load(file);
+                foreach (var file in directory.GetFiles("*.json").OrderBy(file => file.Name)) {
+                    if (Root == null) {
+                        Load(file);
                     }
                     else {
-                        this.Union(new Config().Load(file));
+                        Union(new Config().Load(file));
                     }
                 }
             }
@@ -103,16 +103,16 @@ namespace Potato.Core.Shared {
                 using (var stream = new StreamReader(file.FullName)) {
                     using (JsonReader reader = new JsonTextReader(stream)) {
                         try {
-                            this.Document = JObject.Load(reader);
+                            Document = JObject.Load(reader);
 
-                            String name = file.Name.Replace(".json", "");
+                            var name = file.Name.Replace(".json", "");
 
-                            this.Root = this.Document[name] != null ? this.Document.Value<JArray>(name) : this.Document.First.First.Value<JArray>();
+                            Root = Document[name] != null ? Document.Value<JArray>(name) : Document.First.First.Value<JArray>();
                         }
                         catch {
-                            this.Root = new JArray();
-                            this.Document = new JObject() {
-                                new JProperty("Empty", this.Root)
+                            Root = new JArray();
+                            Document = new JObject() {
+                                new JProperty("Empty", Root)
                             };
                         }
                     }
@@ -123,14 +123,14 @@ namespace Potato.Core.Shared {
         }
 
         public IConfig Create<T>() {
-            return this.Create(typeof(T));
+            return Create(typeof(T));
         }
 
         public IConfig Create(Type type) {
             // Clear out all old data
-            this.Root = new JArray();
-            this.Document = new JObject() {
-                new JProperty(String.Format("{0}.{1}", type.Namespace, type.Name), this.Root)
+            Root = new JArray();
+            Document = new JObject() {
+                new JProperty(string.Format("{0}.{1}", type.Namespace, type.Name), Root)
             };
 
             return this;
@@ -140,7 +140,7 @@ namespace Potato.Core.Shared {
             if (file == null) throw new ArgumentNullException("file");
 
             using (TextWriter writer = new StreamWriter(file.FullName, false)) {
-                JsonSerialization.Readable.Serialize(writer, this.Document);
+                JsonSerialization.Readable.Serialize(writer, Document);
             }
 
             return this;

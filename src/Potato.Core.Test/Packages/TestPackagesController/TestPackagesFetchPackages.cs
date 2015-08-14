@@ -33,9 +33,9 @@ namespace Potato.Core.Test.Packages.TestPackagesController {
         /// </summary>
         [Test]
         public void TestResultInsufficientPermissions() {
-            PackagesController packages = new PackagesController();
+            var packages = new PackagesController();
 
-            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesFetchPackages().SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
+            var result = packages.Tunnel(CommandBuilder.PackagesFetchPackages().SetOrigin(CommandOrigin.Remote).SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }));
 
@@ -48,9 +48,9 @@ namespace Potato.Core.Test.Packages.TestPackagesController {
         /// </summary>
         [Test]
         public void TestResultSuccess() {
-            PackagesController packages = new PackagesController();
+            var packages = new PackagesController();
 
-            ICommandResult result = packages.Tunnel(CommandBuilder.PackagesFetchPackages().SetOrigin(CommandOrigin.Local));
+            var result = packages.Tunnel(CommandBuilder.PackagesFetchPackages().SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);

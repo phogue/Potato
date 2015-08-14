@@ -106,12 +106,12 @@ namespace Potato.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestTemporalKickEveryoneLastDayOfWeek() {
-            AssertTemporalCommand(CreateTextCommandController(), String.Format("kick everyone last {0}", DateTime.Now.DayOfWeek), TextCommandKick, new TimeSpan(-7, 0, 0, 0));
+            AssertTemporalCommand(CreateTextCommandController(), string.Format("kick everyone last {0}", DateTime.Now.DayOfWeek), TextCommandKick, new TimeSpan(-7, 0, 0, 0));
         }
 
         [Test]
         public void TestTemporalKickEveryoneNextDayOfWeek() {
-            AssertTemporalCommand(CreateTextCommandController(), String.Format("kick everyone next {0}", DateTime.Now.DayOfWeek), TextCommandKick, new TimeSpan(7, 0, 0, 0));
+            AssertTemporalCommand(CreateTextCommandController(), string.Format("kick everyone next {0}", DateTime.Now.DayOfWeek), TextCommandKick, new TimeSpan(7, 0, 0, 0));
         }
 
         [Test]
@@ -136,45 +136,45 @@ namespace Potato.Core.Test.TextCommands.Fuzzy {
 
         [Test]
         public void TestTemporalKickEveryoneThisDayOfWeek() {
-            AssertTemporalCommand(CreateTextCommandController(), String.Format("kick everyone this {0}", DateTime.Now.DayOfWeek), TextCommandKick, new TimeSpan(0, 0, 0, 0));
+            AssertTemporalCommand(CreateTextCommandController(), string.Format("kick everyone this {0}", DateTime.Now.DayOfWeek), TextCommandKick, new TimeSpan(0, 0, 0, 0));
         }
 
         [Test]
         public void TestTemporalKickEveryoneThisDayOfWeekPlus1() {
-            AssertTemporalCommand(CreateTextCommandController(), String.Format("kick everyone this {0}", DateTime.Now.AddDays(1).DayOfWeek), TextCommandKick, new TimeSpan(1, 0, 0, 0));
+            AssertTemporalCommand(CreateTextCommandController(), string.Format("kick everyone this {0}", DateTime.Now.AddDays(1).DayOfWeek), TextCommandKick, new TimeSpan(1, 0, 0, 0));
         }
 
         [Test]
         public void TestTemporalKickEveryoneThisDayOfWeekPlus2() {
-            AssertTemporalCommand(CreateTextCommandController(), String.Format("kick everyone this {0}", DateTime.Now.AddDays(2).DayOfWeek), TextCommandKick, new TimeSpan(2, 0, 0, 0));
+            AssertTemporalCommand(CreateTextCommandController(), string.Format("kick everyone this {0}", DateTime.Now.AddDays(2).DayOfWeek), TextCommandKick, new TimeSpan(2, 0, 0, 0));
         }
 
         [Test]
         public void TestTemporalKickEveryoneThisDayOfWeekPlus3() {
-            AssertTemporalCommand(CreateTextCommandController(), String.Format("kick everyone this {0}", DateTime.Now.AddDays(3).DayOfWeek), TextCommandKick, new TimeSpan(3, 0, 0, 0));
+            AssertTemporalCommand(CreateTextCommandController(), string.Format("kick everyone this {0}", DateTime.Now.AddDays(3).DayOfWeek), TextCommandKick, new TimeSpan(3, 0, 0, 0));
         }
 
         [Test]
         public void TestTemporalKickEveryoneThisDayOfWeekPlus4() {
-            AssertTemporalCommand(CreateTextCommandController(), String.Format("kick everyone this {0}", DateTime.Now.AddDays(4).DayOfWeek), TextCommandKick, new TimeSpan(4, 0, 0, 0));
+            AssertTemporalCommand(CreateTextCommandController(), string.Format("kick everyone this {0}", DateTime.Now.AddDays(4).DayOfWeek), TextCommandKick, new TimeSpan(4, 0, 0, 0));
         }
 
         [Test]
         public void TestTemporalKickEveryoneThisDayOfWeekPlus5() {
-            AssertTemporalCommand(CreateTextCommandController(), String.Format("kick everyone this {0}", DateTime.Now.AddDays(5).DayOfWeek), TextCommandKick, new TimeSpan(5, 0, 0, 0));
+            AssertTemporalCommand(CreateTextCommandController(), string.Format("kick everyone this {0}", DateTime.Now.AddDays(5).DayOfWeek), TextCommandKick, new TimeSpan(5, 0, 0, 0));
         }
 
         [Test]
         public void TestTemporalKickEveryoneThisDayOfWeekPlus6() {
-            AssertTemporalCommand(CreateTextCommandController(), String.Format("kick everyone this {0}", DateTime.Now.AddDays(6).DayOfWeek), TextCommandKick, new TimeSpan(6, 0, 0, 0));
+            AssertTemporalCommand(CreateTextCommandController(), string.Format("kick everyone this {0}", DateTime.Now.AddDays(6).DayOfWeek), TextCommandKick, new TimeSpan(6, 0, 0, 0));
         }
 
         [Test]
         public void TestTemporalKickEveryoneUntil12Pm() {
             // Couldn't use the helper since the delay in executing the command can some times throw out the time for the delay. 
-            ICommandResult args = ExecuteTextCommand(CreateTextCommandController(), "kick everyone until 12 pm");
+            var args = ExecuteTextCommand(CreateTextCommandController(), "kick everyone until 12 pm");
 
-            DateTime midnight = DateTime.Now.AddDays(1);
+            var midnight = DateTime.Now.AddDays(1);
 
             AssertExecutedCommandAgainstTemporalValue(args, TextCommandKick, new DateTime(midnight.Year, midnight.Month, midnight.Day, 0, 0, 0) - DateTime.Now, null, null);
         }

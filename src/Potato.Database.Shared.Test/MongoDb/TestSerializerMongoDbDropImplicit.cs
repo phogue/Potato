@@ -24,7 +24,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestDropDatabasePotato() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestDropDatabasePotatoImplicit).Compile();
+            var serialized = serializer.Parse(TestDropDatabasePotatoImplicit).Compile();
 
             Assert.AreEqual(@"drop", serialized.Methods.First());
             Assert.AreEqual(@"Potato", serialized.Databases.First());
@@ -33,7 +33,7 @@ namespace Potato.Database.Shared.Test.MongoDb {
         [Test]
         public override void TestDropTablePlayer() {
             ISerializer serializer = new SerializerMongoDb();
-            ICompiledQuery serialized = serializer.Parse(this.TestDropTablePlayerImplicit).Compile();
+            var serialized = serializer.Parse(TestDropTablePlayerImplicit).Compile();
 
             Assert.AreEqual(@"drop", serialized.Methods.First());
             Assert.AreEqual(@"Player", serialized.Collections.First());

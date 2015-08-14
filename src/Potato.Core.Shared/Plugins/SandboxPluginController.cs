@@ -42,7 +42,7 @@ namespace Potato.Core.Shared.Plugins {
         /// <param name="assemblyFile"></param>
         /// <param name="typeName"></param>
         /// <returns></returns>
-        public IPluginController Create(String assemblyFile, String typeName) {
+        public IPluginController Create(string assemblyFile, string typeName) {
             IPluginController loadedPlugin = null;
 
             try {
@@ -57,7 +57,7 @@ namespace Potato.Core.Shared.Plugins {
                     null
                 ).Unwrap();
 
-                this.LoadedPlugins.TryAdd(loadedPlugin.PluginGuid, loadedPlugin);
+                LoadedPlugins.TryAdd(loadedPlugin.PluginGuid, loadedPlugin);
 
                 loadedPlugin.Execute();
             }
@@ -80,13 +80,13 @@ namespace Potato.Core.Shared.Plugins {
         /// <param name="pluginGuid"></param>
         /// <returns>Returns true if the plugin was disabled and is now enabled. False will be returned if the plugin does not exist or was already enabled to begin with.</returns>
         public bool TryEnablePlugin(Guid pluginGuid) {
-            bool wasEnabled = false;
+            var wasEnabled = false;
 
             // If we have the plugin and the plugin isn't already in the dictionary.
-            if (this.LoadedPlugins.ContainsKey(pluginGuid) == true && this.EnabledPlugins.ContainsKey(pluginGuid) == false) {
-                IPluginController plugin = this.LoadedPlugins[pluginGuid];
+            if (LoadedPlugins.ContainsKey(pluginGuid) == true && EnabledPlugins.ContainsKey(pluginGuid) == false) {
+                var plugin = LoadedPlugins[pluginGuid];
 
-                this.EnabledPlugins.TryAdd(plugin.PluginGuid, plugin);
+                EnabledPlugins.TryAdd(plugin.PluginGuid, plugin);
 
                 plugin.BubbleObjects.Add(this);
 
@@ -110,11 +110,11 @@ namespace Potato.Core.Shared.Plugins {
         /// <param name="pluginGuid"></param>
         /// <returns>Returns true if the plugin was enabled and is now disabled. False will be returned if the plugin does not exist or wasn't enabled to begin with.</returns>
         public bool TryDisablePlugin(Guid pluginGuid) {
-            bool wasDisabled = false;
+            var wasDisabled = false;
 
             IPluginController plugin;
 
-            if (this.EnabledPlugins.TryRemove(pluginGuid, out plugin) == true) {
+            if (EnabledPlugins.TryRemove(pluginGuid, out plugin) == true) {
                 plugin.BubbleObjects.Clear();
 
                 plugin.GenericEvent(new GenericEvent() {
@@ -129,7 +129,7 @@ namespace Potato.Core.Shared.Plugins {
 
         public void ProtocolEvent(List<IProtocolEventArgs> items) {
             foreach (var item in items) {
-                foreach (var enabledPlugin in this.EnabledPlugins) {
+                foreach (var enabledPlugin in EnabledPlugins) {
                     enabledPlugin.Value.GameEvent(item);
                 }
             }
@@ -137,7 +137,7 @@ namespace Potato.Core.Shared.Plugins {
 
         public void ClientEvent(List<IClientEventArgs> items) {
             foreach (var item in items) {
-                foreach (var enabledPlugin in this.EnabledPlugins) {
+                foreach (var enabledPlugin in EnabledPlugins) {
                     enabledPlugin.Value.ClientEvent(item);
                 }
             }
@@ -149,14 +149,14 @@ namespace Potato.Core.Shared.Plugins {
         /// <param name="pluginGuid"></param>
         /// <returns>True if a plugin is enabled, false otherwise.</returns>
         public bool IsPluginEnabled(Guid pluginGuid) {
-            return this.EnabledPlugins.ContainsKey(pluginGuid);
+            return EnabledPlugins.ContainsKey(pluginGuid);
         }
 
         /// <summary>
         /// Shutdown all of the plugins, firing a 
         /// </summary>
         public void Shutdown() {
-            foreach (var plugin in this.LoadedPlugins) {
+            foreach (var plugin in LoadedPlugins) {
                 plugin.Value.GenericEvent(new GenericEvent() {
                     GenericEventType = GenericEventType.PluginsUnloading
                 });
@@ -173,17 +173,17 @@ namespace Potato.Core.Shared.Plugins {
         protected override IList<ICoreController> BubbleExecutableObjects(ICommand command) {
             command.Origin = CommandOrigin.Plugin;
 
-            return this.BubbleObjects ?? new List<ICoreController>();
+            return BubbleObjects ?? new List<ICoreController>();
         }
 
         protected override IList<ICoreController> TunnelExecutableObjects(ICommand command) {
-            List<ICoreController> list = new List<ICoreController>();
+            var list = new List<ICoreController>();
 
             if (command.Scope != null && command.Scope.PluginGuid != Guid.Empty) {
                 IPluginController enabledPlugin;
 
                 // Get the enabled plugin if it exists.
-                if (this.EnabledPlugins.TryGetValue(command.Scope.PluginGuid, out enabledPlugin) == true) {
+                if (EnabledPlugins.TryGetValue(command.Scope.PluginGuid, out enabledPlugin) == true) {
                     list.Add(enabledPlugin);
                 }
                 // else the plugin isn't enabled
@@ -191,7 +191,7 @@ namespace Potato.Core.Shared.Plugins {
             }
             else {
                 // Add all of the enabled plugins.
-                list.AddRange(this.EnabledPlugins.Values);
+                list.AddRange(EnabledPlugins.Values);
             }
 
             return list;

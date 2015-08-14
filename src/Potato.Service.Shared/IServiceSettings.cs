@@ -44,12 +44,12 @@ namespace Potato.Service.Shared {
         /// <summary>
         /// The main source repository uri to download core updates from.
         /// </summary>
-        String PackagesDefaultSourceRepositoryUri { get; set; }
+        string PackagesDefaultSourceRepositoryUri { get; set; }
 
         /// <summary>
         /// Processes the command line arguments
         /// </summary>
         /// <param name="arguments">The arguments from the command line "-key value"</param>
-        void ParseArguments(IDictionary<String, String> arguments);
+        void ParseArguments(IDictionary<string, string> arguments);
     }
 }

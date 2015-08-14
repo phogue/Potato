@@ -14,8 +14,8 @@ namespace Potato.Net.Shared {
         /// Initializes the difference with the default values.
         /// </summary>
         public ProtocolStateDifference() {
-            this.Modified = new ProtocolStateSegment();
-            this.Removed = new ProtocolStateSegment();
+            Modified = new ProtocolStateSegment();
+            Removed = new ProtocolStateSegment();
         }
     }
 }

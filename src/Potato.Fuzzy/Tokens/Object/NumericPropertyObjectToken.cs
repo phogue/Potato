@@ -19,18 +19,18 @@ namespace Potato.Fuzzy.Tokens.Object {
         public INumericPropertyReference Reference { get; set; }
 
         public override bool CompatibleWith(Token other) {
-            bool compatible = true;
+            var compatible = true;
 
-            ThingObjectToken thingToken = other as ThingObjectToken;
-            NumericPropertyObjectToken numericPropertyObjectToken = other as NumericPropertyObjectToken;
+            var thingToken = other as ThingObjectToken;
+            var numericPropertyObjectToken = other as NumericPropertyObjectToken;
 
             if (thingToken != null) {
-                if (this.Reference.ThingReference.CompatibleWith(thingToken.Reference) == false) {
+                if (Reference.ThingReference.CompatibleWith(thingToken.Reference) == false) {
                     compatible = false;
                 }
             }
             else if (numericPropertyObjectToken != null) {
-                if (this.Reference.ThingReference.CompatibleWith(numericPropertyObjectToken.Reference.ThingReference) == false) {
+                if (Reference.ThingReference.CompatibleWith(numericPropertyObjectToken.Reference.ThingReference) == false) {
                     compatible = false;
                 }
             }

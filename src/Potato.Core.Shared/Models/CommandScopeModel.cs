@@ -35,8 +35,8 @@ namespace Potato.Core.Shared.Models {
         /// Initializes the model with the default values.
         /// </summary>
         public CommandScopeModel() {
-            this.ConnectionGuid = Guid.Empty;
-            this.PluginGuid = Guid.Empty;
+            ConnectionGuid = Guid.Empty;
+            PluginGuid = Guid.Empty;
         }
     }
 }

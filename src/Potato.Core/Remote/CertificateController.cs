@@ -35,11 +35,11 @@ namespace Potato.Core.Remote {
         /// Initializes the certificate with the default values.
         /// </summary>
         public CertificateController() {
-            this.Shared = new SharedReferences();
+            Shared = new SharedReferences();
         }
 
         public override ICoreController Execute() {
-            this.Load();
+            Load();
 
             return base.Execute();
         }
@@ -50,7 +50,7 @@ namespace Potato.Core.Remote {
         /// </summary>
         /// <returns></returns>
         public bool Load() {
-            return this.Load(this.Shared.Variables.Get(CommonVariableNames.CommandServerCertificatePath, Defines.CertificatesDirectoryCommandServerPfx.FullName), this.Shared.Variables.Get<String>(CommonVariableNames.CommandServerCertificatePassword));
+            return Load(Shared.Variables.Get(CommonVariableNames.CommandServerCertificatePath, Defines.CertificatesDirectoryCommandServerPfx.FullName), Shared.Variables.Get<string>(CommonVariableNames.CommandServerCertificatePassword));
         }
 
         /// <summary>
@@ -59,16 +59,16 @@ namespace Potato.Core.Remote {
         /// <param name="path">The path to the certificate file.</param>
         /// <param name="password">The password of the certificate.</param>
         /// <returns>True if the certificate loaded correctly, false otherwise.</returns>
-        public bool Load(String path, String password = null) {
+        public bool Load(string path, string password = null) {
             if (File.Exists(path) == true) {
                 try {
-                    this.Certificate = password != null ? new X509Certificate2(path, password) : new X509Certificate2(path);
+                    Certificate = password != null ? new X509Certificate2(path, password) : new X509Certificate2(path);
                 }
                 catch (CryptographicException e) {
-                    this.Certificate = null;
+                    Certificate = null;
 
-                    this.Shared.Events.Log(new GenericEvent() {
-                        Message = String.Format("Error loading certificate @ path \"{0}\" \"{1}\".", path, e.Message),
+                    Shared.Events.Log(new GenericEvent() {
+                        Message = string.Format("Error loading certificate @ path \"{0}\" \"{1}\".", path, e.Message),
                         GenericEventType = GenericEventType.CommandServerStarted,
                         Success = false,
                         CommandResultType = CommandResultType.Failed
@@ -77,15 +77,15 @@ namespace Potato.Core.Remote {
             }
             else {
                 // Panic, no certificate exists. Cannot start server.
-                this.Shared.Events.Log(new GenericEvent() {
-                    Message = String.Format("Command server certificate @ path \"{0}\" does not exists.", path),
+                Shared.Events.Log(new GenericEvent() {
+                    Message = string.Format("Command server certificate @ path \"{0}\" does not exists.", path),
                     GenericEventType = GenericEventType.CommandServerStarted,
                     Success = false,
                     CommandResultType = CommandResultType.Failed
                 });
             }
 
-            return this.Certificate != null;
+            return Certificate != null;
         }
     }
 }

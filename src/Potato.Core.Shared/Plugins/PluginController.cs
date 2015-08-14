@@ -35,7 +35,7 @@ namespace Potato.Core.Shared.Plugins {
         /// <summary>
         /// A human readable name/title of this plugin.
         /// </summary>
-        public String Title { get; set; }
+        public string Title { get; set; }
 
         /// <summary>
         /// The Guid of the executing assembly. Used to uniquely identify this plugin. 
@@ -68,23 +68,23 @@ namespace Potato.Core.Shared.Plugins {
         protected ConcurrentDictionary<Guid, IDeferredAction> DeferredActions { get; set; } 
 
         protected PluginController() : base() {
-            this.PluginGuid = this.GetAssemblyGuid();
-            this.Title = this.PluginGuid.ToString();
+            PluginGuid = GetAssemblyGuid();
+            Title = PluginGuid.ToString();
 
-            this.DeferredActions = new ConcurrentDictionary<Guid, IDeferredAction>();
+            DeferredActions = new ConcurrentDictionary<Guid, IDeferredAction>();
 
-            this.ProtocolState = new ProtocolState();
+            ProtocolState = new ProtocolState();
 
-            this.CommandDispatchers.Add(new CommandDispatch() {
+            CommandDispatchers.Add(new CommandDispatch() {
                 CommandType = CommandType.TextCommandsExecute,
                 CommandAttributeType = CommandAttributeType.Executed,
                 ParameterTypes = new List<CommandParameterType>() {
                     new CommandParameterType() {
                         Name = "text",
-                        Type = typeof(String)
+                        Type = typeof(string)
                     }
                 },
-                Handler = this.TextCommandExecuted
+                Handler = TextCommandExecuted
             });
         }
         
@@ -93,9 +93,9 @@ namespace Potato.Core.Shared.Plugins {
         /// </summary>
         /// <returns></returns>
         protected Guid GetAssemblyGuid() {
-            Guid guid = Guid.Empty;
+            var guid = Guid.Empty;
 
-            GuidAttribute attribute = Assembly.GetAssembly(this.GetType()).GetCustomAttributes(typeof(GuidAttribute), true).Cast<GuidAttribute>().FirstOrDefault();
+            var attribute = Assembly.GetAssembly(GetType()).GetCustomAttributes(typeof(GuidAttribute), true).Cast<GuidAttribute>().FirstOrDefault();
 
             if (attribute == null || Guid.TryParse(attribute.Value, out guid) == false) {
                 throw new Exception("Missing assembly GuidAttribute or incorrect guid format");
@@ -106,20 +106,20 @@ namespace Potato.Core.Shared.Plugins {
 
         public override void BeginBubble(ICommand command, Action<ICommandResult> completed = null) {
             // There isn't much point in bubbling up if we just need to come back down here.
-            if (command.Scope != null && command.Scope.PluginGuid == this.PluginGuid) {
-                base.BeginTunnel(command, completed);
+            if (command.Scope != null && command.Scope.PluginGuid == PluginGuid) {
+                BeginTunnel(command, completed);
             }
-            else if (this.BubbleObjects != null) {
+            else if (BubbleObjects != null) {
                 base.BeginBubble(command, completed);
             }
         }
 
         public override ICommandResult Bubble(ICommand command) {
             // There isn't much point in bubbling up if we just need to come back down here.
-            if (command.Scope != null && command.Scope.PluginGuid == this.PluginGuid) {
-                command.Result = this.Tunnel(command);
+            if (command.Scope != null && command.Scope.PluginGuid == PluginGuid) {
+                command.Result = Tunnel(command);
             }
-            else if (this.BubbleObjects != null) {
+            else if (BubbleObjects != null) {
                 command.Result = base.Bubble(command);
             }
 
@@ -135,10 +135,10 @@ namespace Potato.Core.Shared.Plugins {
         /// <param name="action">The action to send to the server.</param>
         /// <returns>The result of the command, check the status for a success message.</returns>
         public virtual ICommandResult Action(INetworkAction action) {
-            return this.Bubble(new Command() {
+            return Bubble(new Command() {
                 Name = action.ActionType.ToString(),
                 Scope = new CommandScopeModel() {
-                    ConnectionGuid = this.ConnectionGuid
+                    ConnectionGuid = ConnectionGuid
                 },
                 Parameters = new List<ICommandParameter>() {
                     new CommandParameter() {
@@ -162,10 +162,10 @@ namespace Potato.Core.Shared.Plugins {
 
             if (action.GetAction() != null) {
                 // Wait for responses from this action
-                this.DeferredActions.TryAdd(action.GetAction().Uid, action);
+                DeferredActions.TryAdd(action.GetAction().Uid, action);
 
                 // Send the action for processing
-                result = this.Action(action.GetAction());
+                result = Action(action.GetAction());
 
                 // Alert the deferred action of packets that have been sent
                 action.TryInsertSent(action.GetAction(), result.Now.Packets);
@@ -182,16 +182,16 @@ namespace Potato.Core.Shared.Plugins {
         /// as the base class (therefore it's not passing a config to a child class) but instead
         /// needs to make the initial config object before writing to it.</remarks>
         public virtual void WriteConfig() {
-            if (this.ConfigDirectoryInfo != null) {
-                Config config = new Config();
-                config.Create(this.GetType());
-                this.WriteConfig(config);
+            if (ConfigDirectoryInfo != null) {
+                var config = new Config();
+                config.Create(GetType());
+                WriteConfig(config);
 
-                config.Save(new FileInfo(Path.Combine(this.ConfigDirectoryInfo.FullName, this.GetType().Namespace + ".json")));
+                config.Save(new FileInfo(Path.Combine(ConfigDirectoryInfo.FullName, GetType().Namespace + ".json")));
             }
         }
 
-        public override void WriteConfig(IConfig config, String password = null) {
+        public override void WriteConfig(IConfig config, string password = null) {
             // Overwrite this method to write out your config
         }
 
@@ -200,13 +200,13 @@ namespace Potato.Core.Shared.Plugins {
         /// </summary>
         /// <remarks>Configs are simply saved commands</remarks>
         public virtual void LoadConfig() {
-            this.GenericEvent(new GenericEvent() {
+            GenericEvent(new GenericEvent() {
                 GenericEventType = GenericEventType.ConfigLoading
             });
 
-            this.Execute(new Config().Load(ConfigDirectoryInfo));
+            Execute(new Config().Load(ConfigDirectoryInfo));
 
-            this.GenericEvent(new GenericEvent() {
+            GenericEvent(new GenericEvent() {
                 GenericEventType = GenericEventType.ConfigLoaded
             });
         }
@@ -214,7 +214,7 @@ namespace Potato.Core.Shared.Plugins {
         /// <summary>
         /// Fetches a list of available commands handled by this controller and any controllers found in TunnelObjects.
         /// </summary>
-        public virtual List<String> HandledCommandNames() {
+        public virtual List<string> HandledCommandNames() {
             var items = new List<ICoreController>() { this };
             var tunneled = items.SelectMany(item => item.TunnelObjects).ToList();
 
@@ -229,40 +229,40 @@ namespace Potato.Core.Shared.Plugins {
 
         public IPluginSetupResult Setup(IPluginSetup setup) {
             if (setup.ConnectionGuid != null) {
-                this.ConnectionGuid = Guid.Parse(setup.ConnectionGuid);
+                ConnectionGuid = Guid.Parse(setup.ConnectionGuid);
             }
 
             if (setup.ConfigDirectoryPath != null) {
-                this.ConfigDirectoryInfo = new DirectoryInfo(setup.ConfigDirectoryPath);
-                this.ConfigDirectoryInfo.Create();
+                ConfigDirectoryInfo = new DirectoryInfo(setup.ConfigDirectoryPath);
+                ConfigDirectoryInfo.Create();
             }
 
             if (setup.LogDirectoryPath != null) {
-                this.LogDirectoryInfo = new DirectoryInfo(setup.LogDirectoryPath);
-                this.LogDirectoryInfo.Create();
+                LogDirectoryInfo = new DirectoryInfo(setup.LogDirectoryPath);
+                LogDirectoryInfo.Create();
             }
 
             return new PluginSetupResult() {
-                Commands = this.HandledCommandNames(),
-                Title = this.Title
+                Commands = HandledCommandNames(),
+                Title = Title
             };
         }
 
         public virtual void GameEvent(IProtocolEventArgs e) {
             // Apply any changes to the protocol state for this plugin
             if (e.StateDifference != null) {
-                this.ProtocolState.Apply(e.StateDifference);
+                ProtocolState.Apply(e.StateDifference);
             }
         }
 
         public virtual void ClientEvent(IClientEventArgs e) {
             if (e.EventType == ClientEventType.ClientActionDone) {
-                INetworkAction doneAction = e.Then.Actions.FirstOrDefault();
+                var doneAction = e.Then.Actions.FirstOrDefault();
 
                 if (doneAction != null) {
                     IDeferredAction deferredAction;
 
-                    if (this.DeferredActions.TryRemove(doneAction.Uid, out deferredAction) == true && deferredAction.TryInsertDone(doneAction, e.Then.Packets, e.Now.Packets) == true) {
+                    if (DeferredActions.TryRemove(doneAction.Uid, out deferredAction) == true && deferredAction.TryInsertDone(doneAction, e.Then.Packets, e.Now.Packets) == true) {
                         deferredAction.TryInsertAlways(doneAction);
 
                         deferredAction.Release();
@@ -270,12 +270,12 @@ namespace Potato.Core.Shared.Plugins {
                 }
             }
             else if (e.EventType == ClientEventType.ClientActionExpired) {
-                INetworkAction doneAction = e.Then.Actions.FirstOrDefault();
+                var doneAction = e.Then.Actions.FirstOrDefault();
 
                 if (doneAction != null) {
                     IDeferredAction deferredAction;
 
-                    if (this.DeferredActions.TryRemove(doneAction.Uid, out deferredAction) == true && deferredAction.TryInsertExpired(doneAction, e.Then.Packets, e.Now.Packets) == true) {
+                    if (DeferredActions.TryRemove(doneAction.Uid, out deferredAction) == true && deferredAction.TryInsertExpired(doneAction, e.Then.Packets, e.Now.Packets) == true) {
                         deferredAction.TryInsertAlways(doneAction);
 
                         deferredAction.Release();
@@ -290,13 +290,13 @@ namespace Potato.Core.Shared.Plugins {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public virtual ICommandResult TextCommandExecuted(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public virtual ICommandResult TextCommandExecuted(ICommand command, Dictionary<string, ICommandParameter> parameters) {
 
             // Not used.
             // String text = parameters["text"].First<String>();
 
-            if (command.Result.CommandResultType == CommandResultType.Success && command.Result.Now.TextCommands.First().PluginGuid == this.PluginGuid) {
-                this.Tunnel(new Command() {
+            if (command.Result.CommandResultType == CommandResultType.Success && command.Result.Now.TextCommands.First().PluginGuid == PluginGuid) {
+                Tunnel(new Command() {
                     Origin = CommandOrigin.Local,
                     Name = command.Result.Now.TextCommands.First().PluginCommand,
                     Parameters = new List<ICommandParameter>() {
@@ -319,7 +319,7 @@ namespace Potato.Core.Shared.Plugins {
         /// </summary>
         /// <param name="e"></param>
         protected virtual void GenericEventTypePluginLoaded(GenericEvent e) {
-            this.LoadConfig();
+            LoadConfig();
         }
 
         /// <summary>
@@ -327,7 +327,7 @@ namespace Potato.Core.Shared.Plugins {
         /// </summary>
         /// <param name="e"></param>
         protected virtual void GenericEventTypePluginUnloading(GenericEvent e) {
-            this.WriteConfig();
+            WriteConfig();
         }
 
         /// <summary>
@@ -338,7 +338,7 @@ namespace Potato.Core.Shared.Plugins {
         /// a plugin executed command to a local command. Snazzified.</remarks>
         /// <param name="e"></param>
         protected virtual void GenericEventTypeTextCommandExecuted(GenericEvent e) {
-            this.Tunnel(new Command() {
+            Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 Name = e.Now.TextCommands.First().PluginCommand,
                 Parameters = new List<ICommandParameter>() {
@@ -361,13 +361,13 @@ namespace Potato.Core.Shared.Plugins {
         /// <param name="e"></param>
         public virtual void GenericEvent(GenericEvent e) {
             if (e.GenericEventType == GenericEventType.PluginsLoaded) {
-                this.GenericEventTypePluginLoaded(e);
+                GenericEventTypePluginLoaded(e);
             }
             else if (e.GenericEventType == GenericEventType.PluginsUnloading) {
-                this.GenericEventTypePluginUnloading(e);
+                GenericEventTypePluginUnloading(e);
             }
             else if (e.GenericEventType == GenericEventType.TextCommandExecuted) {
-                this.GenericEventTypeTextCommandExecuted(e);
+                GenericEventTypeTextCommandExecuted(e);
             }
         }
     }

@@ -37,13 +37,13 @@ namespace Potato.Core.Test.Variables {
             var variables = new VariableController();
 
             // Set an archive variable
-            ICommandResult result = variables.Tunnel(CommandBuilder.VariablesSetF("key", "value").SetOrigin(CommandOrigin.Local));
+            var result = variables.Tunnel(CommandBuilder.VariablesSetF("key", "value").SetOrigin(CommandOrigin.Local));
 
             // Validate that the command was successful and the key was set to the passed value.
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
-            Assert.AreEqual("value", variables.Get("key", String.Empty));
-            Assert.AreEqual("value", variables.FlashVariables.Values.First(v => v.Name == "key").ToType<String>());
+            Assert.AreEqual("value", variables.Get("key", string.Empty));
+            Assert.AreEqual("value", variables.FlashVariables.Values.First(v => v.Name == "key").ToType<string>());
         }
 
 
@@ -52,7 +52,7 @@ namespace Potato.Core.Test.Variables {
             var variables = new VariableController();
 
             // Set an archive variable
-            ICommandResult result = variables.Tunnel(CommandBuilder.VariablesSetF(String.Empty, "value").SetOrigin(CommandOrigin.Local));
+            var result = variables.Tunnel(CommandBuilder.VariablesSetF(string.Empty, "value").SetOrigin(CommandOrigin.Local));
 
             // Validate that the command failed
             Assert.IsFalse(result.Success);
@@ -66,7 +66,7 @@ namespace Potato.Core.Test.Variables {
         public void TestInsufficientPermission() {
             var variables = new VariableController();
 
-            ICommandResult result = variables.Tunnel(CommandBuilder.VariablesSetF("key", "value").SetAuthentication(new CommandAuthenticationModel() {
+            var result = variables.Tunnel(CommandBuilder.VariablesSetF("key", "value").SetAuthentication(new CommandAuthenticationModel() {
                 Username = "Phogue"
             }).SetOrigin(CommandOrigin.Remote));
 
@@ -86,8 +86,8 @@ namespace Potato.Core.Test.Variables {
             variables.Tunnel(CommandBuilder.VariablesSetF(CommonVariableNames.MaximumProtocolConnections, "value").SetOrigin(CommandOrigin.Local));
 
             // Validate that the command was successful and the key was set to the passed value.
-            Assert.AreEqual("value", variables.Get(CommonVariableNames.MaximumProtocolConnections, String.Empty));
-            Assert.AreEqual("value", variables.FlashVariables.Values.First(v => v.Name == CommonVariableNames.MaximumProtocolConnections.ToString()).ToType<String>());
+            Assert.AreEqual("value", variables.Get(CommonVariableNames.MaximumProtocolConnections, string.Empty));
+            Assert.AreEqual("value", variables.FlashVariables.Values.First(v => v.Name == CommonVariableNames.MaximumProtocolConnections.ToString()).ToType<string>());
         }
 
         /// <summary>
@@ -98,21 +98,21 @@ namespace Potato.Core.Test.Variables {
             var variables = new VariableController();
 
             // Set an archive variable
-            ICommandResult result = variables.Tunnel(CommandBuilder.VariablesSetF("key", "value").SetOrigin(CommandOrigin.Local));
+            var result = variables.Tunnel(CommandBuilder.VariablesSetF("key", "value").SetOrigin(CommandOrigin.Local));
 
             // Validate that initially setting the VariableModel is successful.
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
-            Assert.AreEqual("value", variables.Get("key", String.Empty));
-            Assert.AreEqual("value", variables.FlashVariables.Values.First(v => v.Name == "key").ToType<String>());
+            Assert.AreEqual("value", variables.Get("key", string.Empty));
+            Assert.AreEqual("value", variables.FlashVariables.Values.First(v => v.Name == "key").ToType<string>());
 
             result = variables.Tunnel(CommandBuilder.VariablesSetF("key", "changed value").SetOrigin(CommandOrigin.Local));
 
             // Validate that we changed changed an existing VariableModel value.
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
-            Assert.AreEqual("changed value", variables.Get("key", String.Empty));
-            Assert.AreEqual("changed value", variables.FlashVariables.Values.First(v => v.Name == "key").ToType<String>());
+            Assert.AreEqual("changed value", variables.Get("key", string.Empty));
+            Assert.AreEqual("changed value", variables.FlashVariables.Values.First(v => v.Name == "key").ToType<string>());
         }
 
         /// <summary>

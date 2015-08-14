@@ -32,7 +32,7 @@ namespace Potato.Core.Shared.Models {
         /// <summary>
         /// The raw text that was used to discover the match
         /// </summary>
-        public String Text { get; set; }
+        public string Text { get; set; }
 
         /// <summary>
         /// How long they want the command to be in effect, if applicable.
@@ -70,7 +70,7 @@ namespace Potato.Core.Shared.Models {
         /// needed.
         /// text @= "Hello"World!"
         /// match = "Hello\"World!"</remarks>
-        public List<String> Quotes { get; set; }
+        public List<string> Quotes { get; set; }
 
         /// <summary>
         /// List of matched players found in the text by name
@@ -86,7 +86,7 @@ namespace Potato.Core.Shared.Models {
 
         public override int GetHashCode() {
             unchecked {
-                int hashCode = (Prefix != null ? Prefix.GetHashCode() : 0);
+                var hashCode = (Prefix != null ? Prefix.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Text != null ? Text.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ Period.GetHashCode();
                 hashCode = (hashCode * 397) ^ Delay.GetHashCode();

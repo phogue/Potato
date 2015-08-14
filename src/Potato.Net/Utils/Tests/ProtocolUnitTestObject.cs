@@ -27,7 +27,7 @@ namespace Potato.Net.Utils.Tests {
         /// <summary>
         /// A basic text string with no regex.
         /// </summary>
-        public String Text;
+        public string Text;
 
         [XmlIgnore]
         public Regex Regex { get; set; }
@@ -38,12 +38,12 @@ namespace Potato.Net.Utils.Tests {
         /// </summary>
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
         [XmlElement(DataType = "string", ElementName = "Regex")]
-        public String RegexString {
+        public string RegexString {
             get {
-                return this.Regex != null ? this.Regex.ToString() : String.Empty;
+                return Regex != null ? Regex.ToString() : string.Empty;
             }
             set {
-                this.Regex = String.IsNullOrEmpty(value) == false ? new Regex(value, RegexOptions.Compiled) : null;
+                Regex = string.IsNullOrEmpty(value) == false ? new Regex(value, RegexOptions.Compiled) : null;
             }
         }
 
@@ -51,7 +51,7 @@ namespace Potato.Net.Utils.Tests {
         /// The plain text or regular expression to use when replacing.
         /// </summary>
         [OptionalField]
-        public String Replace;
+        public string Replace;
 
         /// <summary>
         /// The plain text or regular expression to use when replacing.
@@ -61,32 +61,32 @@ namespace Potato.Net.Utils.Tests {
 
         public void ReplaceWith(ProtocolUnitTestObject replacement) {
 
-            if (String.IsNullOrEmpty(replacement.Text) == false) {
-                if (String.IsNullOrEmpty(this.Text) == false) {
+            if (string.IsNullOrEmpty(replacement.Text) == false) {
+                if (string.IsNullOrEmpty(Text) == false) {
 
-                    this.Text = this.Text.Replace(replacement.Text, replacement.Random != null ? replacement.Random.ToString() : replacement.Replace);
+                    Text = Text.Replace(replacement.Text, replacement.Random != null ? replacement.Random.ToString() : replacement.Replace);
                 }
             }
         }
 
-        public bool Matches(String text) {
-            bool matches = false;
+        public bool Matches(string text) {
+            var matches = false;
 
-            if (String.IsNullOrEmpty(this.Text) == false) {
-                matches = System.String.CompareOrdinal(this.Text, text) == 0;
+            if (string.IsNullOrEmpty(Text) == false) {
+                matches = string.CompareOrdinal(Text, text) == 0;
             }
-            else if (this.Regex != null) {
-                matches = this.Regex.IsMatch(text);
+            else if (Regex != null) {
+                matches = Regex.IsMatch(text);
             }
 
             return matches;
         }
 
         public void Dispose() {
-            this.Text = null;
-            this.Regex = null;
-            this.Replace = null;
-            if (this.Random != null) this.Random.Dispose();
+            Text = null;
+            Regex = null;
+            Replace = null;
+            if (Random != null) Random.Dispose();
         }
     }
 }

@@ -35,10 +35,10 @@ namespace Potato.Net.Shared {
         /// Initializes the event with the default values.
         /// </summary>
         public ClientEventArgs() {
-            this.Stamp = DateTime.Now;
+            Stamp = DateTime.Now;
 
-            this.Then = new ClientEventData();
-            this.Now = new ClientEventData();
+            Then = new ClientEventData();
+            Now = new ClientEventData();
         }
     }
 }

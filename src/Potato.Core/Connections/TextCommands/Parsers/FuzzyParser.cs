@@ -43,14 +43,14 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
         /// <summary>
         /// Dictionary of cached property info fetches. Minor optimization.
         /// </summary>
-        protected Dictionary<String, PropertyInfo> PropertyInfoCache = new Dictionary<string, PropertyInfo>();
+        protected Dictionary<string, PropertyInfo> PropertyInfoCache = new Dictionary<string, PropertyInfo>();
 
         protected int MinimumSimilarity(int lower, int upper, int maximumLength, int itemLength) {
             return lower + (upper - lower) * (itemLength / maximumLength);
         }
 
         protected void ParseMapNames(Phrase phrase) {
-            var mapNames = this.Connection.ProtocolState.MapPool.Values.Select(map => new {
+            var mapNames = Connection.ProtocolState.MapPool.Values.Select(map => new {
                 map,
                 Similarity = Math.Max(map.FriendlyName.DePluralStringSimularity(phrase.Text), map.Name.DePluralStringSimularity(phrase.Text))
             })
@@ -66,7 +66,7 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
                 MinimumWeightedSimilarity = 60
             });
 
-            List<Token> names = new List<Token>();
+            var names = new List<Token>();
             mapNames.ToList().ForEach(names.Add);
 
             phrase.AppendDistinctRange(names);
@@ -75,13 +75,13 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
         protected void ParsePlayerNames(Phrase phrase) {
 
             // We should cache this some where.
-            int maximumNameLength = this.Connection.ProtocolState.Players.Count > 0 ? this.Connection.ProtocolState.Players.Values.Max(player => player.Name.Length) : 0;
+            var maximumNameLength = Connection.ProtocolState.Players.Count > 0 ? Connection.ProtocolState.Players.Values.Max(player => player.Name.Length) : 0;
 
-            var playerNames = this.Connection.ProtocolState.Players.Values.Select(player => new {
+            var playerNames = Connection.ProtocolState.Players.Values.Select(player => new {
                 player,
                 Similarity = Math.Max(player.NameStripped.DePluralStringSimularity(phrase.Text), player.Name.DePluralStringSimularity(phrase.Text))
             })
-            .Where(@t => @t.Similarity >= this.MinimumSimilarity(55, 70, maximumNameLength, @t.player.Name.Length))
+            .Where(@t => @t.Similarity >= MinimumSimilarity(55, 70, maximumNameLength, @t.player.Name.Length))
             .Select(@t => new ThingObjectToken() {
                 Reference = new PlayerThingReference() {
                     Players = new List<PlayerModel>() {
@@ -93,14 +93,14 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
                 MinimumWeightedSimilarity = 55
             });
 
-            List<Token> names = new List<Token>();
+            var names = new List<Token>();
             playerNames.ToList().ForEach(names.Add);
 
             phrase.AppendDistinctRange(names);
         }
 
         protected void ParseCountryNames(Phrase phrase) {
-            var playerCountries = this.Connection.ProtocolState.Players.Values.Select(player => new {
+            var playerCountries = Connection.ProtocolState.Players.Values.Select(player => new {
                 player,
                 Similarity = player.Location.CountryName.StringSimularitySubsetBonusRatio(phrase.Text)
             })
@@ -116,7 +116,7 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
                 MinimumWeightedSimilarity = 60
             });
 
-            List<Token> names = new List<Token>();
+            var names = new List<Token>();
             playerCountries.ToList().ForEach(names.Add);
 
             phrase.AppendDistinctRange(names);
@@ -126,7 +126,7 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
             // Select all items that match our phrase. We don't deal with
             // items individually as many items share many tags, so you'll always need to deal
             // with them as sets.
-            var items = this.Connection.ProtocolState.Items.Values.Select(item => new {
+            var items = Connection.ProtocolState.Items.Values.Select(item => new {
                 item,
                 Similarity = Math.Max(item.FriendlyName.StringSimularitySubsetBonusRatio(phrase.Text), item.Tags.Select(tag => tag.StringSimularitySubsetBonusRatio(phrase.Text)).Max())
             }).Where(@t => @t.Similarity >= 60)
@@ -150,32 +150,32 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
         public Phrase ParseThing(IFuzzyState state, Phrase phrase) {
 
             if (phrase.Any()) {
-                ThingObjectToken thing = phrase.First() as ThingObjectToken;
+                var thing = phrase.First() as ThingObjectToken;
 
                 if (thing != null) {
                     if (thing.Name == "Players") {
                         thing.Reference = new PlayerThingReference() {
-                            Players = new List<PlayerModel>(this.Connection.ProtocolState.Players.Values)
+                            Players = new List<PlayerModel>(Connection.ProtocolState.Players.Values)
                         };
                     }
                     else if (thing.Name == "Maps") {
                         thing.Reference = new MapThingReference() {
-                            Maps = new List<MapModel>(this.Connection.ProtocolState.MapPool.Values)
+                            Maps = new List<MapModel>(Connection.ProtocolState.MapPool.Values)
                         };
                     }
                 }
             }
 
-            this.ParsePlayerNames(phrase);
-            this.ParseMapNames(phrase);
-            this.ParseCountryNames(phrase);
-            this.ParseItemNames(phrase);
+            ParsePlayerNames(phrase);
+            ParseMapNames(phrase);
+            ParseCountryNames(phrase);
+            ParseItemNames(phrase);
 
             return phrase;
         }
 
         private float MaximumLevenshtein(string argument, List<string> commands) {
-            float max = 0.0F;
+            var max = 0.0F;
 
             commands.ForEach(x => max = Math.Max(max, x.StringSimularitySubsetBonusRatio(argument)));
 
@@ -183,9 +183,9 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
         }
 
         public Phrase ParseMethod(IFuzzyState state, Phrase phrase) {
-            var methods = this.TextCommands.Select(textCommand => new {
+            var methods = TextCommands.Select(textCommand => new {
                 textCommand,
-                similarity = this.MaximumLevenshtein(phrase.Text, textCommand.Commands)
+                similarity = MaximumLevenshtein(phrase.Text, textCommand.Commands)
             })
             .Where(@t => @t.similarity >= 60)
             .Select(@t => new MethodObjectToken() {
@@ -195,7 +195,7 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
                 MinimumWeightedSimilarity = 60
             });
 
-            List<Token> names = new List<Token>();
+            var names = new List<Token>();
             methods.ToList().ForEach(names.Add);
             phrase.AppendDistinctRange(names);
 
@@ -232,10 +232,10 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
         /// <param name="selfThing"></param>
         /// <returns></returns>
         public SelfReflectionThingObjectToken ParseSelfReflectionThing(IFuzzyState state, SelfReflectionThingObjectToken selfThing) {
-            if (this.SpeakerPlayer != null) {
+            if (SpeakerPlayer != null) {
                 selfThing.Reference = new PlayerThingReference() {
                     Players = new List<PlayerModel>() {
-                        this.SpeakerPlayer
+                        SpeakerPlayer
                     }
                 };
             }
@@ -246,10 +246,10 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
         private List<TextCommandModel> ExtractCommandList(Sentence sentence) {
 
             // We need to know this method ahead of time so we can clear all other tokens in this phrase.
-            MethodObjectToken mainMethod = sentence.ExtractFirstOrDefault<MethodObjectToken>();
-            List<MethodObjectToken> resultMethodList = new List<MethodObjectToken>();
+            var mainMethod = sentence.ExtractFirstOrDefault<MethodObjectToken>();
+            var resultMethodList = new List<MethodObjectToken>();
 
-            foreach (Phrase phrase in sentence) {
+            foreach (var phrase in sentence) {
 
                 if (phrase.Count > 0 && phrase[0] == mainMethod) {
                     // Only bubble up very close matching arguments.
@@ -267,7 +267,7 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
                                                .ThenByDescending(token => token.Text.Length)
                                                .ToList();
 
-            List<TextCommandModel> results = resultMethodList.Select(method => this.TextCommands.Find(command => command.PluginCommand == method.MethodName)).Where(command => command != null).ToList();
+            var results = resultMethodList.Select(method => TextCommands.Find(command => command.PluginCommand == method.MethodName)).Where(command => command != null).ToList();
 
             return results.OrderByDescending(token => token.Priority).ToList();
         }
@@ -279,7 +279,7 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
         /// <param name="sentence"></param>
         /// <returns></returns>
         public List<T> ExtractThings<T>(Sentence sentence) where T : IThingReference {
-            List<T> things = sentence.ScrapeStrictList<ThingObjectToken>().Where(token => token.Reference is T).Select(token => token.Reference).Cast<T>().ToList();
+            var things = sentence.ScrapeStrictList<ThingObjectToken>().Where(token => token.Reference is T).Select(token => token.Reference).Cast<T>().ToList();
 
             things.AddRange(sentence.ScrapeStrictList<SelfReflectionThingObjectToken>().Where(token => token.Reference is T).Select(token => token.Reference).Cast<T>());
             
@@ -289,7 +289,7 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
         protected TextCommandIntervalModel ExtractTextCommandInterval(Sentence sentence) {
             TextCommandIntervalModel interval = null;
 
-            FuzzyDateTimePattern pattern = sentence.ExtractList<TemporalToken>().Where(token => token.Pattern != null && token.Pattern.Modifier == TimeModifier.Interval)
+            var pattern = sentence.ExtractList<TemporalToken>().Where(token => token.Pattern != null && token.Pattern.Modifier == TimeModifier.Interval)
                                            .Select(token => token.Pattern)
                                            .FirstOrDefault();
 
@@ -310,21 +310,21 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
         }
 
         public override ICommandResult Parse(string prefix, string text) {
-            Sentence sentence = new Sentence().Parse(this, text).Reduce(this);
+            var sentence = new Sentence().Parse(this, text).Reduce(this);
 
             ICommandResult result = null;
 
-            List<TextCommandModel> commands = this.ExtractCommandList(sentence);
-            TextCommandModel priorityCommand = commands.FirstOrDefault();
+            var commands = ExtractCommandList(sentence);
+            var priorityCommand = commands.FirstOrDefault();
 
-            List<String> quotes = sentence.Where(token => token.Count > 0 && token[0] is StringPrimitiveToken).Select(token => token[0].Text).ToList();
+            var quotes = sentence.Where(token => token.Count > 0 && token[0] is StringPrimitiveToken).Select(token => token[0].Text).ToList();
 
-            List<TemporalToken> timeTokens = sentence.ExtractList<TemporalToken>();
-            DateTime? delay = timeTokens.Where(token => token.Pattern != null && token.Pattern.Modifier == TimeModifier.Delay)
+            var timeTokens = sentence.ExtractList<TemporalToken>();
+            var delay = timeTokens.Where(token => token.Pattern != null && token.Pattern.Modifier == TimeModifier.Delay)
                                         .Select(token => token.Pattern.ToDateTime())
                                         .FirstOrDefault();
 
-            TimeSpan? period = timeTokens.Where(token => token.Pattern != null && (token.Pattern.Modifier == TimeModifier.Period || token.Pattern.Modifier == TimeModifier.None))
+            var period = timeTokens.Where(token => token.Pattern != null && (token.Pattern.Modifier == TimeModifier.Period || token.Pattern.Modifier == TimeModifier.None))
                                          .Select(token => token.Pattern.ToTimeSpan())
                                          .FirstOrDefault();
             
@@ -337,7 +337,7 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
                     CommandResultType = CommandResultType.Success,
                     Now = new CommandData() {
                         Players = new List<PlayerModel>() {
-                            this.SpeakerPlayer
+                            SpeakerPlayer
                         },
                         TextCommands = new List<TextCommandModel>() {
                             priorityCommand
@@ -347,12 +347,12 @@ namespace Potato.Core.Connections.TextCommands.Parsers {
                         TextCommandMatches = new List<TextCommandMatchModel>() {
                             new TextCommandMatchModel() {
                                 Prefix = prefix,
-                                Players = this.ExtractThings<PlayerThingReference>(sentence).SelectMany(thing => thing.Players).ToList(),
-                                Maps = this.ExtractThings<MapThingReference>(sentence).SelectMany(thing => thing.Maps).ToList(),
+                                Players = ExtractThings<PlayerThingReference>(sentence).SelectMany(thing => thing.Players).ToList(),
+                                Maps = ExtractThings<MapThingReference>(sentence).SelectMany(thing => thing.Maps).ToList(),
                                 Numeric = sentence.ExtractList<FloatNumericPrimitiveToken>().Select(token => token.ToFloat()).ToList(),
                                 Delay = delay,
                                 Period = period,
-                                Interval = this.ExtractTextCommandInterval(sentence),
+                                Interval = ExtractTextCommandInterval(sentence),
                                 Text = text,
                                 Quotes = quotes
                             }

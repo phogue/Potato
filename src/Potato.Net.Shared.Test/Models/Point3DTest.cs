@@ -25,7 +25,7 @@ namespace Potato.Net.Shared.Test.Models {
         /// </summary>
         [Test]
         public void TestPointZeroed() {
-            Point3DModel point = new Point3DModel();
+            var point = new Point3DModel();
 
             Assert.AreEqual(0, point.X);
             Assert.AreEqual(0, point.Y);
@@ -37,7 +37,7 @@ namespace Potato.Net.Shared.Test.Models {
         /// </summary>
         [Test]
         public void TestPointParsed() {
-            Point3DModel point = new Point3DModel("1", "2", "3");
+            var point = new Point3DModel("1", "2", "3");
 
             Assert.AreEqual(1, point.X);
             Assert.AreEqual(2, point.Y);

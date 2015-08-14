@@ -54,7 +54,7 @@ namespace Potato.Service.Shared.Test {
         /// </summary>
         [Test]
         public void TestToArgumentsEmptyList() {
-            var arguments = ArgumentHelper.ToArguments(new List<String>());
+            var arguments = ArgumentHelper.ToArguments(new List<string>());
 
             Assert.IsEmpty(arguments);
         }
@@ -64,7 +64,7 @@ namespace Potato.Service.Shared.Test {
         /// </summary>
         [Test]
         public void TestToArgumentsEmptySingleValueInList() {
-            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+            var arguments = ArgumentHelper.ToArguments(new List<string>() {
                 ""
             });
 
@@ -76,7 +76,7 @@ namespace Potato.Service.Shared.Test {
         /// </summary>
         [Test]
         public void TestToArgumentsEmptyKeyAtEnd() {
-            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+            var arguments = ArgumentHelper.ToArguments(new List<string>() {
                 "-key",
                 "value",
                 ""
@@ -91,7 +91,7 @@ namespace Potato.Service.Shared.Test {
         /// </summary>
         [Test]
         public void TestToArgumentsEmptyKeyAtStart() {
-            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+            var arguments = ArgumentHelper.ToArguments(new List<string>() {
                 "",
                 "-key",
                 "value"
@@ -106,7 +106,7 @@ namespace Potato.Service.Shared.Test {
         /// </summary>
         [Test]
         public void TestToArgumentsEmptyKeySandwich() {
-            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+            var arguments = ArgumentHelper.ToArguments(new List<string>() {
                 "-key1",
                 "value1",
                 "",
@@ -125,7 +125,7 @@ namespace Potato.Service.Shared.Test {
         /// </summary>
         [Test]
         public void TestToArgumentsImpliedFlagEnabled() {
-            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+            var arguments = ArgumentHelper.ToArguments(new List<string>() {
                 "-key"
             });
 
@@ -139,7 +139,7 @@ namespace Potato.Service.Shared.Test {
         /// </summary>
         [Test]
         public void TestToArgumentsImpliedFlagEnabledUpdate() {
-            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+            var arguments = ArgumentHelper.ToArguments(new List<string>() {
                 "-key",
                 "value",
                 "-key"
@@ -154,7 +154,7 @@ namespace Potato.Service.Shared.Test {
         /// </summary>
         [Test]
         public void TestToArgumentsExplicitValue() {
-            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+            var arguments = ArgumentHelper.ToArguments(new List<string>() {
                 "-key",
                 "value"
             });
@@ -169,7 +169,7 @@ namespace Potato.Service.Shared.Test {
         /// </summary>
         [Test]
         public void TestToArgumentsExplicitValueUpdate() {
-            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+            var arguments = ArgumentHelper.ToArguments(new List<string>() {
                 "-key",
                 "value1",
                 "-key",
@@ -187,7 +187,7 @@ namespace Potato.Service.Shared.Test {
         /// </summary>
         [Test]
         public void TestToArgumentsExplicitValueUpdateCaseInsensitive() {
-            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+            var arguments = ArgumentHelper.ToArguments(new List<string>() {
                 "-key",
                 "value1",
                 "-Key",
@@ -209,7 +209,7 @@ namespace Potato.Service.Shared.Test {
         /// </remarks>
         [Test]
         public void TestToArgumentsMultipleValuesGeneratedKey() {
-            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+            var arguments = ArgumentHelper.ToArguments(new List<string>() {
                 "-key1",
                 "value1",
                 "generated0",
@@ -227,7 +227,7 @@ namespace Potato.Service.Shared.Test {
         /// </summary>
         [Test]
         public void TestToArgumentsMultipleValuesGeneratedKeySuffixedWithSetKey() {
-            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+            var arguments = ArgumentHelper.ToArguments(new List<string>() {
                 "-key1",
                 "value1",
                 "generated0",
@@ -247,7 +247,7 @@ namespace Potato.Service.Shared.Test {
         /// </summary>
         [Test]
         public void TestToArgumentsMultipleValuesGeneratedKeyPreviouslySet() {
-            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+            var arguments = ArgumentHelper.ToArguments(new List<string>() {
                 "-0",
                 "value0",
                 "generated0"
@@ -263,7 +263,7 @@ namespace Potato.Service.Shared.Test {
         /// </summary>
         [Test]
         public void TestToArgumentsAlphaKeysValuesOrderingMaintained() {
-            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+            var arguments = ArgumentHelper.ToArguments(new List<string>() {
                 "-a",
                 "A",
                 "-b",
@@ -272,7 +272,7 @@ namespace Potato.Service.Shared.Test {
                 "C"
             });
 
-            List<String> values = new List<String>(arguments.Values);
+            var values = new List<string>(arguments.Values);
 
             Assert.AreEqual("A", values[0]);
             Assert.AreEqual("B", values[1]);
@@ -284,7 +284,7 @@ namespace Potato.Service.Shared.Test {
         /// </summary>
         [Test]
         public void TestToArgumentsAlphaKeysValuesOrderingSorted() {
-            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+            var arguments = ArgumentHelper.ToArguments(new List<string>() {
                 "-a",
                 "A",
                 "-c",
@@ -293,7 +293,7 @@ namespace Potato.Service.Shared.Test {
                 "B"
             });
 
-            List<String> values = new List<String>(arguments.Values);
+            var values = new List<string>(arguments.Values);
 
             Assert.AreEqual("A", values[0]);
             Assert.AreEqual("B", values[1]);
@@ -305,7 +305,7 @@ namespace Potato.Service.Shared.Test {
         /// </summary>
         [Test]
         public void TestToArgumentsNumericKeysValuesOrderingMaintained() {
-            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+            var arguments = ArgumentHelper.ToArguments(new List<string>() {
                 "-1",
                 "A",
                 "-2",
@@ -314,7 +314,7 @@ namespace Potato.Service.Shared.Test {
                 "C"
             });
 
-            List<String> values = new List<String>(arguments.Values);
+            var values = new List<string>(arguments.Values);
 
             Assert.AreEqual("A", values[0]);
             Assert.AreEqual("B", values[1]);
@@ -326,7 +326,7 @@ namespace Potato.Service.Shared.Test {
         /// </summary>
         [Test]
         public void TestToArgumentsNumericKeysValuesOrderingSorted() {
-            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+            var arguments = ArgumentHelper.ToArguments(new List<string>() {
                 "-1",
                 "A",
                 "-3",
@@ -335,7 +335,7 @@ namespace Potato.Service.Shared.Test {
                 "B"
             });
 
-            List<String> values = new List<String>(arguments.Values);
+            var values = new List<string>(arguments.Values);
 
             Assert.AreEqual("A", values[0]);
             Assert.AreEqual("B", values[1]);
@@ -347,7 +347,7 @@ namespace Potato.Service.Shared.Test {
         /// </summary>
         [Test]
         public void TestScrubAlphaNumericKeysUnchangedWhenOnlyNumeric() {
-            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+            var arguments = ArgumentHelper.ToArguments(new List<string>() {
                 "A",
                 "B",
                 "C"
@@ -355,7 +355,7 @@ namespace Potato.Service.Shared.Test {
 
             arguments = ArgumentHelper.ScrubAlphaNumericKeys(arguments);
 
-            List<String> values = new List<String>(arguments.Values);
+            var values = new List<string>(arguments.Values);
 
             Assert.AreEqual("A", values[0]);
             Assert.AreEqual("B", values[1]);
@@ -367,7 +367,7 @@ namespace Potato.Service.Shared.Test {
         /// </summary>
         [Test]
         public void TestScrubAlphaNumericKeysRemovedNonNumericKeys() {
-            var arguments = ArgumentHelper.ToArguments(new List<String>() {
+            var arguments = ArgumentHelper.ToArguments(new List<string>() {
                 "--Password",
                 "mySecretPassword",
                 "A",
@@ -377,7 +377,7 @@ namespace Potato.Service.Shared.Test {
 
             arguments = ArgumentHelper.ScrubAlphaNumericKeys(arguments);
 
-            List<String> values = new List<String>(arguments.Values);
+            var values = new List<string>(arguments.Values);
 
             Assert.AreEqual("A", values[0]);
             Assert.AreEqual("B", values[1]);

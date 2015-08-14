@@ -32,9 +32,9 @@ namespace Potato.Examples.Plugins.UserInterface.Pages
     {
         public virtual string TransformText()
         {
-            this.Write("Hey, this is the index of my plugin. The first page people will see! Check out th" +
+            Write("Hey, this is the index of my plugin. The first page people will see! Check out th" +
                     "e <a href=\"/settings\">Settings</a>.");
-            return this.GenerationEnvironment.ToString();
+            return GenerationEnvironment.ToString();
         }
     }
     
@@ -63,15 +63,15 @@ namespace Potato.Examples.Plugins.UserInterface.Pages
         {
             get
             {
-                if ((this.generationEnvironmentField == null))
+                if ((generationEnvironmentField == null))
                 {
-                    this.generationEnvironmentField = new global::System.Text.StringBuilder();
+                    generationEnvironmentField = new global::System.Text.StringBuilder();
                 }
-                return this.generationEnvironmentField;
+                return generationEnvironmentField;
             }
             set
             {
-                this.generationEnvironmentField = value;
+                generationEnvironmentField = value;
             }
         }
         /// <summary>
@@ -81,11 +81,11 @@ namespace Potato.Examples.Plugins.UserInterface.Pages
         {
             get
             {
-                if ((this.errorsField == null))
+                if ((errorsField == null))
                 {
-                    this.errorsField = new global::System.CodeDom.Compiler.CompilerErrorCollection();
+                    errorsField = new global::System.CodeDom.Compiler.CompilerErrorCollection();
                 }
-                return this.errorsField;
+                return errorsField;
             }
         }
         /// <summary>
@@ -95,11 +95,11 @@ namespace Potato.Examples.Plugins.UserInterface.Pages
         {
             get
             {
-                if ((this.indentLengthsField == null))
+                if ((indentLengthsField == null))
                 {
-                    this.indentLengthsField = new global::System.Collections.Generic.List<int>();
+                    indentLengthsField = new global::System.Collections.Generic.List<int>();
                 }
-                return this.indentLengthsField;
+                return indentLengthsField;
             }
         }
         /// <summary>
@@ -109,7 +109,7 @@ namespace Potato.Examples.Plugins.UserInterface.Pages
         {
             get
             {
-                return this.currentIndentField;
+                return currentIndentField;
             }
         }
         /// <summary>
@@ -119,11 +119,11 @@ namespace Potato.Examples.Plugins.UserInterface.Pages
         {
             get
             {
-                return this.sessionField;
+                return sessionField;
             }
             set
             {
-                this.sessionField = value;
+                sessionField = value;
             }
         }
         #endregion
@@ -139,35 +139,35 @@ namespace Potato.Examples.Plugins.UserInterface.Pages
             }
             // If we're starting off, or if the previous text ended with a newline,
             // we have to append the current indent first.
-            if (((this.GenerationEnvironment.Length == 0) 
-                        || this.endsWithNewline))
+            if (((GenerationEnvironment.Length == 0) 
+                        || endsWithNewline))
             {
-                this.GenerationEnvironment.Append(this.currentIndentField);
-                this.endsWithNewline = false;
+                GenerationEnvironment.Append(currentIndentField);
+                endsWithNewline = false;
             }
             // Check if the current text ends with a newline
             if (textToAppend.EndsWith(global::System.Environment.NewLine, global::System.StringComparison.CurrentCulture))
             {
-                this.endsWithNewline = true;
+                endsWithNewline = true;
             }
             // This is an optimization. If the current indent is "", then we don't have to do any
             // of the more complex stuff further down.
-            if ((this.currentIndentField.Length == 0))
+            if ((currentIndentField.Length == 0))
             {
-                this.GenerationEnvironment.Append(textToAppend);
+                GenerationEnvironment.Append(textToAppend);
                 return;
             }
             // Everywhere there is a newline in the text, add an indent after it
-            textToAppend = textToAppend.Replace(global::System.Environment.NewLine, (global::System.Environment.NewLine + this.currentIndentField));
+            textToAppend = textToAppend.Replace(global::System.Environment.NewLine, (global::System.Environment.NewLine + currentIndentField));
             // If the text ends with a newline, then we should strip off the indent added at the very end
             // because the appropriate indent will be added when the next time Write() is called
-            if (this.endsWithNewline)
+            if (endsWithNewline)
             {
-                this.GenerationEnvironment.Append(textToAppend, 0, (textToAppend.Length - this.currentIndentField.Length));
+                GenerationEnvironment.Append(textToAppend, 0, (textToAppend.Length - currentIndentField.Length));
             }
             else
             {
-                this.GenerationEnvironment.Append(textToAppend);
+                GenerationEnvironment.Append(textToAppend);
             }
         }
         /// <summary>
@@ -175,42 +175,42 @@ namespace Potato.Examples.Plugins.UserInterface.Pages
         /// </summary>
         public void WriteLine(string textToAppend)
         {
-            this.Write(textToAppend);
-            this.GenerationEnvironment.AppendLine();
-            this.endsWithNewline = true;
+            Write(textToAppend);
+            GenerationEnvironment.AppendLine();
+            endsWithNewline = true;
         }
         /// <summary>
         /// Write formatted text directly into the generated output
         /// </summary>
         public void Write(string format, params object[] args)
         {
-            this.Write(string.Format(global::System.Globalization.CultureInfo.CurrentCulture, format, args));
+            Write(string.Format(global::System.Globalization.CultureInfo.CurrentCulture, format, args));
         }
         /// <summary>
         /// Write formatted text directly into the generated output
         /// </summary>
         public void WriteLine(string format, params object[] args)
         {
-            this.WriteLine(string.Format(global::System.Globalization.CultureInfo.CurrentCulture, format, args));
+            WriteLine(string.Format(global::System.Globalization.CultureInfo.CurrentCulture, format, args));
         }
         /// <summary>
         /// Raise an error
         /// </summary>
         public void Error(string message)
         {
-            System.CodeDom.Compiler.CompilerError error = new global::System.CodeDom.Compiler.CompilerError();
+            var error = new global::System.CodeDom.Compiler.CompilerError();
             error.ErrorText = message;
-            this.Errors.Add(error);
+            Errors.Add(error);
         }
         /// <summary>
         /// Raise a warning
         /// </summary>
         public void Warning(string message)
         {
-            System.CodeDom.Compiler.CompilerError error = new global::System.CodeDom.Compiler.CompilerError();
+            var error = new global::System.CodeDom.Compiler.CompilerError();
             error.ErrorText = message;
             error.IsWarning = true;
-            this.Errors.Add(error);
+            Errors.Add(error);
         }
         /// <summary>
         /// Increase the indent
@@ -221,23 +221,23 @@ namespace Potato.Examples.Plugins.UserInterface.Pages
             {
                 throw new global::System.ArgumentNullException("indent");
             }
-            this.currentIndentField = (this.currentIndentField + indent);
-            this.indentLengths.Add(indent.Length);
+            currentIndentField = (currentIndentField + indent);
+            indentLengths.Add(indent.Length);
         }
         /// <summary>
         /// Remove the last indent that was added with PushIndent
         /// </summary>
         public string PopIndent()
         {
-            string returnValue = "";
-            if ((this.indentLengths.Count > 0))
+            var returnValue = "";
+            if ((indentLengths.Count > 0))
             {
-                int indentLength = this.indentLengths[(this.indentLengths.Count - 1)];
-                this.indentLengths.RemoveAt((this.indentLengths.Count - 1));
+                var indentLength = indentLengths[(indentLengths.Count - 1)];
+                indentLengths.RemoveAt((indentLengths.Count - 1));
                 if ((indentLength > 0))
                 {
-                    returnValue = this.currentIndentField.Substring((this.currentIndentField.Length - indentLength));
-                    this.currentIndentField = this.currentIndentField.Remove((this.currentIndentField.Length - indentLength));
+                    returnValue = currentIndentField.Substring((currentIndentField.Length - indentLength));
+                    currentIndentField = currentIndentField.Remove((currentIndentField.Length - indentLength));
                 }
             }
             return returnValue;
@@ -247,8 +247,8 @@ namespace Potato.Examples.Plugins.UserInterface.Pages
         /// </summary>
         public void ClearIndent()
         {
-            this.indentLengths.Clear();
-            this.currentIndentField = "";
+            indentLengths.Clear();
+            currentIndentField = "";
         }
         #endregion
         #region ToString Helpers
@@ -265,13 +265,13 @@ namespace Potato.Examples.Plugins.UserInterface.Pages
             {
                 get
                 {
-                    return this.formatProviderField ;
+                    return formatProviderField ;
                 }
                 set
                 {
                     if ((value != null))
                     {
-                        this.formatProviderField  = value;
+                        formatProviderField  = value;
                     }
                 }
             }
@@ -284,8 +284,8 @@ namespace Potato.Examples.Plugins.UserInterface.Pages
                 {
                     throw new global::System.ArgumentNullException("objectToConvert");
                 }
-                System.Type t = objectToConvert.GetType();
-                System.Reflection.MethodInfo method = t.GetMethod("ToString", new System.Type[] {
+                var t = objectToConvert.GetType();
+                var method = t.GetMethod("ToString", new System.Type[] {
                             typeof(System.IFormatProvider)});
                 if ((method == null))
                 {
@@ -294,7 +294,7 @@ namespace Potato.Examples.Plugins.UserInterface.Pages
                 else
                 {
                     return ((string)(method.Invoke(objectToConvert, new object[] {
-                                this.formatProviderField })));
+                                formatProviderField })));
                 }
             }
         }
@@ -303,7 +303,7 @@ namespace Potato.Examples.Plugins.UserInterface.Pages
         {
             get
             {
-                return this.toStringHelperField;
+                return toStringHelperField;
             }
         }
         #endregion

@@ -36,7 +36,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
 
-            AccountModel account = security.GetAccount(new Command() {
+            var account = security.GetAccount(new Command() {
                 Authentication = {
                     GameType = CommonProtocolType.DiceBattlefield3,
                     Uid = "ABCDEF"
@@ -55,7 +55,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
 
-            AccountModel account = security.GetAccount(new Command() {
+            var account = security.GetAccount(new Command() {
                 Authentication = {
                     Username = "Phogue"
                 }
@@ -73,7 +73,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
 
-            AccountModel account = security.GetAccount(new Command() {
+            var account = security.GetAccount(new Command() {
                 Authentication = {
                     Username = "PHOGUE"
                 }
@@ -91,7 +91,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
 
-            AccountModel account = security.GetAccount(CommonProtocolType.DiceBattlefield3, "ABCDEF");
+            var account = security.GetAccount(CommonProtocolType.DiceBattlefield3, "ABCDEF");
 
             // Validate the account was fetched successfully
             Assert.IsNotNull(account);
@@ -105,7 +105,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
 
-            AccountModel account = security.GetAccount("Phogue");
+            var account = security.GetAccount("Phogue");
 
             // Validate the account was fetched successfully
             Assert.IsNotNull(account);
@@ -119,7 +119,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityGroupAddAccount("GroupName", "Phogue").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
 
-            AccountModel account = security.GetAccount("PHOGUE");
+            var account = security.GetAccount("PHOGUE");
 
             // Validate the account was fetched successfully
             Assert.IsNotNull(account);
@@ -128,7 +128,7 @@ namespace Potato.Core.Test.Security.Account {
 
         [Test]
         public void TestByTokenId() {
-            Guid tokenId = Guid.NewGuid();
+            var tokenId = Guid.NewGuid();
 
             var security = new SecurityController();
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
@@ -136,7 +136,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("Phogue", tokenId, "Token Hash", DateTime.Now).SetOrigin(CommandOrigin.Local));
 
-            AccountModel account = security.GetAccount(tokenId);
+            var account = security.GetAccount(tokenId);
 
             // Validate the account was fetched successfully
             Assert.IsNotNull(account);
@@ -148,7 +148,7 @@ namespace Potato.Core.Test.Security.Account {
         /// </summary>
         [Test]
         public void TestByTokenIdDoesNotExist() {
-            Guid tokenId = Guid.NewGuid();
+            var tokenId = Guid.NewGuid();
 
             var security = new SecurityController();
             security.Tunnel(CommandBuilder.SecurityAddGroup("GroupName").SetOrigin(CommandOrigin.Local));
@@ -156,7 +156,7 @@ namespace Potato.Core.Test.Security.Account {
             security.Tunnel(CommandBuilder.SecurityAccountAddPlayer("Phogue", CommonProtocolType.DiceBattlefield3, "ABCDEF").SetOrigin(CommandOrigin.Local));
             security.Tunnel(CommandBuilder.SecurityAccountAppendAccessToken("Phogue", tokenId, "Token Hash", DateTime.Now).SetOrigin(CommandOrigin.Local));
 
-            AccountModel account = security.GetAccount(Guid.NewGuid());
+            var account = security.GetAccount(Guid.NewGuid());
 
             // Validate the account was not found
             Assert.IsNull(account);

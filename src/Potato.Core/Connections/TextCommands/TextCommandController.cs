@@ -44,29 +44,29 @@ namespace Potato.Core.Connections.TextCommands {
         /// Creates new controller with the default attributes set
         /// </summary>
         public TextCommandController() {
-            this.Shared = new SharedReferences();
-            this.TextCommands = new List<TextCommandModel>();
+            Shared = new SharedReferences();
+            TextCommands = new List<TextCommandModel>();
 
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.TextCommandsExecute,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "text",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.TextCommandsExecute
+                    Handler = TextCommandsExecute
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.TextCommandsPreview,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "text",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.TextCommandsPreview
+                    Handler = TextCommandsPreview
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.TextCommandsRegister,
@@ -76,7 +76,7 @@ namespace Potato.Core.Connections.TextCommands {
                             Type = typeof(TextCommandModel)
                         }
                     },
-                    Handler = this.TextCommandsRegister
+                    Handler = TextCommandsRegister
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.TextCommandsUnregister,
@@ -86,7 +86,7 @@ namespace Potato.Core.Connections.TextCommands {
                             Type = typeof(TextCommandModel)
                         }
                     },
-                    Handler = this.TextCommandsUnregister
+                    Handler = TextCommandsUnregister
                 }
             });
         }
@@ -95,14 +95,14 @@ namespace Potato.Core.Connections.TextCommands {
         /// Does nothing.  Information about this object is handled via it's parent interface.
         /// </summary>
         public override void Dispose() {
-            foreach (TextCommandModel textCommand in this.TextCommands) {
+            foreach (var textCommand in TextCommands) {
                 textCommand.Dispose();
             }
 
-            this.TextCommands.Clear();
-            this.TextCommands = null;
+            TextCommands.Clear();
+            TextCommands = null;
 
-            this.Connection = null;
+            Connection = null;
 
             base.Dispose();
         }
@@ -116,16 +116,16 @@ namespace Potato.Core.Connections.TextCommands {
         protected ITextCommandParser BuildFuzzyParser(PlayerModel speaker, AccountModel speakerAccount) {
             LanguageConfig selectedLanguage = null;
 
-            if (speakerAccount != null && speakerAccount.PreferredLanguageCode != String.Empty) {
-                selectedLanguage = this.Shared.Languages.FindOptimalLanguageConfig(speakerAccount.PreferredLanguageCode);
+            if (speakerAccount != null && speakerAccount.PreferredLanguageCode != string.Empty) {
+                selectedLanguage = Shared.Languages.FindOptimalLanguageConfig(speakerAccount.PreferredLanguageCode);
             }
             else {
-                selectedLanguage = this.Shared.Languages.Default;
+                selectedLanguage = Shared.Languages.Default;
             }
 
             return new FuzzyParser() {
-                Connection = this.Connection,
-                TextCommands = this.TextCommands.Where(textCommand => textCommand.Parser == TextCommandParserType.Any || textCommand.Parser == TextCommandParserType.Fuzzy).ToList(),
+                Connection = Connection,
+                TextCommands = TextCommands.Where(textCommand => textCommand.Parser == TextCommandParserType.Any || textCommand.Parser == TextCommandParserType.Fuzzy).ToList(),
                 Document = selectedLanguage.Config.Document,
                 SpeakerPlayer = speaker,
                 SpeakerAccount = speakerAccount
@@ -140,8 +140,8 @@ namespace Potato.Core.Connections.TextCommands {
         /// <returns>The route parser, provided a language could be found.</returns>
         protected ITextCommandParser BuildRouteParser(PlayerModel speaker, AccountModel speakerAccount) {
             return new RouteParser() {
-                Connection = this.Connection,
-                TextCommands = this.TextCommands.Where(textCommand => textCommand.Parser == TextCommandParserType.Any || textCommand.Parser == TextCommandParserType.Route).ToList(),
+                Connection = Connection,
+                TextCommands = TextCommands.Where(textCommand => textCommand.Parser == TextCommandParserType.Any || textCommand.Parser == TextCommandParserType.Route).ToList(),
                 SpeakerPlayer = speaker,
                 SpeakerAccount = speakerAccount
             };
@@ -160,10 +160,10 @@ namespace Potato.Core.Connections.TextCommands {
         /// <param name="prefix"></param>
         /// <param name="text"></param>
         /// <returns>The generated event, if any.</returns>
-        protected ICommandResult Parse(PlayerModel speakerNetworkPlayer, AccountModel speakerAccount, String prefix, String text) {
-            List<ITextCommandParser> parsers = new List<ITextCommandParser>() {
-                this.BuildFuzzyParser(speakerNetworkPlayer, speakerAccount),
-                this.BuildRouteParser(speakerNetworkPlayer, speakerAccount)
+        protected ICommandResult Parse(PlayerModel speakerNetworkPlayer, AccountModel speakerAccount, string prefix, string text) {
+            var parsers = new List<ITextCommandParser>() {
+                BuildFuzzyParser(speakerNetworkPlayer, speakerAccount),
+                BuildRouteParser(speakerNetworkPlayer, speakerAccount)
             };
 
             return parsers.Select(parser => parser.Parse(prefix, text)).FirstOrDefault(result => result != null);
@@ -182,13 +182,13 @@ namespace Potato.Core.Connections.TextCommands {
         /// <param name="speaker"></param>
         /// <returns></returns>
         protected PlayerModel GetAccountNetworkPlayer(ICommand command, AccountModel speaker) {
-            PlayerModel player = this.Connection.ProtocolState.Players.Values.FirstOrDefault(p => p.Uid == command.Authentication.Uid);
+            var player = Connection.ProtocolState.Players.Values.FirstOrDefault(p => p.Uid == command.Authentication.Uid);
 
             if (speaker != null) {
-                AccountPlayerModel accountPlayer = speaker.Players.FirstOrDefault(p => p.ProtocolType == this.Connection.ConnectionModel.ProtocolType.Type);
+                var accountPlayer = speaker.Players.FirstOrDefault(p => p.ProtocolType == Connection.ConnectionModel.ProtocolType.Type);
 
                 if (accountPlayer != null) {
-                    player = this.Connection.ProtocolState.Players.Values.FirstOrDefault(p => p.Uid == accountPlayer.Uid);
+                    player = Connection.ProtocolState.Players.Values.FirstOrDefault(p => p.Uid == accountPlayer.Uid);
                 }
             }
 
@@ -201,27 +201,27 @@ namespace Potato.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns>The generated event, if any.</returns>
-        public ICommandResult TextCommandsExecute(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult TextCommandsExecute(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String text = parameters["text"].First<String>();
+            var text = parameters["text"].First<string>();
 
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                AccountModel speakerAccount = this.Shared.Security.GetAccount(command);
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var speakerAccount = Shared.Security.GetAccount(command);
 
                 // @todo pull the prefix from the text?
 
-                String prefix = this.Shared.Variables.Get<String>(CommonVariableNames.TextCommandPublicPrefix);
+                var prefix = Shared.Variables.Get<string>(CommonVariableNames.TextCommandPublicPrefix);
 
-                result = this.Parse(this.GetAccountNetworkPlayer(command, speakerAccount), speakerAccount, prefix, text);
+                result = Parse(GetAccountNetworkPlayer(command, speakerAccount), speakerAccount, prefix, text);
 
                 if (result != null) {
                     result.Scope = new CommandData() {
-                        Content = new List<String>() {
+                        Content = new List<string>() {
                             text
                         },
                         Connections = new List<ConnectionModel>() {
-                            this.Connection.ConnectionModel
+                            Connection.ConnectionModel
                         }
                     };
                 }
@@ -244,27 +244,27 @@ namespace Potato.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns>The generated event, if any.</returns>
-        public ICommandResult TextCommandsPreview(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult TextCommandsPreview(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String text = parameters["text"].First<String>();
+            var text = parameters["text"].First<string>();
 
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                AccountModel speakerAccount = this.Shared.Security.GetAccount(command);
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var speakerAccount = Shared.Security.GetAccount(command);
 
                 // @todo pull the prefix from the text?
 
-                String prefix = this.Shared.Variables.Get<String>(CommonVariableNames.TextCommandPublicPrefix);
+                var prefix = Shared.Variables.Get<string>(CommonVariableNames.TextCommandPublicPrefix);
 
-                result = this.Parse(this.GetAccountNetworkPlayer(command, speakerAccount), speakerAccount, prefix, text);
+                result = Parse(GetAccountNetworkPlayer(command, speakerAccount), speakerAccount, prefix, text);
 
                 if (result != null) {
                     result.Scope = new CommandData() {
-                        Content = new List<String>() {
+                        Content = new List<string>() {
                             text
                         },
                         Connections = new List<ConnectionModel>() {
-                            this.Connection.ConnectionModel
+                            Connection.ConnectionModel
                         }
                     };
                 }
@@ -285,23 +285,23 @@ namespace Potato.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult TextCommandsRegister(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult TextCommandsRegister(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            TextCommandModel textCommand = parameters["textCommand"].First<TextCommandModel>();
+            var textCommand = parameters["textCommand"].First<TextCommandModel>();
 
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                TextCommandModel existingRegisteredCommand = this.TextCommands.Find(existingCommand => existingCommand.PluginGuid == textCommand.PluginGuid && existingCommand.PluginCommand == textCommand.PluginCommand);
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var existingRegisteredCommand = TextCommands.Find(existingCommand => existingCommand.PluginGuid == textCommand.PluginGuid && existingCommand.PluginCommand == textCommand.PluginCommand);
 
                 if (existingRegisteredCommand == null) {
-                    this.TextCommands.Add(textCommand);
+                    TextCommands.Add(textCommand);
 
                     result = new CommandResult() {
                         Success = true,
                         CommandResultType = CommandResultType.Success,
                         Scope = {
                             Connections = new List<ConnectionModel>() {
-                                this.Connection != null ? this.Connection.ConnectionModel : null
+                                Connection != null ? Connection.ConnectionModel : null
                             }
                         },
                         Now = new CommandData() {
@@ -311,8 +311,8 @@ namespace Potato.Core.Connections.TextCommands {
                         }
                     };
 
-                    if (this.Shared.Events != null) {
-                        this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.TextCommandRegistered));
+                    if (Shared.Events != null) {
+                        Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.TextCommandRegistered));
                     }
                 }
                 else {
@@ -335,23 +335,23 @@ namespace Potato.Core.Connections.TextCommands {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult TextCommandsUnregister(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult TextCommandsUnregister(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            TextCommandModel textCommand = parameters["textCommand"].First<TextCommandModel>();
+            var textCommand = parameters["textCommand"].First<TextCommandModel>();
 
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                TextCommandModel existingRegisteredCommand = this.TextCommands.Find(existingCommand => existingCommand.PluginGuid == textCommand.PluginGuid && existingCommand.PluginCommand == textCommand.PluginCommand);
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var existingRegisteredCommand = TextCommands.Find(existingCommand => existingCommand.PluginGuid == textCommand.PluginGuid && existingCommand.PluginCommand == textCommand.PluginCommand);
 
                 if (existingRegisteredCommand != null) {
-                    this.TextCommands.Remove(existingRegisteredCommand);
+                    TextCommands.Remove(existingRegisteredCommand);
 
                     result = new CommandResult() {
                         Success = true,
                         CommandResultType = CommandResultType.Success,
                         Scope = {
                             Connections = new List<ConnectionModel>() {
-                                this.Connection != null ? this.Connection.ConnectionModel : null
+                                Connection != null ? Connection.ConnectionModel : null
                             }
                         },
                         Now = new CommandData() {
@@ -361,8 +361,8 @@ namespace Potato.Core.Connections.TextCommands {
                         }
                     };
 
-                    if (this.Shared.Events != null) {
-                        this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.TextCommandUnregistered));
+                    if (Shared.Events != null) {
+                        Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.TextCommandUnregistered));
                     }
                 }
                 else {

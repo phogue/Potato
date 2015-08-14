@@ -26,9 +26,9 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestSingleDocumentNotNull() {
-            File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
+            File.WriteAllText(ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
 
-            IConfig config = new Config().Load(this.ConfigFileA.Directory);
+            var config = new Config().Load(ConfigFileA.Directory);
 
             Assert.IsNotNull(config.Document);
         }
@@ -38,9 +38,9 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestSingleRootNotNull() {
-            File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
+            File.WriteAllText(ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
 
-            IConfig config = new Config().Load(this.ConfigFileA.Directory);
+            var config = new Config().Load(ConfigFileA.Directory);
 
             Assert.IsNotNull(config.Root);
         }
@@ -50,11 +50,11 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestSingleRootSetToFilePath() {
-            File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
+            File.WriteAllText(ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
 
-            IConfig config = new Config().Load(this.ConfigFileA.Directory);
+            var config = new Config().Load(ConfigFileA.Directory);
 
-            Assert.AreEqual("Phogue", config.Root.First["Name"].Value<String>());
+            Assert.AreEqual("Phogue", config.Root.First["Name"].Value<string>());
             Assert.AreEqual(100, config.Root.First["Age"].Value<int>());
         }
 
@@ -63,10 +63,10 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestUnionedDocumentNotNull() {
-            File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
-            File.WriteAllText(this.ConfigFileB.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.AlternativeName"": [ { ""Name"":""Ike"", ""Age"": 10  } ] }");
+            File.WriteAllText(ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
+            File.WriteAllText(ConfigFileB.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.AlternativeName"": [ { ""Name"":""Ike"", ""Age"": 10  } ] }");
 
-            IConfig config = new Config().Load(this.ConfigFileA.Directory);
+            var config = new Config().Load(ConfigFileA.Directory);
 
             Assert.IsNotNull(config.Document);
         }
@@ -76,10 +76,10 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestUnionedRootNotNull() {
-            File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
-            File.WriteAllText(this.ConfigFileB.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.AlternativeName"": [ { ""Name"":""Ike"", ""Age"": 10  } ] }");
+            File.WriteAllText(ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
+            File.WriteAllText(ConfigFileB.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.AlternativeName"": [ { ""Name"":""Ike"", ""Age"": 10  } ] }");
 
-            IConfig config = new Config().Load(this.ConfigFileA.Directory);
+            var config = new Config().Load(ConfigFileA.Directory);
 
             Assert.IsNotNull(config.Root);
         }
@@ -90,12 +90,12 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestUnionedRootSetToFirstFilePath() {
-            File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
-            File.WriteAllText(this.ConfigFileB.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.AlternativeName"": [ { ""Name"":""Ike"", ""Age"": 10  } ] }");
+            File.WriteAllText(ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
+            File.WriteAllText(ConfigFileB.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.AlternativeName"": [ { ""Name"":""Ike"", ""Age"": 10  } ] }");
 
-            IConfig config = new Config().Load(this.ConfigFileA.Directory);
+            var config = new Config().Load(ConfigFileA.Directory);
 
-            Assert.AreEqual("Ike", config.Root.First["Name"].Value<String>());
+            Assert.AreEqual("Ike", config.Root.First["Name"].Value<string>());
             Assert.AreEqual(10, config.Root.First["Age"].Value<int>());
         }
 
@@ -104,12 +104,12 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestUnionedDocumentContainsAlternativeToRoot() {
-            File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
-            File.WriteAllText(this.ConfigFileB.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.AlternativeName"": [ { ""Name"":""Ike"", ""Age"": 10  } ] }");
+            File.WriteAllText(ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
+            File.WriteAllText(ConfigFileB.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.AlternativeName"": [ { ""Name"":""Ike"", ""Age"": 10  } ] }");
 
-            IConfig config = new Config().Load(this.ConfigFileA.Directory);
+            var config = new Config().Load(ConfigFileA.Directory);
 
-            Assert.AreEqual("Phogue", config.Document["Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"].First["Name"].Value<String>());
+            Assert.AreEqual("Phogue", config.Document["Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"].First["Name"].Value<string>());
             Assert.AreEqual(100, config.Document["Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"].First["Age"].Value<int>());
         }
 
@@ -118,15 +118,15 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestUnionedWithIdenticalNamespaces() {
-            File.WriteAllText(this.ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
-            File.WriteAllText(this.ConfigFileB.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Ike"", ""Age"": 10  } ] }");
+            File.WriteAllText(ConfigFileA.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Phogue"", ""Age"": 100  } ] }");
+            File.WriteAllText(ConfigFileB.FullName, @"{ ""Potato.Core.Shared.Test.TestConfig.Mocks.MockSimpleConcrete"": [ { ""Name"":""Ike"", ""Age"": 10  } ] }");
 
-            IConfig config = new Config().Load(this.ConfigFileA.Directory);
+            var config = new Config().Load(ConfigFileA.Directory);
 
-            Assert.AreEqual("Ike", config.Root.First["Name"].Value<String>());
+            Assert.AreEqual("Ike", config.Root.First["Name"].Value<string>());
             Assert.AreEqual(10, config.Root.First["Age"].Value<int>());
 
-            Assert.AreEqual("Phogue", config.Root.Last["Name"].Value<String>());
+            Assert.AreEqual("Phogue", config.Root.Last["Name"].Value<string>());
             Assert.AreEqual(100, config.Root.Last["Age"].Value<int>());
         }
 

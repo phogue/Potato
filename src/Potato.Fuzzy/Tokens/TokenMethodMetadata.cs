@@ -21,7 +21,7 @@ namespace Potato.Fuzzy.Tokens {
         /// <summary>
         /// The namespace the method exists in.
         /// </summary>
-        public String Namespace { get; set; }
+        public string Namespace { get; set; }
 
         /// <summary>
         /// A list of parameters to pass through to the reduction method.
@@ -44,7 +44,7 @@ namespace Potato.Fuzzy.Tokens {
         public bool DemandTokenCompatability { get; set; }
 
         public TokenMethodMetadata() {
-            this.Parameters = new List<TokenParameter>();
+            Parameters = new List<TokenParameter>();
         }
     }
 }

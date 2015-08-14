@@ -29,7 +29,7 @@ namespace Potato.Core.Shared.Models {
         /// The bcrypt encrypted token
         /// </summary>
         [JsonIgnore]
-        public String TokenHash { get; set; }
+        public string TokenHash { get; set; }
 
         /// <summary>
         /// When the token was last successfully authenticated against. Tokens that have not been
@@ -52,10 +52,10 @@ namespace Potato.Core.Shared.Models {
         /// Initializes the basics, like a new guid.
         /// </summary>
         public AccessTokenModel() {
-            this.Id = Guid.NewGuid();
-            this.LastTouched = DateTime.Now;
+            Id = Guid.NewGuid();
+            LastTouched = DateTime.Now;
 
-            this.ExpiredWindowSeconds = 172800;
+            ExpiredWindowSeconds = 172800;
         }
 
         /// <summary>
@@ -63,9 +63,9 @@ namespace Potato.Core.Shared.Models {
         /// </summary>
         /// <returns>Salted random, generated style.</returns>
         protected byte[] GenerateSalt(int length) {
-            byte[] salt = new byte[length];
+            var salt = new byte[length];
 
-            using (RNGCryptoServiceProvider random = new RNGCryptoServiceProvider()) {
+            using (var random = new RNGCryptoServiceProvider()) {
                 random.GetBytes(salt);
             }
 
@@ -78,8 +78,8 @@ namespace Potato.Core.Shared.Models {
         /// </summary>
         /// <param name="data">The data to be hashed.</param>
         /// <returns>The hash</returns>
-        public String ShaHash(String data) {
-            String hash = null;
+        public string ShaHash(string data) {
+            string hash = null;
 
             using (var sha = new SHA512Managed()) {
                 hash = BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(data))).Replace("-", "");
@@ -93,20 +93,20 @@ namespace Potato.Core.Shared.Models {
         /// </summary>
         /// <param name="identifer">Essentially pepper, but from context of the user. It's someting known about the users connection, like an IP.</param>
         /// <returns>The token that can be used to authenticate.</returns>
-        public String Generate(String identifer) {
+        public string Generate(string identifer) {
 
             // Generate a random string for our access token.
-            String token = null;
+            string token = null;
 
-            if (this.Account != null && String.IsNullOrEmpty(this.Account.PasswordHash) == false && String.IsNullOrEmpty(identifer) == false) {
-                this.LastTouched = DateTime.Now;
+            if (Account != null && string.IsNullOrEmpty(Account.PasswordHash) == false && string.IsNullOrEmpty(identifer) == false) {
+                LastTouched = DateTime.Now;
 
                 // Generate a random string for our access token.
-                token = Convert.ToBase64String(this.GenerateSalt(64));
+                token = Convert.ToBase64String(GenerateSalt(64));
                 
                 // The hash is equal to our generated token + the accounts current hash
                 // The access token is useless if: The password is changed OR the password is set to the same and the hash is regenerated
-                this.TokenHash = BCrypt.Net.BCrypt.HashPassword(this.ShaHash(token + this.Account.PasswordHash + identifer), BCrypt.Net.BCrypt.GenerateSalt());
+                TokenHash = BCrypt.Net.BCrypt.HashPassword(ShaHash(token + Account.PasswordHash + identifer), BCrypt.Net.BCrypt.GenerateSalt());
             }
 
             return token;
@@ -119,8 +119,8 @@ namespace Potato.Core.Shared.Models {
         /// <param name="token">The plain text token given to the user</param>
         /// <param name="identifer">The identifying information about the user</param>
         /// <returns>True if the token is valid, false if the token is invalid.</returns>
-        public bool Authenticate(Guid id, String token, String identifer) {
-            bool authenticated = false;
+        public bool Authenticate(Guid id, string token, string identifer) {
+            var authenticated = false;
 
             // 1. If this is the id of the token the user wanted to authenticate against
             // 2. If the token has not expired
@@ -129,11 +129,11 @@ namespace Potato.Core.Shared.Models {
             // 5. If.. for some reason.. we don't have a token for them to validate against..
             // 6. If we don't know who owns this token?
             // 7. If the owner does not have a password hash set (accounts don't require a password hash set, but we need one here)
-            if (this.Id == id && this.LastTouched > DateTime.Now.AddSeconds(-1 * this.ExpiredWindowSeconds) && String.IsNullOrEmpty(token) == false && String.IsNullOrEmpty(identifer) == false && String.IsNullOrEmpty(this.TokenHash) == false && this.Account != null && String.IsNullOrEmpty(this.Account.PasswordHash) == false) {
-                authenticated = String.CompareOrdinal(this.TokenHash, BCrypt.Net.BCrypt.HashPassword(this.ShaHash(token + this.Account.PasswordHash + identifer), this.TokenHash)) == 0;
+            if (Id == id && LastTouched > DateTime.Now.AddSeconds(-1 * ExpiredWindowSeconds) && string.IsNullOrEmpty(token) == false && string.IsNullOrEmpty(identifer) == false && string.IsNullOrEmpty(TokenHash) == false && Account != null && string.IsNullOrEmpty(Account.PasswordHash) == false) {
+                authenticated = string.CompareOrdinal(TokenHash, BCrypt.Net.BCrypt.HashPassword(ShaHash(token + Account.PasswordHash + identifer), TokenHash)) == 0;
 
                 if (authenticated == true) {
-                    this.LastTouched = DateTime.Now;
+                    LastTouched = DateTime.Now;
                 }
             }
 
@@ -141,9 +141,9 @@ namespace Potato.Core.Shared.Models {
         }
 
         public void Dispose() {
-            this.Id = Guid.Empty;
-            this.Account = null;
-            this.TokenHash = null;
+            Id = Guid.Empty;
+            Account = null;
+            TokenHash = null;
         }
     }
 }

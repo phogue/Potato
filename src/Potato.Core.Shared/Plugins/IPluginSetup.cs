@@ -23,16 +23,16 @@ namespace Potato.Core.Shared.Plugins {
         /// <summary>
         /// The connection that owns this plugin instance.
         /// </summary>
-        String ConnectionGuid { get; }
+        string ConnectionGuid { get; }
 
         /// <summary>
         /// Path to the default config-file of the plugin
         /// </summary>
-        String ConfigDirectoryPath { get; }
+        string ConfigDirectoryPath { get; }
 
         /// <summary>
         /// Path to the log-file directory of the plugin
         /// </summary>
-        String LogDirectoryPath { get; }
+        string LogDirectoryPath { get; }
     }
 }

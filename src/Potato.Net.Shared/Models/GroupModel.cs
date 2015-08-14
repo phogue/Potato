@@ -25,42 +25,42 @@ namespace Potato.Net.Shared.Models {
         /// A majority of games have teams, teams have squads. So we have these variables
         /// where to simply avoid debugging string issues later.
         /// </summary>
-        public static readonly String Team = "Team";
+        public static readonly string Team = "Team";
 
         /// <summary>
         /// A majority of games have teams, teams have squads. So we have these variables
         /// where to simply avoid debugging string issues later.
         /// </summary>
-        public static readonly String Squad = "Squad";
+        public static readonly string Squad = "Squad";
 
         /// <summary>
         /// A majority of games have teams, teams have squads. So we have these variables
         /// where to simply avoid debugging string issues later.
         /// </summary>
-        public static readonly String Player = "Player";
+        public static readonly string Player = "Player";
 
         /// <summary>
         /// The type of group this signifies, such as "Team", "Squad" or "Player"
         /// </summary>
-        public String Type { get; set; }
+        public string Type { get; set; }
 
         /// <summary>
         /// The unique identifier for the group
         /// </summary>
-        public String Uid { get; set; }
+        public string Uid { get; set; }
 
         /// <summary>
         /// A friendly name for the team, potentially used to lookup a localized name.
         /// </summary>
-        public String FriendlyName { get; set; }
+        public string FriendlyName { get; set; }
 
         /// <summary>
         /// Initializes default values.
         /// </summary>
         public GroupModel() {
-            this.Type = String.Empty;
-            this.Uid = null;
-            this.FriendlyName = String.Empty;
+            Type = string.Empty;
+            Uid = null;
+            FriendlyName = string.Empty;
         }
     }
 }

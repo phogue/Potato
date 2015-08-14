@@ -95,43 +95,43 @@ namespace Potato.Core {
         /// Creates a new instance of Potato, setting up command server, packages and tasks
         /// </summary>
         public PotatoController() : base() {
-            this.InstantiatedStamp = DateTime.Now;
+            InstantiatedStamp = DateTime.Now;
 
-            this.Shared = new SharedReferences();
+            Shared = new SharedReferences();
 
-            this.Connections = new List<IConnectionController>();
+            Connections = new List<IConnectionController>();
 
-            this.Packages = new PackagesController() {
+            Packages = new PackagesController() {
                 BubbleObjects = new List<ICoreController>() {
                     this
                 }
             };
 
-            this.CommandServer = new CommandServerController() {
+            CommandServer = new CommandServerController() {
                 TunnelObjects = new List<ICoreController>() {
                     this
                 }
             };
 
-            this.Database = new DatabaseController() {
+            Database = new DatabaseController() {
                 BubbleObjects = new List<ICoreController>() {
                     this
                 }
             };
 
-            this.PushEvents = new PushEventsController() {
+            PushEvents = new PushEventsController() {
                 BubbleObjects = new List<ICoreController>() {
                     this
                 }
             };
 
-            this.Protocols = new ProtocolController() {
+            Protocols = new ProtocolController() {
                 BubbleObjects = new List<ICoreController>() {
                     this
                 }
             };
 
-            this.Tasks = new List<Timer>() {
+            Tasks = new List<Timer>() {
                 new Timer(Connection_Tick, this, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(15)),
                 new Timer(Events_Tick, this, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60)),
                 new Timer(CommandServer_Tick, this, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60)),
@@ -139,106 +139,106 @@ namespace Potato.Core {
                 new Timer(Security_Tick, this, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(60))
             };
 
-            this.EventsConsole = new EventsConsoleController();
+            EventsConsole = new EventsConsoleController();
 
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.PotatoServiceMergePackage,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "uri",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "packageId",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.PotatoServiceMergePackage
+                    Handler = PotatoServiceMergePackage
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.PotatoServiceUninstallPackage,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "packageId",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.PotatoServiceUninstallPackage
+                    Handler = PotatoServiceUninstallPackage
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.PotatoServiceRestart,
-                    Handler = this.PotatoServiceRestart
+                    Handler = PotatoServiceRestart
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.PotatoAddConnection,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "gameTypeProvider",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "gameTypeType",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "hostName",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "port",
-                            Type = typeof(UInt16)
+                            Type = typeof(ushort)
                         },
                         new CommandParameterType() {
                             Name = "password",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "additional",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.PotatoAddConnection
+                    Handler = PotatoAddConnection
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.PotatoRemoveConnection,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "connectionGuid",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.PotatoRemoveConnectionByGuid
+                    Handler = PotatoRemoveConnectionByGuid
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.PotatoRemoveConnection,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "gameTypeProvider",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "gameTypeType",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "hostName",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "port",
-                            Type = typeof(UInt16)
+                            Type = typeof(ushort)
                         }
                     },
-                    Handler = this.PotatoRemoveConnectionByDetails
+                    Handler = PotatoRemoveConnectionByDetails
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.PotatoQuery,
-                    Handler = this.PotatoQuery
+                    Handler = PotatoQuery
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.PotatoPing,
-                    Handler = this.PotatoPing
+                    Handler = PotatoPing
                 }
             });
         }
@@ -255,11 +255,11 @@ namespace Potato.Core {
         public ServiceMessage PollService() {
             ServiceMessage message = null;
             
-            if (this.ServiceMessage != null) {
-                message = this.ServiceMessage;
+            if (ServiceMessage != null) {
+                message = ServiceMessage;
 
                 // clear it for the next poll.
-                this.ServiceMessage = null;
+                ServiceMessage = null;
             }
             else {
                 message = new ServiceMessage() {
@@ -275,14 +275,14 @@ namespace Potato.Core {
         /// </summary>
         public ServiceMessage ExecuteMessage(ServiceMessage message) {
             // A request from the service controller to run a command locally.
-            ICommandResult result = this.Tunnel(new Command() {
+            var result = Tunnel(new Command() {
                 Name = message.Name,
                 Origin = CommandOrigin.Local,
                 // This is possible because of the SortedDictionary used in Potato.Service.Shared.ArgumentsHelper
                 // This method will always assume that Arguments.Values will result in the order of execution. 
                 Parameters = message.Arguments.Values.Select(value => new CommandParameter() {
                     Data = {
-                        Content = new List<String>() {
+                        Content = new List<string>() {
                             value
                         }
                     }
@@ -306,10 +306,10 @@ namespace Potato.Core {
         /// ten second poke of each connection pretty much.
         /// </summary>
         /// <param name="state"></param>
-        private void Connection_Tick(Object state) {
-            if (this.Connections != null) {
-                lock (this.Connections) {
-                    foreach (IConnectionController connection in this.Connections) {
+        private void Connection_Tick(object state) {
+            if (Connections != null) {
+                lock (Connections) {
+                    foreach (var connection in Connections) {
                         connection.Poke();
                     }
                 }
@@ -321,7 +321,7 @@ namespace Potato.Core {
         /// </summary>
         /// <param name="state"></param>
         private void Events_Tick(object state) {
-            this.Shared.Events.WriteEvents();
+            Shared.Events.WriteEvents();
         }
 
         /// <summary>
@@ -329,9 +329,9 @@ namespace Potato.Core {
         /// still held in memory.
         /// </summary>
         /// <param name="state"></param>
-        protected void CommandServer_Tick(Object state) {
-            if (this.CommandServer != null) {
-                this.CommandServer.Poke();
+        protected void CommandServer_Tick(object state) {
+            if (CommandServer != null) {
+                CommandServer.Poke();
             }
         }
 
@@ -339,13 +339,13 @@ namespace Potato.Core {
         /// Rebuilds the current repositories cache every 60 minutes
         /// </summary>
         /// <param name="state"></param>
-        protected void Packages_Tick(Object state) {
-            if (this.Packages != null) {
+        protected void Packages_Tick(object state) {
+            if (Packages != null) {
                 // Set the root (non-grouped) repository to Myrcon's official repository, or whatever
                 // repository the host has setup.
-                this.Shared.Variables.Variable(CommonVariableNames.PackagesRepositoryUri).Value = this.Shared.Variables.Get(CommonVariableNames.PackagesDefaultSourceRepositoryUri, Defines.PackagesDefaultSourceRepositoryUri);
+                Shared.Variables.Variable(CommonVariableNames.PackagesRepositoryUri).Value = Shared.Variables.Get(CommonVariableNames.PackagesDefaultSourceRepositoryUri, Defines.PackagesDefaultSourceRepositoryUri);
 
-                this.Packages.Poke();
+                Packages.Poke();
             }
         }
 
@@ -353,9 +353,9 @@ namespace Potato.Core {
         /// Removes all expired access tokens every 60 seconds.
         /// </summary>
         /// <param name="state"></param>
-        protected void Security_Tick(Object state) {
-            if (this.Shared != null && this.Shared.Security != null) {
-                this.Shared.Security.Poke();
+        protected void Security_Tick(object state) {
+            if (Shared != null && Shared.Security != null) {
+                Shared.Security.Poke();
             }
         }
 
@@ -366,18 +366,18 @@ namespace Potato.Core {
         /// </summary>
         /// <returns></returns>
         public override ICoreController Execute() {
-            this.EventsConsole.Execute();
-            this.Packages.Execute();
-            this.CommandServer.Execute();
-            this.PushEvents.Execute();
-            this.Database.Execute();
-            this.Protocols.Execute();
+            EventsConsole.Execute();
+            Packages.Execute();
+            CommandServer.Execute();
+            PushEvents.Execute();
+            Database.Execute();
+            Protocols.Execute();
 
-            this.Execute(new Command() {
+            Execute(new Command() {
                 Origin = CommandOrigin.Local
-            }, new Config().Load(new DirectoryInfo(Defines.ConfigsDirectory.FullName)), this.Shared.Variables.Get<String>(CommonVariableNames.PotatoConfigPassword));
+            }, new Config().Load(new DirectoryInfo(Defines.ConfigsDirectory.FullName)), Shared.Variables.Get<string>(CommonVariableNames.PotatoConfigPassword));
             
-            this.Shared.Events.Log(new GenericEvent() {
+            Shared.Events.Log(new GenericEvent() {
                 GenericEventType = GenericEventType.PotatoServiceStarted,
                 Message = @"The service has started successfully."
             });
@@ -389,15 +389,15 @@ namespace Potato.Core {
         /// IService implementation to call the execute method and ignore the return type.
         /// </summary>
         public void Start() {
-            this.Execute();
+            Execute();
         }
 
         /// <summary>
         /// IService proxy for the variables of this object.
         /// </summary>
         /// <param name="arguments"></param>
-        public void ParseCommandLineArguments(List<String> arguments) {
-            this.Shared.Variables.ParseArguments(arguments);
+        public void ParseCommandLineArguments(List<string> arguments) {
+            Shared.Variables.ParseArguments(arguments);
         }
 
         /// <summary>
@@ -406,9 +406,9 @@ namespace Potato.Core {
         public void WriteConfig() {
             IConfig config = new Config();
             config.Create<PotatoController>();
-            this.WriteConfig(config, this.Shared.Variables.Get<String>(CommonVariableNames.PotatoConfigPassword));
+            WriteConfig(config, Shared.Variables.Get<string>(CommonVariableNames.PotatoConfigPassword));
 
-            config.Save(new FileInfo(Path.Combine(Defines.ConfigsDirectory.FullName, this.GetType().Namespace + ".json")));
+            config.Save(new FileInfo(Path.Combine(Defines.ConfigsDirectory.FullName, GetType().Namespace + ".json")));
         }
 
         /// <summary>
@@ -416,25 +416,25 @@ namespace Potato.Core {
         /// </summary>
         /// <param name="config"></param>
         /// <param name="password"></param>
-        public override void WriteConfig(IConfig config, String password = null) {
-            this.Shared.Variables.WriteConfig(config, password);
+        public override void WriteConfig(IConfig config, string password = null) {
+            Shared.Variables.WriteConfig(config, password);
 
-            this.Shared.Events.WriteConfig(config, password);
+            Shared.Events.WriteConfig(config, password);
 
-            this.Packages.WriteConfig(config, password);
+            Packages.WriteConfig(config, password);
 
-            this.Database.WriteConfig(config, password);
+            Database.WriteConfig(config, password);
 
-            this.Shared.Languages.WriteConfig(config, password);
+            Shared.Languages.WriteConfig(config, password);
 
-            this.Shared.Security.WriteConfig(config, password);
+            Shared.Security.WriteConfig(config, password);
 
-            this.CommandServer.WriteConfig(config, password);
+            CommandServer.WriteConfig(config, password);
             
-            this.PushEvents.WriteConfig(config, password);
+            PushEvents.WriteConfig(config, password);
 
-            lock (this.Connections) {
-                foreach (ConnectionController connection in this.Connections) {
+            lock (Connections) {
+                foreach (ConnectionController connection in Connections) {
                     // This command is executed in the Potato object.
                     // I had to write this comment because I kept moving it to the actual connection and failing oh so hard.
                     config.Append(new Command() {
@@ -442,42 +442,42 @@ namespace Potato.Core {
                         Parameters = new List<ICommandParameter>() {
                             new CommandParameter() {
                                 Data = {
-                                    Content = new List<String>() {
+                                    Content = new List<string>() {
                                         connection.ConnectionModel.ProtocolType.Provider
                                     }
                                 }
                             },
                             new CommandParameter() {
                                 Data = {
-                                    Content = new List<String>() {
+                                    Content = new List<string>() {
                                         connection.ConnectionModel.ProtocolType.Type
                                     }
                                 }
                             },
                             new CommandParameter() {
                                 Data = {
-                                    Content = new List<String>() {
+                                    Content = new List<string>() {
                                         connection.ConnectionModel.Hostname
                                     }
                                 }
                             },
                             new CommandParameter() {
                                 Data = {
-                                    Content = new List<String>() {
+                                    Content = new List<string>() {
                                         connection.ConnectionModel.Port.ToString(CultureInfo.InvariantCulture)
                                     }
                                 }
                             },
                             new CommandParameter() {
                                 Data = {
-                                    Content = new List<String>() {
+                                    Content = new List<string>() {
                                         connection.ConnectionModel.Password
                                     }
                                 }
                             },
                             new CommandParameter() {
                                 Data = {
-                                    Content = new List<String>() {
+                                    Content = new List<string>() {
                                         connection.ConnectionModel.Arguments
                                     }
                                 }
@@ -498,28 +498,28 @@ namespace Potato.Core {
         /// <param name="command"></param>
         /// <returns></returns>
         public override ICommandResult Bubble(ICommand command) {
-            return this.Tunnel(command);
+            return Tunnel(command);
         }
 
         protected override IList<ICoreController> TunnelExecutableObjects(ICommand command) {
-            List<ICoreController> list = new List<ICoreController>();
+            var list = new List<ICoreController>();
 
             if (command.Scope != null && command.Scope.ConnectionGuid != Guid.Empty) {
                 // Focus only on the connection.
-                this.Connections.Where(connection => connection.ConnectionModel.ConnectionGuid == command.Scope.ConnectionGuid).ToList().ForEach(list.Add);
+                Connections.Where(connection => connection.ConnectionModel.ConnectionGuid == command.Scope.ConnectionGuid).ToList().ForEach(list.Add);
             }
             else {
                 // Add all of the connections.
-                this.Connections.ForEach(list.Add);
+                Connections.ForEach(list.Add);
 
-                list.Add(this.PushEvents);
-                list.Add(this.Shared.Security);
-                list.Add(this.Shared.Languages);
-                list.Add(this.Shared.Variables);
-                list.Add(this.Shared.Events);
-                list.Add(this.Packages);
-                list.Add(this.Database);
-                list.Add(this.Protocols);
+                list.Add(PushEvents);
+                list.Add(Shared.Security);
+                list.Add(Shared.Languages);
+                list.Add(Shared.Variables);
+                list.Add(Shared.Events);
+                list.Add(Packages);
+                list.Add(Database);
+                list.Add(Protocols);
             }
             
             return list;
@@ -533,54 +533,54 @@ namespace Potato.Core {
         public override void Dispose() {
 
             // 1. Stop all tasks from ticking, removing concurrent executions with this object.
-            this.Tasks.ForEach(task => task.Dispose());
-            this.Tasks.Clear();
-            this.Tasks = null;
+            Tasks.ForEach(task => task.Dispose());
+            Tasks.Clear();
+            Tasks = null;
 
             // 2. Events contains varies references to other data through out Potato. This 
             // data should be written out first, writing out the full events data then 
             // moving on to disposing the actual data.
-            this.Shared.Events.Dispose();
-            this.Shared.Events = null;
+            Shared.Events.Dispose();
+            Shared.Events = null;
 
             // 3. Stop/disconnect all game server connections, unload any plugins etc.
-            lock (this.Connections) {
-                foreach (ConnectionController connection in this.Connections) {
+            lock (Connections) {
+                foreach (ConnectionController connection in Connections) {
                     connection.Dispose();
                 }
             }
 
-            this.Connections.Clear();
-            this.Connections = null;
+            Connections.Clear();
+            Connections = null;
 
             // @todo Does the order matter here? If so, document why.
 
-            this.Shared.Security.Dispose();
-            this.Shared.Security = null;
+            Shared.Security.Dispose();
+            Shared.Security = null;
 
-            this.Shared.Languages.Dispose();
-            this.Shared.Languages = null;
+            Shared.Languages.Dispose();
+            Shared.Languages = null;
 
-            this.Packages.Dispose();
-            this.Packages = null;
+            Packages.Dispose();
+            Packages = null;
 
-            this.Database.Dispose();
-            this.Database = null;
+            Database.Dispose();
+            Database = null;
 
-            this.CommandServer.Dispose();
-            this.CommandServer = null;
+            CommandServer.Dispose();
+            CommandServer = null;
 
-            this.PushEvents.Dispose();
-            this.PushEvents = null;
+            PushEvents.Dispose();
+            PushEvents = null;
 
-            this.Protocols.Dispose();
-            this.Protocols = null;
+            Protocols.Dispose();
+            Protocols = null;
 
-            this.Shared.Variables.Dispose();
-            this.Shared.Variables = null;
+            Shared.Variables.Dispose();
+            Shared.Variables = null;
 
-            this.EventsConsole.Dispose();
-            this.EventsConsole = null;
+            EventsConsole.Dispose();
+            EventsConsole = null;
 
             base.Dispose();
         }
@@ -591,22 +591,22 @@ namespace Potato.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult PotatoServiceRestart(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult PotatoServiceRestart(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
             // As long as the current account is allowed to execute this command...
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                this.ServiceMessage = new ServiceMessage() {
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                ServiceMessage = new ServiceMessage() {
                     Name = "restart"
                 };
 
                 result = new CommandResult() {
-                    Message = String.Format("Successfully posted restart signal."),
+                    Message = string.Format("Successfully posted restart signal."),
                     CommandResultType = CommandResultType.Success,
                     Success = true
                 };
 
-                this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PotatoServiceRestarting));
+                Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PotatoServiceRestarting));
             }
             else {
                 result = CommandResult.InsufficientPermissions;
@@ -621,34 +621,34 @@ namespace Potato.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult PotatoServiceMergePackage(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult PotatoServiceMergePackage(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String uri = parameters["uri"].First<String>();
-            String packageId = parameters["packageId"].First<String>();
+            var uri = parameters["uri"].First<string>();
+            var packageId = parameters["packageId"].First<string>();
 
             // As long as the current account is allowed to execute this command...
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                if (String.IsNullOrEmpty(uri) == false && String.IsNullOrEmpty(packageId) == false) {
-                    this.ServiceMessage = new ServiceMessage() {
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                if (string.IsNullOrEmpty(uri) == false && string.IsNullOrEmpty(packageId) == false) {
+                    ServiceMessage = new ServiceMessage() {
                         Name = "merge",
-                        Arguments = new Dictionary<String, String>() {
+                        Arguments = new Dictionary<string, string>() {
                             { "uri", uri },
                             { "packageid", packageId }
                         }
                     };
 
                     result = new CommandResult() {
-                        Message = String.Format("Successfully posted merge signal."),
+                        Message = string.Format("Successfully posted merge signal."),
                         CommandResultType = CommandResultType.Success,
                         Success = true
                     };
 
-                    this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PotatoServiceMergePackage));
+                    Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PotatoServiceMergePackage));
                 }
                 else {
                     result = new CommandResult() {
-                        Message = String.Format(@"Invalid or missing parameter ""uri"" or ""packageId""."),
+                        Message = string.Format(@"Invalid or missing parameter ""uri"" or ""packageId""."),
                         CommandResultType = CommandResultType.InvalidParameter,
                         Success = false
                     };
@@ -667,32 +667,32 @@ namespace Potato.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult PotatoServiceUninstallPackage(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult PotatoServiceUninstallPackage(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            String packageId = parameters["packageId"].First<String>();
+            var packageId = parameters["packageId"].First<string>();
 
             // As long as the current account is allowed to execute this command...
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                if (String.IsNullOrEmpty(packageId) == false) {
-                    this.ServiceMessage = new ServiceMessage() {
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                if (string.IsNullOrEmpty(packageId) == false) {
+                    ServiceMessage = new ServiceMessage() {
                         Name = "uninstall",
-                        Arguments = new Dictionary<String, String>() {
+                        Arguments = new Dictionary<string, string>() {
                             { "packageid", packageId }
                         }
                     };
 
                     result = new CommandResult() {
-                        Message = String.Format("Successfully posted uninstall signal."),
+                        Message = string.Format("Successfully posted uninstall signal."),
                         CommandResultType = CommandResultType.Success,
                         Success = true
                     };
 
-                    this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PotatoServiceUninstallPackage));
+                    Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PotatoServiceUninstallPackage));
                 }
                 else {
                     result = new CommandResult() {
-                        Message = String.Format(@"Invalid or missing parameter ""packageId""."),
+                        Message = string.Format(@"Invalid or missing parameter ""packageId""."),
                         CommandResultType = CommandResultType.InvalidParameter,
                         Success = false
                     };
@@ -710,30 +710,30 @@ namespace Potato.Core {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public ICommandResult PotatoAddConnection(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult PotatoAddConnection(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
             
-            String protocolTypeProvider = parameters["gameTypeProvider"].First<String>() ?? "";
-            String protocolTypeType = parameters["gameTypeType"].First<String>() ?? "";
-            String hostName = parameters["hostName"].First<String>() ?? "";
-            UInt16 port = parameters["port"].First<UInt16>();
-            String password = parameters["password"].First<String>() ?? "";
-            String additional = parameters["additional"].First<String>() ?? "";
+            var protocolTypeProvider = parameters["gameTypeProvider"].First<string>() ?? "";
+            var protocolTypeType = parameters["gameTypeType"].First<string>() ?? "";
+            var hostName = parameters["hostName"].First<string>() ?? "";
+            var port = parameters["port"].First<ushort>();
+            var password = parameters["password"].First<string>() ?? "";
+            var additional = parameters["additional"].First<string>() ?? "";
 
             // As long as the current account is allowed to execute this command...
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 // As long as we have less than the maximum amount of connections...
-                if (this.Connections.Count < this.Shared.Variables.Get(CommonVariableNames.MaximumProtocolConnections, 9000)) {
+                if (Connections.Count < Shared.Variables.Get(CommonVariableNames.MaximumProtocolConnections, 9000)) {
                     // As long as the connection for that specific game, hostname, and port does not exist...
-                    if (this.Connections.FirstOrDefault(c => c.ConnectionModel.ProtocolType.Type == protocolTypeType && c.ConnectionModel.Hostname == hostName && c.ConnectionModel.Port == port) == null) {
+                    if (Connections.FirstOrDefault(c => c.ConnectionModel.ProtocolType.Type == protocolTypeType && c.ConnectionModel.Hostname == hostName && c.ConnectionModel.Port == port) == null) {
                         // As long as the game type is defined...
 
-                        var supportCheckResult = this.Protocols.Tunnel(CommandBuilder.ProtocolsCheckSupportedProtocol(protocolTypeProvider, protocolTypeType).SetOrigin(CommandOrigin.Local));
+                        var supportCheckResult = Protocols.Tunnel(CommandBuilder.ProtocolsCheckSupportedProtocol(protocolTypeProvider, protocolTypeType).SetOrigin(CommandOrigin.Local));
 
                         if (supportCheckResult.Success == true) {
-                            IProtocolAssemblyMetadata meta = supportCheckResult.Now.ProtocolAssemblyMetadatas.First();
+                            var meta = supportCheckResult.Now.ProtocolAssemblyMetadatas.First();
                             
-                            ConnectionController connection = new ConnectionController() {
+                            var connection = new ConnectionController() {
                                 Potato = this
                             };
 
@@ -745,15 +745,15 @@ namespace Potato.Core {
                                 ConfigDirectory = meta.Directory.GetDirectories(Defines.ProtocolsDirectoryName, SearchOption.AllDirectories).Select(directory => directory.FullName).FirstOrDefault()
                             });
 
-                            lock (this.Connections) {
-                                this.Connections.Add(connection);
+                            lock (Connections) {
+                                Connections.Add(connection);
                             }
 
                             connection.Execute();
                             connection.AttemptConnection();
 
                             result = new CommandResult() {
-                                Message = String.Format("Successfully added {0} connection.", protocolTypeType),
+                                Message = string.Format("Successfully added {0} connection.", protocolTypeType),
                                 CommandResultType = CommandResultType.Success,
                                 Success = true,
                                 Now = {
@@ -763,11 +763,11 @@ namespace Potato.Core {
                                 }
                             };
 
-                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PotatoConnectionAdded));
+                            Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PotatoConnectionAdded));
                         }
                         else {
                             result = new CommandResult() {
-                                Message = String.Format(@"Protocol type ""{0}"" is not supported.", protocolTypeType),
+                                Message = string.Format(@"Protocol type ""{0}"" is not supported.", protocolTypeType),
                                 CommandResultType = CommandResultType.DoesNotExists,
                                 Success = false
                             };
@@ -775,7 +775,7 @@ namespace Potato.Core {
                     }
                     else {
                         result = new CommandResult() {
-                            Message = String.Format(@"Game type ""{0}"" with connection to {1}:{2} has already been added.", protocolTypeType, hostName, port),
+                            Message = string.Format(@"Game type ""{0}"" with connection to {1}:{2} has already been added.", protocolTypeType, hostName, port),
                             CommandResultType = CommandResultType.AlreadyExists,
                             Success = false
                         };
@@ -783,7 +783,7 @@ namespace Potato.Core {
                 }
                 else {
                     result = new CommandResult() {
-                        Message = String.Format(@"Maximum number of game connections exceeded."),
+                        Message = string.Format(@"Maximum number of game connections exceeded."),
                         CommandResultType = CommandResultType.LimitExceeded,
                         Success = false
                     };
@@ -800,16 +800,16 @@ namespace Potato.Core {
             ICommandResult result = null;
 
             // As long as the current account is allowed to execute this command...
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
 
                 // As long as the connection for that specific game, hostname, and port exists...
                 if (connection != null) {
-                    lock (this.Connections) {
-                        this.Connections.Remove(connection);
+                    lock (Connections) {
+                        Connections.Remove(connection);
                     }
 
                     result = new CommandResult() {
-                        Message = String.Format(@"Successfully removed connection with connection to {0}:{1} and game type ""{2}"".", connection.ConnectionModel.Hostname, connection.ConnectionModel.Port, connection),
+                        Message = string.Format(@"Successfully removed connection with connection to {0}:{1} and game type ""{2}"".", connection.ConnectionModel.Hostname, connection.ConnectionModel.Port, connection),
                         CommandResultType = CommandResultType.Success,
                         Success = true,
                         Now = {
@@ -819,13 +819,13 @@ namespace Potato.Core {
                         }
                     };
 
-                    this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PotatoConnectionRemoved));
+                    Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.PotatoConnectionRemoved));
 
                     connection.Dispose();
                 }
                 else {
                     result = new CommandResult() {
-                        Message = String.Format(@"Connection does not exist."),
+                        Message = string.Format(@"Connection does not exist."),
                         CommandResultType = CommandResultType.DoesNotExists,
                         Success = false
                     };
@@ -844,12 +844,12 @@ namespace Potato.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult PotatoRemoveConnectionByGuid(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            String connectionGuid = parameters["connectionGuid"].First<String>();
+        public ICommandResult PotatoRemoveConnectionByGuid(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var connectionGuid = parameters["connectionGuid"].First<string>();
 
-            IConnectionController connection = this.Connections.FirstOrDefault(x => String.Compare(x.ConnectionModel.ConnectionGuid.ToString(), connectionGuid, StringComparison.OrdinalIgnoreCase) == 0);
+            var connection = Connections.FirstOrDefault(x => string.Compare(x.ConnectionModel.ConnectionGuid.ToString(), connectionGuid, StringComparison.OrdinalIgnoreCase) == 0);
 
-            return this.PotatoRemoveConnection(command, connection);
+            return PotatoRemoveConnection(command, connection);
         }
 
         /// <summary>
@@ -857,20 +857,20 @@ namespace Potato.Core {
         /// </summary>
         /// <param name="command"></param>
         /// <param name="parameters"></param>
-        public ICommandResult PotatoRemoveConnectionByDetails(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            String gameTypeProvider = parameters["gameTypeProvider"].First<String>();
-            String gameTypeType = parameters["gameTypeType"].First<String>();
-            String hostName = parameters["hostName"].First<String>();
-            UInt16 port = parameters["port"].First<UInt16>();
+        public ICommandResult PotatoRemoveConnectionByDetails(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var gameTypeProvider = parameters["gameTypeProvider"].First<string>();
+            var gameTypeType = parameters["gameTypeType"].First<string>();
+            var hostName = parameters["hostName"].First<string>();
+            var port = parameters["port"].First<ushort>();
 
-            IConnectionController connection = this.Connections.FirstOrDefault(c =>
+            var connection = Connections.FirstOrDefault(c =>
                 c.ConnectionModel.ProtocolType.Provider == gameTypeProvider &&
                 c.ConnectionModel.ProtocolType.Type == gameTypeType &&
                 c.ConnectionModel.Hostname == hostName &&
                 c.ConnectionModel.Port == port
             );
 
-            return this.PotatoRemoveConnection(command, connection);
+            return PotatoRemoveConnection(command, connection);
         }
 
         /// <summary>
@@ -879,15 +879,15 @@ namespace Potato.Core {
         /// <param name="command"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public ICommandResult PotatoQuery(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult PotatoQuery(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
             
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                ICommandResult packages = this.Packages.Tunnel(new Command(command) {
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var packages = Packages.Tunnel(new Command(command) {
                     CommandType = CommandType.PackagesFetchPackages
                 });
 
-                ICommandResult protocols = this.Protocols.Tunnel(new Command(command) {
+                var protocols = Protocols.Tunnel(new Command(command) {
                     CommandType = CommandType.ProtocolsFetchSupportedProtocols
                 });
                 
@@ -895,12 +895,12 @@ namespace Potato.Core {
                     Success = true,
                     CommandResultType = CommandResultType.Success,
                     Now = new CommandData() {
-                        Connections = this.Connections.Select(connection => connection.ConnectionModel).ToList(),
+                        Connections = Connections.Select(connection => connection.ConnectionModel).ToList(),
                         ProtocolTypes = new List<ProtocolType>(protocols.Now.ProtocolTypes ?? new List<ProtocolType>()),
                         Repositories = new List<RepositoryModel>(packages.Now.Repositories ?? new List<RepositoryModel>()),
-                        Groups = new List<Core.Shared.Models.GroupModel>(this.Shared.Security.Groups),
-                        Languages = this.Shared.Languages.LoadedLanguageFiles.Select(language => language.LanguageModel).ToList(),
-                        Variables = new List<VariableModel>(this.Shared.Variables.VolatileVariables.Values)
+                        Groups = new List<Core.Shared.Models.GroupModel>(Shared.Security.Groups),
+                        Languages = Shared.Languages.LoadedLanguageFiles.Select(language => language.LanguageModel).ToList(),
+                        Variables = new List<VariableModel>(Shared.Variables.VolatileVariables.Values)
                     }
                 };
             }
@@ -915,16 +915,16 @@ namespace Potato.Core {
         /// Queries this instance for a response and uptime
         /// </summary>
         /// <returns></returns>
-        public ICommandResult PotatoPing(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult PotatoPing(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
             
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 result = new CommandResult() {
                     Success = true,
                     CommandResultType = CommandResultType.Success,
                     Now = {
-                        Content = new List<String>() {
-                            Convert.ToInt32((DateTime.Now - this.InstantiatedStamp).TotalMilliseconds).ToString(CultureInfo.InvariantCulture)
+                        Content = new List<string>() {
+                            Convert.ToInt32((DateTime.Now - InstantiatedStamp).TotalMilliseconds).ToString(CultureInfo.InvariantCulture)
                         }
                     }
                 };

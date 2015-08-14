@@ -40,7 +40,7 @@ namespace Potato.Core.Test.TextCommands {
             var textCommands = new TextCommandController();
 
             var testCommand = new TextCommandModel() {
-                Commands = new List<String>() {
+                Commands = new List<string>() {
                     "DisposeTest"
                 }
             };
@@ -48,7 +48,7 @@ namespace Potato.Core.Test.TextCommands {
             textCommands.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.TextCommandsRegister,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     testCommand
                 })
             });
@@ -66,7 +66,7 @@ namespace Potato.Core.Test.TextCommands {
         [Test]
         public void TestTextCommandDispose() {
             var testCommand = new TextCommandModel() {
-                Commands = new List<String>() {
+                Commands = new List<string>() {
                     "DisposeTest"
                 }
             };

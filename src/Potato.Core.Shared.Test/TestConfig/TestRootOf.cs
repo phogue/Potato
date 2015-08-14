@@ -26,7 +26,7 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestRootOfSingleProperty() {
-            IConfig config = new Config().Create<MockSimpleConcrete>();
+            var config = new Config().Create<MockSimpleConcrete>();
 
             var root = config.RootOf<MockSimpleConcrete>();
 
@@ -38,7 +38,7 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestRootOfMultipleProperties() {
-            IConfig config = new Config().Create<MockSimpleConcrete>();
+            var config = new Config().Create<MockSimpleConcrete>();
             config.Document.Add(new JProperty("Potato.Core.Shared.Test.TestConfig.Mocks.DoesNotExist", new JArray()));
 
             var root = config.RootOf<MockSimpleConcrete>();
@@ -51,7 +51,7 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestRootOfNotCreatedForProperty() {
-            IConfig config = new Config().Create<MockSimpleConcrete>();
+            var config = new Config().Create<MockSimpleConcrete>();
             config.Document.Add(new JProperty("Potato.Core.Shared.Test.TestConfig.TestRootOf", new JArray()));
 
             var root = config.RootOf<TestRootOf>();
@@ -64,7 +64,7 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestRootOfNonExistantPropertyReturnsNotNull() {
-            IConfig config = new Config().Create<MockSimpleConcrete>();
+            var config = new Config().Create<MockSimpleConcrete>();
 
             var root = config.RootOf<TestRootOf>();
 
@@ -76,7 +76,7 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestExplicitTypeRootOfSingleProperty() {
-            IConfig config = new Config().Create<MockSimpleConcrete>();
+            var config = new Config().Create<MockSimpleConcrete>();
 
             var root = config.RootOf(typeof(MockSimpleConcrete));
 
@@ -88,7 +88,7 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestExplicitTypeRootOfMultipleProperties() {
-            IConfig config = new Config().Create<MockSimpleConcrete>();
+            var config = new Config().Create<MockSimpleConcrete>();
             config.Document.Add(new JProperty("Potato.Core.Shared.Test.TestConfig.Mocks.DoesNotExist", new JArray()));
 
             var root = config.RootOf(typeof(MockSimpleConcrete));
@@ -101,7 +101,7 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestExplicitTypeRootOfNotCreatedForProperty() {
-            IConfig config = new Config().Create<MockSimpleConcrete>();
+            var config = new Config().Create<MockSimpleConcrete>();
             config.Document.Add(new JProperty("Potato.Core.Shared.Test.TestConfig.TestRootOf", new JArray()));
 
             var root = config.RootOf(typeof(TestRootOf));
@@ -114,7 +114,7 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test]
         public void TestExplicitTypeRootOfNonExistantPropertyReturnsNotNull() {
-            IConfig config = new Config().Create<MockSimpleConcrete>();
+            var config = new Config().Create<MockSimpleConcrete>();
 
             var root = config.RootOf(typeof(TestRootOf));
 
@@ -134,7 +134,7 @@ namespace Potato.Core.Shared.Test.TestConfig {
         /// </summary>
         [Test, ExpectedException(typeof(ArgumentNullException))]
         public void TestStringNullException() {
-            new Config().RootOf((String)null);
+            new Config().RootOf((string)null);
         }
     }
 }

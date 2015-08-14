@@ -24,11 +24,11 @@ namespace Potato.Core.Shared.Plugins {
         /// <summary>
         /// List of commands this plugin can handle
         /// </summary>
-        List<String> Commands { get; set; }
+        List<string> Commands { get; set; }
 
         /// <summary>
         /// The a friendly human readable name for the plugin
         /// </summary>
-        String Title { get; set; }
+        string Title { get; set; }
     }
 }

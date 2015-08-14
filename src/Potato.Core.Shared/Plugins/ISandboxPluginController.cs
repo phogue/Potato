@@ -28,7 +28,7 @@ namespace Potato.Core.Shared.Plugins {
         /// <param name="assemblyFile"></param>
         /// <param name="typeName"></param>
         /// <returns></returns>
-        IPluginController Create(String assemblyFile, String typeName);
+        IPluginController Create(string assemblyFile, string typeName);
 
         /// <summary>
         /// Enables a plugin by it's guid, allowing it to accept events and commands.

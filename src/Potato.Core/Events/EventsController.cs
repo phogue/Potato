@@ -38,15 +38,15 @@ namespace Potato.Core.Events {
         /// <summary>
         /// Lock used when fetching a new event Id. I hate that this was originally copied from Potato.Net without looking =\
         /// </summary>
-        protected readonly Object AcquireEventIdLock = new object();
+        protected readonly object AcquireEventIdLock = new object();
 
         /// <summary>
         /// Aquires an event id
         /// </summary>
         protected ulong AcquireEventId {
             get {
-                lock (this.AcquireEventIdLock) {
-                    return ++this._mEventId;
+                lock (AcquireEventIdLock) {
+                    return ++_mEventId;
                 }
             }
         }
@@ -62,11 +62,11 @@ namespace Potato.Core.Events {
         /// </summary>
         /// <param name="sender">The sender</param>
         /// <param name="e">The event that has been logged</param>
-        public delegate void EventLoggedHandler(Object sender, IGenericEvent e);
+        public delegate void EventLoggedHandler(object sender, IGenericEvent e);
 
         public SharedReferences Shared { get; private set; }
 
-        protected List<String> DefaultEventsLogIgnoredNames = new List<String>() {
+        protected List<string> DefaultEventsLogIgnoredNames = new List<string>() {
             ProtocolEventType.ProtocolPlayerlistUpdated.ToString(),
             ProtocolEventType.ProtocolSettingsUpdated.ToString()
         };
@@ -75,10 +75,10 @@ namespace Potato.Core.Events {
         /// Initializes default attributes and sets up command dispatching
         /// </summary>
         public EventsController() : base() {
-            this.Shared = new SharedReferences();
-            this.LoggedEvents = new List<IGenericEvent>();
+            Shared = new SharedReferences();
+            LoggedEvents = new List<IGenericEvent>();
 
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.EventsFetchAfterEventId,
                     ParameterTypes = new List<CommandParameterType>() {
@@ -87,7 +87,7 @@ namespace Potato.Core.Events {
                             Type = typeof(ulong)
                         }
                     },
-                    Handler = this.EventsFetchAfterEventId
+                    Handler = EventsFetchAfterEventId
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.EventsLog,
@@ -97,13 +97,13 @@ namespace Potato.Core.Events {
                             Type = typeof(IGenericEvent)
                         }
                     },
-                    Handler = this.EventsLog
+                    Handler = EventsLog
                 }
             });
         }
 
         protected virtual void OnEventLogged(IGenericEvent e) {
-            EventLoggedHandler handler = this.EventLogged;
+            var handler = EventLogged;
 
             if (handler != null) {
                 handler(this, e);
@@ -111,11 +111,11 @@ namespace Potato.Core.Events {
         }
 
         public override void Dispose() {
-            this.WriteEventsList(this.LoggedEvents);
-            this.LoggedEvents.Clear();
-            this.LoggedEvents = null;
+            WriteEventsList(LoggedEvents);
+            LoggedEvents.Clear();
+            LoggedEvents = null;
 
-            this.EventLogged = null;
+            EventLogged = null;
 
             base.Dispose();
         }
@@ -126,14 +126,14 @@ namespace Potato.Core.Events {
         /// <param name="item"></param>
         public void Log(IGenericEvent item) {
             // Can be null after disposal.
-            if (this.LoggedEvents != null) {
-                item.Id = this.AcquireEventId;
+            if (LoggedEvents != null) {
+                item.Id = AcquireEventId;
 
-                lock (this.LoggedEvents) {
-                    this.LoggedEvents.Add(item);
+                lock (LoggedEvents) {
+                    LoggedEvents.Add(item);
                 }
 
-                this.OnEventLogged(item);
+                OnEventLogged(item);
             }
         }
 
@@ -142,14 +142,14 @@ namespace Potato.Core.Events {
         /// </summary>
         /// <param name="stamp">The date time to build the directory from. Will ignore the minutes and seconds.</param>
         /// <returns>The path to the file to log events</returns>
-        public String EventsLogFileName(DateTime stamp) {
-            String directory = Path.Combine(Defines.LogsDirectory.FullName, stamp.ToString("yyyy-MM-dd"));
+        public string EventsLogFileName(DateTime stamp) {
+            var directory = Path.Combine(Defines.LogsDirectory.FullName, stamp.ToString("yyyy-MM-dd"));
 
             if (Directory.Exists(directory) == false) {
                 Directory.CreateDirectory(directory);
             }
 
-            return Path.Combine(directory, String.Format("events_{0}_to_{1}.json", stamp.ToString("HH_00_00"), stamp.AddHours(1.0D).ToString("HH_00_00")));
+            return Path.Combine(directory, string.Format("events_{0}_to_{1}.json", stamp.ToString("HH_00_00"), stamp.AddHours(1.0D).ToString("HH_00_00")));
         }
 
         /// <summary>
@@ -158,11 +158,11 @@ namespace Potato.Core.Events {
         /// <param name="events">The events to write.</param>
         protected bool WriteEventsList(List<IGenericEvent> events) {
             // Assume everything was successful
-            bool saved = true;
+            var saved = true;
 
-            if (this.Shared.Variables.Get(CommonVariableNames.WriteLogEventsToFile, false) == true) {
+            if (Shared.Variables.Get(CommonVariableNames.WriteLogEventsToFile, false) == true) {
                 foreach (var eventHourlyGroup in events.GroupBy(e => new DateTime(e.Stamp.Year, e.Stamp.Month, e.Stamp.Day, e.Stamp.Hour, 0, 0))) {
-                    String logFileName = this.EventsLogFileName(eventHourlyGroup.Key);
+                    var logFileName = EventsLogFileName(eventHourlyGroup.Key);
 
                     try {
                         using (TextWriter writer = new StreamWriter(logFileName, true)) {
@@ -191,7 +191,7 @@ namespace Potato.Core.Events {
         /// freeing up memory.
         /// </summary>
         public void WriteEvents() {
-            this.WriteEvents(DateTime.Now);
+            WriteEvents(DateTime.Now);
         }
 
         /// <summary>
@@ -202,29 +202,29 @@ namespace Potato.Core.Events {
         public void WriteEvents(DateTime now) {
 
             // Events can be null after disposal.
-            if (this.LoggedEvents != null) {
+            if (LoggedEvents != null) {
 
                 List<IGenericEvent> flushEvents = null;
 
-                DateTime before = now - TimeSpan.FromSeconds(this.Shared.Variables.Get(CommonVariableNames.MaximumEventsTimeSeconds, 30));
+                var before = now - TimeSpan.FromSeconds(Shared.Variables.Get(CommonVariableNames.MaximumEventsTimeSeconds, 30));
 
-                lock (this.LoggedEvents) {
+                lock (LoggedEvents) {
                     // All events are appended to the Events list, so we
                     // remove all events until we find one that isn't old enough.
                     // Provided the event is not ignored (don't write ignored events)
-                    flushEvents = this.LoggedEvents.Where(e => e.Stamp < before).Where(e => this.Shared.Variables.Get(CommonVariableNames.EventsLogIgnoredNames, this.DefaultEventsLogIgnoredNames).Contains(e.Name) == false).ToList();
+                    flushEvents = LoggedEvents.Where(e => e.Stamp < before).Where(e => Shared.Variables.Get(CommonVariableNames.EventsLogIgnoredNames, DefaultEventsLogIgnoredNames).Contains(e.Name) == false).ToList();
                 }
 
                 // Don't hold up other threads attempting to log an event.
-                this.WriteEventsList(flushEvents);
+                WriteEventsList(flushEvents);
 
                 // Now remove all old events. This differs from the events we wrote to disk, as we may
                 // have ignored some of the events but we still need to get rid of old events.
-                lock (this.LoggedEvents) {
-                    var flushed = this.LoggedEvents.Where(e => e.Stamp < before).ToList();
+                lock (LoggedEvents) {
+                    var flushed = LoggedEvents.Where(e => e.Stamp < before).ToList();
                     flushed.ForEach(e => {
                         e.Dispose();
-                        this.LoggedEvents.Remove(e);
+                        LoggedEvents.Remove(e);
                     });
                 }
             }
@@ -233,16 +233,16 @@ namespace Potato.Core.Events {
         /// <summary>
         /// Fetches all events after a passed id, as well as after a certain date.
         /// </summary>
-        public ICommandResult EventsFetchAfterEventId(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult EventsFetchAfterEventId(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            ulong eventId = parameters["eventId"].First<ulong>();
+            var eventId = parameters["eventId"].First<ulong>();
 
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 List<IGenericEvent> events = null;
 
-                lock (this.LoggedEvents) {
-                    events = this.LoggedEvents.Where(e => e.Stamp > DateTime.Now - TimeSpan.FromSeconds(this.Shared.Variables.Get(CommonVariableNames.MaximumEventsTimeSeconds, 300)))
+                lock (LoggedEvents) {
+                    events = LoggedEvents.Where(e => e.Stamp > DateTime.Now - TimeSpan.FromSeconds(Shared.Variables.Get(CommonVariableNames.MaximumEventsTimeSeconds, 300)))
                                               .Where(e => e.Id > eventId)
                                               .OrderBy(e => e.Id)
                                               .ToList();
@@ -251,7 +251,7 @@ namespace Potato.Core.Events {
                 result = new CommandResult() {
                     Success = true,
                     CommandResultType = CommandResultType.Success,
-                    Message = String.Format(@"Fetched {0} event(s)", events.Count),
+                    Message = string.Format(@"Fetched {0} event(s)", events.Count),
                     Now = {
                         Events = events
                     }
@@ -267,13 +267,13 @@ namespace Potato.Core.Events {
         /// <summary>
         /// Logs a new event
         /// </summary>
-        public ICommandResult EventsLog(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        public ICommandResult EventsLog(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             ICommandResult result = null;
 
-            IGenericEvent @event = parameters["event"].First<IGenericEvent>();
+            var @event = parameters["event"].First<IGenericEvent>();
 
-            if (this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                this.Log(@event);
+            if (Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                Log(@event);
 
                 result = new CommandResult() {
                     Success = true,

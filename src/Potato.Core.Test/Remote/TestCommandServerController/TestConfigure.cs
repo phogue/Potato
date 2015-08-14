@@ -40,7 +40,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.Shared.Variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     CommonVariableNames.CommandServerPort,
                     3100
                 })
@@ -49,7 +49,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.Shared.Variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     CommonVariableNames.CommandServerEnabled,
                     true
                 })
@@ -73,7 +73,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.Shared.Variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     CommonVariableNames.CommandServerEnabled,
                     true
                 })
@@ -82,7 +82,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.Shared.Variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     CommonVariableNames.CommandServerPort,
                     3200
                 })
@@ -107,7 +107,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.Shared.Variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     CommonVariableNames.CommandServerPort,
                     3300
                 })
@@ -116,7 +116,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.Shared.Variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     CommonVariableNames.CommandServerEnabled,
                     true
                 })
@@ -127,7 +127,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.Shared.Variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     CommonVariableNames.CommandServerEnabled,
                     false
                 })
@@ -149,7 +149,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.Shared.Variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     CommonVariableNames.CommandServerPort,
                     3400
                 })
@@ -158,7 +158,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.Shared.Variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     CommonVariableNames.CommandServerEnabled,
                     true
                 })
@@ -184,7 +184,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.Shared.Variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     CommonVariableNames.CommandServerPort,
                     3500
                 })
@@ -193,7 +193,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.Shared.Variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     CommonVariableNames.CommandServerEnabled,
                     true
                 })
@@ -204,7 +204,7 @@ namespace Potato.Core.Test.Remote.TestCommandServerController {
             commandServer.Shared.Variables.Tunnel(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet,
-                Parameters = TestHelpers.ObjectListToContentList(new List<Object>() {
+                Parameters = TestHelpers.ObjectListToContentList(new List<object>() {
                     CommonVariableNames.CommandServerEnabled,
                     false
                 })

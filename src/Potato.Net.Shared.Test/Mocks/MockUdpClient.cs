@@ -19,14 +19,14 @@ namespace Potato.Net.Shared.Test.Mocks {
         
         public MockUdpClient() : base() {
 
-            this.PacketSerializer = new MockPacketSerializer();
+            PacketSerializer = new MockPacketSerializer();
         }
 
         public MockUdpClient(System.Net.Sockets.UdpClient client) : base() {
-            this.Client = client;
-            this.ConnectionState = ConnectionState.ConnectionLoggedIn;
+            Client = client;
+            ConnectionState = ConnectionState.ConnectionLoggedIn;
 
-            this.PacketSerializer = new MockPacketSerializer();
+            PacketSerializer = new MockPacketSerializer();
         }
     }
 }

@@ -25,14 +25,14 @@ namespace Potato.Core.Shared.Models {
         /// <summary>
         /// The username of the initiator
         /// </summary>
-        public String Username { get; set; }
+        public string Username { get; set; }
 
         /// <summary>
         /// The password of the user executing the command. Used to authenticate
         /// remote requests.
         /// </summary>
         /// <remarks>Will change to much more secure password authentication</remarks>
-        public String PasswordPlainText { get; set; }
+        public string PasswordPlainText { get; set; }
 
         /// <summary>
         /// The id of the supplied access token.
@@ -42,26 +42,26 @@ namespace Potato.Core.Shared.Models {
         /// <summary>
         /// The token, as a replacement for the password.
         /// </summary>
-        public String Token { get; set; }
+        public string Token { get; set; }
 
         /// <summary>
         /// The game type of the initiators player Uid
         /// </summary>
-        public String GameType { get; set; }
+        public string GameType { get; set; }
 
         /// <summary>
         /// The uid of the player initiating the command
         /// </summary>
-        public String Uid { get; set; }
+        public string Uid { get; set; }
 
         /// <summary>
         /// Initializes the authentication model with the default values.
         /// </summary>
         public CommandAuthenticationModel() {
-            this.Username = null;
-            this.GameType = CommonProtocolType.None;
-            this.Uid = null;
-            this.PasswordPlainText = null;
+            Username = null;
+            GameType = CommonProtocolType.None;
+            Uid = null;
+            PasswordPlainText = null;
         }
 
         /// <summary>
@@ -70,9 +70,9 @@ namespace Potato.Core.Shared.Models {
         /// </summary>
         /// <returns>True if this object can be used for authentication, false if no authentication exists.</returns>
         public bool Valid() {
-            var account = String.IsNullOrEmpty(this.Username) == false && String.IsNullOrEmpty(this.PasswordPlainText) == false;
-            var token = TokenId != Guid.Empty && String.IsNullOrEmpty(this.Token) == false;
-            var player = String.IsNullOrEmpty(this.GameType) == false && String.IsNullOrEmpty(this.Uid) == false;
+            var account = string.IsNullOrEmpty(Username) == false && string.IsNullOrEmpty(PasswordPlainText) == false;
+            var token = TokenId != Guid.Empty && string.IsNullOrEmpty(Token) == false;
+            var player = string.IsNullOrEmpty(GameType) == false && string.IsNullOrEmpty(Uid) == false;
 
             return account || token || player;
         }

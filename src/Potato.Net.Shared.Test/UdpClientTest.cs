@@ -46,7 +46,7 @@ namespace Potato.Net.Shared.Test {
 
             client.Connect();
 
-            AutoResetEvent connectionWait = new AutoResetEvent(false);
+            var connectionWait = new AutoResetEvent(false);
 
             Action<IClient, ConnectionState> connectionStateChangeHandler = (sender, state) => {
                 if (state == ConnectionState.ConnectionReady) {
@@ -76,9 +76,9 @@ namespace Potato.Net.Shared.Test {
             MockUdpListener listener;
             MockUdpClient client;
 
-            AutoResetEvent packetWait = new AutoResetEvent(false);
+            var packetWait = new AutoResetEvent(false);
 
-            this.CreateAndConnect(36000, out listener, out client);
+            CreateAndConnect(36000, out listener, out client);
 
             listener.PacketReceived += (sender, request) => packetWait.Set();
 
@@ -103,9 +103,9 @@ namespace Potato.Net.Shared.Test {
             MockUdpClient client;
             MockPacket packet = null;
 
-            AutoResetEvent packetWait = new AutoResetEvent(false);
+            var packetWait = new AutoResetEvent(false);
 
-            this.CreateAndConnect(36001, out listener, out client);
+            CreateAndConnect(36001, out listener, out client);
 
             listener.PacketReceived += (sender, request) => {
                 packet = request;
@@ -135,9 +135,9 @@ namespace Potato.Net.Shared.Test {
             MockUdpClient client;
             MockPacket packet = null;
 
-            AutoResetEvent packetWait = new AutoResetEvent(false);
+            var packetWait = new AutoResetEvent(false);
 
-            this.CreateAndConnect(36002, out listener, out client);
+            CreateAndConnect(36002, out listener, out client);
 
             listener.PacketReceived += (sender, request) => {
                 request.Packet.Type = PacketType.Response;

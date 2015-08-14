@@ -31,14 +31,14 @@ namespace Potato.Core.Packages {
         /// <returns>A new PackageModel with the details taken from the source.</returns>
         public static PackageModel CreatePackageModelFromNugetPackage(IPackage source) {
             return new PackageModel() {
-                Authors = new List<String>(source.Authors),
+                Authors = new List<string>(source.Authors),
                 Copyright = source.Copyright,
                 Description = source.Description,
                 IconUrl = source.IconUrl != null ? source.IconUrl.OriginalString : "",
                 Id = source.Id,
                 Language = source.Language,
                 LicenseUrl = source.LicenseUrl != null ? source.LicenseUrl.OriginalString : "",
-                Owners = new List<String>(source.Owners),
+                Owners = new List<string>(source.Owners),
                 ProjectUrl = source.ProjectUrl != null ? source.ProjectUrl.OriginalString : "",
                 ReleaseNotes = source.ReleaseNotes,
                 RequireLicenseAcceptance = source.RequireLicenseAcceptance,

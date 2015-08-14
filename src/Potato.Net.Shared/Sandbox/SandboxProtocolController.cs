@@ -37,25 +37,25 @@ namespace Potato.Net.Shared.Sandbox {
 
         public IClient Client {
             get {
-                return this.SandboxedProtocol != null ? this.SandboxedProtocol.Client : null;
+                return SandboxedProtocol != null ? SandboxedProtocol.Client : null;
             }
         }
 
         public IProtocolState State {
             get {
-                return this.SandboxedProtocol != null ? this.SandboxedProtocol.State : null;
+                return SandboxedProtocol != null ? SandboxedProtocol.State : null;
             }
         }
 
         public IProtocolSetup Options {
             get {
-                return this.SandboxedProtocol != null ? this.SandboxedProtocol.Options : null;
+                return SandboxedProtocol != null ? SandboxedProtocol.Options : null;
             }
         }
 
         public IProtocolType ProtocolType {
             get {
-                return this.SandboxedProtocol != null ? this.SandboxedProtocol.ProtocolType : null;
+                return SandboxedProtocol != null ? SandboxedProtocol.ProtocolType : null;
             }
         }
 
@@ -64,23 +64,23 @@ namespace Potato.Net.Shared.Sandbox {
         /// an object has beeen set and a delegate added to the bubble object.
         /// </summary>
         public void AssignEvents() {
-            if (this.SandboxedProtocol != null) {
-                this.SandboxedProtocol.ProtocolEvent += (protocol, args) => {
-                    if (this.Bubble != null) {
-                        this.Bubble.FireProtocolEvent(args);
+            if (SandboxedProtocol != null) {
+                SandboxedProtocol.ProtocolEvent += (protocol, args) => {
+                    if (Bubble != null) {
+                        Bubble.FireProtocolEvent(args);
                     }
                 };
 
-                this.SandboxedProtocol.ClientEvent += (protocol, args) => {
-                    if (this.Bubble != null) {
-                        this.Bubble.FireClientEvent(args);
+                SandboxedProtocol.ClientEvent += (protocol, args) => {
+                    if (Bubble != null) {
+                        Bubble.FireClientEvent(args);
                     }
                 };
             }
         }
 
-        public bool Create(String assemblyFile, IProtocolType type) {
-            this.SandboxedProtocol = null;
+        public bool Create(string assemblyFile, IProtocolType type) {
+            SandboxedProtocol = null;
 
             try {
                 // Load the assembly into our AppDomain
@@ -91,12 +91,12 @@ namespace Potato.Net.Shared.Sandbox {
                     .Where(loadedType => typeof(IProtocol).IsAssignableFrom(loadedType))
                     .First(loadedType => {
                         var firstOrDefault = loadedType.GetCustomAttributes(typeof (IProtocolType), false).Cast<IProtocolType>().FirstOrDefault();
-                        return firstOrDefault != null && String.Equals(firstOrDefault.Provider, type.Provider) && String.Equals(firstOrDefault.Type, type.Type);
+                        return firstOrDefault != null && string.Equals(firstOrDefault.Provider, type.Provider) && string.Equals(firstOrDefault.Type, type.Type);
                     });
 
-                this.SandboxedProtocol = (IProtocol)Activator.CreateInstance(protocolType);
+                SandboxedProtocol = (IProtocol)Activator.CreateInstance(protocolType);
 
-                this.AssignEvents();
+                AssignEvents();
             }
             // [Obviously copy/pasted from the plugin controller, it has the same meaning here]
             // We don't do any exception logging here, as simply updating Potato may log a bunch of exceptions
@@ -106,41 +106,41 @@ namespace Potato.Net.Shared.Sandbox {
             // I would also hope that beyond Beta we will not make breaking changes to the plugin interface,
             // differing from Potato 1 in generic behaviour for IPluginController/ICoreController
             catch {
-                this.SandboxedProtocol = null;
+                SandboxedProtocol = null;
             }
 
-            return this.SandboxedProtocol != null;
+            return SandboxedProtocol != null;
         }
 
         public IProtocolSetupResult Setup(IProtocolSetup setup) {
-            return this.SandboxedProtocol != null ? this.SandboxedProtocol.Setup(setup) : null;
+            return SandboxedProtocol != null ? SandboxedProtocol.Setup(setup) : null;
         }
 
         public List<IPacket> Action(INetworkAction action) {
-            return this.SandboxedProtocol != null ? this.SandboxedProtocol.Action(action) : null;
+            return SandboxedProtocol != null ? SandboxedProtocol.Action(action) : null;
         }
 
         public IPacket Send(IPacketWrapper packet) {
-            return this.SandboxedProtocol != null ? this.SandboxedProtocol.Send(packet) : null;
+            return SandboxedProtocol != null ? SandboxedProtocol.Send(packet) : null;
         }
 
         public void AttemptConnection() {
-            if (this.SandboxedProtocol != null) {
-                this.SandboxedProtocol.AttemptConnection();
+            if (SandboxedProtocol != null) {
+                SandboxedProtocol.AttemptConnection();
             }
         }
 
         public void Shutdown() {
-            if (this.SandboxedProtocol != null) {
-                this.SandboxedProtocol.Shutdown();
+            if (SandboxedProtocol != null) {
+                SandboxedProtocol.Shutdown();
 
-                this.SandboxedProtocol = null;
+                SandboxedProtocol = null;
             }
         }
 
         public void Synchronize() {
-            if (this.SandboxedProtocol != null) {
-                this.SandboxedProtocol.Synchronize();
+            if (SandboxedProtocol != null) {
+                SandboxedProtocol.Synchronize();
             }
         }
     }

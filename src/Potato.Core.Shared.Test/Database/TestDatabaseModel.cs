@@ -37,15 +37,15 @@ namespace Potato.Core.Shared.Test.Database {
         [Test]
         public void TestComplexFromQuerySingle() {
             var item = new CollectionValue() {
-                new DocumentValue().Set("IntegerValue", 1).Set("LongValue", 2).Set("DoubleValue", 3.5).Set("StringValue", "Phogue").Set("DateTimeValue", new DateTime(2013, 12, 19, 13, 38, 0)).Set("SingleMockSimpleModel", new Dictionary<String, Object>() {
+                new DocumentValue().Set("IntegerValue", 1).Set("LongValue", 2).Set("DoubleValue", 3.5).Set("StringValue", "Phogue").Set("DateTimeValue", new DateTime(2013, 12, 19, 13, 38, 0)).Set("SingleMockSimpleModel", new Dictionary<string, object>() {
                     {"Id", 10},
                     {"Name", "Zaeed"}
-                }).Set("MultipleMockSimpleModel", new List<Object>() {
-                    new Dictionary<String, Object>() {
+                }).Set("MultipleMockSimpleModel", new List<object>() {
+                    new Dictionary<string, object>() {
                         {"Id", 20},
                         {"Name", "Ike"}
                     },
-                    new Dictionary<String, Object>() {
+                    new Dictionary<string, object>() {
                         {"Id", 30},
                         {"Name", "Phil"}
                     }
@@ -72,7 +72,7 @@ namespace Potato.Core.Shared.Test.Database {
         /// </summary>
         [Test]
         public void TestComplexToSaveQuery() {
-            Save save = new MockComplexModel() {
+            var save = new MockComplexModel() {
                 IntegerValue = 1,
                 LongValue = 2,
                 DoubleValue = 3.5D,
@@ -164,7 +164,7 @@ namespace Potato.Core.Shared.Test.Database {
         /// </summary>
         [Test]
         public void TestSimpleToModifyQuery() {
-            Modify modify = new MockSimpleModel() {
+            var modify = new MockSimpleModel() {
                 Name = "Phogue",
                 Id = 10
             }.ToModifyQuery();
@@ -182,7 +182,7 @@ namespace Potato.Core.Shared.Test.Database {
         /// </summary>
         [Test]
         public void TestSimpleToSaveQuery() {
-            Save save = new MockSimpleModel() {
+            var save = new MockSimpleModel() {
                 Name = "Phogue",
                 Id = 10
             }.ToSaveQuery();

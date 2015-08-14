@@ -25,13 +25,13 @@ namespace Potato.Database.Test.Integration.SqLite {
     public class TestSqLiteIntegrationRemove : TestDatabaseIntegrationRemove {
 
         public TestSqLiteIntegrationRemove() {
-            this.Integration = new SqLiteDatabaseIntegration();
+            Integration = new SqLiteDatabaseIntegration();
         }
 
         [Test]
         public override void TestRemoveAllFromPlayer() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
-                this.TestRemoveAllFromPlayerImplicit
+            Integration.TestFindQuery(TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
+                TestRemoveAllFromPlayerImplicit
             }),
             new Find().Collection("Player"),
             new JArray());
@@ -39,8 +39,8 @@ namespace Potato.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestRemoveAllFromPlayerWhereNameEqualsPhogue() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
-                this.TestRemoveAllFromPlayerWhereNameEqualsPhogueImplicit
+            Integration.TestFindQuery(TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
+                TestRemoveAllFromPlayerWhereNameEqualsPhogueImplicit
             }),
             new Find().Collection("Player"),
             new JArray() {
@@ -67,8 +67,8 @@ namespace Potato.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestRemoveAllFromPlayerWherePlayerNameEqualsPhogue() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
-                this.TestRemoveAllFromPlayerWherePlayerNameEqualsPhogueImplicit
+            Integration.TestFindQuery(TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
+                TestRemoveAllFromPlayerWherePlayerNameEqualsPhogueImplicit
             }),
             new Find().Collection("Player"),
             new JArray() {
@@ -95,8 +95,8 @@ namespace Potato.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTen() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
-                this.TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTenImplicit
+            Integration.TestFindQuery(TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
+                TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreEqualsTenImplicit
             }),
             new Find().Collection("Player"),
             new JArray() {
@@ -129,8 +129,8 @@ namespace Potato.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeed() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
-                this.TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeedImplicit
+            Integration.TestFindQuery(TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
+                TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeedImplicit
             }),
             new Find().Collection("Player"),
             new JArray() {
@@ -151,8 +151,8 @@ namespace Potato.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
-                this.TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20Implicit
+            Integration.TestFindQuery(TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
+                TestRemoveAllFromPlayerWhereNameEqualsPhogueOrZaeedAndScoreAbove10AndBelow20Implicit
             }),
             new Find().Collection("Player"),
             new JArray() {
@@ -179,8 +179,8 @@ namespace Potato.Database.Test.Integration.SqLite {
 
         [Test]
         public override void TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50() {
-            this.Integration.TestFindQuery(this.TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
-                this.TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50Implicit
+            Integration.TestFindQuery(TestPlayerTableSetup.Union(new List<IDatabaseObject>() {
+                TestRemoveAllFromPlayerWhereNameEqualsPhogueAndScoreAbove50OrNameEqualsZaeedAndScoreBelow50Implicit
             }),
             new Find().Collection("Player"),
             new JArray() {

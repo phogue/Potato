@@ -29,11 +29,11 @@ namespace Potato.Net.Shared.Utils {
         /// <param name="hostName">The hostname or ip address</param>
         /// <returns></returns>
         public static IPAddress ResolveHostName(string hostName) {
-            IPAddress address = IPAddress.None;
+            var address = IPAddress.None;
 
             if (IPAddress.TryParse(hostName, out address) == false) {
                 try {
-                    IPHostEntry hostEntry = Dns.GetHostEntry(hostName);
+                    var hostEntry = Dns.GetHostEntry(hostName);
 
                     address = hostEntry.AddressList.Length > 0 ? hostEntry.AddressList[0] : IPAddress.None;
                 }
@@ -50,7 +50,7 @@ namespace Potato.Net.Shared.Utils {
         /// </summary>
         /// <param name="hostName">The hostname or ip address</param>
         /// <returns></returns>
-        public static IPAddress GetExternalIpAddress(String hostName) {
+        public static IPAddress GetExternalIpAddress(string hostName) {
             PingReply replay = null;
 
             try {

@@ -52,8 +52,8 @@ namespace Potato.Net.Shared.Test.Mocks {
         /// </summary>
         public void BeginListener() {
             try {
-                this.Listener = new MockUdpClient() {
-                    RemoteIpEndPoint = new IPEndPoint(IPAddress.Loopback, this.Port),
+                Listener = new MockUdpClient() {
+                    RemoteIpEndPoint = new IPEndPoint(IPAddress.Loopback, Port),
                     Client = new System.Net.Sockets.UdpClient {
                         Client = {
                             DontFragment = true
@@ -62,41 +62,41 @@ namespace Potato.Net.Shared.Test.Mocks {
                     }
                 };
 
-                this.Listener.Setup(new ClientSetup() {
+                Listener.Setup(new ClientSetup() {
                     Hostname = "localhost",
-                    Port = this.Port
+                    Port = Port
                 });
 
-                this.Listener.Client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-                this.Listener.Client.Client.Bind(this.Listener.RemoteIpEndPoint);
+                Listener.Client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                Listener.Client.Client.Bind(Listener.RemoteIpEndPoint);
                 
-                this.Listener.Client.Client.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.MulticastTimeToLive, true);
+                Listener.Client.Client.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.MulticastTimeToLive, true);
 
-                this.Listener.PacketReceived += Listener_PacketReceived;
-                this.Listener.ConnectionStateChanged += Listener_ConnectionStateChanged;
+                Listener.PacketReceived += Listener_PacketReceived;
+                Listener.ConnectionStateChanged += Listener_ConnectionStateChanged;
 
                 // Accept the connection.
-                this.Listener.BeginRead();
+                Listener.BeginRead();
             }
             catch (Exception e) {
-                this.OnException(e);
+                OnException(e);
             }
         }
 
         protected void Listener_PacketReceived(IClient sender, IPacketWrapper packet) {
             // Bubble the packet for processing.
-            this.OnPacketReceived(sender, packet as MockPacket);
+            OnPacketReceived(sender, packet as MockPacket);
         }
 
         protected void Listener_ConnectionStateChanged(IClient sender, ConnectionState newState) {
             if (newState == ConnectionState.ConnectionDisconnected) {
-                sender.PacketReceived -= this.Listener_PacketReceived;
-                sender.ConnectionStateChanged -= this.Listener_ConnectionStateChanged;
+                sender.PacketReceived -= Listener_PacketReceived;
+                sender.ConnectionStateChanged -= Listener_ConnectionStateChanged;
             }
         }
 
         protected virtual void OnPacketReceived(IClient client, MockPacket request) {
-            PacketReceivedHandler handler = PacketReceived;
+            var handler = PacketReceived;
 
             if (handler != null) {
                 handler(client, request);
@@ -104,7 +104,7 @@ namespace Potato.Net.Shared.Test.Mocks {
         }
 
         protected virtual void OnException(Exception exception) {
-            ExceptionHandler handler = Exception;
+            var handler = Exception;
 
             if (handler != null) {
                 handler(exception);

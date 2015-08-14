@@ -25,17 +25,17 @@ namespace Potato.Core.Shared.Models {
         /// <summary>
         /// The base url of the repository
         /// </summary>
-        public String Uri { get; set; }
+        public string Uri { get; set; }
 
         /// <summary>
         /// Short directory safe url
         /// </summary>
-        public String Slug { get; set; }
+        public string Slug { get; set; }
 
         /// <summary>
         /// The name of this repository
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// List of packages available in the repository
@@ -50,7 +50,7 @@ namespace Potato.Core.Shared.Models {
         /// <summary>
         /// Stores the last error that occured during a cache rebuild.
         /// </summary>
-        public String CacheError { get; set; }
+        public string CacheError { get; set; }
 
         /// <summary>
         /// When the repository was last cached.
@@ -61,7 +61,7 @@ namespace Potato.Core.Shared.Models {
         /// Initializes a repository model with the default values.
         /// </summary>
         public RepositoryModel() : base() {
-            this.Packages = new List<PackageWrapperModel>();
+            Packages = new List<PackageWrapperModel>();
         }
     }
 }

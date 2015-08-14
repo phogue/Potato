@@ -26,9 +26,9 @@ namespace Potato.Net.Shared.Models {
         /// Initializes the underlying networkmodel with the required collections.
         /// </summary>
         public MoveModel() {
-            this.Scope.Players = new List<PlayerModel>();
-            this.Then.Groups = new List<GroupModel>();
-            this.Now.Groups = new List<GroupModel>();
+            Scope.Players = new List<PlayerModel>();
+            Then.Groups = new List<GroupModel>();
+            Now.Groups = new List<GroupModel>();
         }
     }
 }

@@ -25,14 +25,14 @@ namespace Potato.Database.Shared.Builders.Values {
         /// <summary>
         /// The text attached to this object
         /// </summary>
-        public String Data { get; set; }
+        public string Data { get; set; }
 
         /// <summary>
         /// Casts the text into a simple object
         /// </summary>
         /// <returns></returns>
         public override object ToObject() {
-            return this.Data;
+            return Data;
         }
     }
 }

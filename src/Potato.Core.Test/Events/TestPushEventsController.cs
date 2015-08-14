@@ -42,8 +42,8 @@ namespace Potato.Core.Test.Events {
         /// </summary>
         /// <param name="seed">A random number shouldn't be passed in, otherwise you won't be able to duplicate the results.</param>
         protected void TestEventsPushControllerMultipleEndPointsRandomVariableAssignment(int seed) {
-            String pushConfigGroupNameOne = StringExtensions.RandomString(10);
-            String pushConfigGroupNameTwo = StringExtensions.RandomString(10);
+            var pushConfigGroupNameOne = StringExtensions.RandomString(10);
+            var pushConfigGroupNameTwo = StringExtensions.RandomString(10);
 
             var variables = new VariableController();
 
@@ -56,13 +56,13 @@ namespace Potato.Core.Test.Events {
                 }
             }.Execute();
 
-            var groupVariables = new Dictionary<String, Object>() {
-                {CommonVariableNames.EventsPushConfigGroups.ToString(), new List<String>() {
+            var groupVariables = new Dictionary<string, object>() {
+                {CommonVariableNames.EventsPushConfigGroups.ToString(), new List<string>() {
                     pushConfigGroupNameOne,
                     pushConfigGroupNameTwo
                 }},
-                {VariableModel.NamespaceVariableName(String.Empty, CommonVariableNames.EventsPushUri), "http://localhost/blank.php"},
-                {VariableModel.NamespaceVariableName(String.Empty, CommonVariableNames.EventPushIntervalSeconds), 10},
+                {VariableModel.NamespaceVariableName(string.Empty, CommonVariableNames.EventsPushUri), "http://localhost/blank.php"},
+                {VariableModel.NamespaceVariableName(string.Empty, CommonVariableNames.EventPushIntervalSeconds), 10},
                 {VariableModel.NamespaceVariableName(pushConfigGroupNameOne, CommonVariableNames.EventsPushUri), "http://localhost/one.php"},
                 {VariableModel.NamespaceVariableName(pushConfigGroupNameOne, CommonVariableNames.EventPushIntervalSeconds), 20},
                 {VariableModel.NamespaceVariableName(pushConfigGroupNameTwo, CommonVariableNames.EventsPushUri), "http://localhost/two.php"},
@@ -71,16 +71,16 @@ namespace Potato.Core.Test.Events {
 
             var rand = new Random(seed);
 
-            foreach (String groupVariableKey in groupVariables.Keys.OrderBy(key => rand.Next()).ToList()) {
+            foreach (var groupVariableKey in groupVariables.Keys.OrderBy(key => rand.Next()).ToList()) {
                 variables.Set(new Command() {
                     Origin = CommandOrigin.Local,
                     CommandType = CommandType.VariablesSet
                 }, groupVariableKey, groupVariables[groupVariableKey]);
             }
 
-            Assert.IsTrue(pushEvents.EndPoints.ContainsKey(String.Empty));
-            Assert.AreEqual("http://localhost/blank.php", pushEvents.EndPoints[String.Empty].Uri.ToString());
-            Assert.AreEqual(10, pushEvents.EndPoints[String.Empty].Interval);
+            Assert.IsTrue(pushEvents.EndPoints.ContainsKey(string.Empty));
+            Assert.AreEqual("http://localhost/blank.php", pushEvents.EndPoints[string.Empty].Uri.ToString());
+            Assert.AreEqual(10, pushEvents.EndPoints[string.Empty].Interval);
 
             Assert.IsTrue(pushEvents.EndPoints.ContainsKey(pushConfigGroupNameOne));
             Assert.AreEqual("http://localhost/one.php", pushEvents.EndPoints[pushConfigGroupNameOne].Uri.ToString());
@@ -120,19 +120,19 @@ namespace Potato.Core.Test.Events {
             variables.Set(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet
-            }, CommonVariableNames.EventPushInclusiveNames, new List<String>() { "EventName" });
+            }, CommonVariableNames.EventPushInclusiveNames, new List<string>() { "EventName" });
 
             // Validate the end point has been added.
-            Assert.IsTrue(pushEvents.EndPoints.ContainsKey(String.Empty));
-            Assert.AreEqual("http://localhost/pushme.php", pushEvents.EndPoints[String.Empty].Uri.ToString());
-            Assert.AreEqual(10, pushEvents.EndPoints[String.Empty].Interval);
+            Assert.IsTrue(pushEvents.EndPoints.ContainsKey(string.Empty));
+            Assert.AreEqual("http://localhost/pushme.php", pushEvents.EndPoints[string.Empty].Uri.ToString());
+            Assert.AreEqual(10, pushEvents.EndPoints[string.Empty].Interval);
 
             events.Log(new GenericEvent() {
                 Name = "EventName",
                 Message = "Yo."
             });
 
-            Assert.AreEqual(1, pushEvents.EndPoints[String.Empty].EventsStream.Count);
+            Assert.AreEqual(1, pushEvents.EndPoints[string.Empty].EventsStream.Count);
 
             pushEvents.Dispose();
 
@@ -167,22 +167,22 @@ namespace Potato.Core.Test.Events {
             variables.Set(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet
-            }, CommonVariableNames.EventPushInclusiveNames, new List<String>() { "EventName" });
+            }, CommonVariableNames.EventPushInclusiveNames, new List<string>() { "EventName" });
 
             // Validate the end point has been added.
-            Assert.IsTrue(pushEvents.EndPoints.ContainsKey(String.Empty));
-            Assert.AreEqual("http://localhost/pushme.php", pushEvents.EndPoints[String.Empty].Uri.ToString());
-            Assert.AreEqual(1, pushEvents.EndPoints[String.Empty].Interval);
+            Assert.IsTrue(pushEvents.EndPoints.ContainsKey(string.Empty));
+            Assert.AreEqual("http://localhost/pushme.php", pushEvents.EndPoints[string.Empty].Uri.ToString());
+            Assert.AreEqual(1, pushEvents.EndPoints[string.Empty].Interval);
 
             events.Log(new GenericEvent() {
                 Name = "EventName",
                 Message = "Yo."
             });
 
-            pushEvents.EndPoints[String.Empty].PushCompleted += sender => requestWait.Set();
+            pushEvents.EndPoints[string.Empty].PushCompleted += sender => requestWait.Set();
 
             Assert.IsTrue(requestWait.WaitOne(5000));
-            Assert.AreEqual(0, pushEvents.EndPoints[String.Empty].EventsStream.Count);
+            Assert.AreEqual(0, pushEvents.EndPoints[string.Empty].EventsStream.Count);
         }
 
         /// <summary>
@@ -219,7 +219,7 @@ namespace Potato.Core.Test.Events {
         /// </summary>
         [Test]
         public void TestEventsPushControllerNamespacedSingleEndPointBackwardSetting() {
-            String pushConfigGroupName = StringExtensions.RandomString(10);
+            var pushConfigGroupName = StringExtensions.RandomString(10);
 
             var variables = new VariableController();
 
@@ -235,7 +235,7 @@ namespace Potato.Core.Test.Events {
             variables.Set(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet
-            }, CommonVariableNames.EventsPushConfigGroups, new List<String>() {
+            }, CommonVariableNames.EventsPushConfigGroups, new List<string>() {
                 pushConfigGroupName
             });
 
@@ -262,7 +262,7 @@ namespace Potato.Core.Test.Events {
         /// </summary>
         [Test]
         public void TestEventsPushControllerNamespacedSingleEndPointForwardSetting() {
-            String pushConfigGroupName = StringExtensions.RandomString(10);
+            var pushConfigGroupName = StringExtensions.RandomString(10);
 
             var variables = new VariableController();
 
@@ -288,7 +288,7 @@ namespace Potato.Core.Test.Events {
             variables.Set(new Command() {
                 Origin = CommandOrigin.Local,
                 CommandType = CommandType.VariablesSet
-            }, CommonVariableNames.EventsPushConfigGroups, new List<String>() {
+            }, CommonVariableNames.EventsPushConfigGroups, new List<string>() {
                 pushConfigGroupName
             });
 
@@ -303,7 +303,7 @@ namespace Potato.Core.Test.Events {
         /// </summary>
         [Test]
         public void TestVariablesSetPriorToPushEventsControllerExecution() {
-            String pushConfigGroupName = StringExtensions.RandomString(10);
+            var pushConfigGroupName = StringExtensions.RandomString(10);
 
             var variables = new VariableController();
             variables.Tunnel(CommandBuilder.VariablesSet(VariableModel.NamespaceVariableName(pushConfigGroupName, CommonVariableNames.EventsPushUri), "http://localhost/pushme.php").SetOrigin(CommandOrigin.Local));
@@ -351,9 +351,9 @@ namespace Potato.Core.Test.Events {
                 CommandType = CommandType.VariablesSet
             }, CommonVariableNames.EventPushIntervalSeconds, 20);
 
-            Assert.IsTrue(pushEvents.EndPoints.ContainsKey(String.Empty));
-            Assert.AreEqual("http://localhost/pushme.php", pushEvents.EndPoints[String.Empty].Uri.ToString());
-            Assert.AreEqual(20, pushEvents.EndPoints[String.Empty].Interval);
+            Assert.IsTrue(pushEvents.EndPoints.ContainsKey(string.Empty));
+            Assert.AreEqual("http://localhost/pushme.php", pushEvents.EndPoints[string.Empty].Uri.ToString());
+            Assert.AreEqual(20, pushEvents.EndPoints[string.Empty].Interval);
         }
     }
 }

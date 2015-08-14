@@ -29,41 +29,41 @@ namespace Potato.Service.Shared.Test.TestServiceController.Mocks {
         public bool OnStart { get; set; }
         public bool OnWriteConfig { get; set; }
         public bool OnDispose { get; set; }
-        public List<String> OnParseCommandLineArguments { get; set; }
+        public List<string> OnParseCommandLineArguments { get; set; }
         public bool OnPollService { get; set; }
         public bool OnExecuteMessage { get; set; }
         public bool OnCreate { get; set; }
 
         public void Start() {
-            this.OnStart = true;
+            OnStart = true;
         }
 
         public void WriteConfig() {
-            this.OnWriteConfig = true;
+            OnWriteConfig = true;
         }
 
         public void Dispose() {
-            this.OnDispose = true;
+            OnDispose = true;
 
-            if (this.OnDisposeHandler != null) this.OnDisposeHandler();
+            if (OnDisposeHandler != null) OnDisposeHandler();
         }
 
-        public void ParseCommandLineArguments(List<String> arguments) {
-            this.OnParseCommandLineArguments = arguments;
+        public void ParseCommandLineArguments(List<string> arguments) {
+            OnParseCommandLineArguments = arguments;
         }
 
         public ServiceMessage PollService() {
-            this.OnPollService = true;
-            return this.WaitingMessage;
+            OnPollService = true;
+            return WaitingMessage;
         }
 
         public ServiceMessage ExecuteMessage(ServiceMessage message) {
-            this.OnExecuteMessage = true;
-            return this.ExecuteResultMessage;
+            OnExecuteMessage = true;
+            return ExecuteResultMessage;
         }
 
         public void Create() {
-            this.OnCreate = true;
+            OnCreate = true;
         }
     }
 }

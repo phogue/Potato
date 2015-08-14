@@ -25,25 +25,25 @@ namespace Potato.Net.Shared.Models {
         /// <summary>
         /// The name of the item, used by the game.
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// A human readable version of the name.
         /// </summary>
-        public String FriendlyName { get; set; }
+        public string FriendlyName { get; set; }
 
         /// <summary>
         /// List of tags to categorize the item by
         /// </summary>
-        public List<String> Tags { get; set; }
+        public List<string> Tags { get; set; }
 
         /// <summary>
         /// Initializes default values.
         /// </summary>
         public ItemModel() {
-            this.Name = String.Empty;
-            this.FriendlyName = String.Empty;
-            this.Tags = new List<String>();
+            Name = string.Empty;
+            FriendlyName = string.Empty;
+            Tags = new List<string>();
         }
     }
 }

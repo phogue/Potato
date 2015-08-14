@@ -26,7 +26,7 @@ namespace Potato.Net.Shared.Test.Models {
         /// </summary>
         [Test]
         public void TestNameStripped() {
-            PlayerModel player = new PlayerModel {
+            var player = new PlayerModel {
                 Name = "P]-[0gu3 Brösel"
             };
 
@@ -39,7 +39,7 @@ namespace Potato.Net.Shared.Test.Models {
         /// </summary>
         [Test]
         public void TestKdr() {
-            PlayerModel player = new PlayerModel() {
+            var player = new PlayerModel() {
                 Kills = 10,
                 Deaths = 5
             };
@@ -52,7 +52,7 @@ namespace Potato.Net.Shared.Test.Models {
         /// </summary>
         [Test]
         public void TestKdrNoDeaths() {
-            PlayerModel player = new PlayerModel() {
+            var player = new PlayerModel() {
                 Kills = 10,
                 Deaths = 0
             };
@@ -65,7 +65,7 @@ namespace Potato.Net.Shared.Test.Models {
         /// </summary>
         [Test]
         public void TestIp() {
-            PlayerModel player = new PlayerModel() {
+            var player = new PlayerModel() {
                 Ip = "1.1.1.1"
             };
 
@@ -77,7 +77,7 @@ namespace Potato.Net.Shared.Test.Models {
         /// </summary>
         [Test]
         public void TestIpPort() {
-            PlayerModel player = new PlayerModel() {
+            var player = new PlayerModel() {
                 Ip = "1.1.1.1:9000"
             };
 
@@ -90,7 +90,7 @@ namespace Potato.Net.Shared.Test.Models {
         /// </summary>
         [Test]
         public void TestModifyGroupDoesNotExist() {
-            PlayerModel player = new PlayerModel();
+            var player = new PlayerModel();
 
             player.ModifyGroup(
                 new GroupModel() {
@@ -108,7 +108,7 @@ namespace Potato.Net.Shared.Test.Models {
         /// </summary>
         [Test]
         public void TestModifyGroupExists() {
-            PlayerModel player = new PlayerModel() {
+            var player = new PlayerModel() {
                 Groups = {
                     new GroupModel() {
                         Type = GroupModel.Team,

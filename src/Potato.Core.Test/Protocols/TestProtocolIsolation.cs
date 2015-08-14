@@ -40,13 +40,13 @@ namespace Potato.Core.Test.Protocols {
             var protocol = meta.ProtocolTypes.First(p => p.Type == "MockProtocol");
 
             // Now readd the same connection we just added.
-            ICommandResult result = instance.Tunnel(CommandBuilder.PotatoAddConnection(protocol.Provider, protocol.Type, "1.1.1.1", 27516, "password", "").SetOrigin(CommandOrigin.Local));
+            var result = instance.Tunnel(CommandBuilder.PotatoAddConnection(protocol.Provider, protocol.Type, "1.1.1.1", 27516, "password", "").SetOrigin(CommandOrigin.Local));
 
             Assert.IsTrue(result.Success);
             Assert.AreEqual(CommandResultType.Success, result.CommandResultType);
 
             // Now make sure our current appdomain is clean of the test plugin
-            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies()) {
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
                 Assert.IsFalse(assembly.FullName.Contains("Myrcon.Protocols.Test"));
             }
 

@@ -29,31 +29,31 @@ namespace Potato.Service.Shared.Test.TestServiceController.Mocks {
         public int CreateSleep = 0;
 
         public void Start() {
-            if (this.StartSleep > 0) {
+            if (StartSleep > 0) {
                 Thread.Sleep(StartSleep);
             }
         }
 
         public void WriteConfig() {
-            if (this.WriteConfigSleep > 0) {
+            if (WriteConfigSleep > 0) {
                 Thread.Sleep(WriteConfigSleep);
             }
         }
 
         public void Dispose() {
-            if (this.DisposeSleep > 0) {
+            if (DisposeSleep > 0) {
                 Thread.Sleep(DisposeSleep);
             }
         }
 
-        public void ParseCommandLineArguments(List<String> arguments) {
-            if (this.ParseCommandLineArgumentsSleep > 0) {
+        public void ParseCommandLineArguments(List<string> arguments) {
+            if (ParseCommandLineArgumentsSleep > 0) {
                 Thread.Sleep(ParseCommandLineArgumentsSleep);
             }
         }
 
         public ServiceMessage PollService() {
-            if (this.PollServiceSleep > 0) {
+            if (PollServiceSleep > 0) {
                 Thread.Sleep(PollServiceSleep);
             }
 
@@ -61,7 +61,7 @@ namespace Potato.Service.Shared.Test.TestServiceController.Mocks {
         }
 
         public ServiceMessage ExecuteMessage(ServiceMessage message) {
-            if (this.PollServiceSleep > 0) {
+            if (PollServiceSleep > 0) {
                 Thread.Sleep(ExecuteMessageSleep);
             }
 
@@ -69,7 +69,7 @@ namespace Potato.Service.Shared.Test.TestServiceController.Mocks {
         }
 
         public void Create() {
-            if (this.CreateSleep > 0) {
+            if (CreateSleep > 0) {
                 Thread.Sleep(CreateSleep);
             }
         }

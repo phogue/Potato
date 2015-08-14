@@ -37,8 +37,8 @@ namespace Potato.Database.Shared {
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        protected Field BuildField(String name) {
-            Field field = new Field() {
+        protected Field BuildField(string name) {
+            var field = new Field() {
                 Name = name.Replace("`", "")
             };
 
@@ -52,7 +52,7 @@ namespace Potato.Database.Shared {
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected Value BuildValue(Object data) {
+        protected Value BuildValue(object data) {
             Value value = null;
 
             if (data is int) {
@@ -85,17 +85,17 @@ namespace Potato.Database.Shared {
                     Data = data.ToString()
                 };
             }
-            else if (data is ICollection<Object>) {
+            else if (data is ICollection<object>) {
                 value = new CollectionValue();
 
-                foreach (var item in data as ICollection<Object>) {
-                    value.Add(this.BuildValue(item));
+                foreach (var item in data as ICollection<object>) {
+                    value.Add(BuildValue(item));
                 }
             }
-            else if (data is Dictionary<String, Object>) {
+            else if (data is Dictionary<string, object>) {
                 value = new DocumentValue();
 
-                foreach (var item in data as Dictionary<String, Object>) {
+                foreach (var item in data as Dictionary<string, object>) {
                     value.Set(item.Key, item.Value);
                 }
             }
@@ -115,9 +115,9 @@ namespace Potato.Database.Shared {
         /// <param name="name"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected IEquality BuildEquality(IEquality equality, String name, Object data) {
-            Field field = this.BuildField(name);
-            Value value = this.BuildValue(data);
+        protected IEquality BuildEquality(IEquality equality, string name, object data) {
+            var field = BuildField(name);
+            var value = BuildValue(data);
 
             if (equality != null && value != null) {
                 equality.Add(field);
@@ -136,13 +136,13 @@ namespace Potato.Database.Shared {
         /// <param name="name"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected IEquality BuildEquality(IEquality equality, String collection, String name, Object data) {
-            Field field = this.BuildField(name);
+        protected IEquality BuildEquality(IEquality equality, string collection, string name, object data) {
+            var field = BuildField(name);
             field.Collection(new Collection() {
                 Name = collection
             }).Implicit();
 
-            Value value = this.BuildValue(data);
+            var value = BuildValue(data);
 
             if (equality != null && value != null) {
                 equality.Add(field);
@@ -153,35 +153,35 @@ namespace Potato.Database.Shared {
         }
 
         public IDatabaseObject Method(IDatabaseObject data) {
-            this.Add(data.Explicit());
+            Add(data.Explicit());
 
             return this;
         }
 
         public IDatabaseObject Database(IDatabaseObject data) {
-            this.Add(data.Explicit());
+            Add(data.Explicit());
 
             return this;
         }
 
-        public IDatabaseObject Database(String name) {
-            return this.Raw(new Builders.Database() {
+        public IDatabaseObject Database(string name) {
+            return Raw(new Builders.Database() {
                 Name = name
             });
         }
 
         public IDatabaseObject Index(IDatabaseObject data) {
-            this.Add(data.Explicit());
+            Add(data.Explicit());
 
             return this;
         }
 
-        public IDatabaseObject Index(String collection, String name) {
-            Field field = this.BuildField(name);
+        public IDatabaseObject Index(string collection, string name) {
+            var field = BuildField(name);
 
-            return this.Raw(
+            return Raw(
                 new Index() {
-                    Name = String.Format("{0}_INDEX", field.Name)
+                    Name = string.Format("{0}_INDEX", field.Name)
                 }
                 .Sort(
                     new Sort() {
@@ -198,12 +198,12 @@ namespace Potato.Database.Shared {
             );
         }
 
-        public IDatabaseObject Index(String collection, String name, ISortByModifier sortByModifier) {
-            Field field = this.BuildField(name);
+        public IDatabaseObject Index(string collection, string name, ISortByModifier sortByModifier) {
+            var field = BuildField(name);
 
-            return this.Raw(
+            return Raw(
                 new Index() {
-                    Name = String.Format("{0}_INDEX", field.Name)
+                    Name = string.Format("{0}_INDEX", field.Name)
                 }
                 .Sort(
                     new Sort() {
@@ -221,12 +221,12 @@ namespace Potato.Database.Shared {
             );
         }
 
-        public IDatabaseObject Index(String collection, String name, IIndexModifier indexModifier) {
-            Field field = this.BuildField(name);
+        public IDatabaseObject Index(string collection, string name, IIndexModifier indexModifier) {
+            var field = BuildField(name);
 
-            return this.Raw(
+            return Raw(
                 new Index() {
-                    Name = String.Format("{0}_INDEX", field.Name)
+                    Name = string.Format("{0}_INDEX", field.Name)
                 }
                 .Sort(
                     new Sort() {
@@ -244,12 +244,12 @@ namespace Potato.Database.Shared {
             );
         }
 
-        public IDatabaseObject Index(String collection, String name, IIndexModifier indexModifier, ISortByModifier sortByModifier) {
-            Field field = this.BuildField(name);
+        public IDatabaseObject Index(string collection, string name, IIndexModifier indexModifier, ISortByModifier sortByModifier) {
+            var field = BuildField(name);
 
-            return this.Raw(
+            return Raw(
                 new Index() {
-                    Name = String.Format("{0}_INDEX", field.Name)
+                    Name = string.Format("{0}_INDEX", field.Name)
                 }
                 .Sort(
                     new Sort() {
@@ -269,34 +269,34 @@ namespace Potato.Database.Shared {
         }
 
         public IDatabaseObject Modifier(IDatabaseObject data) {
-            this.Add(data.Explicit());
+            Add(data.Explicit());
 
             return this;
         }
 
         public IDatabaseObject FieldType(IDatabaseObject data) {
-            this.Add(data.Explicit());
+            Add(data.Explicit());
 
             return this;
         }
 
         public IDatabaseObject Field(IDatabaseObject data) {
-            this.Add(data.Explicit());
+            Add(data.Explicit());
 
             return this;
         }
 
-        public IDatabaseObject Field(String name) {
-            return this.Raw(this.BuildField(name));
+        public IDatabaseObject Field(string name) {
+            return Raw(BuildField(name));
         }
 
-        public IDatabaseObject Field(String name, IFieldType type, bool nullable = true) {
+        public IDatabaseObject Field(string name, IFieldType type, bool nullable = true) {
             if (nullable == true) type.Add(new Nullable());
 
-            return this.Raw(this.BuildField(name).FieldType(type) as Field);
+            return Raw(BuildField(name).FieldType(type) as Field);
         }
 
-        public IDatabaseObject Field(String name, int length, bool nullable = true) {
+        public IDatabaseObject Field(string name, int length, bool nullable = true) {
             FieldType type = new StringType();
 
             type.Raw(new Length() {
@@ -305,47 +305,47 @@ namespace Potato.Database.Shared {
 
             if (nullable == true) type.Add(new Nullable());
 
-            return this.Raw(this.BuildField(name).FieldType(type));
+            return Raw(BuildField(name).FieldType(type));
         }
 
         public IDatabaseObject Condition(IDatabaseObject data) {
-            this.Add(data.Explicit());
+            Add(data.Explicit());
 
             return this;
         }
 
-        public IDatabaseObject Condition(String name, Object data) {
-            return this.Condition(name, new Equals().Implicit() as Equals, data);
+        public IDatabaseObject Condition(string name, object data) {
+            return Condition(name, new Equals().Implicit() as Equals, data);
         }
 
-        public IDatabaseObject Condition(String name, IEquality equality, Object data) {
-            this.Add(this.BuildEquality(equality, name, data));
+        public IDatabaseObject Condition(string name, IEquality equality, object data) {
+            Add(BuildEquality(equality, name, data));
 
             return this;
         }
 
-        public IDatabaseObject Condition(String collection, String name, object data) {
-            return this.Condition(collection, name, new Equals().Implicit() as Equals, data);
+        public IDatabaseObject Condition(string collection, string name, object data) {
+            return Condition(collection, name, new Equals().Implicit() as Equals, data);
         }
 
-        public IDatabaseObject Condition(String collection, String name, IEquality equality, object data) {
-            this.Add(this.BuildEquality(equality, collection, name, data));
+        public IDatabaseObject Condition(string collection, string name, IEquality equality, object data) {
+            Add(BuildEquality(equality, collection, name, data));
 
             return this;
         }
 
         public IDatabaseObject Set(IDatabaseObject data) {
-            this.Add(data.Explicit());
+            Add(data.Explicit());
 
             return this;
         }
 
-        public IDatabaseObject Set(String name, Object data) {
-            Field field = this.BuildField(name);
-            Value value = this.BuildValue(data);
+        public IDatabaseObject Set(string name, object data) {
+            var field = BuildField(name);
+            var value = BuildValue(data);
 
             if (field != null && value != null) {
-                this.Add(new Assignment() {
+                Add(new Assignment() {
                     field,
                     value
                 });
@@ -355,13 +355,13 @@ namespace Potato.Database.Shared {
         }
 
         public IDatabaseObject Collection(IDatabaseObject data) {
-            this.Add(data.Explicit());
+            Add(data.Explicit());
 
             return this;
         }
 
-        public IDatabaseObject Collection(String name) {
-            this.Add(new Collection() {
+        public IDatabaseObject Collection(string name) {
+            Add(new Collection() {
                 Name = name
             });
 
@@ -369,15 +369,15 @@ namespace Potato.Database.Shared {
         }
 
         public IDatabaseObject Sort(IDatabaseObject data) {
-            this.Add(data.Explicit());
+            Add(data.Explicit());
 
             return this;
         }
 
         public IDatabaseObject Sort(string name, ISortByModifier modifier = null) {
-            Field field = this.BuildField(name);
+            var field = BuildField(name);
 
-            return this.Raw(
+            return Raw(
                 new Sort() {
                     Name = field.Name
                 }
@@ -387,10 +387,10 @@ namespace Potato.Database.Shared {
             .Implicit();
         }
 
-        public IDatabaseObject Sort(String collection, String name, ISortByModifier modifier = null) {
-            Field field = this.BuildField(name);
+        public IDatabaseObject Sort(string collection, string name, ISortByModifier modifier = null) {
+            var field = BuildField(name);
 
-            return this.Raw(
+            return Raw(
                 new Sort() {
                     Name = field.Name
                 }
@@ -406,13 +406,13 @@ namespace Potato.Database.Shared {
         }
 
         public IDatabaseObject Limit(IDatabaseObject data) {
-            this.Add(data.Explicit());
+            Add(data.Explicit());
 
             return this;
         }
 
         public IDatabaseObject Limit(int limit) {
-            this.Raw(
+            Raw(
                 new Limit() {
                     new NumericValue() {
                         Long = limit
@@ -426,13 +426,13 @@ namespace Potato.Database.Shared {
         }
 
         public IDatabaseObject Skip(IDatabaseObject data) {
-            this.Add(data.Explicit());
+            Add(data.Explicit());
 
             return this;
         }
 
         public IDatabaseObject Skip(int skip) {
-            this.Raw(
+            Raw(
                 new Skip() {
                     new NumericValue() {
                         Long = skip
@@ -446,19 +446,19 @@ namespace Potato.Database.Shared {
         }
 
         public IDatabaseObject Implicit() {
-            this.Add(new Implicit());
+            Add(new Implicit());
 
             return this;
         }
 
         public IDatabaseObject Explicit() {
-            this.Add(new Explicit());
+            Add(new Explicit());
 
             return this;
         }
 
         public IDatabaseObject Raw(IDatabaseObject item) {
-            this.Add(item);
+            Add(item);
 
             return this;
         }

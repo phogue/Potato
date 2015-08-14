@@ -39,33 +39,33 @@ namespace Potato.Core.Events {
         /// Initializes events console with default values.
         /// </summary>
         public EventsConsoleController() : base() {
-            this.Shared = new SharedReferences();
+            Shared = new SharedReferences();
         }
 
         public override ICoreController Execute() {
-            this.Shared.Events.EventLogged += new Core.Events.EventsController.EventLoggedHandler(Events_EventLogged);
+            Shared.Events.EventLogged += new Core.Events.EventsController.EventLoggedHandler(Events_EventLogged);
 
             return base.Execute();
         }
 
-        protected String FormatGuid(Guid guid) {
-            return String.Format("{0}..{1}", new String(guid.ToString().Take(5).ToArray()), new String(guid.ToString().Skip(Math.Max(0, guid.ToString().Count() - 3)).Take(3).ToArray()));
+        protected string FormatGuid(Guid guid) {
+            return string.Format("{0}..{1}", new string(guid.ToString().Take(5).ToArray()), new string(guid.ToString().Skip(Math.Max(0, guid.ToString().Count() - 3)).Take(3).ToArray()));
         }
 
-        protected String FormatGuid(String guid) {
-            return String.Format("{0}..{1}", new String(guid.Take(5).ToArray()), new String(guid.Skip(Math.Max(0, guid.Count() - 3)).Take(3).ToArray()));
+        protected string FormatGuid(string guid) {
+            return string.Format("{0}..{1}", new string(guid.Take(5).ToArray()), new string(guid.Skip(Math.Max(0, guid.Count() - 3)).Take(3).ToArray()));
         }
 
-        protected String FormatEvent(IGenericEvent item) {
-            String text = null;
+        protected string FormatEvent(IGenericEvent item) {
+            string text = null;
 
             switch (item.Name) {
                 case "TextCommandRegistered":
-                    TextCommandModel firstTextCommand = item.Now.TextCommands.FirstOrDefault();
-                    ConnectionModel firstConnection = item.Scope.Connections.FirstOrDefault();
+                    var firstTextCommand = item.Now.TextCommands.FirstOrDefault();
+                    var firstConnection = item.Scope.Connections.FirstOrDefault();
 
                     if (firstTextCommand != null && firstConnection != null) {
-                        text = String.Format(@"Registed command(s) ""{0}"" to plugin {1} on connection {2}.", String.Join(", ", firstTextCommand.Commands.ToArray()), this.FormatGuid(firstTextCommand.PluginGuid), this.FormatGuid(firstConnection.ConnectionGuid));
+                        text = string.Format(@"Registed command(s) ""{0}"" to plugin {1} on connection {2}.", string.Join(", ", firstTextCommand.Commands.ToArray()), FormatGuid(firstTextCommand.PluginGuid), FormatGuid(firstConnection.ConnectionGuid));
                     }
 
                     break;
@@ -76,31 +76,31 @@ namespace Potato.Core.Events {
                 case "ConnectionListening":
                 case "ConnectionReady":
                 case "ConnectionLoggedIn":
-                    text = this.FormatGuid(item.Scope.Connections.First().ConnectionGuid);
+                    text = FormatGuid(item.Scope.Connections.First().ConnectionGuid);
                     break;
                 default:
-                    if (String.IsNullOrEmpty(item.Message.Trim()) == false) {
+                    if (string.IsNullOrEmpty(item.Message.Trim()) == false) {
                         text = item.Message;
                     }
                     
                     break;
             }
 
-            if (String.IsNullOrEmpty(text) == false) {
-                text = String.Format("[{0}] {1}: {2}", DateTime.Now.ToString("HH:mm:ss"), item.Name, text);
+            if (string.IsNullOrEmpty(text) == false) {
+                text = string.Format("[{0}] {1}: {2}", DateTime.Now.ToString("HH:mm:ss"), item.Name, text);
             }
 
             return text;
         }
 
         protected void Events_EventLogged(object sender, IGenericEvent e) {
-            String text = this.FormatEvent(e);
+            var text = FormatEvent(e);
 
-            if (String.IsNullOrEmpty(text) == false) Console.WriteLine(text);
+            if (string.IsNullOrEmpty(text) == false) Console.WriteLine(text);
         }
 
         public override void Dispose() {
-            this.Shared.Events.EventLogged -= new Core.Events.EventsController.EventLoggedHandler(Events_EventLogged);
+            Shared.Events.EventLogged -= new Core.Events.EventsController.EventLoggedHandler(Events_EventLogged);
 
             base.Dispose();
         }

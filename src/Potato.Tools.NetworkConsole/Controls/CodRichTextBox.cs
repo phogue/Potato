@@ -40,28 +40,28 @@ namespace Potato.Tools.NetworkConsole.Controls {
             //^8 = Red
             //^9 = Grey
             // http://www.tayloredmktg.com/rgb/
-            this.m_dicChatTextColours = new Dictionary<string, Color>();
-            this.m_dicChatTextColours.Add("^0", Color.Black);
-            this.m_dicChatTextColours.Add("^1", Color.Maroon);
-            this.m_dicChatTextColours.Add("^2", Color.MediumSeaGreen);
-            this.m_dicChatTextColours.Add("^3", Color.DarkOrange);
-            this.m_dicChatTextColours.Add("^4", Color.RoyalBlue);
-            this.m_dicChatTextColours.Add("^5", Color.CornflowerBlue);
-            this.m_dicChatTextColours.Add("^6", Color.DarkViolet);
-            this.m_dicChatTextColours.Add("^7", Color.DeepPink);
-            this.m_dicChatTextColours.Add("^8", Color.Red);
-            this.m_dicChatTextColours.Add("^9", Color.Gray);
+            m_dicChatTextColours = new Dictionary<string, Color>();
+            m_dicChatTextColours.Add("^0", Color.Black);
+            m_dicChatTextColours.Add("^1", Color.Maroon);
+            m_dicChatTextColours.Add("^2", Color.MediumSeaGreen);
+            m_dicChatTextColours.Add("^3", Color.DarkOrange);
+            m_dicChatTextColours.Add("^4", Color.RoyalBlue);
+            m_dicChatTextColours.Add("^5", Color.CornflowerBlue);
+            m_dicChatTextColours.Add("^6", Color.DarkViolet);
+            m_dicChatTextColours.Add("^7", Color.DeepPink);
+            m_dicChatTextColours.Add("^8", Color.Red);
+            m_dicChatTextColours.Add("^9", Color.Gray);
         }
 
         public void SetColour(string strVariable, string strValue) {
 
-            string strCaretNumber = strVariable.Replace("TEXT_COLOUR_", "^");
+            var strCaretNumber = strVariable.Replace("TEXT_COLOUR_", "^");
             
-            if (this.m_dicChatTextColours.ContainsKey(strCaretNumber) == true) {
-                this.m_dicChatTextColours[strCaretNumber] = Color.FromName(strValue);
+            if (m_dicChatTextColours.ContainsKey(strCaretNumber) == true) {
+                m_dicChatTextColours[strCaretNumber] = Color.FromName(strValue);
             }
             else {
-                this.m_dicChatTextColours.Add(strCaretNumber, Color.FromName(strValue));
+                m_dicChatTextColours.Add(strCaretNumber, Color.FromName(strValue));
             }
 
         }
@@ -195,11 +195,11 @@ namespace Potato.Tools.NetworkConsole.Controls {
 
         private int FindCaretCode(string strText, int iAppendedLength) {
 
-            int iReturnIndex = -1;
+            var iReturnIndex = -1;
 
             //string test = this.Text;
 
-            for (int i = strText.Length - iAppendedLength; i < strText.Length - 1; i++) {
+            for (var i = strText.Length - iAppendedLength; i < strText.Length - 1; i++) {
                 if (strText[i] == '^' && (char.IsDigit(strText[i + 1]) == true || strText[i + 1] == 'b' || strText[i + 1] == 'n' || strText[i + 1] == 'i')) {
                     if (i > 0 && strText[i - 1] != '^') {
                         iReturnIndex = i;
@@ -216,9 +216,9 @@ namespace Potato.Tools.NetworkConsole.Controls {
         }
 
         private int GetCaretCount(string strText) {
-            int iCarets = 0;
+            var iCarets = 0;
 
-            for (int i = 0; i < strText.Length; i++) {
+            for (var i = 0; i < strText.Length; i++) {
                 if (strText[i] == '^') {
                     iCarets++;
                 }
@@ -235,34 +235,34 @@ namespace Potato.Tools.NetworkConsole.Controls {
 
         public new void AppendText(string strText) {
 
-            List<STextChange> lstChanges = new List<STextChange>();
+            var lstChanges = new List<STextChange>();
 
-            int iCarets = 0;
-            int iAppendedStartPosition = -1;
-            int iAppendedTextLength = -1;
+            var iCarets = 0;
+            var iAppendedStartPosition = -1;
+            var iAppendedTextLength = -1;
 
-            if ((iCarets = this.GetCaretCount(strText)) > 0) {
+            if ((iCarets = GetCaretCount(strText)) > 0) {
 
-                iAppendedStartPosition = this.Text.Length;
+                iAppendedStartPosition = Text.Length;
                 iAppendedTextLength = strText.Length;
 
-                int i = -1;
-                int iFoundCarets = 0;
-                bool blFindingColourCodes = false;
+                var i = -1;
+                var iFoundCarets = 0;
+                var blFindingColourCodes = false;
 
-                string strColourCode = String.Empty;
-                char cFontCode = 'n';
+                var strColourCode = string.Empty;
+                var cFontCode = 'n';
 
                 do {
                     i = -1;
                     blFindingColourCodes = false;
 
                     //if ((i = this.Find("^", this.Text.Length - iConsoleOutputLength - 1, this.Text.Length, RichTextBoxFinds.MatchCase)) > 0) {
-                    if ((i = this.FindCaretCode(strText, iAppendedTextLength)) >= 0) {
+                    if ((i = FindCaretCode(strText, iAppendedTextLength)) >= 0) {
 
                         if (i < iAppendedTextLength - 1 && char.IsDigit(strText[i + 1]) == true) {
 
-                            STextChange stcChange = new STextChange();
+                            var stcChange = new STextChange();
                             stcChange.m_iPosition = i;
 
                             strColourCode = strText.Substring(i, 2);
@@ -271,8 +271,8 @@ namespace Potato.Tools.NetworkConsole.Controls {
                             strText = strText.Substring(0, i) + strText.Substring(i + 2);
                             iAppendedTextLength -= 2;
 
-                            if (this.m_dicChatTextColours.ContainsKey(strColourCode) == true) {
-                                stcChange.m_clTextColour = this.m_dicChatTextColours[strColourCode];
+                            if (m_dicChatTextColours.ContainsKey(strColourCode) == true) {
+                                stcChange.m_clTextColour = m_dicChatTextColours[strColourCode];
                             }
 
                             lstChanges.Add(stcChange);
@@ -281,18 +281,18 @@ namespace Potato.Tools.NetworkConsole.Controls {
                         }
                         else if (i < iAppendedTextLength - 1 && ((cFontCode = strText[i + 1]) == 'b' || strText[i + 1] == 'n' || strText[i + 1] == 'i')) {
 
-                            STextChange stcChange = new STextChange();
+                            var stcChange = new STextChange();
                             stcChange.m_iPosition = i;
 
                             switch (cFontCode) {
                                 case 'n':
-                                    stcChange.m_fntTextFont = this.Font;// new Font("Calibri", 10);
+                                    stcChange.m_fntTextFont = Font;// new Font("Calibri", 10);
                                     break;
                                 case 'b':
-                                    stcChange.m_fntTextFont = new Font(this.Font, FontStyle.Bold);  //new Font("Calibri", 10, FontStyle.Bold);
+                                    stcChange.m_fntTextFont = new Font(Font, FontStyle.Bold);  //new Font("Calibri", 10, FontStyle.Bold);
                                     break;
                                 case 'i':
-                                    stcChange.m_fntTextFont = new Font(this.Font, FontStyle.Italic);  //new Font("Calibri", 10, FontStyle.Italic);
+                                    stcChange.m_fntTextFont = new Font(Font, FontStyle.Italic);  //new Font("Calibri", 10, FontStyle.Italic);
                                     break;
                                 default:
                                     break;
@@ -322,14 +322,14 @@ namespace Potato.Tools.NetworkConsole.Controls {
             base.AppendText(strText);
 
             if (iAppendedStartPosition >= 0) { 
-                foreach (STextChange stcChange in lstChanges) {
-                    this.Select(iAppendedStartPosition + stcChange.m_iPosition, iAppendedTextLength - stcChange.m_iPosition);
+                foreach (var stcChange in lstChanges) {
+                    Select(iAppendedStartPosition + stcChange.m_iPosition, iAppendedTextLength - stcChange.m_iPosition);
 
                     if (stcChange.m_fntTextFont != null) {
-                        this.SelectionFont = stcChange.m_fntTextFont;
+                        SelectionFont = stcChange.m_fntTextFont;
                     }
                     else {
-                        this.SelectionColor = stcChange.m_clTextColour;
+                        SelectionColor = stcChange.m_clTextColour;
                     }
                 }
             }

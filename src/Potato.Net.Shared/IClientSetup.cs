@@ -23,7 +23,7 @@ namespace Potato.Net.Shared {
         /// <summary>
         /// The hostname to connect to.
         /// </summary>
-        String Hostname { get; }
+        string Hostname { get; }
 
         /// <summary>
         /// The port to connect on.

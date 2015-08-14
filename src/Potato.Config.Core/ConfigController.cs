@@ -35,7 +35,7 @@ namespace Potato.Config.Core {
         ///     <para>The arguments for this command</para>
         ///     <para>Expecting "password", but it is optional. If no password is supplied a random password will be generated</para>
         /// </param>
-        public static ServiceMessage CommandServerGenerateCertificate(IDictionary<String, String> arguments) {
+        public static ServiceMessage CommandServerGenerateCertificate(IDictionary<string, string> arguments) {
             var model = new CertificateModel();
 
             if (arguments != null && arguments.Count > 0) {
@@ -49,10 +49,10 @@ namespace Potato.Config.Core {
 
             return new ServiceMessage() {
                 Name = "result",
-                Arguments = new Dictionary<String, String>() {
+                Arguments = new Dictionary<string, string>() {
                     { "Command", "CommandServerCreateCertificate" },
                     { "Success", model.Exists.ToString() },
-                    { "Message", String.Format("Created certificate with password: {0}", model.Password) },
+                    { "Message", string.Format("Created certificate with password: {0}", model.Password) },
                     { "Password", model.Password }
                 }
             };
@@ -63,7 +63,7 @@ namespace Potato.Config.Core {
         /// is successful, it just goes through the motions of updating.
         /// </summary>
         public static ServiceMessage ServiceUpdateCore() {
-            ServiceController service = new ServiceController {
+            var service = new ServiceController {
                 Settings = {
                     ServiceUpdateCore = true
                 }
@@ -73,7 +73,7 @@ namespace Potato.Config.Core {
 
             return new ServiceMessage() {
                 Name = "result",
-                Arguments = new Dictionary<String, String>() {
+                Arguments = new Dictionary<string, string>() {
                     { "Command", "ServiceUpdateCore" },
                     { "Success", "True" }
                 }
@@ -85,14 +85,14 @@ namespace Potato.Config.Core {
         /// </summary>
         /// <param name="command">The command to be executed</param>
         /// <param name="arguments">Any arguments attached to this command.</param>
-        public static ServiceMessage Dispatch(String command, IDictionary<String, String> arguments) {
+        public static ServiceMessage Dispatch(string command, IDictionary<string, string> arguments) {
             ServiceMessage result = null;
 
-            if (String.Compare(command, "CommandServerGenerateCertificate", StringComparison.OrdinalIgnoreCase) == 0) {
-                result = ConfigController.CommandServerGenerateCertificate(arguments);
+            if (string.Compare(command, "CommandServerGenerateCertificate", StringComparison.OrdinalIgnoreCase) == 0) {
+                result = CommandServerGenerateCertificate(arguments);
             }
-            else if (String.Compare(command, "ServiceUpdateCore", StringComparison.OrdinalIgnoreCase) == 0) {
-                result = ConfigController.ServiceUpdateCore();
+            else if (string.Compare(command, "ServiceUpdateCore", StringComparison.OrdinalIgnoreCase) == 0) {
+                result = ServiceUpdateCore();
             }
 
             return result;

@@ -32,18 +32,18 @@ namespace Potato.Core.Variables {
         /// Anything in this list is volatile and will not be saved on
         /// exit.
         /// </summary>
-        public ConcurrentDictionary<String, VariableModel> VolatileVariables { get; set; }
+        public ConcurrentDictionary<string, VariableModel> VolatileVariables { get; set; }
         
         /// <summary>
         /// Anything in this list will be saved to the config
         /// </summary>
-        public ConcurrentDictionary<String, VariableModel> ArchiveVariables { get; set; }
+        public ConcurrentDictionary<string, VariableModel> ArchiveVariables { get; set; }
 
         /// <summary>
         /// Anything in this list will be saved to the config, but saved as a volatile set. The variable
         /// value will only last until the instance is restarted and the config consumed.
         /// </summary>
-        public ConcurrentDictionary<String, VariableModel> FlashVariables { get; set; }
+        public ConcurrentDictionary<string, VariableModel> FlashVariables { get; set; }
 
         public SharedReferences Shared { get; private set; }
 
@@ -51,108 +51,108 @@ namespace Potato.Core.Variables {
         /// Initializes the variable controller with default values and sets up command handlers.
         /// </summary>
         public VariableController() : base() {
-            this.Shared = new SharedReferences();
-            this.VolatileVariables = new ConcurrentDictionary<String, VariableModel>();
-            this.ArchiveVariables = new ConcurrentDictionary<String, VariableModel>();
-            this.FlashVariables = new ConcurrentDictionary<String, VariableModel>();
+            Shared = new SharedReferences();
+            VolatileVariables = new ConcurrentDictionary<string, VariableModel>();
+            ArchiveVariables = new ConcurrentDictionary<string, VariableModel>();
+            FlashVariables = new ConcurrentDictionary<string, VariableModel>();
 
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "name",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "value",
-                            Type = typeof(String),
+                            Type = typeof(string),
                             IsList = true
                         }
                     },
-                    Handler = this.CommandSetCollection
+                    Handler = CommandSetCollection
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.VariablesSet,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "name",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "value",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.CommandSetSingular
+                    Handler = CommandSetSingular
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.VariablesSetA,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "name",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "value",
-                            Type = typeof(String),
+                            Type = typeof(string),
                             IsList = true
                         }
                     },
-                    Handler = this.CommandSetACollection
+                    Handler = CommandSetACollection
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.VariablesSetA,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "name",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "value",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.CommandSetASingular
+                    Handler = CommandSetASingular
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.VariablesSetF,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "name",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "value",
-                            Type = typeof(String),
+                            Type = typeof(string),
                             IsList = true
                         }
                     },
-                    Handler = this.CommandSetFCollection
+                    Handler = CommandSetFCollection
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.VariablesSetF,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "name",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         },
                         new CommandParameterType() {
                             Name = "value",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.CommandSetFSingular
+                    Handler = CommandSetFSingular
                 },
                 new CommandDispatch() {
                     CommandType = CommandType.VariablesGet,
                     ParameterTypes = new List<CommandParameterType>() {
                         new CommandParameterType() {
                             Name = "name",
-                            Type = typeof(String)
+                            Type = typeof(string)
                         }
                     },
-                    Handler = this.CommandGet
+                    Handler = CommandGet
                 }
             });
         }
@@ -160,23 +160,23 @@ namespace Potato.Core.Variables {
         // @todo this should be moved to something like "InstanceVariableController" or something.
         // It's otherwise too specialized for something that could be used in plugins.
         private void SetupDefaultVariables() {
-            this.Set(new Command() {
+            Set(new Command() {
                 Origin = CommandOrigin.Local
             }, CommonVariableNames.TextCommandPublicPrefix, "!");
 
-            this.Set(new Command() {
+            Set(new Command() {
                 Origin = CommandOrigin.Local
             }, CommonVariableNames.TextCommandProtectedPrefix, "#");
 
-            this.Set(new Command() {
+            Set(new Command() {
                 Origin = CommandOrigin.Local
             }, CommonVariableNames.TextCommandPrivatePrefix, "@");
 
-            this.Set(new Command() {
+            Set(new Command() {
                 Origin = CommandOrigin.Local
             }, CommonVariableNames.DatabaseMaximumSelectedRows, 20);
 
-            var sourceRepositoryUri = this.Variable(CommonVariableNames.PackagesDefaultSourceRepositoryUri);
+            var sourceRepositoryUri = Variable(CommonVariableNames.PackagesDefaultSourceRepositoryUri);
             sourceRepositoryUri.Value = Defines.PackagesDefaultSourceRepositoryUri;
             sourceRepositoryUri.Readonly = true;
         }
@@ -186,9 +186,9 @@ namespace Potato.Core.Variables {
         /// Assigns events and loads the config for this file.
         /// </summary>
         public override ICoreController Execute() {
-            this.AssignEvents();
+            AssignEvents();
 
-            this.SetupDefaultVariables();
+            SetupDefaultVariables();
 
             return base.Execute();
         }
@@ -197,38 +197,38 @@ namespace Potato.Core.Variables {
         /// Information about this object is handled via it's parent interface.
         /// </summary>
         public override void Dispose() {
-            foreach (var variable in this.VolatileVariables) {
+            foreach (var variable in VolatileVariables) {
                 variable.Value.Dispose();
             }
 
-            foreach (var archiveVariable in this.ArchiveVariables) {
+            foreach (var archiveVariable in ArchiveVariables) {
                 archiveVariable.Value.Dispose();
             }
 
-            this.VolatileVariables.Clear();
-            this.VolatileVariables = null;
+            VolatileVariables.Clear();
+            VolatileVariables = null;
 
-            this.ArchiveVariables.Clear();
-            this.ArchiveVariables = null;
+            ArchiveVariables.Clear();
+            ArchiveVariables = null;
         }
 
         /// <summary>
         /// Does nothing.  Information about this object is handled via it's parent interface.
         /// </summary>
-        public override void WriteConfig(IConfig config, String password = null) {
+        public override void WriteConfig(IConfig config, string password = null) {
             // Use the .Value.Name to maintain the case
-            foreach (var archiveVariable in this.ArchiveVariables) {
+            foreach (var archiveVariable in ArchiveVariables) {
                 // Don't save empty values, even empty values in a list.
-                var values = archiveVariable.Value.ToList<String>().Where(item => item.Length > 0).ToList();
+                var values = archiveVariable.Value.ToList<string>().Where(item => item.Length > 0).ToList();
 
                 if (values.Count > 0) {
                     config.Append(CommandBuilder.VariablesSetA(archiveVariable.Value.Name, values).ToConfigCommand());
                 }
             }
 
-            foreach (var flashVariable in this.FlashVariables) {
+            foreach (var flashVariable in FlashVariables) {
                 // Don't save empty values, even empty values in a list.
-                var values = flashVariable.Value.ToList<String>().Where(item => item.Length > 0).ToList();
+                var values = flashVariable.Value.ToList<string>().Where(item => item.Length > 0).ToList();
 
                 if (values.Count > 0) {
                     config.Append(CommandBuilder.VariablesSet(flashVariable.Value.Name, values).ToConfigCommand());
@@ -245,8 +245,8 @@ namespace Potato.Core.Variables {
         /// </summary>
         /// <param name="name">The name of the variable object</param>
         /// <returns>The variable, if available. False otherwise.</returns>
-        public VariableModel Variable(String name) {
-            return this.VolatileVariables.GetOrAdd(name.ToLowerInvariant(), s => new VariableModel() {
+        public VariableModel Variable(string name) {
+            return VolatileVariables.GetOrAdd(name.ToLowerInvariant(), s => new VariableModel() {
                 Name = name
             });
         }
@@ -257,16 +257,16 @@ namespace Potato.Core.Variables {
         /// <param name="name">The name of the variable object</param>
         /// <returns>The variable, if available. False otherwise.</returns>
         public VariableModel Variable(CommonVariableNames name) {
-            return this.Variable(name.ToString());
+            return Variable(name.ToString());
         }
 
         /// <summary>
         /// Supports '-' and '--' arguments.
         /// </summary>
         /// <param name="arguments">A list of arguments to pass.</param>
-        public void ParseArguments(List<String> arguments) {
-            for (int offset = 0; offset < arguments.Count; offset++) {
-                String argument = arguments[offset];
+        public void ParseArguments(List<string> arguments) {
+            for (var offset = 0; offset < arguments.Count; offset++) {
+                var argument = arguments[offset];
 
                 // if the argument is a switch.
                 if (argument[0] == '-') {
@@ -279,11 +279,11 @@ namespace Potato.Core.Variables {
                     if (offset + 1 < arguments.Count && arguments[offset + 1][0] != '-') {
                         // No, the next string is not an argument switch. It's the value of the
                         // argument.
-                        variable = this.Set(new Command() { Origin = CommandOrigin.Local }, argument, arguments[offset + 1]).Now.Variables.FirstOrDefault();
+                        variable = Set(new Command() { Origin = CommandOrigin.Local }, argument, arguments[offset + 1]).Now.Variables.FirstOrDefault();
                     }
                     else {
                         // Set to "true"
-                        variable = this.Set(new Command() { Origin = CommandOrigin.Local }, argument, true).Now.Variables.FirstOrDefault();
+                        variable = Set(new Command() { Origin = CommandOrigin.Local }, argument, true).Now.Variables.FirstOrDefault();
                     }
 
                     if (variable != null) {
@@ -293,52 +293,52 @@ namespace Potato.Core.Variables {
             }
         }
 
-        protected ICommandResult CommandSetCollection(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            String name = parameters["name"].First<String>();
-            List<String> value = parameters["value"].All<String>();
+        protected ICommandResult CommandSetCollection(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var name = parameters["name"].First<string>();
+            var value = parameters["value"].All<string>();
 
-            return this.Set(command, name, value);
+            return Set(command, name, value);
         }
 
-        protected ICommandResult CommandSetSingular(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            String name = parameters["name"].First<String>();
-            String value = parameters["value"].First<String>();
+        protected ICommandResult CommandSetSingular(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var name = parameters["name"].First<string>();
+            var value = parameters["value"].First<string>();
 
-            return this.Set(command, name, value);
+            return Set(command, name, value);
         }
 
-        protected ICommandResult CommandSetACollection(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            String name = parameters["name"].First<String>();
-            List<String> value = parameters["value"].All<String>();
+        protected ICommandResult CommandSetACollection(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var name = parameters["name"].First<string>();
+            var value = parameters["value"].All<string>();
 
-            return this.SetA(command, name, value);
+            return SetA(command, name, value);
         }
 
-        protected ICommandResult CommandSetASingular(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            String name = parameters["name"].First<String>();
-            String value = parameters["value"].First<String>();
+        protected ICommandResult CommandSetASingular(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var name = parameters["name"].First<string>();
+            var value = parameters["value"].First<string>();
 
-            return this.SetA(command, name, value);
+            return SetA(command, name, value);
         }
 
-        protected ICommandResult CommandSetFCollection(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            String name = parameters["name"].First<String>();
-            List<String> value = parameters["value"].All<String>();
+        protected ICommandResult CommandSetFCollection(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var name = parameters["name"].First<string>();
+            var value = parameters["value"].All<string>();
 
-            return this.SetF(command, name, value);
+            return SetF(command, name, value);
         }
 
-        protected ICommandResult CommandSetFSingular(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            String name = parameters["name"].First<String>();
-            String value = parameters["value"].First<String>();
+        protected ICommandResult CommandSetFSingular(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var name = parameters["name"].First<string>();
+            var value = parameters["value"].First<string>();
 
-            return this.SetF(command, name, value);
+            return SetF(command, name, value);
         }
 
-        protected ICommandResult CommandGet(ICommand command, Dictionary<String, ICommandParameter> parameters) {
-            String name = parameters["name"].First<String>();
+        protected ICommandResult CommandGet(ICommand command, Dictionary<string, ICommandParameter> parameters) {
+            var name = parameters["name"].First<string>();
 
-            return this.Get(command, name);
+            return Get(command, name);
         }
 
         /// <summary>
@@ -349,12 +349,12 @@ namespace Potato.Core.Variables {
         /// <param name="name">The unique name of the variable to set</param>
         /// <param name="value">The value of the variable</param>
         /// <returns></returns>
-        public ICommandResult Set(ICommand command, String name, Object value) {
+        public ICommandResult Set(ICommand command, string name, object value) {
             ICommandResult result = null;
 
-            if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (command.Origin == CommandOrigin.Local || Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (name.Length > 0) {
-                    VariableModel variable = this.Variable(name);
+                    var variable = Variable(name);
 
                     if (variable.Readonly == false) {
                         variable.Value = value;
@@ -362,7 +362,7 @@ namespace Potato.Core.Variables {
                         result = new CommandResult() {
                             Success = true,
                             CommandResultType = CommandResultType.Success,
-                            Message = String.Format(@"Successfully set value of variable name ""{0}"" to ""{1}"".", variable.Name, variable.Value),
+                            Message = string.Format(@"Successfully set value of variable name ""{0}"" to ""{1}"".", variable.Name, variable.Value),
                             Now = new CommandData() {
                                 Variables = new List<VariableModel>() {
                                     variable
@@ -370,8 +370,8 @@ namespace Potato.Core.Variables {
                             }
                         };
 
-                        if (this.Shared.Events != null) {
-                            this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.VariablesSet));
+                        if (Shared.Events != null) {
+                            Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.VariablesSet));
                         }
                     }
                     else {
@@ -379,7 +379,7 @@ namespace Potato.Core.Variables {
                         result = new CommandResult() {
                             Success = false,
                             CommandResultType = CommandResultType.Failed,
-                            Message = String.Format(@"Variable name ""{0}"" is set to read-only.", variable.Name)
+                            Message = string.Format(@"Variable name ""{0}"" is set to read-only.", variable.Name)
                         };
                     }
                 }
@@ -406,8 +406,8 @@ namespace Potato.Core.Variables {
         /// <param name="name">The unique name of the variable to set</param>
         /// <param name="value">The value of the variable</param>
         /// <returns></returns>
-        public ICommandResult Set(ICommand command, CommonVariableNames name, Object value) {
-            return this.Set(command, name.ToString(), value);
+        public ICommandResult Set(ICommand command, CommonVariableNames name, object value) {
+            return Set(command, name.ToString(), value);
         }
 
         /// <summary>
@@ -418,27 +418,27 @@ namespace Potato.Core.Variables {
         /// <param name="name">The unique name of the variable to set</param>
         /// <param name="value">The value of the variable</param>
         /// <returns></returns>
-        public ICommandResult SetA(ICommand command, String name, Object value) {
+        public ICommandResult SetA(ICommand command, string name, object value) {
             ICommandResult result = null;
 
-            if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                ICommandResult volatileSetResult = this.Set(command, name, value);
+            if (command.Origin == CommandOrigin.Local || Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var volatileSetResult = Set(command, name, value);
 
                 if (volatileSetResult.Success == true) {
                     // All good.
                     var variable = volatileSetResult.Now.Variables.First();
 
                     // Upsert he archive variable
-                    this.ArchiveVariables.AddOrUpdate(variable.Name.ToLowerInvariant(), s => variable, (s, model) => variable);
+                    ArchiveVariables.AddOrUpdate(variable.Name.ToLowerInvariant(), s => variable, (s, model) => variable);
 
                     // Remove the flash value (so archive + flash are not being saved)
                     VariableModel removed;
-                    this.FlashVariables.TryRemove(variable.Name.ToLowerInvariant(), out removed);
+                    FlashVariables.TryRemove(variable.Name.ToLowerInvariant(), out removed);
 
                     result = new CommandResult() {
                         Success = true,
                         CommandResultType = CommandResultType.Success,
-                        Message = String.Format(@"Successfully set value of variable name ""{0}"" to ""{1}"".", variable.Name, variable.Value),
+                        Message = string.Format(@"Successfully set value of variable name ""{0}"" to ""{1}"".", variable.Name, variable.Value),
                         Now = new CommandData() {
                             Variables = new List<VariableModel>() {
                                 variable
@@ -446,8 +446,8 @@ namespace Potato.Core.Variables {
                         }
                     };
 
-                    if (this.Shared.Events != null) {
-                        this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.VariablesSetA));
+                    if (Shared.Events != null) {
+                        Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.VariablesSetA));
                     }
                 }
                 else {
@@ -470,26 +470,26 @@ namespace Potato.Core.Variables {
         /// <param name="name">The unique name of the variable to set</param>
         /// <param name="value">The value of the variable</param>
         /// <returns></returns>
-        public ICommandResult SetF(ICommand command, String name, Object value) {
+        public ICommandResult SetF(ICommand command, string name, object value) {
             ICommandResult result = null;
 
-            if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
-                ICommandResult volatileSetResult = this.Set(command, name, value);
+            if (command.Origin == CommandOrigin.Local || Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+                var volatileSetResult = Set(command, name, value);
 
                 if (volatileSetResult.Success == true) {
                     // All good.
                     var variable = volatileSetResult.Now.Variables.First();
 
-                    this.FlashVariables.AddOrUpdate(variable.Name.ToLowerInvariant(), s => variable, (s, model) => variable);
+                    FlashVariables.AddOrUpdate(variable.Name.ToLowerInvariant(), s => variable, (s, model) => variable);
 
                     // Remove the archived value (so archive + flash are not being saved)
                     VariableModel removed;
-                    this.ArchiveVariables.TryRemove(variable.Name.ToLowerInvariant(), out removed);
+                    ArchiveVariables.TryRemove(variable.Name.ToLowerInvariant(), out removed);
 
                     result = new CommandResult() {
                         Success = true,
                         CommandResultType = CommandResultType.Success,
-                        Message = String.Format(@"Successfully set value of variable name ""{0}"" to ""{1}"".", variable.Name, variable.Value),
+                        Message = string.Format(@"Successfully set value of variable name ""{0}"" to ""{1}"".", variable.Name, variable.Value),
                         Now = new CommandData() {
                             Variables = new List<VariableModel>() {
                                 variable
@@ -497,8 +497,8 @@ namespace Potato.Core.Variables {
                         }
                     };
 
-                    if (this.Shared.Events != null) {
-                        this.Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.VariablesSetF));
+                    if (Shared.Events != null) {
+                        Shared.Events.Log(GenericEvent.ConvertToGenericEvent(result, GenericEventType.VariablesSetF));
                     }
                 }
                 else {
@@ -520,10 +520,10 @@ namespace Potato.Core.Variables {
         /// <param name="name">The unique name of the variable to fetch</param>
         /// <param name="defaultValue"></param>
         /// <returns>The converted value of the variable with the specified name</returns>
-        public T Get<T>(String name, T defaultValue = default(T)) {
-            T result = defaultValue;
+        public T Get<T>(string name, T defaultValue = default(T)) {
+            var result = defaultValue;
 
-            VariableModel variable = this.Variable(name);
+            var variable = Variable(name);
 
             result = variable.ToType(defaultValue);
 
@@ -538,7 +538,7 @@ namespace Potato.Core.Variables {
         /// <param name="defaultValue"></param>
         /// <returns>The converted value of the variable with the specified kenamey</returns>
         public T Get<T>(CommonVariableNames name, T defaultValue = default(T)) {
-            return this.Get(name.ToString(), defaultValue);
+            return Get(name.ToString(), defaultValue);
         }
 
         /// <summary>
@@ -548,17 +548,17 @@ namespace Potato.Core.Variables {
         /// <param name="name">The unique name of the variable to fetch</param>
         /// <param name="defaultValue"></param>
         /// <returns>The raw object with no conversion</returns>
-        public ICommandResult Get(ICommand command, String name, Object defaultValue = null) {
+        public ICommandResult Get(ICommand command, string name, object defaultValue = null) {
             ICommandResult result = null;
 
-            if (command.Origin == CommandOrigin.Local || this.Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
+            if (command.Origin == CommandOrigin.Local || Shared.Security.DispatchPermissionsCheck(command, command.Name).Success == true) {
                 if (name.Length > 0) {
-                    VariableModel variable = this.Variable(name);
+                    var variable = Variable(name);
 
                     result = new CommandResult() {
                         Success = true,
                         CommandResultType = CommandResultType.Success,
-                        Message = String.Format(@"Value of variable with name ""{0}"" is ""{1}"".", variable.Name, variable.Value),
+                        Message = string.Format(@"Value of variable with name ""{0}"" is ""{1}"".", variable.Name, variable.Value),
                         Now = new CommandData() {
                             Variables = new List<VariableModel>() {
                                 variable

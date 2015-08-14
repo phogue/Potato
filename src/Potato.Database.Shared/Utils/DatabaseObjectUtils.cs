@@ -29,7 +29,7 @@ namespace Potato.Database.Shared.Utils {
         /// <param name="self">The object to search for sub values on</param>
         /// <returns></returns>
         public static IEnumerable<T> Descendants<T>(this IDatabaseObject self) where T : IDatabaseObject {
-            IEnumerable<T> items = self.Where(item => item is T).Cast<T>();
+            var items = self.Where(item => item is T).Cast<T>();
             
             return items.Union(self.SelectMany(item => item.Descendants<T>()));
         }
@@ -42,7 +42,7 @@ namespace Potato.Database.Shared.Utils {
         /// <param name="self">The object to search for sub values on</param>
         /// <returns></returns>
         public static IEnumerable<T> DescendantsAndSelf<T>(this IDatabaseObject self) where T : IDatabaseObject {
-            IEnumerable<T> items = self.Union(new List<IDatabaseObject>() { self }).Where(item => item is T).Cast<T>();
+            var items = self.Union(new List<IDatabaseObject>() { self }).Where(item => item is T).Cast<T>();
 
             return items.Union(self.SelectMany(item => item.Descendants<T>()));
         }

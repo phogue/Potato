@@ -34,14 +34,14 @@ namespace Potato.Net.Shared.Geolocation {
         /// </summary>
         static GeolocateIp() {
             try {
-                String path = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "GeoIP.dat", SearchOption.AllDirectories).FirstOrDefault();
+                var path = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "GeoIP.dat", SearchOption.AllDirectories).FirstOrDefault();
 
-                if (String.IsNullOrEmpty(path) == false) {
-                    GeolocateIp.CountryLookup = new CountryLookup(path);
+                if (string.IsNullOrEmpty(path) == false) {
+                    CountryLookup = new CountryLookup(path);
                 }
             }
             catch {
-                GeolocateIp.CountryLookup = null;
+                CountryLookup = null;
             }
         }
 
@@ -50,8 +50,8 @@ namespace Potato.Net.Shared.Geolocation {
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected String Ip(String value) {
-            String ip = value;
+        protected string Ip(string value) {
+            var ip = value;
 
             // Validate Ip has colon before trying to split.
             if (value != null && value.Contains(":")) {
@@ -71,18 +71,18 @@ namespace Potato.Net.Shared.Geolocation {
         /// </summary>
         /// <param name="value">The ip</param>
         /// <returns></returns>
-        public Location Locate(String value) {
+        public Location Locate(string value) {
             Location location = null;
 
-            if (GeolocateIp.CountryLookup != null) {
-                String ip = this.Ip(value);
+            if (CountryLookup != null) {
+                var ip = Ip(value);
 
                 if (ip != null) {
                     // Try: In-case GeoIP.dat is not loaded properly
                     try {
                         location = new Location() {
-                            CountryName = GeolocateIp.CountryLookup.lookupCountryName(ip),
-                            CountryCode = GeolocateIp.CountryLookup.lookupCountryCode(ip)
+                            CountryName = CountryLookup.lookupCountryName(ip),
+                            CountryCode = CountryLookup.lookupCountryCode(ip)
                         };
                     }
                     catch {

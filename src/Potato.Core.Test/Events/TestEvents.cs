@@ -101,10 +101,10 @@ namespace Potato.Core.Test.Events {
         [Test]
         public void TestEventsNoParametersWrittenToFile() {
             // The current time, to the second.
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
 
             // When the event was logged.
-            DateTime then = now.AddHours(-1);
+            var then = now.AddHours(-1);
 
             // Then, rounded to the nearest hour.
             var roundedThenHour = new DateTime(then.Year, then.Month, then.Day, then.Hour, 0, 0);
@@ -127,7 +127,7 @@ namespace Potato.Core.Test.Events {
 
             events.WriteEvents();
 
-            String logFileName = events.EventsLogFileName(roundedThenHour);
+            var logFileName = events.EventsLogFileName(roundedThenHour);
             
             var logEvent = JsonConvert.DeserializeObject<GenericEvent>(File.ReadAllText(logFileName).Trim(',', '\r', '\n'));
 
@@ -143,10 +143,10 @@ namespace Potato.Core.Test.Events {
         [Test]
         public void TestEventsSingleWrittenToFile() {
             // The current time, to the second.
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
 
             // When the event was logged.
-            DateTime then = now.AddHours(-1);
+            var then = now.AddHours(-1);
 
             // Then, rounded to the nearest hour.
             var roundedThenHour = new DateTime(then.Year, then.Month, then.Day, then.Hour, 0, 0);
@@ -169,7 +169,7 @@ namespace Potato.Core.Test.Events {
 
             events.WriteEvents(now);
 
-            String logFileName = events.EventsLogFileName(roundedThenHour);
+            var logFileName = events.EventsLogFileName(roundedThenHour);
 
             var logEvent = JsonConvert.DeserializeObject<GenericEvent>(File.ReadAllText(logFileName).Trim(',', '\r', '\n'));
 
@@ -185,10 +185,10 @@ namespace Potato.Core.Test.Events {
         [Test]
         public void TestEventsUnexpiredWrittenToFile() {
             // The current time, to the second.
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
 
             // When the event was logged.
-            DateTime then = now.AddHours(-1);
+            var then = now.AddHours(-1);
 
             // Then, rounded to the nearest hour.
             var roundedThenHour = new DateTime(then.Year, then.Month, then.Day, then.Hour, 0, 0);
@@ -224,7 +224,7 @@ namespace Potato.Core.Test.Events {
 
             events.WriteEvents(now);
 
-            String logFileName = events.EventsLogFileName(roundedThenHour);
+            var logFileName = events.EventsLogFileName(roundedThenHour);
 
 
 

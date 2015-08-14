@@ -34,22 +34,22 @@ namespace Potato.Examples.Plugins.UserInterface {
 
         public Program() : base() {
 
-            this.CommandDispatchers.AddRange(new List<ICommandDispatch>() {
+            CommandDispatchers.AddRange(new List<ICommandDispatch>() {
                 new CommandDispatch() {
                     Name = "/",
                     CommandAttributeType = CommandAttributeType.Handler,
-                    Handler = this.PageIndex
+                    Handler = PageIndex
                 },
                 new CommandDispatch() {
                     Name = "/settings",
                     CommandAttributeType = CommandAttributeType.Handler,
-                    Handler = this.PageSettings
+                    Handler = PageSettings
                 }
             });
 
         }
 
-        protected ICommandResult PageIndex(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        protected ICommandResult PageIndex(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             return new CommandResult() {
                 Now = new CommandData() {
                     Content = new List<string>() {
@@ -62,7 +62,7 @@ namespace Potato.Examples.Plugins.UserInterface {
             };
         }
 
-        protected ICommandResult PageSettings(ICommand command, Dictionary<String, ICommandParameter> parameters) {
+        protected ICommandResult PageSettings(ICommand command, Dictionary<string, ICommandParameter> parameters) {
             return new CommandResult() {
                 Now = new CommandData() {
                     Content = new List<string>() {

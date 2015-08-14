@@ -25,6 +25,6 @@ namespace Potato.Database.Shared.Builders {
         /// <summary>
         /// The name of a field
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -24,13 +24,13 @@ namespace Potato.Net.Shared.Models {
         /// <summary>
         /// The name of the role the player has taken
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Initializes the role with empty values.
         /// </summary>
         public RoleModel() : base() {
-            this.Name = String.Empty;
+            Name = string.Empty;
         }
     }
 }
